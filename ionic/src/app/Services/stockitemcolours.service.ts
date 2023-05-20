@@ -28,25 +28,25 @@ import { StockItemColours } from '../Models/stockitemcolour';
   
     //add
     AddStockItemColour(stockitemcolour:StockItemColours){
-      return this.httpClient.post(`${this.apiUrl}StockItemColour/AddStockItemColourAsync`, stockitemcolour)
+      return this.httpClient.post(`${this.apiUrl}StockItemColour/AddStockItemColour`, stockitemcolour)
       .pipe(map(result => result))
     }
   
     //get selected one
     GetStockItemColour(StockItemColourId:Number){ 
-      return this.httpClient.get(`${this.apiUrl}StockItemColour/GetStockItemColourDetailsAsync/${StockItemColourId}`)
+      return this.httpClient.get(`${this.apiUrl}StockItemColour/GetStockItemColour/${StockItemColourId}`)
       .pipe(map(result => result))
     }
   
     //edit
     UpdateStockItemColour(StockItemColourId:Number, stockitemcolour:StockItemColours){
-      return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockItemColourAsync/${StockItemColourId}`, stockitemcolour)
+      return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockItemColour/${StockItemColourId}`, stockitemcolour)
       .pipe(map(result => result))
     }
   
     //delete 
     DeleteStockItemColour(StockItemColourId:Number){
-      return this.httpClient.delete(`${this.apiUrl}StockItemColour/DeleteStockItemColourAsync/${StockItemColourId}`)
+      return this.httpClient.delete(`${this.apiUrl}StockItemColour/DeleteStockItemColour/${StockItemColourId}`)
       .pipe(map(result => result))
     }
   
