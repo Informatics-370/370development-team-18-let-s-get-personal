@@ -10,7 +10,7 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid User_Role_Permission_ID { get; set; }
-    public virtual User_Role User_Role_ID { get; set; }
-    public virtual Permission Permission_ID { get; set; }
+    public virtual User_Role User_Role { get; set; }
+    public virtual Permission Permission { get; set; }
   }
 }

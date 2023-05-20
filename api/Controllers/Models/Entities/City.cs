@@ -10,7 +10,7 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid City_ID { get; set; }
-    public virtual Province Province_ID { get; set; }
+    public virtual Province Province { get; set; }
     [StringLength(255)]
     public string City_Name { get; set; }
   }

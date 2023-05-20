@@ -11,7 +11,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
     public Guid Delivery_ID { get; set; }
     public virtual Delivery_Company Delivery_Company_ID { get; set; }
     public virtual Address Delivery_Address { get; set; }
-    public decimal Delivery_Price { get; set; }
+    public double Delivery_Price { get; set; }
     public int Tracking_Number { get; set; }
   }
 }

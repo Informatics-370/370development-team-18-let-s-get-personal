@@ -10,10 +10,10 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Customer_ID { get; set; }
-    public virtual Title Title_ID {get; set; }
-    public virtual Gender Gender_ID { get; set; }
-    public virtual Address Address_ID { get; set; }
-    public virtual User User_ID { get; set; }
+    public virtual Title Title {get; set; }
+    public virtual Gender Gender { get; set; }
+    public virtual Address Address { get; set; }
+    public virtual User User { get; set; }
     [StringLength(255)]
     public string FirstName { get; set; }
     [StringLength(255)]

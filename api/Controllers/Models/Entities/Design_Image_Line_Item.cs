@@ -10,7 +10,7 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Design_Image_Line_Item_ID { get; set; }
-    public virtual Design_Image Design_Image_ID { get; set; }
-    public virtual Image Image_ID { get; set; }
+    public virtual Design_Image Design_Image { get; set; }
+    public virtual Image Image { get; set; }
   }
 }

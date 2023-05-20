@@ -10,8 +10,8 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Write_Off_Line_Item_ID { get; set; }
-    public virtual Write_Off Write_Off_ID { get; set; }
-    public virtual Stock_Item Stock_Item_ID { get; set; }
+    public virtual Write_Off Write_Off { get; set; }
+    public virtual Stock_Item Stock_Item { get; set; }
     [StringLength(255)]
     public string Write_Off_Quantity { get; set; }
     [StringLength(255)]

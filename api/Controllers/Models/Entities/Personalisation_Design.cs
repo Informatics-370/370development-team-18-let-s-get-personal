@@ -10,8 +10,8 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Personalisation_Design_ID { get; set; }
-    public virtual Design_Image Design_Image_ID { get; set; }
-    public virtual Design_Text Design_Text_ID { get; set; }
-    public decimal Personalisation_Design_Price { get; set; }
+    public virtual Design_Image Design_Image { get; set; }
+    public virtual Design_Text Design_Text { get; set; }
+    public double Personalisation_Design_Price { get; set; }
   }
 }
