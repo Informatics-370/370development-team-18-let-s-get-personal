@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { StockTypes } from '../Models/stocktypes';
+import { StockItem } from '../Models/stockitem';
 
 @Injectable({
     providedIn: 'root' 
@@ -20,33 +21,33 @@ import { StockTypes } from '../Models/stocktypes';
     }
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
-    GetStockTypes(): Observable<any>{ 
-      return this.httpClient.get(`${this.apiUrl}StockType/GetAllStockTypes`)
+    GetStockItems(): Observable<any>{ 
+      return this.httpClient.get(`${this.apiUrl}StockItem/GetAllStockItemsAsync`)
       .pipe(map(result => result))
     }
   
     //add
-    AddStockType(stocktype:StockTypes){
-      return this.httpClient.post(`${this.apiUrl}StockType/AddCourse`, stocktype)
+    AddStockItem(stockitem:StockItem){
+      return this.httpClient.post(`${this.apiUrl}StockItem/AddStockItemAsync`, stockitem)
       .pipe(map(result => result))
     }
   
     //get selected one
-    GetStockType(StockTypeId:Number){ 
-      return this.httpClient.get(`${this.apiUrl}StockType/GetCourse/${StockTypeId}`)
+    GetStockItem(StockItemId:Number){ 
+      return this.httpClient.get(`${this.apiUrl}StockType/GetStockItemDetailsAsync/${StockItemId}`)
       .pipe(map(result => result))
     }
   
     //edit
-    EditStockType(StockTypeId:Number, stocktype:StockTypes){
-      return this.httpClient.put(`${this.apiUrl}StockType/EditStockType/${StockTypeId}`, stocktype);
-      //.pipe(map(result => result))
+    UpdateStockItem(StockItemId:Number, stockitem:StockItem){
+      return this.httpClient.put(`${this.apiUrl}StockItem/UpdateStockItemAsync/${StockItemId}`, stockitem)
+      .pipe(map(result => result))
     }
   
     //delete 
-    DeleteStockType(StockTypeId:Number){
-      return this.httpClient.delete(`${this.apiUrl}StockType/DeleteStockType/${StockTypeId}`);
-      //.pipe(map(result => result))
+    DeleteStockItem(StockItemId:Number){
+      return this.httpClient.delete(`${this.apiUrl}StockItem/DeleteStockItemAsync/${StockItemId}`)
+      .pipe(map(result => result))
     }
   
   }

@@ -68,7 +68,7 @@ namespace IPKP___API.Controllers
       {
         var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
 
-        if (existingStockItem == null) return NotFound("Could Not Find Certification" + stock_Item_ID);
+        if (existingStockItem == null) return NotFound("Could Not Find Stock Item" + stock_Item_ID);
 
         existingStockItem.Stock_Item_Name = sivm.Stock_Item_Name;
         existingStockItem.Stock_Type_Name = sivm.Stock_Type_Name;

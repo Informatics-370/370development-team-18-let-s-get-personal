@@ -21,31 +21,31 @@ import { StockTypes } from '../Models/stocktypes';
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
     GetStockTypes(): Observable<any>{ 
-      return this.httpClient.get(`${this.apiUrl}StockType/GetAllStockTypes`)
+      return this.httpClient.get(`${this.apiUrl}StockType/GetAllStockTypesAsync`)
       .pipe(map(result => result))
     }
   
     //add
     AddStockType(stocktype:StockTypes){
-      return this.httpClient.post(`${this.apiUrl}StockType/AddCourse`, stocktype)
+      return this.httpClient.post(`${this.apiUrl}StockType/AddStockTypeAsync`, stocktype)
       .pipe(map(result => result))
     }
   
     //get selected one
     GetStockType(StockTypeId:Number){ 
-      return this.httpClient.get(`${this.apiUrl}StockType/GetCourse/${StockTypeId}`)
+      return this.httpClient.get(`${this.apiUrl}StockType/GetStockTypeDetailsAsync/${StockTypeId}`)
       .pipe(map(result => result))
     }
   
     //edit
-    EditStockType(StockTypeId:Number, stocktype:StockTypes){
-      return this.httpClient.put(`${this.apiUrl}StockType/EditStockType/${StockTypeId}`, stocktype);
+    UpdateStockType(StockTypeId:Number, stocktype:StockTypes){
+      return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockTypeAsync/${StockTypeId}`, stocktype);
       //.pipe(map(result => result))
     }
   
     //delete 
     DeleteStockType(StockTypeId:Number){
-      return this.httpClient.delete(`${this.apiUrl}StockType/DeleteStockType/${StockTypeId}`);
+      return this.httpClient.delete(`${this.apiUrl}StockType/DeleteStockTypeAsync/${StockTypeId}`);
       //.pipe(map(result => result))
     }
   

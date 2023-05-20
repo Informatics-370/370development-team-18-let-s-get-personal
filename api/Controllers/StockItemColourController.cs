@@ -65,7 +65,7 @@ namespace IPKP___API.Controllers
       {
         var existingStockItemColour = await _IPKPRepository.GetStockItemColourDetailsAsync(stock_Item_Colour_ID);
 
-        if (existingStockItemColour == null) return NotFound("Could Not Find Certification" + stock_Item_Colour_ID);
+        if (existingStockItemColour == null) return NotFound("Could Not Find Stock Item Colour" + stock_Item_Colour_ID);
 
         existingStockItemColour.Stock_Item_Colour_Name = sicvm.Stock_Item_Colour_Name;
 
@@ -89,7 +89,7 @@ namespace IPKP___API.Controllers
       {
         var existingStockItemColour = await _IPKPRepository.GetStockItemColourDetailsAsync(stock_Item_Colour_ID);
 
-        if (existingStockItemColour == null) return NotFound("Could Not Find Skill" + stock_Item_Colour_ID);
+        if (existingStockItemColour == null) return NotFound("Could Not Find Stock Item Colour" + stock_Item_Colour_ID);
 
         _IPKPRepository.Delete(existingStockItemColour);
 
