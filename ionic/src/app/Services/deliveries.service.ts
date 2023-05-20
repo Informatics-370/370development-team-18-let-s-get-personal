@@ -22,31 +22,31 @@ import { Delivery } from '../Models/delivery';
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
     GetDeliveries(): Observable<any>{ 
-      return this.httpClient.get(`${this.apiUrl}Delivery/GetAllDeliveriesAsync`)
+      return this.httpClient.get(`${this.apiUrl}Deliveries/GetAllDeliveries`)
       .pipe(map(result => result))
     }
   
     //add
     AddDelivery(delivery:Delivery){
-      return this.httpClient.post(`${this.apiUrl}Delivery/AddDelivery`, delivery)
+      return this.httpClient.post(`${this.apiUrl}Deliveries/AddDelivery`, delivery)
       .pipe(map(result => result))
     }
   
     //get selected one
     GetDelivery(DeliveryId:Number){ 
-      return this.httpClient.get(`${this.apiUrl}Delivery/GetDeliveryDetailsAsync/${DeliveryId}`)
+      return this.httpClient.get(`${this.apiUrl}Deliveries/GetDelivery/${DeliveryId}`)
       .pipe(map(result => result))
     }
   
     //edit
     UpdateDelivery(DeliveryId:Number, delivery:Delivery){
-      return this.httpClient.put(`${this.apiUrl}Delivery/UpdateDeliveryAsync/${DeliveryId}`, delivery)
+      return this.httpClient.put(`${this.apiUrl}Deliveries/UpdateDelivery/${DeliveryId}`, delivery)
       .pipe(map(result => result))
     }
   
     //delete 
     DeleteDelivery(DeliveryId:Number){
-      return this.httpClient.delete(`${this.apiUrl}Delivery/DeleteDelivery/${DeliveryId}`)
+      return this.httpClient.delete(`${this.apiUrl}Deliveries/DeleteDelivery/${DeliveryId}`)
       .pipe(map(result => result))
     }
   
