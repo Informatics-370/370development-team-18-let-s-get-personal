@@ -36,6 +36,22 @@ namespace IPKP___API.Controllers
       }
     }
 
+    [HttpGet]
+    [Route("GetUserRole")]
+
+    public async Task<IActionResult> GetUserRoleDetailsAsync(Guid user_Role_ID)
+    {
+      try
+      {
+        var results = await _IPKPRepository.GetUserRoleDetailsAsync(user_Role_ID);
+        return Ok(results);
+      }
+      catch (Exception)
+      {
+        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+      }
+    }
+
     [HttpPost]
     [Route("AddUserRole")]
     public async Task<IActionResult> AddUserRoleAsync(UserRoleViewModel urvm)

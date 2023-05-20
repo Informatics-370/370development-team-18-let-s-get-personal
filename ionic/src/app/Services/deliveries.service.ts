@@ -9,7 +9,7 @@ import { Delivery } from '../Models/delivery';
   })
   export class StockTypeDataService {
   
-    apiUrl = 'http://localhost:5116/api/'
+    apiUrl = 'https://localhost:44390/api/'
   
     httpOptions ={
       headers: new HttpHeaders({
@@ -21,7 +21,7 @@ import { Delivery } from '../Models/delivery';
     }
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
-    GetDeliveriess(): Observable<any>{ 
+    GetDeliveries(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}Delivery/GetAllDeliveriesAsync`)
       .pipe(map(result => result))
     }

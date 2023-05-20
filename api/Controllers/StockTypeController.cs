@@ -36,6 +36,22 @@ namespace IPKP___API.Controllers
       }
     }
 
+    [HttpGet]
+    [Route("GetStockType")]
+
+    public async Task<IActionResult> GetStockTypeDetailsAsync(Guid stock_Type_ID)
+    {
+      try
+      {
+        var results = await _IPKPRepository.GetStockTypeDetailsAsync(stock_Type_ID);
+        return Ok(results);
+      }
+      catch (Exception)
+      {
+        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+      }
+    }
+
     [HttpPost]
     [Route("AddStockType")]
     public async Task<IActionResult> AddCertificationAsync(StockTypeViewModel stvm)

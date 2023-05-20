@@ -36,6 +36,22 @@ namespace IPKP___API.Controllers
       }
     }
 
+    [HttpGet]
+    [Route("GetStockItemColour")]
+
+    public async Task<IActionResult> GetStockItemColourDetailsAsync(Guid stock_Item_Colour_ID)
+    {
+      try
+      {
+        var results = await _IPKPRepository.GetStockItemColourDetailsAsync(stock_Item_Colour_ID);
+        return Ok(results);
+      }
+      catch (Exception)
+      {
+        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+      }
+    }
+
     [HttpPost]
     [Route("AddStockItemColour")]
     public async Task<IActionResult> AddStockItemColourAsync(StockItemColourViewModel sicvm)

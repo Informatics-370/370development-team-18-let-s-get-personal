@@ -8,7 +8,7 @@ import { StockTypes } from '../Models/stocktypes';
   })
   export class StockTypeDataService {
   
-    apiUrl = 'http://localhost:5116/api/'
+    apiUrl = 'https://localhost:44390/api/'
   
     httpOptions ={
       headers: new HttpHeaders({

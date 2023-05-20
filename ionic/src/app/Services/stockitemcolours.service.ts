@@ -9,7 +9,7 @@ import { StockItemColours } from '../Models/stockitemcolour';
   })
   export class StockTypeDataService {
   
-    apiUrl = 'http://localhost:5116/api/'
+    apiUrl = 'https://localhost:44390/api/'
   
     httpOptions ={
       headers: new HttpHeaders({

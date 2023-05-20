@@ -36,6 +36,22 @@ namespace IPKP___API.Controllers
       }
     }
 
+    [HttpGet]
+    [Route("GetProductRating")]
+
+    public async Task<IActionResult> GetProductRatingDetailsAsync(Guid product_Rating_ID)
+    {
+      try
+      {
+        var results = await _IPKPRepository.GetProductRatingDetailsAsync(product_Rating_ID);
+        return Ok(results);
+      }
+      catch (Exception)
+      {
+        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+      }
+    }
+
     [HttpPost]
     [Route("AddProductRating")]
     public async Task<IActionResult> AddProductRatingAsync(ProductRatingViewModel prvm)
