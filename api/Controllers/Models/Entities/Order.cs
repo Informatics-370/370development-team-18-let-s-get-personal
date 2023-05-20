@@ -10,7 +10,7 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Order_ID { get; set; }
-    public virtual Order_Request Order_Request_ID { get; set; }
-    public virtual Order_Status Order_Status_ID { get; set; }
+    public virtual Order_Request Order_Request { get; set; }
+    public virtual Order_Status Order_Status { get; set; }
   }
 }

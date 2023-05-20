@@ -10,9 +10,9 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Order_Request_ID { get; set; }
-    public virtual Customer Customer_ID { get; set; }
+    public virtual Customer Customer { get; set; }
     public DateTime Order_Request_Date { get; set; }
-    public decimal Order_Request_Total_Price {get; set; }
+    public double Order_Request_Total_Price {get; set; }
     public bool IsAccepted { get; set; }
   }
 }

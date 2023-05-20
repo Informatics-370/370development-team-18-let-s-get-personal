@@ -10,12 +10,12 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Invoice_ID { get; set; }
-    public virtual Customer Customer_ID { get; set; }
-    public virtual Employee Employee_ID { get; set; }
-    public virtual Invoice_Discount Invoice_Discount_ID { get; set; }
-    public decimal Delivery_Price { get; set; }
-    public decimal Invoice_Total_exclVAT { get; set; }
-    public decimal Invoice_Total_VAT { get; set; }
-    public decimal Invoice_Total_inclVAT { get; set; }
+    public virtual Customer Customer { get; set; }
+    public virtual Employee Employee { get; set; }
+    public virtual Invoice_Discount Invoice_Discount { get; set; }
+    public double Delivery_Price { get; set; }
+    public double Invoice_Total_exclVAT { get; set; }
+    public double Invoice_Total_VAT { get; set; }
+    public double Invoice_Total_inclVAT { get; set; }
   }
 }

@@ -10,7 +10,7 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Design_Price_History_ID { get; set; }
-    public decimal Design_Price_Pixel_Amount {get; set; }
+    public double Design_Price_Pixel_Amount {get; set; }
     public DateTime Effective_From_Date { get; set; }
     public DateTime Effective_To_Date { get; set; }
   }

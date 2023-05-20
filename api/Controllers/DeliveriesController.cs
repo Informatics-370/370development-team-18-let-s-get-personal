@@ -43,7 +43,7 @@ namespace IPKP___API.Controllers
       var delivery = new Delivery
       {
         Delivery_ID = dvm.Delivery_ID,
-        Delivery_Company_ID = dvm.Delivery_Company_ID,
+        Delivery_Company = dvm.Delivery_Company_ID,
         Delivery_Address = dvm.Delivery_Address,
         Delivery_Price = dvm.Delivery_Price,
         Tracking_Number = dvm.Tracking_Number
@@ -70,7 +70,7 @@ namespace IPKP___API.Controllers
 
         if (existingDelivery == null) return NotFound("Could Not Find Delivery" + delivery_ID);
 
-        existingDelivery.Delivery_Company_ID = dvm.Delivery_Company_ID;
+        existingDelivery.Delivery_Company = dvm.Delivery_Company_ID;
         existingDelivery.Delivery_Address = dvm.Delivery_Address;
         existingDelivery.Delivery_Price = dvm.Delivery_Price;
         existingDelivery.Tracking_Number = dvm.Tracking_Number;

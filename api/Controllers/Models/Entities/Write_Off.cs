@@ -10,7 +10,7 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Write_Off_ID { get; set; }
-    public virtual Employee Employee_ID { get; set; }
+    public virtual Employee Employee { get; set; }
     public DateTime Write_Off_Date { get; set; }
   }
 }

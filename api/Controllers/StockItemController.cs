@@ -45,7 +45,7 @@ namespace IPKP___API.Controllers
         Stock_Item_ID = sivm.Stock_Item_ID,
         Stock_Item_Name = sivm.Stock_Item_Name,
         Stock_Type_Name = sivm.Stock_Type_Name,
-        Stock_Image_ID = sivm.Stock_Image_ID,
+        Stock_Image = sivm.Stock_Image_ID,
         Stock_Item_Colour = sivm.Stock_Item_Colour
       };
       try
@@ -72,7 +72,7 @@ namespace IPKP___API.Controllers
 
         existingStockItem.Stock_Item_Name = sivm.Stock_Item_Name;
         existingStockItem.Stock_Type_Name = sivm.Stock_Type_Name;
-        existingStockItem.Stock_Image_ID = sivm.Stock_Image_ID;
+        existingStockItem.Stock_Image = sivm.Stock_Image_ID;
         existingStockItem.Stock_Item_Colour = sivm.Stock_Item_Colour;
 
         if (await _IPKPRepository.SaveChangesAsync())

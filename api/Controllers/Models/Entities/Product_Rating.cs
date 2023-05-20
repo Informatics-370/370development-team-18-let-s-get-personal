@@ -10,8 +10,8 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Product_Rating_ID { get; set; }
-    public virtual Customer Customer_ID { get; set; }
-    public virtual Stock_Item Stock_Item_ID { get; set; }
+    public virtual Customer Customer { get; set; }
+    public virtual Stock_Item Stock_Item { get; set; }
     public int Product_Star_Rating { get; set; }
     [StringLength(255)]
     public string Product_Rating_Comments { get; set; }
