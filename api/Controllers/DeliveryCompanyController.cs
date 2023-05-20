@@ -36,6 +36,22 @@ namespace IPKP___API.Controllers
       }
     }
 
+    [HttpGet]
+    [Route("GetDeliveryCompany")]
+
+    public async Task<IActionResult> GetDeliveryCompanyDetailsAsync(Guid delivery_Company_ID)
+    {
+      try
+      {
+        var results = await _IPKPRepository.GetDeliveryCompanyDetailsAsync(delivery_Company_ID);
+        return Ok(results);
+      }
+      catch (Exception)
+      {
+        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+      }
+    }
+
     [HttpPost]
     [Route("AddDeliveryCompany")]
     public async Task<IActionResult> AddDeliveryCompanyAsync(DeliveryCompanyViewModel dcvm)
