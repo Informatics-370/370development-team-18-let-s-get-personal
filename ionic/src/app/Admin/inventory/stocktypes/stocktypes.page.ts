@@ -1,7 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { StockTypes } from 'src/app/Models/stocktypes';
+import { StockTypeDataService } from 'src/app/Services/stocktype.service';
+
+//for modal
+import { ModalController} from '@ionic/angular'; 
+import { IonModal } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core/components';
 
 @Component({
   selector: 'app-stocktypes',
@@ -11,10 +18,47 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class StocktypesPage implements OnInit {
+ @ViewChild(IonModal) modal!: IonModal
+  stocktypes: StockTypes[] =[];
+  constructor(public modalCtrl: ModalController) { }
 
-  constructor() { }
+ 
+    ngOnInit() {
+  }
+  GetStockTypes(){
+    
+  }
 
-  ngOnInit() {
+  addStockTypes(){
+
+  }
+
+  updateStockTypes(StockTypeId:Number){
+
+  }
+
+  deleteStockTypes(StockTypeId:Number){
+
+  }
+ 
+  canceladdmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirmaddmodal() {
+    this.modal.dismiss('confirm');
+  }
+
+  canceleditmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirmeditmodal() {
+    this.modal.dismiss('confirm');
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
 }

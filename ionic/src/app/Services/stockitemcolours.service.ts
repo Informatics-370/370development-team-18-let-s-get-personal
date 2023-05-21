@@ -7,7 +7,7 @@ import { StockItemColours } from '../Models/stockitemcolour';
 @Injectable({
     providedIn: 'root' 
   })
-  export class StockTypeDataService {
+  export class StockItemColourDataService {
   
     apiUrl = 'https://localhost:44390/api/'
   
