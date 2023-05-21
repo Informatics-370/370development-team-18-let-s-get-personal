@@ -26,6 +26,7 @@ export class StockitemcoloursPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   stockitemcolours: StockItemColours[] = [];
   colour: any;
+  yourImageDataURL: any;
   
 
   constructor(public modalCtrl: ModalController, private toast: ToastController, 
@@ -43,6 +44,7 @@ export class StockitemcoloursPage implements OnInit {
   });
 
   ngOnInit(): void {
+   
     this.GetStockItemColours()
 
     this.currentroute.params.subscribe(params =>{
@@ -54,7 +56,9 @@ export class StockitemcoloursPage implements OnInit {
       })
     })
   }
-
+  loadImageFromDevice(event: any) {
+    
+  };
   GetStockItemColours(){
     this.service.GetStockItemColours().subscribe(result =>{
       this.stockitemcolours = result as StockItemColours[];
@@ -66,6 +70,7 @@ export class StockitemcoloursPage implements OnInit {
       this.stockitemcolours = result as StockItemColours[];
     })
   }
+
   addcolour(){
     let addedcolour = new StockItemColours();
 
@@ -102,7 +107,7 @@ export class StockitemcoloursPage implements OnInit {
       console.log(result)
     })
   }
-  
+
   reloadPage(){
     window.location.reload()
   }

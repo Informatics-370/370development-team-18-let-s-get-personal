@@ -92,7 +92,7 @@
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Colour Image</ion-label><br>
-              <ion-input type="text" formControlName="colour" placeholder="upload image"></ion-input>
+              <input type="file" (change)="loadImageFromDevice($event)" id="file-input" accept="image/png, image/jpeg">
             </ion-item>
           </div>          
         </form>
