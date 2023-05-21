@@ -64,5 +64,9 @@ export const routes: Routes = [
   {
     path: 'stockitemcolours',
     loadComponent: () => import('./Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage)
+  },  {
+    path: 'delivery-company',
+    loadComponent: () => import('./Admin/deliveries/deliverycompany/delivery-company/delivery-company.page').then( m => m.DeliveryCompanyPage)
   },
+
 ];
