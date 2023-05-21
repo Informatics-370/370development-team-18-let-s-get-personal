@@ -71,7 +71,7 @@ export class StockitemcoloursPage implements OnInit {
 
     this.service.AddStockItemColour(addedcolour).subscribe((response: any) =>{
       if(response.statusCode == 200){
-        this.thisroute.navigate(['./stocktypes'])
+        this.thisroute.navigate(['./stockitemcolours'])
       }
       else{
         alert(response.message);
@@ -101,6 +101,10 @@ export class StockitemcoloursPage implements OnInit {
     this.service.DeleteStockItemColour(StockItemColorId).subscribe(result =>{
       console.log(result)
     })
+  }
+  
+  reloadPage(){
+    window.location.reload()
   }
 
   onWillDismiss(event: Event) {
