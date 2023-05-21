@@ -12,5 +12,8 @@ namespace IPKP___API.Controllers.Models.Entities
     public Guid User_Role_ID { get; set; }
     [StringLength(255)]
     public string User_Role_Name { get; set; }
+
+    public const string Admin = "Admin";
+    public const string User = "User";
   }
 }
