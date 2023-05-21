@@ -33,37 +33,44 @@ namespace IPKP___API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+          services.AddCors(options => options.AddDefaultPolicy(
+                    include =>
+                    {
+                      include.AllowAnyHeader();
+                      include.AllowAnyMethod();
+                      include.AllowAnyOrigin();
+                    }));
 
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "IPKP___API", Version = "v1" });
-            });
-      services.AddDbContext<AppDbContext>(options =>
-      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-      services.AddScoped<IIPKPRepository, IPKPRepository>();
-      services.AddIdentity<IdentityUser, IdentityRole>()
-        .AddEntityFrameworkStores<AppDbContext>()
-        .AddDefaultTokenProviders();
-      services.AddAuthentication(options =>
-      {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-      })
-        .AddJwtBearer(options =>
-        {
-          options.SaveToken = true;
-          options.RequireHttpsMetadata = false;
-          options.TokenValidationParameters = new TokenValidationParameters()
+          services.AddControllers();
+                services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "IPKP___API", Version = "v1" });
+                });
+          services.AddDbContext<AppDbContext>(options =>
+          options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+          services.AddScoped<IIPKPRepository, IPKPRepository>();
+          services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+          services.AddAuthentication(options =>
           {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidAudience = Configuration["JWT:Audience"],
-            ValidIssuer = Configuration["JWT:Issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"]))
-          };
-        });
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+          })
+            .AddJwtBearer(options =>
+            {
+              options.SaveToken = true;
+              options.RequireHttpsMetadata = false;
+              options.TokenValidationParameters = new TokenValidationParameters()
+              {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidAudience = Configuration["JWT:Audience"],
+                ValidIssuer = Configuration["JWT:Issuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"]))
+              };
+            });
     }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,6 +90,8 @@ namespace IPKP___API
             app.UseAuthorization();
 
             app.UseAuthentication();
+
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
