@@ -28,6 +28,15 @@ export class StocktypesPage implements OnInit {
  
     ngOnInit() {
   }
+
+  public test(){
+    console.log("test");
+    this.service.GetStockTypes().subscribe((data) => {
+      console.log(data);
+      this.stocktypes = data;
+    });
+  }
+
   GetStockTypes(){
     
   }

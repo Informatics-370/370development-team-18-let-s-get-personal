@@ -39,14 +39,14 @@ import { StockTypes } from '../Models/stocktypes';
   
     //edit
     public UpdateStockType(StockTypeId:Number, stocktype:StockTypes){
-      return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockType/${StockTypeId}`, stocktype);
-      //.pipe(map(result => result))
+      return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockType/${StockTypeId}`, stocktype)
+      .pipe(map(result => result))
     }
   
     //delete 
     public DeleteStockType(StockTypeId:Number){
-      return this.httpClient.delete(`${this.apiUrl}StockType/DeleteStockType/${StockTypeId}`);
-      //.pipe(map(result => result))
+      return this.httpClient.delete(`${this.apiUrl}StockType/DeleteStockType/${StockTypeId}`)
+      .pipe(map(result => result))
     }
   
   }
