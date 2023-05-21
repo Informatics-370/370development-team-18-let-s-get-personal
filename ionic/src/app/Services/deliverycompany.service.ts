@@ -2,11 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { StockTypes } from '../Models/stocktypes';
+import { DeliveryCompany } from '../Models/deliverycompany';
 
 @Injectable({
     providedIn: 'root' 
   })
-  export class StockTypeDataService {
+  export class DeliveryCompanyDataService {
   
     apiUrl = 'https://localhost:44390/api/'
   
@@ -20,33 +21,33 @@ import { StockTypes } from '../Models/stocktypes';
     }
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
-    GetDeliveryCompanies(): Observable<any>{ 
+    public GetDeliveryCompanies(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}DeliveryCompany/GetAllDeliveryCompanies`)
       .pipe(map(result => result))
     }
   
     //add
-    AddDeliveryCompany(stocktype:StockTypes){
-      return this.httpClient.post(`${this.apiUrl}DeliveryCompany/AddDeliveryCompany`, stocktype)
+    public AddDeliveryCompany(deliveryCompany:DeliveryCompany){
+      return this.httpClient.post(`${this.apiUrl}DeliveryCompany/AddDeliveryCompany`, deliveryCompany)
       .pipe(map(result => result))
     }
   
     //get selected one
-    GetDeliveryCompany(StockTypeId:Number){ 
-      return this.httpClient.get(`${this.apiUrl}DeliveryCompany/GetDeliveryCompany/${StockTypeId}`)
+    public GetDeliveryCompany(deliveryCompanyId:Number){ 
+      return this.httpClient.get(`${this.apiUrl}DeliveryCompany/GetDeliveryCompany/${deliveryCompanyId}`)
       .pipe(map(result => result))
     }
   
     //edit
-    UpdateDeliveryCompany(StockTypeId:Number, stocktype:StockTypes){
-      return this.httpClient.put(`${this.apiUrl}DeliveryCompany/UpdateDeliveryCompany/${StockTypeId}`, stocktype);
-      //.pipe(map(result => result))
+    public UpdateDeliveryCompany(deliveryCompanyId:Number, deliveryCompany:DeliveryCompany){
+      return this.httpClient.put(`${this.apiUrl}DeliveryCompany/UpdateDeliveryCompany/${deliveryCompanyId}`, deliveryCompany)
+      .pipe(map(result => result))
     }
   
     //delete 
-    DeleteDeliveryCompany(StockTypeId:Number){
-      return this.httpClient.delete(`${this.apiUrl}DeliveryCompany/DeleteDeliveryCompany/${StockTypeId}`);
-      //.pipe(map(result => result))
+    public DeleteDeliveryCompany(deliveryCompanyId:Number){
+      return this.httpClient.delete(`${this.apiUrl}DeliveryCompany/DeleteDeliveryCompany/${deliveryCompanyId}`)
+      .pipe(map(result => result))
     }
   
   }

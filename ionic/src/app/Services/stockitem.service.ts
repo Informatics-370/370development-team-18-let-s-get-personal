@@ -7,7 +7,7 @@ import { StockItem } from '../Models/stockitem';
 @Injectable({
     providedIn: 'root' 
   })
-  export class StockTypeDataService {
+  export class StockItemDataService {
   
     apiUrl = 'https://localhost:44390/api/'
   
@@ -21,31 +21,31 @@ import { StockItem } from '../Models/stockitem';
     }
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
-    GetStockItems(): Observable<any>{ 
+    public GetStockItems(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}StockItem/GetAllStockItems`)
       .pipe(map(result => result))
     }
   
     //add
-    AddStockItem(stockitem:StockItem){
+    public AddStockItem(stockitem:StockItem){
       return this.httpClient.post(`${this.apiUrl}StockItem/AddStockItem`, stockitem)
       .pipe(map(result => result))
     }
   
     //get selected one
-    GetStockItem(StockItemId:Number){ 
-      return this.httpClient.get(`${this.apiUrl}StockType/GetStockItem/${StockItemId}`)
+    public GetStockItem(StockItemId:Number){ 
+      return this.httpClient.get(`${this.apiUrl}StockItem/GetStockItem/${StockItemId}`)
       .pipe(map(result => result))
     }
   
     //edit
-    UpdateStockItem(StockItemId:Number, stockitem:StockItem){
+    public UpdateStockItem(StockItemId:Number, stockitem:StockItem){
       return this.httpClient.put(`${this.apiUrl}StockItem/UpdateStockItem/${StockItemId}`, stockitem)
       .pipe(map(result => result))
     }
   
     //delete 
-    DeleteStockItem(StockItemId:Number){
+    public DeleteStockItem(StockItemId:Number){
       return this.httpClient.delete(`${this.apiUrl}StockItem/DeleteStockItem/${StockItemId}`)
       .pipe(map(result => result))
     }
