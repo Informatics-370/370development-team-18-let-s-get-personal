@@ -67,9 +67,9 @@ export class StockitemcoloursPage implements OnInit {
     })
   }
   addcolour(){
-    this.getstockcolour();
+    let addedcolour = new StockItemColours();
 
-    this.service.AddStockItemColour(stockitemcolours).subscribe((response: any) =>{
+    this.service.AddStockItemColour(addedcolour).subscribe((response: any) =>{
       if(response.statusCode == 200){
         this.thisroute.navigate(['./stocktypes'])
       }
@@ -81,16 +81,20 @@ export class StockitemcoloursPage implements OnInit {
 
   ColourToEdit!: StockItemColours;
   updatecolour(StockItemColorId:Number){ 
-    //localStorage.setItem("StockItemColorId", JSON.stringify(StockItemColorId));
-    //var colourId = JSON.parse(localStorage.getItem("StockItemColorId"));
+    this.currentroute.params.subscribe(params =>{
+      this.service.GetStockItemColour(params['StockItemColorId']).subscribe(result =>{
+        this.ColourToEdit = result as StockItemColours;
+        this.EditColourForm.controls['name'].setValue(this.ColourToEdit.ColorName);
+        this.EditColourForm.controls['image'].setValue(this.ColourToEdit.Image);
 
-    if(this.EditColourForm.valid == true){
-      this.service.UpdateStockItemColour(StockItemColorId, this.EditColourForm.value).subscribe((res: any) =>{
-
+        if(this.EditColourForm.valid == true){
+          this.service.UpdateStockItemColour(StockItemColorId, this.EditColourForm.value).subscribe((res: any) =>{
+            console.log(result);
+            this.canceleditmodal();
+          })
+        }
       })
-    }
- 
-    //this.service.UpdateStockItemColour(this.ColourToEdit.StockItemColorId, )
+    })
   }
 
   deletecolour(StockItemColorId:Number){
