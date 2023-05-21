@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { StockItemColours } from 'src/app/Models/stockitemcolour';
 import { StockItemColourDataService } from 'src/app/Services/stockitemcolours.service';
 import { ToastController } from '@ionic/angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+
 
 //for modal
 import { ModalController} from '@ionic/angular'; 
@@ -17,29 +19,40 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: './stockitemcolours.page.html',
   styleUrls: ['./stockitemcolours.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 
 export class StockitemcoloursPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   stockitemcolours: StockItemColours[] = [];
-  AddColourForm!: FormGroup
-  EditColourForm!: FormGroup
-  constructor(public modalCtrl: ModalController, private toast: ToastController, private formBuilder: FormBuilder, private service:StockItemColourDataService) { 
-    this.AddColourForm = this.formBuilder.group({
-      name: ['',Validators.required],
-      image: ['',Validators.required]
-    });
+  colour: any;
+  
 
-    this.AddColourForm = this.formBuilder.group({
-      name: ['',Validators.required],
-      image: ['',Validators.required]
-    });
-  }
+  constructor(public modalCtrl: ModalController, private toast: ToastController, 
+    private service:StockItemColourDataService,
+    private thisroute: Router, private currentroute: ActivatedRoute, private alertController: AlertController) {  }
+
+  AddColourForm:FormGroup = new FormGroup({
+    name: new FormControl(['',Validators.required]),
+    image: new FormControl(['',Validators.required])
+  });
+
+  EditColourForm:FormGroup = new FormGroup({
+    name: new FormControl(['',Validators.required]),
+    image: new FormControl(['',Validators.required])
+  });
 
   ngOnInit(): void {
     this.GetStockItemColours()
 
+    this.currentroute.params.subscribe(params =>{
+      this.service.GetStockItemColour(params['id']).subscribe(result =>{
+        this.ColourToEdit = result as StockItemColours;
+
+        this.EditColourForm.controls['name'].setValue(this.ColourToEdit.ColorName);
+        this.EditColourForm.controls['image'].setValue(this.ColourToEdit.Image);
+      })
+    })
   }
 
   GetStockItemColours(){
@@ -48,16 +61,42 @@ export class StockitemcoloursPage implements OnInit {
     })
   }
 
+  getstockcolour(StockItemColorId:Number){
+    this.service.GetStockItemColour(StockItemColorId).subscribe(result =>{
+      this.stockitemcolours = result as StockItemColours[];
+    })
+  }
   addcolour(){
+    this.getstockcolour();
 
+    this.service.AddStockItemColour(stockitemcolours).subscribe((response: any) =>{
+      if(response.statusCode == 200){
+        this.thisroute.navigate(['./stocktypes'])
+      }
+      else{
+        alert(response.message);
+      }
+    });
   }
 
-  updatecolour(StockItemColorId:Number){
+  ColourToEdit!: StockItemColours;
+  updatecolour(StockItemColorId:Number){ 
+    //localStorage.setItem("StockItemColorId", JSON.stringify(StockItemColorId));
+    //var colourId = JSON.parse(localStorage.getItem("StockItemColorId"));
 
+    if(this.EditColourForm.valid == true){
+      this.service.UpdateStockItemColour(StockItemColorId, this.EditColourForm.value).subscribe((res: any) =>{
+
+      })
+    }
+ 
+    //this.service.UpdateStockItemColour(this.ColourToEdit.StockItemColorId, )
   }
 
   deletecolour(StockItemColorId:Number){
-
+    this.service.DeleteStockItemColour(StockItemColorId).subscribe(result =>{
+      console.log(result)
+    })
   }
 
   onWillDismiss(event: Event) {
@@ -68,7 +107,12 @@ export class StockitemcoloursPage implements OnInit {
     this.modal.dismiss(null, 'cancel');
   }
 
-  confirmaddmodal() {
+  async confirmaddmodal() {
+    const alert = await this.alertController.create({
+      header: 'Please Confirm that you would like to continue',
+      buttons: ['Cancel', 'Continue']
+    });
+    await alert.present();
     this.modal.dismiss('confirm');
   }
 
@@ -76,7 +120,13 @@ export class StockitemcoloursPage implements OnInit {
     this.modal.dismiss(null, 'cancel');
   }
 
-  confirmeditmodal() {
+  async confirmeditmodal() {
+    const alert = await this.alertController.create({
+      header: 'Please Confirm that you would like to continue',
+      buttons: ['Cancel', 'Continue']
+    });
+    await alert.present();
     this.modal.dismiss('confirm');
   }
+
 }
