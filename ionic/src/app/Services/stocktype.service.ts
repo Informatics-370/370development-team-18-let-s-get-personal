@@ -20,31 +20,31 @@ import { StockTypes } from '../Models/stocktypes';
     }
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
-    GetStockTypes(): Observable<any>{ 
+    public GetStockTypes(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}StockType/GetAllStockTypes`)
       .pipe(map(result => result))
     }
   
     //add
-    AddStockType(stocktype:StockTypes){
+    public AddStockType(stocktype:StockTypes){
       return this.httpClient.post(`${this.apiUrl}StockType/AddStockType`, stocktype)
       .pipe(map(result => result))
     }
   
     //get selected one
-    GetStockType(StockTypeId:Number){ 
+    public GetStockType(StockTypeId:Number){ 
       return this.httpClient.get(`${this.apiUrl}StockType/GetStockType/${StockTypeId}`)
       .pipe(map(result => result))
     }
   
     //edit
-    UpdateStockType(StockTypeId:Number, stocktype:StockTypes){
+    public UpdateStockType(StockTypeId:Number, stocktype:StockTypes){
       return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockType/${StockTypeId}`, stocktype);
       //.pipe(map(result => result))
     }
   
     //delete 
-    DeleteStockType(StockTypeId:Number){
+    public DeleteStockType(StockTypeId:Number){
       return this.httpClient.delete(`${this.apiUrl}StockType/DeleteStockType/${StockTypeId}`);
       //.pipe(map(result => result))
     }

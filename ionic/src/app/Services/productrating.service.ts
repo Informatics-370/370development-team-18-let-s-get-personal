@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { StockTypes } from '../Models/stocktypes';
+import { ProductRating } from '../Models/productrating';
 
 @Injectable({
     providedIn: 'root' 
@@ -20,33 +21,33 @@ import { StockTypes } from '../Models/stocktypes';
     }
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
-    GetProductRatings(): Observable<any>{ 
+    public GetProductRatings(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}ProductRating/GetAllProductRatings`)
       .pipe(map(result => result))
     }
   
     //add
-    AddProductRating(stocktype:StockTypes){
-      return this.httpClient.post(`${this.apiUrl}ProductRating/AddProductRating`, stocktype)
+    public AddProductRating(productRating:ProductRating){
+      return this.httpClient.post(`${this.apiUrl}ProductRating/AddProductRating`, productRating)
       .pipe(map(result => result))
     }
   
     //get selected one
-    GetProductRating(StockTypeId:Number){ 
-      return this.httpClient.get(`${this.apiUrl}ProductRating/GetProductRating/${StockTypeId}`)
+    public GetProductRating(productRatingId:Number){ 
+      return this.httpClient.get(`${this.apiUrl}ProductRating/GetProductRating/${productRatingId}`)
       .pipe(map(result => result))
     }
   
     //edit
-    UpdateProductRating(StockTypeId:Number, stocktype:StockTypes){
-      return this.httpClient.put(`${this.apiUrl}ProductRating/UpdateProductRating/${StockTypeId}`, stocktype);
-      //.pipe(map(result => result))
+    public UpdateProductRating(productRatingId:Number, productRating:ProductRating){
+      return this.httpClient.put(`${this.apiUrl}ProductRating/UpdateProductRating/${productRatingId}`, productRating)
+      .pipe(map(result => result))
     }
   
     //delete 
-    DeleteProductRating(StockTypeId:Number){
-      return this.httpClient.delete(`${this.apiUrl}ProductRating/DeleteProductRating/${StockTypeId}`);
-      //.pipe(map(result => result))
+    public DeleteProductRating(productRatingId:Number){
+      return this.httpClient.delete(`${this.apiUrl}ProductRating/DeleteProductRating/${productRatingId}`)
+      .pipe(map(result => result))
     }
   
   }

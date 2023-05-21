@@ -1,4 +1,6 @@
 using IPKP___API.Controllers.Models.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
@@ -8,9 +10,14 @@ using System.Threading.Tasks;
 
 namespace IPKP___API.Controllers.Models.Repository
 {
-  public class AppDbContext : DbContext
+  public class AppDbContext : IdentityDbContext<IdentityUser>
   {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+      base.OnModelCreating(builder);
+    }
 
     public DbSet<Address> Addresses {get; set; }
     public DbSet<City> Cities {get; set; }
