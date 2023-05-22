@@ -1,8 +1,9 @@
-import { Component, OnInit,ViewChild  } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+//import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { DeliveryCompany } from 'src/app/Models/deliverycompany';
-import { DeliveryCompanyDataService } from 'src/app/Services/deliverycompany.service';
+import { ProductRating } from 'src/app/Models/productrating';
+import { ProductRatingDataService } from 'src/app/Services/productrating.service';
 import { AlertController } from '@ionic/angular';
 import { FormsModule, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -12,18 +13,19 @@ import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
 @Component({
-  selector: 'app-edit-deliverycompany',
-  templateUrl: './edit-deliverycompany.page.html',
-  styleUrls: ['./edit-deliverycompany.page.scss'],
+  selector: 'app-edit-productrating',
+  templateUrl: './edit-productrating.page.html',
+  styleUrls: ['./edit-productrating.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
-  providers: [DeliveryCompanyDataService]
+  imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule],
+  providers: [ProductRatingDataService]
 })
-export class EditDeliverycompanyPage implements OnInit {
+export class EditProductratingPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
-  //deliverycompanies: DeliveryCompany[] =[];
-deliverycompany:any
-  constructor(public modalCtrl: ModalController, private service:DeliveryCompanyDataService,
+  //productratings: ProductRating[] =[];
+productrating:any
+  route: any;
+  constructor(public modalCtrl: ModalController, private service:ProductRatingDataService,
     private router: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
     
     EditTypeForm:FormGroup = new FormGroup({
@@ -31,16 +33,16 @@ deliverycompany:any
     });
 
   ngOnInit():void {
-    this.service.GetDeliveryCompany(+this.route.snapshot.params['DeliveryCompanyId']).subscribe(result =>{
-      this.deliverycompany = result
-      this.deliverycompany.patchValue({
-        name: this.deliverycompany.name,
+    this.service.GetProductRating(+this.route.snapshot.params['id']).subscribe(result =>{
+      this.productrating = result
+      this.productrating.patchValue({
+        name: this.productrating.rating,
       });
     })
   }
   onSubmit(){
-    this.service.UpdateDeliveryCompany(this.deliverycompany.DeliveryCompanyId, this.EditTypeForm.value).subscribe(result =>{
-      this.router.navigate(['/stocktypes'])
+    this.service.UpdateProductRating(this.productrating.ProductRatingId, this.EditTypeForm.value).subscribe(result =>{
+      this.router.navigate(['/productratings'])
     })
   }
  

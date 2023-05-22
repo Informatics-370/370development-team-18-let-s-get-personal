@@ -20,12 +20,12 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: './product-rating.page.html',
   styleUrls: ['./product-rating.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
   providers: [ProductRatingDataService]
 })
 export class ProductRatingPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
-  productRating: ProductRating[] =[];
+  productratings: ProductRating[] =[];
 
   constructor(public modalCtrl: ModalController,private service:ProductRatingDataService,
     private router: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
@@ -38,16 +38,30 @@ export class ProductRatingPage implements OnInit {
     this.GetProductRating();
   }
   GetProductRating(){
-    this.service.GetProductRating().subscribe(result =>{
+    this.service.GetProductRatings().subscribe(result =>{
       let productratinglist: any[] = result
       productratinglist.forEach((element)=>{
-        this.productRating.push(element)
+        this.productratings.push(element)
       });
      })
   }
 
+  AddProductRating(){
+    this.service.AddProductRating(this.AddTypeForm.value).subscribe(result => {
+      this.canceladdmodal();
+      console.log(result);        
+      this.modal.dismiss('Continue');
+      window.location.reload();
+  })
+}
+
+  getproductrating(ProductRatingId:Number){
+    //[routerLink]="['/course', course.courseId]"
+    this.router.navigate(['./edit-product-rating',ProductRatingId]);
+  }
+
   UpdateProductRating(ProductRatingId:Number){
-    this.router.navigate(['./edit-product-rating',this.ProductRatingId]);
+    this.router.navigate(['./edit-product-rating',ProductRatingId]);
   }
 
   DeleteProductRating(ProductRatingId:Number){

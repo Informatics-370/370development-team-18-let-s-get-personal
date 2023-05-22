@@ -40,8 +40,8 @@ export class DeliveryCompanyPage implements OnInit {
 
     GetDeliveryCompanies(){
       this.service.GetDeliveryCompanies().subscribe(result =>{
-        let stocktypelist: any[] = result
-        stocktypelist.forEach((element)=>{
+        let deliverycompanylist: any[] = result
+        deliverycompanylist.forEach((element)=>{
           this.deliverycompanies.push(element)
         });
        })
