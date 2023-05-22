@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>previousOrders</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">previousOrders</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<!--<ion-card-content>
+    <ion-button id="addmodal">Previous Orders</ion-button>
+                <ion-list>
+            
+                    <ion-item *ngFor="let item of orders" >                      
+                        <ion-label>
+                            <h5>{{item.Order-item}}</h5>
+                            <ion-button id="editmodal">Edit</ion-button>
+                            <ion-button>Delete</ion-button>
+                        </ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-card-content>-->
+            <ion-button (click)="getProductRatings()">View Product Rating</ion-button>
+</ion-content>

@@ -68,5 +68,13 @@ export const routes: Routes = [
     path: 'delivery-company',
     loadComponent: () => import('./Admin/deliveries/deliverycompany/delivery-company/delivery-company.page').then( m => m.DeliveryCompanyPage)
   },
+  {
+    path: 'previous-orders',
+    loadComponent: () => import('./Customer/profile/previous-orders/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage)
+  },
+  {
+    path: 'product-rating',
+    loadComponent: () => import('./Customer/profile/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage)
+  },
 
 ];

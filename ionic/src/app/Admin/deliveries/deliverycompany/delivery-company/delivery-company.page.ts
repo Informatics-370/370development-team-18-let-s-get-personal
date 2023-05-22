@@ -1,23 +1,90 @@
-import { Component, OnDestroy, OnInit,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,FormGroup, Validators, FormControl, ReactiveFormsModule  } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { DataTablesModule } from 'angular-datatables';
-import { Subject } from 'rxjs';
-import { DeliveryCompanyDataService } from 'src/app/Services/deliverycompany.service';
+//import { DataTablesModule } from 'angular-datatables';
+//import { Subject } from 'rxjs';
+//import { DeliveryCompanyDataService } from 'src/app/Services/deliverycompany.service';
 import { DeliveryCompany } from 'src/app/Models/deliverycompany';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+
+
+//for modal
+import { ModalController} from '@ionic/angular'; 
+import { IonModal } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core/components';
+
+
 
 @Component({
   selector: 'app-delivery-company',
   templateUrl: './delivery-company.page.html',
   styleUrls: ['./delivery-company.page.scss'],
   standalone: true,
-  schemas:[CUSTOM_ELEMENTS_SCHEMA],
-  imports: [IonicModule, CommonModule, FormsModule,DataTablesModule]
+  imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule]
 })
-export class DeliveryCompanyPage implements OnInit, OnDestroy {
+export class DeliveryCompanyPage implements OnInit {
+  @ViewChild(IonModal) modal!: IonModal
+  deliverycompany: DeliveryCompany[] =[];
 
-  listOfDeliveryCompanies: any[] | undefined;
+  constructor(public modalCtrl: ModalController,
+    private thisroute: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
+    
+    ngOnInit() {
+    }
+
+
+    GetDeliveryCompanies(){
+    
+    }
+  
+    AddDeliveryCompany(){
+  
+    }
+  
+    UpdateDeliveryCompany(DeliveryCompanyId:Number){
+  
+    }
+  
+    DeleteDeliveryCompany(DeliveryCompanyId:Number){
+  
+    }
+   
+    canceladdmodal() {
+      this.modal.dismiss(null, 'cancel');
+    }
+  
+    async confirmaddmodal() {
+      const alert = await this.alertController.create({
+        header: 'Please Confirm that you would like to continue',
+        buttons: ['Cancel', 'Continue']
+      });
+      await alert.present();
+      this.modal.dismiss('confirm');
+    }
+  
+    canceleditmodal() {
+      this.modal.dismiss(null, 'cancel');
+    }
+  
+    async confirmeditmodal() {
+      const alert = await this.alertController.create({
+        header: 'Please Confirm that you would like to continue',
+        buttons: ['Cancel', 'Continue']
+      });
+      await alert.present();
+      this.modal.dismiss('confirm');
+    }
+  
+    onWillDismiss(event: Event) {
+      const ev = event as CustomEvent<OverlayEventDetail<string>>;
+    }
+
+
+  }
+
+  /*listOfDeliveryCompanies: any[] | undefined;
   deliveryCompany!:any;
   
   companyName:String="";
@@ -67,4 +134,4 @@ export class DeliveryCompanyPage implements OnInit, OnDestroy {
 
   }
 
-}
+}*/
