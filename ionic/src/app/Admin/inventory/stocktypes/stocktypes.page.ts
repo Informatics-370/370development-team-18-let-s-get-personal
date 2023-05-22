@@ -29,9 +29,7 @@ export class StocktypesPage implements OnInit {
 
     AddTypeForm:FormGroup = new FormGroup({
       name: new FormControl(['',Validators.required])      
-    });
-  
-    
+    });     
  
   ngOnInit(): void {
    this.GetStockTypes();   
@@ -48,14 +46,16 @@ export class StocktypesPage implements OnInit {
 
   addStockTypes(){
       this.service.AddStockType(this.AddTypeForm.value).subscribe(result => {
-        //this.canceladdmodal();
-        console.log(result);
-
+        this.canceladdmodal();
+        console.log(result);        
+        this.modal.dismiss('Continue');
+        window.location.reload();
     })
   }
 
   getstocktype(stock_Type_ID:Number){
-   
+    //[routerLink]="['/course', course.courseId]"
+    this.router.navigate(['./editstocktype',stock_Type_ID]);
   }
 
   deleteStockTypes(stock_Type_ID:Number){
@@ -76,8 +76,6 @@ export class StocktypesPage implements OnInit {
     await alert.present();
     this.addStockTypes();
     
-    this.modal.dismiss('Continue');
-    window.location.reload();
   }
   
   onWillDismiss(event: Event) {

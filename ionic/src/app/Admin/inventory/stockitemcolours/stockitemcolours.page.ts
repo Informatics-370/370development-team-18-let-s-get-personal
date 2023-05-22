@@ -31,57 +31,45 @@ export class StockitemcoloursPage implements OnInit {
 
   constructor(public modalCtrl: ModalController, private toast: ToastController, 
     private service:StockItemColourDataService,
-    private thisroute: Router, private currentroute: ActivatedRoute, private alertController: AlertController) {  }
+    private router: Router, private route: ActivatedRoute, private alertController: AlertController) {  }
 
   AddColourForm:FormGroup = new FormGroup({
     name: new FormControl(['',Validators.required]),
     image: new FormControl(['',Validators.required])
   });
 
-  EditColourForm:FormGroup = new FormGroup({
-    name: new FormControl(['',Validators.required]),
-    image: new FormControl(['',Validators.required])
-  });
+ 
 
-  ngOnInit(): void {
-   
-    this.GetStockItemColours()
-
-    this.currentroute.params.subscribe(params =>{
-      this.service.GetStockItemColour(params['id']).subscribe(result =>{
-        this.ColourToEdit = result as StockItemColours;
-
-        this.EditColourForm.controls['name'].setValue(this.ColourToEdit.ColorName);
-        this.EditColourForm.controls['image'].setValue(this.ColourToEdit.Image);
-      })
-    })
+  ngOnInit(): void {   
+    this.GetStockItemColours();   
   }
-  loadImageFromDevice(event: any) {
-    
-  };
+ 
+
   GetStockItemColours(){
-    
+    this.service.GetStockItemColours().subscribe(result =>{
+      let colourlist: any[] = result
+      colourlist.forEach((element) =>{
+        this.colour.push(element)
+      });
+    })   
   }
 
   getstockcolour(stock_Item_Colour_ID:Number){
-    
+    this.router.navigate(['./editstockitemcolours',stock_Item_Colour_ID]);
   }
 
   addcolour(){
-   
-  }
-
-  ColourToEdit!: StockItemColours;
-  updatecolour(stock_Item_Colour_ID:Number){ 
-
+    this.service.AddStockItemColour(this.AddColourForm.value).subscribe(result => {
+      this.canceladdmodal();
+      this.modal.dismiss('Continue');
+      console.log(result);
+  })
   }
 
   deletecolour(stock_Item_Colour_ID:Number){
-    
-  }
-
-  reloadPage(){
-    window.location.reload()
+    this.service.DeleteStockItemColour(stock_Item_Colour_ID).subscribe(result =>{
+      window.location.reload();
+     });
   }
 
   onWillDismiss(event: Event) {
@@ -98,20 +86,9 @@ export class StockitemcoloursPage implements OnInit {
       buttons: ['Cancel', 'Continue']
     });
     await alert.present();
-    this.modal.dismiss('confirm');
+    this.addcolour();
   }
 
-  canceleditmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  async confirmeditmodal() {
-    const alert = await this.alertController.create({
-      header: 'Please Confirm that you would like to continue',
-      buttons: ['Cancel', 'Continue']
-    });
-    await alert.present();
-    this.modal.dismiss('confirm');
-  }
+ 
 
 }
