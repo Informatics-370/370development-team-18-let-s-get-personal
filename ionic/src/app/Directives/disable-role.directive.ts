@@ -14,7 +14,7 @@ export class DisableRoleDirective {
 
   ngAfterViewInit() {
     this.authService.getUser().subscribe(user => {
-      const userRole = user['role'];
+      const userRole = user['roles'];
 
       if (userRole == this.disableForRole) {
         this.renderer.setStyle(this.element.nativeElement, 'pointer-events', 'none');
