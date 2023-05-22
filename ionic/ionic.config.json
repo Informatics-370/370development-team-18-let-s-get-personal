@@ -1,0 +1,7 @@
+{
+  "name": "IPKP-IonicV.03",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
