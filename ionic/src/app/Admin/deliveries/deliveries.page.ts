@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { RouterModule, Router } from '@angular/router';
 import { Delivery } from 'src/app/Models/delivery';
 import { FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -26,7 +25,8 @@ export class DeliveriesPage implements OnInit {
   deliveries:Delivery[] =[];
 
 
-  constructor(private service:DeliveryDataService, private alertController:AlertController, private router:Router) { }
+  constructor(private service:DeliveryDataService, private alertController:AlertController) { }
+
 
   ngOnInit() {
     this.GetDeliveries()
@@ -50,11 +50,6 @@ export class DeliveriesPage implements OnInit {
     this.modal.dismiss(null, 'cancel');
   }
 
-  public getDeliveryCompanies():void {
-    this.router.navigate(['./delivery-company']);
-  }
-
-}
   async confirmaddmodal() {
     const alert = await this.alertController.create({
       header: 'Please Confirm that you would like to continue',
@@ -69,3 +64,5 @@ export class DeliveriesPage implements OnInit {
   //     window.location.reload();
   //     });
     }
+
+
