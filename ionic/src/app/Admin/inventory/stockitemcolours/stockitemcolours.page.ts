@@ -60,52 +60,24 @@ export class StockitemcoloursPage implements OnInit {
     
   };
   GetStockItemColours(){
-    this.service.GetStockItemColours().subscribe(result =>{
-      this.stockitemcolours = result as StockItemColours[];
-    })
+    
   }
 
-  getstockcolour(StockItemColorId:Number){
-    this.service.GetStockItemColour(StockItemColorId).subscribe(result =>{
-      this.stockitemcolours = result as StockItemColours[];
-    })
+  getstockcolour(stock_Item_Colour_ID:Number){
+    
   }
 
   addcolour(){
-    let addedcolour = new StockItemColours();
-
-    this.service.AddStockItemColour(addedcolour).subscribe((response: any) =>{
-      if(response.statusCode == 200){
-        this.thisroute.navigate(['./stockitemcolours'])
-      }
-      else{
-        alert(response.message);
-      }
-    });
+   
   }
 
   ColourToEdit!: StockItemColours;
-  updatecolour(StockItemColorId:Number){ 
-    this.currentroute.params.subscribe(params =>{
-      this.service.GetStockItemColour(params['StockItemColorId']).subscribe(result =>{
-        this.ColourToEdit = result as StockItemColours;
-        this.EditColourForm.controls['name'].setValue(this.ColourToEdit.ColorName);
-        this.EditColourForm.controls['image'].setValue(this.ColourToEdit.Image);
+  updatecolour(stock_Item_Colour_ID:Number){ 
 
-        if(this.EditColourForm.valid == true){
-          this.service.UpdateStockItemColour(StockItemColorId, this.EditColourForm.value).subscribe((res: any) =>{
-            console.log(result);
-            this.canceleditmodal();
-          })
-        }
-      })
-    })
   }
 
-  deletecolour(StockItemColorId:Number){
-    this.service.DeleteStockItemColour(StockItemColorId).subscribe(result =>{
-      console.log(result)
-    })
+  deletecolour(stock_Item_Colour_ID:Number){
+    
   }
 
   reloadPage(){

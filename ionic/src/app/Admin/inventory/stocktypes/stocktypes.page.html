@@ -12,14 +12,13 @@
   </ion-header>
   <ion-card-content>
     <ion-button id="addmodal">Add Stock Type</ion-button>
-    <ion-button (click)="test()">Test</ion-button>
                 <ion-list>
                   <!--ng for each-->
                     <ion-item *ngFor="let item of stocktypes" >                      
                         <ion-label>
                             <h5>{{item.StockTypeName}}</h5>
                             <ion-button id="editmodal">Edit</ion-button>
-                            <ion-button (click)="deleteStockTypes(item.stock_Type_ID)" (click)="reloadPage()">Delete</ion-button>
+                            <ion-button (click)="deleteStockTypes(item.stock_Type_ID)" >Delete</ion-button>
                         </ion-label>
                     </ion-item>
                 </ion-list>
@@ -27,37 +26,6 @@
 
 </ion-content>
 
-<!--edit modal-->
-<ion-footer > 
-  <ion-modal trigger="editmodal" (willDismiss)="onWillDismiss($event)">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
-          </ion-buttons>
-          <ion-title>Update Stock Type</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding">
-        <ion-item>
-          <h3>Update Stock details</h3>     
-        </ion-item>
-        <form [formGroup]="EditTypeForm">
-          <div *ngFor="let i of stocktype">
-            <ion-item>
-              <ion-label position="stacked">Colour Name</ion-label><br>
-              <ion-input type="text" formControlName="name" [(ngModel)]="i.StockTypeName"></ion-input>
-            </ion-item>
-          </div>          
-        </form>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
-</ion-footer>
 
 
 <!--addmodal-->
@@ -79,13 +47,11 @@
         <ion-item>
           <h3>Add Stock type Details</h3>     
         </ion-item>
-        <form [formGroup]="AddTypeForm">
-          <div *ngFor="let i of stocktype">
+        <form [formGroup]="AddTypeForm">          
             <ion-item>
               <ion-label position="stacked">Stock Type Name</ion-label><br>
               <ion-input type="text" formControlName="name" placeholder="i.e. stationary"></ion-input>
-            </ion-item>
-          </div>          
+            </ion-item>                    
         </form>
       </ion-content>
     </ng-template>

@@ -19,7 +19,7 @@
                             <h5>{{item.ColorName}}</h5>
                             <ion-img src="{{item.Image}}" ></ion-img> <!--[cldImg]="myImage"-->
                             <ion-button id="editmodal">Edit</ion-button>
-                            <ion-button (click)="deletecolour(item.StockItemColorId)">Delete</ion-button>
+                            <ion-button (click)="deletecolour(item.stock_Item_Colour_ID)">Delete</ion-button>
                         </ion-label>
                     </ion-item>
                 </ion-list>
@@ -41,7 +41,7 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
-
+      
       <ion-content class="ion-padding">
         <ion-item>
           <h3>Update Colour Details</h3>     

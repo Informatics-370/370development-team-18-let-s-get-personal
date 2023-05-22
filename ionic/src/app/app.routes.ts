@@ -64,5 +64,9 @@ export const routes: Routes = [
   {
     path: 'stockitemcolours',
     loadComponent: () => import('./Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage)
+  },  {
+    path: 'editstocktype',
+    loadComponent: () => import('./Admin/inventory/stocktypes/editstocktype/editstocktype.page').then( m => m.EditstocktypePage)
   }
+
 ];
