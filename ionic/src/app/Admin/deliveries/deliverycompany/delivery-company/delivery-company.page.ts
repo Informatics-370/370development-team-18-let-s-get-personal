@@ -57,7 +57,7 @@ export class DeliveryCompanyPage implements OnInit {
     }
   
     UpdateDeliveryCompany(DeliveryCompanyId:Number){
-      this.router.navigate(['./edit-delivery-company',DeliveryCompanyID]);
+      this.router.navigate(['./edit-delivery-company',DeliveryCompanyId]);
     }
   
     DeleteDeliveryCompany(DeliveryCompanyId:Number){
