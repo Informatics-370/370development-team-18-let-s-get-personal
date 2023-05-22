@@ -6,7 +6,7 @@ import { StockTypes } from '../Models/stocktypes';
 @Injectable({
     providedIn: 'root' 
   })
-  export class StockTypeDataService {
+  export class ProfileService {
   
     apiUrl = 'https://localhost:44390/api/'
   

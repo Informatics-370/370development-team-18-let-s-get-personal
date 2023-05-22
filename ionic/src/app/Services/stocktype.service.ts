@@ -27,25 +27,25 @@ import { StockTypes } from '../Models/stocktypes';
   
     //add
     public AddStockType(stocktype:StockTypes){
-      return this.httpClient.post(`${this.apiUrl}StockType/AddStockType`, stocktype)
-      .pipe(map(result => result))
+      return this.httpClient.post(`${this.apiUrl}StockType/AddStockType`, stocktype, this.httpOptions)
+      //.pipe(map(result => result))
     }
   
     //get selected one
-    public GetStockType(StockTypeId:Number){ 
-      return this.httpClient.get(`${this.apiUrl}StockType/GetStockType/${StockTypeId}`)
+    public GetStockType(stock_Type_ID:Number){ 
+      return this.httpClient.get(`${this.apiUrl}StockType/GetStockType`+ "/" + stock_Type_ID)
       .pipe(map(result => result))
     }
   
     //edit
-    public UpdateStockType(StockTypeId:Number, stocktype:StockTypes){
-      return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockType/${StockTypeId}`, stocktype);
+    public UpdateStockType(stock_Type_ID:Number, stocktype:StockTypes){
+      return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockType/${stock_Type_ID}`, stocktype, this.httpOptions);
       //.pipe(map(result => result))
     }
   
     //delete 
-    public DeleteStockType(StockTypeId:Number){
-      return this.httpClient.delete(`${this.apiUrl}StockType/DeleteStockType/${StockTypeId}`);
+    public DeleteStockType(stock_Type_ID:Number){
+      return this.httpClient.delete<string>(`${this.apiUrl}StockType/DeleteStockType` + "/" + stock_Type_ID, this.httpOptions);
       //.pipe(map(result => result))
     }
   

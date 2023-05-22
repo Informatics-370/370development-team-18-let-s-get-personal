@@ -1,5 +1,5 @@
-import { Routes } from '@angular/router';
-
+import { Routes, RouterModule, PreloadAllModules} from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 export const routes: Routes = [
   {
     path: '',
@@ -64,5 +64,5 @@ export const routes: Routes = [
   {
     path: 'stockitemcolours',
     loadComponent: () => import('./Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage)
-  },
+  }
 ];

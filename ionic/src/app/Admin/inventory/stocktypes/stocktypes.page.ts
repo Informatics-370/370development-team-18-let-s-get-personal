@@ -17,14 +17,15 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: './stocktypes.page.html',
   styleUrls: ['./stocktypes.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
+  providers: [StockTypeDataService]
 })
 export class StocktypesPage implements OnInit {
  @ViewChild(IonModal) modal!: IonModal
   stocktypes: StockTypes[] =[];
   stocktype: any
   constructor(public modalCtrl: ModalController, private service:StockTypeDataService,
-    private thisroute: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
+    private router: Router,  private alertController: AlertController) { }
     AddTypeForm:FormGroup = new FormGroup({
       name: new FormControl(['',Validators.required])      
     });
@@ -34,66 +35,32 @@ export class StocktypesPage implements OnInit {
     });
  
   ngOnInit(): void {
-    this.GetStockTypes()
-
-    this.currentroute.params.subscribe(params =>{
-      this.service.GetStockType(params['id']).subscribe(result =>{
-        this.StockTypeToEdit = result as StockTypes;
-
-        this.EditTypeForm.controls['name'].setValue(this.StockTypeToEdit.StockTypeName);
-
-      })
-    })
+   
   }
 
   GetStockTypes(){
-    this.service.GetStockTypes().subscribe(result =>{
-      this.stocktypes = result as StockTypes[];
-    })
+   
   }
 
   addStockTypes(){
-    let addedcolour = new StockTypes();
-
-    this.service.AddStockType(addedcolour).subscribe((response: any) =>{
-      if(response.statusCode == 200){
-        this.thisroute.navigate(['./stocktypes'])
-      }
-      else{
-        alert(response.message);
-      }
-    });
+      this.service.AddStockType(this.AddTypeForm.value).subscribe(result => {
+          this.router.navigate(['/inventory'])
+    })
   }
 
-  getstocktype(StockTypeId:Number){
-    this.service.GetStockType(StockTypeId).subscribe(result =>{
-      this.stocktypes = result as StockTypes[];
-    })
+  getstocktype(stock_Type_ID:Number){
+   
   }
 
   StockTypeToEdit!: StockTypes;
-  updateStockTypes(StockTypeId:Number){
-   this.currentroute.params.subscribe(params =>{
-      this.service.GetStockType(params['StockItemColorId']).subscribe(result =>{
-        this.StockTypeToEdit = result as StockTypes;
-        this.EditTypeForm.controls['name'].setValue(this.StockTypeToEdit.StockTypeName);
-        
-
-        if(this.EditTypeForm.valid == true){
-          this.service.UpdateStockType(StockTypeId, this.EditTypeForm.value).subscribe((res: any) =>{
-            console.log(result);
-            this.canceleditmodal();
-          })
-        }
-      })
-    })
+  updateStockTypes(stock_Type_ID:Number){
+   
   }
 
-  deleteStockTypes(StockTypeId:Number){
-    this.service.DeleteStockType(StockTypeId).subscribe(result =>{
-      console.log(result)
-    })
+  deleteStockTypes(stock_Type_ID:Number){
+   
   }
+
   reloadPage(){
     window.location.reload()
   }

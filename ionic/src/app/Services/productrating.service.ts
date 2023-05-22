@@ -7,7 +7,7 @@ import { ProductRating } from '../Models/productrating';
 @Injectable({
     providedIn: 'root' 
   })
-  export class StockTypeDataService {
+  export class ProductRatingDataService {
   
     apiUrl = 'https://localhost:44390/api/'
   
