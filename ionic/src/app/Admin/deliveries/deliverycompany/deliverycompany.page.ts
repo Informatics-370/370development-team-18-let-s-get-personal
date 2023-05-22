@@ -13,17 +13,15 @@ import { ModalController} from '@ionic/angular';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
-
-
 @Component({
-  selector: 'app-delivery-company',
-  templateUrl: './delivery-company.page.html',
-  styleUrls: ['./delivery-company.page.scss'],
+  selector: 'app-deliverycompany',
+  templateUrl: './deliverycompany.page.html',
+  styleUrls: ['./deliverycompany.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule],
   providers: [DeliveryCompanyDataService]
 })
-export class DeliveryCompanyPage implements OnInit {
+export class DeliverycompanyPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   deliverycompanies: DeliveryCompany[] =[];
 
@@ -31,8 +29,7 @@ export class DeliveryCompanyPage implements OnInit {
     private router: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
     AddTypeForm:FormGroup = new FormGroup({
       name: new FormControl(['',Validators.required])      
-    });
-
+    }); 
     ngOnInit(): void {
       this.GetDeliveryCompanies();
     }
@@ -101,54 +98,4 @@ export class DeliveryCompanyPage implements OnInit {
 
   }
 
-  /*listOfDeliveryCompanies: any[] | undefined;
-  deliveryCompany!:any;
   
-  companyName:String="";
-
-  public alertButtons = ['OK'];
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject<any>();
-
-  constructor(private deliverCompanyService:DeliveryCompanyDataService) { }
-
-  ngOnInit() {
-
-    this.getDeliveryCompanies();
-
-    this.dtOptions={
-      pagingType:'simple_numbers',
-      pageLength:10,
-      processing:true
-    };
-  }
-
-  ngOnDestroy(): void {
-    this.dtOptions ={destroy:true}
-    this.dtTrigger.unsubscribe();
-  }
-
-  public onUpdate(id:any):void{
-    this.deliverCompanyService.GetDeliveryCompany(id).subscribe(res=>{
-      this.deliveryCompany=res;
-      this.companyName=this.deliveryCompany.DeliveryCompanyName;
-    })
-    
-  }
-
-  public alertInputs = [
-    {
-      placeholder: 'Name',
-      value:this.companyName
-    },
-  ];
-
-  private getDeliveryCompanies():void{
-    this.deliverCompanyService.GetDeliveryCompanies().subscribe(res=>{
-      this.listOfDeliveryCompanies=res;
-      this.dtTrigger.next(null);
-    })
-
-  }
-
-}*/

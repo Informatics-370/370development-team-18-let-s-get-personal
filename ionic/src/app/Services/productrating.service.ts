@@ -20,7 +20,7 @@ import { ProductRating } from '../Models/productrating';
     constructor(private httpClient: HttpClient) { 
     }
   
-    
+    //return http.loacalhost:5116/api/Course/GetAllStockTypes
     public GetProductRatings(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}ProductRating/GetAllProductRatings`)
       .pipe(map(result => result))

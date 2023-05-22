@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
+import { StockTypes } from '../Models/stocktypes';
 import { DeliveryCompany } from '../Models/deliverycompany';
 
 @Injectable({
@@ -48,32 +49,5 @@ import { DeliveryCompany } from '../Models/deliverycompany';
       return this.httpClient.delete(`${this.apiUrl}DeliveryCompany/DeleteDeliveryCompany/${deliveryCompanyId}`)
       .pipe(map(result => result))
     }
-
-/*
-GetDeliveryCompany(deliveryCompanyId:Number) {
-    return this.httpClient.get(`${this.apiUrl}DeliveryCompany/GetCourse` + "/" + courseId)
-    .pipe(map(result => result))
-  }
-
-  getCourses(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Course/GetAllCourses`)
-    .pipe(map(result => result))
-  }
-
-  addCourse(course: Course)
-  {
-    return this.httpClient.post(`${this.apiUrl}Course/AddCourse`, course, this.httpOptions)
-  }
-
-  deleteCourse(courseId: Number)
-  {
-    return this.httpClient.delete<string>(`${this.apiUrl}Course/DeleteCourse` + "/" + courseId, this.httpOptions)
-  }
-
-  editCourse(courseId: number, course: Course)
-  {
-    return this.httpClient.put(`${this.apiUrl}Course/EditCourse/${courseId}`,course, this.httpOptions)
-  }
-*/
   
   }
