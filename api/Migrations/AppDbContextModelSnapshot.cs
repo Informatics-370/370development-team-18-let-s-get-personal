@@ -343,8 +343,8 @@ namespace IPKP___API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte[]>("Image_File")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Image_File")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Image_Size")
                         .HasColumnType("int");
@@ -670,8 +670,8 @@ namespace IPKP___API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte[]>("Stock_Image_File")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Stock_Image_File")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Stock_Image_ID");
 
@@ -713,6 +713,9 @@ namespace IPKP___API.Migrations
                     b.Property<Guid>("Stock_Item_Colour_ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Stock_Item_Colour_Image")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Stock_Item_Colour_Name")
                         .HasMaxLength(255)

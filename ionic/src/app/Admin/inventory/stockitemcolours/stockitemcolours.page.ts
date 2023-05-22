@@ -31,85 +31,45 @@ export class StockitemcoloursPage implements OnInit {
 
   constructor(public modalCtrl: ModalController, private toast: ToastController, 
     private service:StockItemColourDataService,
-    private thisroute: Router, private currentroute: ActivatedRoute, private alertController: AlertController) {  }
+    private router: Router, private route: ActivatedRoute, private alertController: AlertController) {  }
 
   AddColourForm:FormGroup = new FormGroup({
     name: new FormControl(['',Validators.required]),
     image: new FormControl(['',Validators.required])
   });
 
-  EditColourForm:FormGroup = new FormGroup({
-    name: new FormControl(['',Validators.required]),
-    image: new FormControl(['',Validators.required])
-  });
+ 
 
-  ngOnInit(): void {
-   
-    this.GetStockItemColours()
-
-    this.currentroute.params.subscribe(params =>{
-      this.service.GetStockItemColour(params['id']).subscribe(result =>{
-        this.ColourToEdit = result as StockItemColours;
-
-        this.EditColourForm.controls['name'].setValue(this.ColourToEdit.ColorName);
-        this.EditColourForm.controls['image'].setValue(this.ColourToEdit.Image);
-      })
-    })
+  ngOnInit(): void {   
+    this.GetStockItemColours();   
   }
-  loadImageFromDevice(event: any) {
-    
-  };
+ 
+
   GetStockItemColours(){
     this.service.GetStockItemColours().subscribe(result =>{
-      this.stockitemcolours = result as StockItemColours[];
-    })
+      let colourlist: any[] = result
+      colourlist.forEach((element) =>{
+        this.colour.push(element)
+      });
+    })   
   }
 
-  getstockcolour(StockItemColorId:Number){
-    this.service.GetStockItemColour(StockItemColorId).subscribe(result =>{
-      this.stockitemcolours = result as StockItemColours[];
-    })
+  getstockcolour(stock_Item_Colour_ID:Number){
+    this.router.navigate(['./editstockitemcolours',stock_Item_Colour_ID]);
   }
 
   addcolour(){
-    let addedcolour = new StockItemColours();
-
-    this.service.AddStockItemColour(addedcolour).subscribe((response: any) =>{
-      if(response.statusCode == 200){
-        this.thisroute.navigate(['./stockitemcolours'])
-      }
-      else{
-        alert(response.message);
-      }
-    });
+    this.service.AddStockItemColour(this.AddColourForm.value).subscribe(result => {
+      this.canceladdmodal();
+      this.modal.dismiss('Continue');
+      console.log(result);
+  })
   }
 
-  ColourToEdit!: StockItemColours;
-  updatecolour(StockItemColorId:Number){ 
-    this.currentroute.params.subscribe(params =>{
-      this.service.GetStockItemColour(params['StockItemColorId']).subscribe(result =>{
-        this.ColourToEdit = result as StockItemColours;
-        this.EditColourForm.controls['name'].setValue(this.ColourToEdit.ColorName);
-        this.EditColourForm.controls['image'].setValue(this.ColourToEdit.Image);
-
-        if(this.EditColourForm.valid == true){
-          this.service.UpdateStockItemColour(StockItemColorId, this.EditColourForm.value).subscribe((res: any) =>{
-            console.log(result);
-            this.canceleditmodal();
-          })
-        }
-      })
-    })
-  }
-
-  deletecolour(StockItemColorId:Number){
-    this.service.DeleteStockItemColour(StockItemColorId).subscribe(result =>{
-      console.log(result)
-    })
-  }
-
-  reloadPage(){
-    window.location.reload()
+  deletecolour(stock_Item_Colour_ID:Number){
+    this.service.DeleteStockItemColour(stock_Item_Colour_ID).subscribe(result =>{
+      window.location.reload();
+     });
   }
 
   onWillDismiss(event: Event) {
@@ -126,20 +86,9 @@ export class StockitemcoloursPage implements OnInit {
       buttons: ['Cancel', 'Continue']
     });
     await alert.present();
-    this.modal.dismiss('confirm');
+    this.addcolour();
   }
 
-  canceleditmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  async confirmeditmodal() {
-    const alert = await this.alertController.create({
-      header: 'Please Confirm that you would like to continue',
-      buttons: ['Cancel', 'Continue']
-    });
-    await alert.present();
-    this.modal.dismiss('confirm');
-  }
+ 
 
 }

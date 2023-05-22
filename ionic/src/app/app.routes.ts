@@ -103,5 +103,10 @@ export const routes: Routes = [
     data: {
       role: 'Admin'
     }
+  },
+  {
+    path: 'editstockitemcolours',
+    loadComponent: () => import('./Admin/inventory/stockitemcolours/editstockitemcolours/editstockitemcolours.page').then( m => m.EditstockitemcoloursPage)
   }
+
 ];

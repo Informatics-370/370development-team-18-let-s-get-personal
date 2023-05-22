@@ -13,6 +13,6 @@ namespace IPKP___API.Controllers.Models.ViewModels
     [StringLength(255)]
     public string Stock_Item_Colour_Name { get; set; }
 
-    public byte[] Stock_Item_Colour_Image { get; set; } 
+    public string Stock_Item_Colour_Image { get; set; } 
   }
 }

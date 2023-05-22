@@ -1,9 +1,9 @@
-import { StockItem } from "./stockitem"
-export class StockItemColours{
-    StockItemColorId!: number
-    ColorName!: string 
-    Image!: string
+//import { StockItem } from "./stockitem"
+export interface  StockItemColours{
+    stock_Item_Colour_ID: number
+    ColorName: string 
+    Image: string
 
-    StockItemId!: Number
-    stockitems!: StockItem
+    //StockItemId!: Number
+    //stockitems!: StockItem
 }

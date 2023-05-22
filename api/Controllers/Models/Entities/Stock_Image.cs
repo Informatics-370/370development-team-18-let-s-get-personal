@@ -11,6 +11,6 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Stock_Image_ID { get; set; }
-    public byte[] Stock_Image_File { get; set; }
+    public string Stock_Image_File { get; set; }
   }
 }
