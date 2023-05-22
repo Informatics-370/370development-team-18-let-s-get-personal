@@ -20,13 +20,13 @@ import { StockTypes } from '../Models/stocktypes';
     }
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
-    GetProfile(): Observable<any>{ 
+    GetStockTypes(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}StockType/GetAllStockTypes`)
       .pipe(map(result => result))
     }
   
     //add
-    AddProfile(stocktype:StockTypes){
+    AddStockType(stocktype:StockTypes){
       return this.httpClient.post(`${this.apiUrl}StockType/AddCourse`, stocktype)
       .pipe(map(result => result))
     }
