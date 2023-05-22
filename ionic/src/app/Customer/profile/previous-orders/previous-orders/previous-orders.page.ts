@@ -4,22 +4,23 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
 
+import { Order } from 'src/app/Models/orders';
+
 @Component({
-  selector: 'app-deliveries',
-  templateUrl: './deliveries.page.html',
-  styleUrls: ['./deliveries.page.scss'],
+  selector: 'app-previous-orders',
+  templateUrl: './previous-orders.page.html',
+  styleUrls: ['./previous-orders.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class DeliveriesPage implements OnInit {
-
+export class PreviousOrdersPage implements OnInit {
+  orders: Order[] =[];
   constructor(private router:Router) { }
 
   ngOnInit() {
   }
 
-  public getDeliveryCompanies():void {
-    this.router.navigate(['./delivery-company']);
+  public getProductRatings():void {
+    this.router.navigate(['./product-rating']);
   }
-
 }
