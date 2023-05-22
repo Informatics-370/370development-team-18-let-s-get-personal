@@ -2,6 +2,7 @@ using IPKP___API.Controllers.Models;
 using IPKP___API.Controllers.Models.Entities;
 using IPKP___API.Controllers.Models.Repository;
 using IPKP___API.Controllers.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ namespace IPKP___API.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
+  [Authorize(Roles = User_Role.Admin)]
   public class DeliveriesController : ControllerBase
   {
     private readonly IIPKPRepository _IPKPRepository;

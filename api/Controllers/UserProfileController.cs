@@ -14,6 +14,7 @@ namespace IPKP___API.Controllers
   [ApiController]
   public class UserProfileController : ControllerBase
   {
-    //Add endpoints here;
+    //Add endpoints here
+    //UserID -> customer/adminID
   }
 }

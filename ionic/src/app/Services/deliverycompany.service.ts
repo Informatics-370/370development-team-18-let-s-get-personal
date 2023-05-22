@@ -21,33 +21,33 @@ import { DeliveryCompany } from '../Models/deliverycompany';
     }
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
-    GetDeliveryCompanies(): Observable<any>{ 
+    public GetDeliveryCompanies(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}DeliveryCompany/GetAllDeliveryCompanies`)
       .pipe(map(result => result))
     }
   
     //add
-    AddDeliveryCompany(deliverycompany:DeliveryCompany){
-      return this.httpClient.post(`${this.apiUrl}DeliveryCompany/AddDeliveryCompany`, deliverycompany)
+    public AddDeliveryCompany(deliveryCompany:DeliveryCompany){
+      return this.httpClient.post(`${this.apiUrl}DeliveryCompany/AddDeliveryCompany`, deliveryCompany)
       .pipe(map(result => result))
     }
   
     //get selected one
-    GetDeliveryCompany(DeliveryCompanyId:Number){ 
-      return this.httpClient.get(`${this.apiUrl}DeliveryCompany/GetDeliveryCompany/${DeliveryCompanyId}`)
+    public GetDeliveryCompany(deliveryCompanyId:Number){ 
+      return this.httpClient.get(`${this.apiUrl}DeliveryCompany/GetDeliveryCompany/${deliveryCompanyId}`)
       .pipe(map(result => result))
     }
   
     //edit
-    UpdateDeliveryCompany(DeliveryCompanyId:Number, deliverycompany:DeliveryCompany){
-      return this.httpClient.put(`${this.apiUrl}DeliveryCompany/UpdateDeliveryCompany/${DeliveryCompanyId}`, deliverycompany);
-      //.pipe(map(result => result))
+    public UpdateDeliveryCompany(deliveryCompanyId:Number, deliveryCompany:DeliveryCompany){
+      return this.httpClient.put(`${this.apiUrl}DeliveryCompany/UpdateDeliveryCompany/${deliveryCompanyId}`, deliveryCompany)
+      .pipe(map(result => result))
     }
   
     //delete 
-    DeleteDeliveryCompany(DeliveryCompanyId:Number){
-      return this.httpClient.delete(`${this.apiUrl}DeliveryCompany/DeleteDeliveryCompany/${DeliveryCompanyId}`);
-      //.pipe(map(result => result))
+    public DeleteDeliveryCompany(deliveryCompanyId:Number){
+      return this.httpClient.delete(`${this.apiUrl}DeliveryCompany/DeleteDeliveryCompany/${deliveryCompanyId}`)
+      .pipe(map(result => result))
     }
   
   }
