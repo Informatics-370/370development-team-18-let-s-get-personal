@@ -80,12 +80,12 @@ export class StockitemcoloursPage implements OnInit {
     this.modal.dismiss(null, 'cancel');
   }
 
-  async confirmaddmodal() {
-    const alert = await this.alertController.create({
-      header: 'Please Confirm that you would like to continue',
-      buttons: ['Cancel', 'Continue']
-    });
-    await alert.present();
+  confirmaddmodal() {
+   // const alert = await this.alertController.create({
+   //   header: 'Please Confirm that you would like to continue',
+   //   buttons: ['Cancel', 'Continue']
+   // });
+  //  await alert.present();
     this.addcolour();
   }
 
