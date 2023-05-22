@@ -1,9 +1,9 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,  FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
-//import { ProductRatingDataService } from 'src/app/Services/productrating.service';
+import { ProductRatingDataService } from 'src/app/Services/productrating.service';
 import { ProductRating } from 'src/app/Models/productrating';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
@@ -20,26 +20,40 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: './product-rating.page.html',
   styleUrls: ['./product-rating.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
+  providers: [ProductRatingDataService]
 })
 export class ProductRatingPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   productRating: ProductRating[] =[];
-  constructor(public modalCtrl: ModalController,
-    private thisroute: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
 
-  ngOnInit() {
+  constructor(public modalCtrl: ModalController,private service:ProductRatingDataService,
+    private router: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
+
+    AddTypeForm:FormGroup = new FormGroup({
+      name: new FormControl(['',Validators.required])      
+    }); 
+
+  ngOnInit():void {
+    this.GetProductRating();
   }
   GetProductRating(){
-    
+    this.service.GetProductRating().subscribe(result =>{
+      let productratinglist: any[] = result
+      productratinglist.forEach((element)=>{
+        this.productRating.push(element)
+      });
+     })
   }
 
   UpdateProductRating(ProductRatingId:Number){
-  
+    this.router.navigate(['./edit-product-rating',this.ProductRatingId]);
   }
 
   DeleteProductRating(ProductRatingId:Number){
-
+    this.service.DeleteProductRating(ProductRatingId).subscribe(result =>{
+      window.location.reload();
+     });
   }
 
   canceladdmodal() {

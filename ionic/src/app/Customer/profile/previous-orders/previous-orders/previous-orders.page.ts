@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
 
+import { Order } from 'src/app/Models/orders';
+
 @Component({
   selector: 'app-previous-orders',
   templateUrl: './previous-orders.page.html',
@@ -12,7 +14,7 @@ import { RouterModule, Router } from '@angular/router';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class PreviousOrdersPage implements OnInit {
-
+  orders: Order[] =[];
   constructor(private router:Router) { }
 
   ngOnInit() {

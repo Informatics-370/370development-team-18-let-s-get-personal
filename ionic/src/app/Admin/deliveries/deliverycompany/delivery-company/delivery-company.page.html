@@ -14,7 +14,7 @@
     <ion-button id="addmodal">Add Delivery Company</ion-button>
                 <ion-list>
                   <!--ng for each-->
-                    <ion-item *ngFor="let item of deliverycompany" >                      
+                    <ion-item *ngFor="let item of deliverycompanies" >                      
                         <ion-label>
                             <h5>{{item.DeliveryCompanyName}}</h5>
                             <ion-button id="editmodal">Edit</ion-button>
@@ -43,7 +43,12 @@
       </ion-header>
       <ion-content class="ion-padding">
         <ion-item>
-          <h3>info to add</h3>     
+          <form [formGroup]="AddTypeForm">          
+            <ion-item>
+              <ion-label position="stacked">Delivery Company Name</ion-label><br>
+              <ion-input type="text" formControlName="name" placeholder="i.e. stationary"></ion-input>
+            </ion-item>                    
+        </form>     
         </ion-item>
       </ion-content>
     </ng-template>

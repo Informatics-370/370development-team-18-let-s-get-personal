@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>edit-deliverycompany</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">edit-deliverycompany</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ion-content>
+
+<!--edit modal-->
+<ion-footer > 
+  <ion-modal trigger="editmodal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Update Stock Type</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <h3>Update Stock details</h3>     
+        </ion-item>
+        <form [formGroup]="EditTypeForm">
+          <div *ngFor="let i of stocktype">
+            <ion-item>

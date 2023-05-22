@@ -2,9 +2,7 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule,FormGroup, Validators, FormControl, ReactiveFormsModule  } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-//import { DataTablesModule } from 'angular-datatables';
-//import { Subject } from 'rxjs';
-//import { DeliveryCompanyDataService } from 'src/app/Services/deliverycompany.service';
+import { DeliveryCompanyDataService } from 'src/app/Services/deliverycompany.service';
 import { DeliveryCompany } from 'src/app/Models/deliverycompany';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
@@ -22,35 +20,54 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: './delivery-company.page.html',
   styleUrls: ['./delivery-company.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule],
+  providers: [DeliveryCompanyDataService]
 })
 export class DeliveryCompanyPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
-  deliverycompany: DeliveryCompany[] =[];
+  deliverycompanies: DeliveryCompany[] =[];
 
-  constructor(public modalCtrl: ModalController,
-    private thisroute: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
-    
-    ngOnInit() {
+  constructor(public modalCtrl: ModalController, private service:DeliveryCompanyDataService,
+    private router: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
+    AddTypeForm:FormGroup = new FormGroup({
+      name: new FormControl(['',Validators.required])      
+    });
+
+    ngOnInit(): void {
+      this.GetDeliveryCompanies();
     }
 
 
     GetDeliveryCompanies(){
-    
+      this.service.GetDeliveryCompanies().subscribe(result =>{
+        let stocktypelist: any[] = result
+        stocktypelist.forEach((element)=>{
+          this.deliverycompanies.push(element)
+        });
+       })
     }
   
     AddDeliveryCompany(){
-  
+      this.service.AddDeliveryCompany(this.AddTypeForm.value).subscribe(result => {
+        this.canceladdmodal();
+        console.log(result);        
+        this.modal.dismiss('Continue');
+        window.location.reload();
+    })
     }
   
     UpdateDeliveryCompany(DeliveryCompanyId:Number){
-  
+      this.router.navigate(['./edit-delivery-company',DeliveryCompanyID]);
     }
   
     DeleteDeliveryCompany(DeliveryCompanyId:Number){
-  
+      this.service.DeleteDeliveryCompany(DeliveryCompanyId).subscribe(result =>{
+        window.location.reload();
+       });
     }
    
+
+    
     canceladdmodal() {
       this.modal.dismiss(null, 'cancel');
     }
