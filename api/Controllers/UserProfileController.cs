@@ -16,6 +16,5 @@ namespace IPKP___API.Controllers
   {
     //Add endpoints here
     //UserID -> customer/adminID
-
   }
 }
