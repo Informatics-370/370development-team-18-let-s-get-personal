@@ -1,7 +1,10 @@
-<ion-card *ngFor="let stockItem of stockItemList">
+<!-- <ion-card *ngFor="let stockItem of stockItemList">
   <ion-card-header>
     <ion-card-subtitle>{{stockItem.Description}}</ion-card-subtitle>
     <ion-card-title>{{stockItem.StockItemName}}</ion-card-title>
+    <ion-button (click)="logout()">
+      <ion-icon slot="icon-only" name="log-out"></ion-icon>
+    </ion-button>
   </ion-card-header>
 
   <ion-card-content>
@@ -14,11 +17,44 @@
             <ion-input type="number" name="quantity"></ion-input>
           </ion-item>
         </ion-col>
-        <!-- <ion-col>
+        <ion-col>
           <ion-button (click)="addToBasket(stockItem, quantity.value)" style="float: right"><ion-icon name="basket-outline"></ion-icon></ion-button>
         </ion-col> -->
-      </ion-row>
+      <!-- </ion-row>
 
     </ion-grid>
   </ion-card-content>
-</ion-card>
+</ion-card> -->
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Inside Area
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- Everything from before... -->
+
+  <ion-card *appHasPermission="['read']">
+    <ion-card-header>
+      <ion-card-title>My Content</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Everyone can read this
+      <ion-button expand="full" *appHasPermission="['write']">
+        Admin action
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="full" appDisableRole disableForRole="USER">Action for Admins</ion-button>
+  <ion-button expand="full" appDisableRole disableForRole="ADMIN">Action for Users</ion-button>
+</ion-content>

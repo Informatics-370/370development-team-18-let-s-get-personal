@@ -12,6 +12,10 @@ import { DisableRoleDirective } from './disable-role.directive';
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    HasPermissionDirective,
+    DisableRoleDirective
   ]
 })
 export class SharedDirectivesModule { }
