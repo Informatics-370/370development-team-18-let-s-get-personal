@@ -19,6 +19,7 @@ export class ShopPage implements OnInit {
   public stockItemList: StockItem[] = [];
   public loading: boolean = true;
   private loadingModel: any;
+  public quantity:any;
 
   constructor(
     private toastController: ToastController,
