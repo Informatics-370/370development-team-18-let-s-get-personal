@@ -81,6 +81,12 @@ namespace IPKP___API.Controllers
       if (!result.Succeeded)
         return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
+      if (!await _roleManager.RoleExistsAsync(User_Role.User))
+        await _roleManager.CreateAsync(new IdentityRole(User_Role.User));
+      if (await _roleManager.RoleExistsAsync(User_Role.User))
+      {
+        await _userManager.AddToRoleAsync(user, User_Role.User);
+      }
       return Ok(new Response { Status = "Success", Message = "User created successfully!" });
     }
 

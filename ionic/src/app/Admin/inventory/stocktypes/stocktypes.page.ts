@@ -17,33 +17,53 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: './stocktypes.page.html',
   styleUrls: ['./stocktypes.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
+  providers: [StockTypeDataService]
 })
 export class StocktypesPage implements OnInit {
  @ViewChild(IonModal) modal!: IonModal
   stocktypes: StockTypes[] =[];
+  stocktype: any
   constructor(public modalCtrl: ModalController, private service:StockTypeDataService,
-    private thisroute: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
+    private router: Router,  private alertController: AlertController, private route:ActivatedRoute) { }
 
+    AddTypeForm:FormGroup = new FormGroup({
+      name: new FormControl(['',Validators.required])      
+    });     
  
-    ngOnInit() {
+  ngOnInit(): void {
+   this.GetStockTypes();   
   }
+
   GetStockTypes(){
-    
+   this.service.GetStockTypes().subscribe(result =>{
+    let stocktypelist: any[] = result
+    stocktypelist.forEach((element)=>{
+      this.stocktypes.push(element)
+    });
+   })
   }
 
   addStockTypes(){
-
+      this.service.AddStockType(this.AddTypeForm.value).subscribe(result => {
+        this.canceladdmodal();
+        console.log(result);        
+        this.modal.dismiss('Continue');
+        window.location.reload();
+    })
   }
 
-  updateStockTypes(StockTypeId:Number){
-
+  getstocktype(stock_Type_ID:Number){
+    //[routerLink]="['/course', course.courseId]"
+    this.router.navigate(['./editstocktype',stock_Type_ID]);
   }
 
-  deleteStockTypes(StockTypeId:Number){
-
+  deleteStockTypes(stock_Type_ID:Number){
+   this.service.DeleteStockType(stock_Type_ID).subscribe(result =>{
+    window.location.reload();
+   });
   }
- 
+
   canceladdmodal() {
     this.modal.dismiss(null, 'cancel');
   }
@@ -54,22 +74,10 @@ export class StocktypesPage implements OnInit {
       buttons: ['Cancel', 'Continue']
     });
     await alert.present();
-    this.modal.dismiss('confirm');
+    this.addStockTypes();
+    
   }
-
-  canceleditmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  async confirmeditmodal() {
-    const alert = await this.alertController.create({
-      header: 'Please Confirm that you would like to continue',
-      buttons: ['Cancel', 'Continue']
-    });
-    await alert.present();
-    this.modal.dismiss('confirm');
-  }
-
+  
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }

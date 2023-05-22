@@ -5,24 +5,28 @@ import { IonicModule, LoadingController, ToastController } from '@ionic/angular'
 import { StockItem } from 'src/app/Models/stockitem';
 import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { BasketService } from 'src/app/Services/basket.service';
+import { AuthenticationService } from 'src/app/Services/authentication.service';
+import { SharedDirectivesModule } from 'src/app/Directives/shared-directives.module';
 
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.page.html',
   styleUrls: ['./shop.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, SharedDirectivesModule]
 })
 export class ShopPage implements OnInit {
   public stockItemList: StockItem[] = [];
   public loading: boolean = true;
   private loadingModel: any;
+  public quantity:any;
 
   constructor(
     private toastController: ToastController,
     private loadingController: LoadingController,
     private stockItemService: StockItemDataService,
-    private basketService: BasketService
+    private basketService: BasketService,
+    private authService: AuthenticationService
   ) { }
 
   async ngOnInit() {
@@ -32,6 +36,10 @@ export class ShopPage implements OnInit {
       this.loading = false;
       this.loadingModel.dismiss();
     });
+  }
+
+  logout() {
+    this.authService.Logout();
   }
 
   async addToBasket(stockItem: StockItem, quantity: number) {

@@ -1,3 +1,4 @@
+using IPKP___API.Controllers.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,5 +12,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
     public Guid Stock_Item_Colour_ID { get; set; }
     [StringLength(255)]
     public string Stock_Item_Colour_Name { get; set; }
+
+    public string Stock_Item_Colour_Image { get; set; } 
   }
 }
