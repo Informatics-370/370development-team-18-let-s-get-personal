@@ -12,5 +12,7 @@ namespace IPKP___API.Controllers.Models.Entities
     public Guid Stock_Item_Colour_ID { get; set; }
     [StringLength(255)]
     public string Stock_Item_Colour_Name { get; set; }
-  }
+
+    public byte[] Stock_Item_Colour_Image { get; set; }
+    }
 }

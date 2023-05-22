@@ -19,7 +19,7 @@
                             <h5>{{item.ColorName}}</h5>
                             <ion-img src="{{item.Image}}" ></ion-img> <!--[cldImg]="myImage"-->
                             <ion-button id="editmodal">Edit</ion-button>
-                            <ion-button onclick="deletecolour()">Delete</ion-button>
+                            <ion-button (click)="deletecolour(item.StockItemColorId)">Delete</ion-button>
                         </ion-label>
                     </ion-item>
                 </ion-list>
@@ -92,7 +92,7 @@
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Colour Image</ion-label><br>
-              <ion-input type="text" formControlName="colour" placeholder="upload image"></ion-input>
+              <input type="file" (change)="loadImageFromDevice($event)" id="file-input" accept="image/png, image/jpeg">
             </ion-item>
           </div>          
         </form>

@@ -17,42 +17,53 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: './stocktypes.page.html',
   styleUrls: ['./stocktypes.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
+  providers: [StockTypeDataService]
 })
 export class StocktypesPage implements OnInit {
  @ViewChild(IonModal) modal!: IonModal
   stocktypes: StockTypes[] =[];
+  stocktype: any
   constructor(public modalCtrl: ModalController, private service:StockTypeDataService,
-    private thisroute: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
-
- 
-    ngOnInit() {
-  }
-
-  public test(){
-    console.log("test");
-    this.service.GetStockTypes().subscribe((data) => {
-      console.log(data);
-      this.stocktypes = data;
+    private router: Router,  private alertController: AlertController) { }
+    AddTypeForm:FormGroup = new FormGroup({
+      name: new FormControl(['',Validators.required])      
     });
+  
+    EditTypeForm:FormGroup = new FormGroup({
+      name: new FormControl(['',Validators.required])
+    });
+ 
+  ngOnInit(): void {
+   
   }
 
   GetStockTypes(){
-    
+   
   }
 
   addStockTypes(){
-
+      this.service.AddStockType(this.AddTypeForm.value).subscribe(result => {
+          this.router.navigate(['/inventory'])
+    })
   }
 
-  updateStockTypes(StockTypeId:Number){
-
+  getstocktype(stock_Type_ID:Number){
+   
   }
 
-  deleteStockTypes(StockTypeId:Number){
-
+  StockTypeToEdit!: StockTypes;
+  updateStockTypes(stock_Type_ID:Number){
+   
   }
- 
+
+  deleteStockTypes(stock_Type_ID:Number){
+   
+  }
+
+  reloadPage(){
+    window.location.reload()
+  }
   canceladdmodal() {
     this.modal.dismiss(null, 'cancel');
   }

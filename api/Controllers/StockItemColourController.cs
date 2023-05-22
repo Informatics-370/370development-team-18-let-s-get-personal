@@ -61,8 +61,9 @@ namespace IPKP___API.Controllers
       var stock_Item_Colour = new Stock_Item_Colour
       {
         Stock_Item_Colour_ID = sicvm.Stock_Item_Colour_ID,
-        Stock_Item_Colour_Name = sicvm.Stock_Item_Colour_Name
-      };
+        Stock_Item_Colour_Name = sicvm.Stock_Item_Colour_Name,
+        Stock_Item_Colour_Image =sicvm.Stock_Item_Colour_Image
+    };
       try
       {
         _IPKPRepository.Add(stock_Item_Colour);

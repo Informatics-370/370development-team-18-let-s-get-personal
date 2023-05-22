@@ -1,6 +1,5 @@
-import { Routes } from '@angular/router';
-import { AuthGuard } from './Guards/auth.guard';
-
+import { Routes, RouterModule, PreloadAllModules} from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 export const routes: Routes = [
   {
     path: '',
@@ -8,23 +7,19 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    loadComponent: () => import('./Customer/home/home.page').then( m => m.HomePage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/home/home.page').then( m => m.HomePage)
   },
   {
     path: 'basket',
-    loadComponent: () => import('./Customer/basket/basket.page').then( m => m.BasketPage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/basket/basket.page').then( m => m.BasketPage)
   },
   {
     path: 'contactus',
-    loadComponent: () => import('./Customer/contactus/contactus.page').then( m => m.ContactusPage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/contactus/contactus.page').then( m => m.ContactusPage)
   },
   {
     path: 'faq',
-    loadComponent: () => import('./Customer/faq/faq.page').then( m => m.FaqPage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/faq/faq.page').then( m => m.FaqPage)
   },
   {
     path: 'login',
@@ -32,76 +27,42 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
-    loadComponent: () => import('./Customer/profile/profile.page').then( m => m.ProfilePage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/profile/profile.page').then( m => m.ProfilePage)
   },
   {
     path: 'shop',
-    loadComponent: () => import('./Customer/shop/shop.page').then( m => m.ShopPage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/shop/shop.page').then( m => m.ShopPage)
   },
   {
     path: 'deliveries',
-    loadComponent: () => import('./Admin/deliveries/deliveries.page').then( m => m.DeliveriesPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
+    loadComponent: () => import('./Admin/deliveries/deliveries.page').then( m => m.DeliveriesPage)
   },
   {
     path: 'inventory',
-    loadComponent: () => import('./Admin/inventory/inventory.page').then( m => m.InventoryPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
+    loadComponent: () => import('./Admin/inventory/inventory.page').then( m => m.InventoryPage)
   },
   {
     path: 'menu',
-    loadComponent: () => import('./Admin/menu/menu.page').then( m => m.MenuPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
+    loadComponent: () => import('./Admin/menu/menu.page').then( m => m.MenuPage)
   },
   {
     path: 'orders',
-    loadComponent: () => import('./Admin/orders/orders.page').then( m => m.OrdersPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
+    loadComponent: () => import('./Admin/orders/orders.page').then( m => m.OrdersPage)
   },
   {
     path: 'profiles',
-    loadComponent: () => import('./Admin/profiles/profiles.page').then( m => m.ProfilesPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
+    loadComponent: () => import('./Admin/profiles/profiles.page').then( m => m.ProfilesPage)
   },
   {
     path: 'refunds',
-    loadComponent: () => import('./Admin/refunds/refunds.page').then( m => m.RefundsPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
+    loadComponent: () => import('./Admin/refunds/refunds.page').then( m => m.RefundsPage)
   },
   {
     path: 'stocktypes',
-    loadComponent: () => import('./Admin/inventory/stocktypes/stocktypes.page').then( m => m.StocktypesPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
+    loadComponent: () => import('./Admin/inventory/stocktypes/stocktypes.page').then( m => m.StocktypesPage)
   },
   {
     path: 'stockitemcolours',
-    loadComponent: () => import('./Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
-  },
+    loadComponent: () => import('./Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage)
+  }
 ];
