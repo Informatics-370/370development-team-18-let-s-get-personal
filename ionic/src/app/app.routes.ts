@@ -13,8 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'basket',
-    loadComponent: () => import('./Customer/basket/basket.page').then( m => m.BasketPage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/basket/basket.page').then( m => m.BasketPage)
   },
   {
     path: 'contactus',
@@ -32,8 +31,7 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
-    loadComponent: () => import('./Customer/profile/profile.page').then( m => m.ProfilePage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/profile/profile.page').then( m => m.ProfilePage)
   },
   {
     path: 'shop',
@@ -42,11 +40,7 @@ export const routes: Routes = [
   },
   {
     path: 'deliveries',
-    loadComponent: () => import('./Admin/deliveries/deliveries.page').then( m => m.DeliveriesPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
+    loadComponent: () => import('./Admin/deliveries/deliveries.page').then( m => m.DeliveriesPage)
   },
   {
     path: 'inventory',
@@ -74,11 +68,7 @@ export const routes: Routes = [
   },
   {
     path: 'profiles',
-    loadComponent: () => import('./Admin/profiles/profiles.page').then( m => m.ProfilesPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
+    loadComponent: () => import('./Admin/profiles/profiles.page').then( m => m.ProfilesPage)
   },
   {
     path: 'refunds',
@@ -90,19 +80,11 @@ export const routes: Routes = [
   },
   {
     path: 'stocktypes',
-    loadComponent: () => import('./Admin/inventory/stocktypes/stocktypes.page').then( m => m.StocktypesPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
+    loadComponent: () => import('./Admin/inventory/stocktypes/stocktypes.page').then( m => m.StocktypesPage)
   },
   {
     path: 'stockitemcolours',
-    loadComponent: () => import('./Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage),
-    canActivate: [AuthGuard],
-    data: {
-      role: 'Admin'
-    }
+    loadComponent: () => import('./Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage)
   },
   {
     path: 'editstockitemcolours',

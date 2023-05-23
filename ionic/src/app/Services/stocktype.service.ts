@@ -21,14 +21,13 @@ import { StockTypes } from '../Models/stocktypes';
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
     public GetStockTypes(): Observable<any>{ 
-      return this.httpClient.get(`${this.apiUrl}StockType/GetAllStockTypes`)
+      return this.httpClient.get<StockTypes>(`${this.apiUrl}StockType/GetAllStockTypes`)
       .pipe(map(result => result))
     }
   
     //add
     public AddStockType(stocktype:StockTypes){
       return this.httpClient.post(`${this.apiUrl}StockType/AddStockType`, stocktype, this.httpOptions)
-      //.pipe(map(result => result))
     }
   
     //get selected one
@@ -39,14 +38,14 @@ import { StockTypes } from '../Models/stocktypes';
   
     //edit
     public UpdateStockType(stock_Type_ID:Number, stocktype:StockTypes){
-      return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockType/${stock_Type_ID}`, stocktype, this.httpOptions);
-      //.pipe(map(result => result))
+      return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockType/${stock_Type_ID}`, stocktype, this.httpOptions)
+      .pipe(map(result => result))
     }
   
     //delete 
     public DeleteStockType(stock_Type_ID:Number){
-      return this.httpClient.delete<string>(`${this.apiUrl}StockType/DeleteStockType` + "/" + stock_Type_ID, this.httpOptions);
-      //.pipe(map(result => result))
+      return this.httpClient.delete<string>(`${this.apiUrl}StockType/DeleteStockType` + "/" + stock_Type_ID, this.httpOptions)
+      .pipe(map(result => result))
     }
   
   }
