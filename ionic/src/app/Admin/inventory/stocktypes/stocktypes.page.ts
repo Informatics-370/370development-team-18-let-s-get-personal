@@ -23,9 +23,12 @@ import { OverlayEventDetail } from '@ionic/core/components';
 export class StocktypesPage implements OnInit {
  @ViewChild(IonModal) modal!: IonModal
   stocktypes: StockTypes[] =[];
-  stocktype: any
-  constructor(public modalCtrl: ModalController, private service:StockTypeDataService,
-    private router: Router,  private alertController: AlertController, private route:ActivatedRoute) { }
+  constructor(
+    public modalCtrl: ModalController, 
+    private service:StockTypeDataService,
+    private router: Router,  
+    private alertController: AlertController, 
+    private route:ActivatedRoute) { }
 
     AddTypeForm:FormGroup = new FormGroup({
       name: new FormControl(['',Validators.required])      
@@ -37,7 +40,8 @@ export class StocktypesPage implements OnInit {
 
   GetStockTypes(){
    this.service.GetStockTypes().subscribe(result =>{
-    let stocktypelist: any[] = result
+    console.log(result);
+    let stocktypelist: StockTypes[] = result;
     stocktypelist.forEach((element)=>{
       this.stocktypes.push(element)
     });
