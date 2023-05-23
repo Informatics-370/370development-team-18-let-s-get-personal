@@ -17,7 +17,7 @@
                     <ion-item *ngFor="let item of deliverycompanies" >                      
                         <ion-label>
                             <h5>{{item.DeliveryCompanyName}}</h5>
-                            <ion-button id="editmodal">Edit</ion-button>
+                            <ion-button (click)="EditCompany()">Edit</ion-button>
                             <ion-button>Delete</ion-button>
                         </ion-label>
                     </ion-item>

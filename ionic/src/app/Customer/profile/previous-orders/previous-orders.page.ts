@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule, Router ,ActivatedRoute} from '@angular/router';
 import { Order } from 'src/app/Models/orders';
-import { StockTypeDataService } from 'src/app/Services/stocktype.service';
 
 
 @Component({

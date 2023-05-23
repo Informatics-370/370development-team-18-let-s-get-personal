@@ -34,7 +34,10 @@ export class DeliverycompanyPage implements OnInit {
       this.GetDeliveryCompanies();
     }
 
-
+    EditCompany()
+    {
+      this.router.navigate(['./edit-deliverycompany']);
+    }
     GetDeliveryCompanies(){
       this.service.GetDeliveryCompanies().subscribe(result =>{
         let deliverycompanylist: any[] = result

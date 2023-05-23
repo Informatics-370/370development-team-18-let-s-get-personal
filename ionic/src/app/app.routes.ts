@@ -107,36 +107,6 @@ export const routes: Routes = [
   {
     path: 'editstockitemcolours',
     loadComponent: () => import('./Admin/inventory/stockitemcolours/editstockitemcolours/editstockitemcolours.page').then( m => m.EditstockitemcoloursPage)
-<<<<<<< HEAD
-  },
-  {
-    path: 'delivery-company',
-    loadComponent: () => import('./Admin/deliveries/deliverycompany/delivery-company/delivery-company.page').then( m => m.DeliveryCompanyPage)
-  },
-  {
-    path: 'previous-orders',
-    loadComponent: () => import('./Customer/profile/previous-orders/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage)
-  },
-  {
-    path: 'product-rating',
-    loadComponent: () => import('./Customer/profile/previous-orders/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage)
-  },
-  {
-    path: 'edit-deliverycompany',
-    loadComponent: () => import('./Admin/deliveries/deliverycompany/edit-delivery-company/edit-deliverycompany/edit-deliverycompany.page').then( m => m.EditDeliverycompanyPage)
-  },
-  {
-    path: 'edit-productrating',
-    loadComponent: () => import('./Customer/profile/previous-orders/previous-orders/product-rating/edit-productrating/edit-productrating.page').then( m => m.EditProductratingPage)
-=======
->>>>>>> developer
-  },  {
-    path: 'previous-orders',
-    loadComponent: () => import('./Customer/profile/previous-orders/previousorders/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage)
-  },
-  {
-    path: 'previous-orders',
-    loadComponent: () => import('./Customer/profile/previous-orders/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage)
   },
   {
     path: 'previous-orders',
@@ -145,10 +115,6 @@ export const routes: Routes = [
   {
     path: 'deliverycompany',
     loadComponent: () => import('./Admin/deliveries/deliverycompany/deliverycompany.page').then( m => m.DeliverycompanyPage)
-  },
-  {
-    path: 'edit-deliverycompany',
-    loadComponent: () => import('./Admin/deliveries/deliverycompany/edit-deliverycompany/edit-deliverycompany/edit-deliverycompany.page').then( m => m.EditDeliverycompanyPage)
   },
   {
     path: 'edit-deliverycompany',
