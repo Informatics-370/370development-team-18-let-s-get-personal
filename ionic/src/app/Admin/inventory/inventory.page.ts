@@ -22,11 +22,11 @@ export class InventoryPage implements OnInit {
 
   stocktypes()
   {
-    this.router.navigate(['./stocktypes']);
+    this.router.navigate(['./tabsstocktypes']);
   }
   stockcoloursnav()
   {
-    this.router.navigate(['./stockitemcolours']);
+    this.router.navigate(['./tabsstockitemcolours']);
   }
   //GetStockTypes(){
     //this.service.GetStockTypes().subscribe(result =>{

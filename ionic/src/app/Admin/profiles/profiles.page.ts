@@ -11,6 +11,7 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class ProfilesPage implements OnInit {
+  data = {profileId: 0, email: '', password: '', cellnumber: '', Firstname: '', Lastname: '',adress:''};
 
   constructor() { }
 

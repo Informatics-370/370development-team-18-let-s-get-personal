@@ -1,0 +1,58 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Create Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Create Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">First Name</ion-label>
+        <ion-input name="Firstname"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Last Name</ion-label>
+        <ion-input name="Lastname"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Cellphone Number</ion-label>
+        <ion-input name="cellnumber"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Email adress</ion-label>
+        <ion-input name="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Home Adress</ion-label>
+        <ion-input name="adress"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Username</ion-label>
+        <ion-input name="username"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input name="password"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Confirm Password</ion-label>
+        <ion-input name="confirmpassword"></ion-input>
+      </ion-item>
+
+      <ion-button onclick="AddProfile()">Create Profile</ion-button>
+    </ion-list>
+  </ion-content>
+</ion-content>

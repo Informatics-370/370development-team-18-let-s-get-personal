@@ -32,7 +32,7 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
-    loadComponent: () => import('./Customer/profile/profile.page').then( m => m.ProfilePage),
+    loadComponent: () => import('./Profiles/profile/profile.page').then( m => m.ProfilePage),
     canActivate: [AuthGuard]
   },
   {
@@ -107,6 +107,19 @@ export const routes: Routes = [
   {
     path: 'editstockitemcolours',
     loadComponent: () => import('./Admin/inventory/stockitemcolours/editstockitemcolours/editstockitemcolours.page').then( m => m.EditstockitemcoloursPage)
+  },
+  {
+    path: 'changepassword',
+    loadComponent: () => import('./Profiles/changepassword/changepassword.page').then( m => m.ChangepasswordPage)
+  },  {
+    path: 'update-profile',
+    loadComponent: () => import('./Profiles/profile/update-profile/update-profile.page').then( m => m.UpdateProfilePage)
+  },
+  {
+    path: 'create-profile',
+    loadComponent: () => import('./Profiles/create-profile/create-profile.page').then( m => m.CreateProfilePage)
   }
+
+
 
 ];
