@@ -1,8 +1,17 @@
-export class Customer{
+import { User } from "./user"
+import { Gender } from "./Gender"
+import { Title } from "./title"
+import { Address } from "./address"
+
+export class Customer{  
+    Title!: Title
+    Gender!: Gender
+    Address!: Address
+    user!: User
+
     CustomerId!: number
-    Name!: String
+    FirstName!: String
     Surname!: String
-    PhoneNumber!: Number
-    Birthdate!: Date
-    
+    Cell_Number!: Number
+    Email!: String   
 }

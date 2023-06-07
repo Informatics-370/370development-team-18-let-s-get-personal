@@ -20,7 +20,6 @@ import { Customer } from '../Models/customer';
     constructor(private httpClient: HttpClient) { 
     }
   
-    //return http.loacalhost:5116/api/Course/GetAllStockTypes
     public GetCustomers(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}Customer/GetAllCustomers`)
       .pipe(map(result => result))
@@ -33,21 +32,19 @@ import { Customer } from '../Models/customer';
     }
   
     //get selected one
-    public GetCustomer(customerId:Number){ 
-      return this.httpClient.get(`${this.apiUrl}Customer/GetCustomer/${customerId}`)
+    public GetCustomer(Customer_ID:Number){ 
+      return this.httpClient.get(`${this.apiUrl}Customer/GetCustomer/${Customer_ID}`)
       .pipe(map(result => result))
     }
   
     //edit
-    public UpdateCustomer(customerId:Number, customer:Customer){
-      return this.httpClient.put(`${this.apiUrl}Customer/UpdateCustomer/${customerId}`, customer)
-      .pipe(map(result => result))
+    public UpdateCustomer(Customer_ID:Number, customer:Customer){
+      return this.httpClient.put(`${this.apiUrl}Customer/UpdateCustomer/${Customer_ID}`, customer)
     }
   
     //delete 
-    public DeleteStockType(customerId:Number){
-      return this.httpClient.delete(`${this.apiUrl}Customer/DeleteCustomer/${customerId}`)
-      .pipe(map(result => result))
+    public DeleteStockType(Customer_ID:Number){
+      return this.httpClient.delete(`${this.apiUrl}Customer/DeleteCustomer/${Customer_ID}`)
     }
   
   }

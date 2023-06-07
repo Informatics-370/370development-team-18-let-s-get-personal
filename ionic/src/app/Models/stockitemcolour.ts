@@ -1,9 +1,5 @@
-//import { StockItem } from "./stockitem"
 export interface  StockItemColours{
     stock_Item_Colour_ID: number
-    ColorName: string 
-    Image: string
-
-    //StockItemId!: Number
-    //stockitems!: StockItem
+    Stock_Item_Colour_Name: string 
+    Stock_Item_Colour_Image: string
 }
