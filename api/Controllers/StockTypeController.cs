@@ -54,7 +54,7 @@ namespace IPKP___API.Controllers
 
     [HttpPost]
     [Route("AddStockType")]
-    public async Task<IActionResult> AddCertificationAsync(StockTypeViewModel stvm)
+    public async Task<IActionResult> AddStockTypeAsync(StockTypeViewModel stvm)
     {
       var stock_Type = new Stock_Type
       {
@@ -75,7 +75,7 @@ namespace IPKP___API.Controllers
 
     [HttpPut]
     [Route("UpdateStockType")]
-    public async Task<IActionResult> UpdateCertificationAsync(Guid stock_Type_ID, StockTypeViewModel stvm)
+    public async Task<IActionResult> UpdateStockTypeAsync(Guid stock_Type_ID, StockTypeViewModel stvm)
     {
       try
       {
@@ -99,7 +99,7 @@ namespace IPKP___API.Controllers
 
     [HttpDelete]
     [Route("DeleteStockType")]
-    public async Task<IActionResult> DeleteCertificationAsync(Guid stock_Type_ID)
+    public async Task<IActionResult> DeleteStockTypeAsync(Guid stock_Type_ID)
     {
       try
       {
