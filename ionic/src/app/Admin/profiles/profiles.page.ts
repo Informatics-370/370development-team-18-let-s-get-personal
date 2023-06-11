@@ -8,8 +8,9 @@ import { ModalController} from '@ionic/angular';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { elementAt } from 'rxjs';
-
-
+import { User } from 'src/app/Models/user';
+import { Customer } from 'src/app/Models/customer';
+import { Employee } from 'src/app/Models/employee';
 @Component({
   selector: 'app-profiles',
   templateUrl: './profiles.page.html',
@@ -18,8 +19,10 @@ import { elementAt } from 'rxjs';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class ProfilesPage implements OnInit {
-  Profile:ProfilesPage[] = []
-
+  
+  Profile:User[] = []
+  customers: Customer[] = []
+  employees: Employee[] = []
   constructor(private service:ProfileService, private alertController:AlertController) { }
 
   ngOnInit() {
@@ -33,23 +36,17 @@ export class ProfilesPage implements OnInit {
         this.Profile.push(element)
       });
     })
+  }
+  AddUser(){
+
+  }
+  
+  DeleteEmployee(){
 
   }
 
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  DeleteCustomer(){
+
   }
-
-  async confirmaddmodal() {
-    const alert = await this.alertController.create({
-      header: 'Please Confirm that you would like to submit this profile',
-      buttons: ['Cancel', 'Continue']
-    });
-    await alert.present();
-   
-  }
-
-
-
 }
 

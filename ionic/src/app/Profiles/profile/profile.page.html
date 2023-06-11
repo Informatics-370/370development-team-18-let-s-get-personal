@@ -12,7 +12,6 @@
   </ion-header>
 
 <ion-card-content>
-  <ion-button id="addmodal">Add Stock Type</ion-button>
               <ion-list>
                 <!--ng for each-->
                   <ion-item >                      
@@ -23,7 +22,7 @@
                         <p>{{data.cellnumber}}</p>
                         <p>{{data.adress}}</p>
                         <ion-button (click)="getProfile()">Edit Profile</ion-button>
-                        <ion-button (click)="deleteProfile(data.profileId)" >Delete Profile</ion-button>
+                        <ion-button (click)="deleteProfile(data.profileId)">Delete Profile</ion-button>
                       </ion-label>
                   </ion-item>
               </ion-list>

@@ -1,5 +1,5 @@
 import { User } from "./user"
-import { Gender } from "./Gender"
+import { Gender } from "./gender"
 import { Title } from "./title"
 import { Address } from "./address"
 

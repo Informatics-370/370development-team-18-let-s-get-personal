@@ -11,12 +11,27 @@
     </ion-toolbar>
   </ion-header>
   <ion-card-content>
-    <ion-button id="addmodal">Add Stock Type</ion-button>
-                <ion-list>                  
-                    <ion-item> <!--*ngFor="let item of data"-->                     
-                        <ion-label>
-                            <h5></h5>
+    <ion-button onclick="AddUser()">Create New User</ion-button>
+    <ion-list>
+      <h2>Employees:</h2>                  
+        <ion-item *ngFor="let item of employees"> <!--*ngFor="let item of data"-->                     
+            <ion-label>
+                <h5>{{item.Title}} + ' ' + {{item.FirstName}} + ' ' + {{item.Surname}}</h5>
+                
+                <p>Address: {{item.Address}}</p>
+                <p>Cellphone number: {{item.Cell_Number}}</p>
+                <p>Email {{item.Email}} </p>
+                <ion-button onclick="DeleteEmployee()">Delete Employee</ion-button>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+    <ion-list>
+      <h2>Customers:</h2>                  
+        <ion-item *ngFor="let item of customers"> <!--*ngFor="let item of data"-->                     
+          <ion-label>
+            <h5>{{item.Title}} + ' ' + {{item.FirstName}} + ' ' + {{item.Surname}}</h5>
                             
+<<<<<<< Updated upstream
                         </ion-label>
                     </ion-item>
                 </ion-list>
@@ -96,4 +111,14 @@
     </ion-item>
     <ion-button>Submit</ion-button>
   </ion-card>
+=======
+            <p>Address: {{item.Address}}</p>
+            <p>Cellphone number: {{item.Cell_Number}}</p>
+            <p>Email {{item.Email}} </p>
+            <ion-button onclick="DeleteCustomer()">Delete Customer</ion-button>
+          </ion-label>
+        </ion-item>
+    </ion-list>
+  </ion-card-content>
+>>>>>>> Stashed changes
 </ion-content>

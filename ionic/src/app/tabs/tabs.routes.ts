@@ -33,7 +33,7 @@ export const routes: Routes = [
       },
       {
         path: 'login',
-        loadComponent: () => import('../Customer/login/login.page').then( m => m.LoginPage)
+        loadComponent: () => import('../Profiles/login/login.page').then( m => m.LoginPage)
       },
       {
         path: 'profile',

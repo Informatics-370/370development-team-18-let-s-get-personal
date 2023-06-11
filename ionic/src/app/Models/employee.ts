@@ -1,5 +1,5 @@
 import { Title } from "./title";
-import { Gender } from "./Gender";
+import { Gender } from "./gender";
 import { Address } from "./address";
 import { User } from "./user";
 
