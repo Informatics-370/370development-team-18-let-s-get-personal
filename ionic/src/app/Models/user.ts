@@ -1,7 +1,7 @@
+import { UserRole } from "./userrole"
 export class User{
-    UserID!: number
-    Name!: String
-    Surname!: String
-    PhoneNumber!: Number
-    UserRole!: String
+    User_ID!: number
+    Username!: String
+    Password!: String
+    User_Role!: UserRole
 }

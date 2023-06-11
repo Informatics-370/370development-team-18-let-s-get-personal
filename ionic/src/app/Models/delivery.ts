@@ -1,11 +1,12 @@
-import { DeliveryCompany } from "./deliverycompany"
+import { Delivery_Company } from "./deliverycompany"
+import { Address } from "./address"
 
 export class Delivery{
-    DeliveryId!: Number
-    DeliveryAdress!: String
-    DeliveryPrice!: Number
-    TrackingNumber!: Number
+    Delivery_ID!: Number
+    Delivery_Address!: Address
+    Delivery_Company!: Delivery_Company
 
-    DeliveryCompanyId!: Number
-    deliverycompany!: DeliveryCompany
+    Delivery_Price!: Number
+    Tracking_Number!: Number
+
 }
