@@ -111,7 +111,8 @@ export const routes: Routes = [
   {
     path: 'changepassword',
     loadComponent: () => import('./Profiles/changepassword/changepassword.page').then( m => m.ChangepasswordPage)
-  },  {
+  },
+  {
     path: 'update-profile',
     loadComponent: () => import('./Profiles/profile/update-profile/update-profile.page').then( m => m.UpdateProfilePage)
   },

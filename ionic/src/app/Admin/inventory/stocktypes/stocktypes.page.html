@@ -16,7 +16,7 @@
                   <!--ng for each-->
                     <ion-item *ngFor="let item of stocktypes" >                      
                         <ion-label>
-                            <h5>{{item.StockTypeName}}</h5>
+                            <h5 style="color: lightblue;">Stock Type Name: {{item.StockTypeName}}</h5>
                             <ion-button (click)="getstocktype(item.stock_Type_ID)" >Edit</ion-button>
                             <ion-button (click)="deleteStockTypes(item.stock_Type_ID)" >Delete</ion-button>
                         </ion-label>
