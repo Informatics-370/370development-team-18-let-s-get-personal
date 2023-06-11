@@ -1,5 +1,5 @@
 
-export class DeliveryCompany{
-    DeliveryCompanyId!: number
-    DeliveryCompanyName!: String
+export class Delivery_Company{
+    Delivery_Company_ID!: number
+    Delivery_Company_Name!: String
 }

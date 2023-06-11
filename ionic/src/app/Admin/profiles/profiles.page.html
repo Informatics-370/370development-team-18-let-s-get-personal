@@ -1,3 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Profiles</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">View Users</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card-content>
+    <ion-button id="addmodal">Add Stock Type</ion-button>
+                <ion-list>                  
+                    <ion-item> <!--*ngFor="let item of data"-->                     
+                        <ion-label>
+                            <h5></h5>
+                            
+                        </ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-card-content>
 
 <ion-content>
   <ion-card>
@@ -74,4 +97,3 @@
     <ion-button>Submit</ion-button>
   </ion-card>
 </ion-content>
-

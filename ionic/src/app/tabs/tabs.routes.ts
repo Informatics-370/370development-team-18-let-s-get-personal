@@ -37,7 +37,7 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: () => import('../Customer/profile/profile.page').then( m => m.ProfilePage),
+        loadComponent: () => import('../Profiles/profile/profile.page').then( m => m.ProfilePage),
         canActivate: [AuthGuard]
       },
       {
@@ -94,7 +94,7 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'stocktypes',
+        path: 'tabsstocktypes',
         loadComponent: () => import('../Admin/inventory/stocktypes/stocktypes.page').then( m => m.StocktypesPage),
         canActivate: [AuthGuard],
         data: {
@@ -102,7 +102,7 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'stockitemcolours',
+        path: 'tabsstockitemcolours',
         loadComponent: () => import('../Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage),
         canActivate: [AuthGuard],
         data: {

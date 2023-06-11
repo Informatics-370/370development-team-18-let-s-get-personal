@@ -13,7 +13,8 @@ export const routes: Routes = [
   },
   {
     path: 'basket',
-    loadComponent: () => import('./Customer/basket/basket.page').then( m => m.BasketPage)
+    loadComponent: () => import('./Customer/basket/basket.page').then( m => m.BasketPage),
+    canActivate: [AuthGuard]
   },
   {
     path: 'contactus',
@@ -31,7 +32,8 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
-    loadComponent: () => import('./Customer/profile/profile.page').then( m => m.ProfilePage)
+    loadComponent: () => import('./Profiles/profile/profile.page').then( m => m.ProfilePage),
+    canActivate: [AuthGuard]
   },
   {
     path: 'shop',
@@ -40,7 +42,11 @@ export const routes: Routes = [
   },
   {
     path: 'deliveries',
-    loadComponent: () => import('./Admin/deliveries/deliveries.page').then( m => m.DeliveriesPage)
+    loadComponent: () => import('./Admin/deliveries/deliveries.page').then( m => m.DeliveriesPage),
+    canActivate: [AuthGuard],
+    data: {
+      role: 'Admin'
+    }
   },
   {
     path: 'inventory',
@@ -68,7 +74,11 @@ export const routes: Routes = [
   },
   {
     path: 'profiles',
-    loadComponent: () => import('./Admin/profiles/profiles.page').then( m => m.ProfilesPage)
+    loadComponent: () => import('./Admin/profiles/profiles.page').then( m => m.ProfilesPage),
+    canActivate: [AuthGuard],
+    data: {
+      role: 'Admin'
+    }
   },
   {
     path: 'refunds',
@@ -80,15 +90,37 @@ export const routes: Routes = [
   },
   {
     path: 'stocktypes',
-    loadComponent: () => import('./Admin/inventory/stocktypes/stocktypes.page').then( m => m.StocktypesPage)
+    loadComponent: () => import('./Admin/inventory/stocktypes/stocktypes.page').then( m => m.StocktypesPage),
+    canActivate: [AuthGuard],
+    data: {
+      role: 'Admin'
+    }
   },
   {
     path: 'stockitemcolours',
-    loadComponent: () => import('./Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage)
+    loadComponent: () => import('./Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage),
+    canActivate: [AuthGuard],
+    data: {
+      role: 'Admin'
+    }
   },
   {
     path: 'editstockitemcolours',
     loadComponent: () => import('./Admin/inventory/stockitemcolours/editstockitemcolours/editstockitemcolours.page').then( m => m.EditstockitemcoloursPage)
+  },
+  {
+    path: 'changepassword',
+    loadComponent: () => import('./Profiles/changepassword/changepassword.page').then( m => m.ChangepasswordPage)
+  },
+  {
+    path: 'update-profile',
+    loadComponent: () => import('./Profiles/profile/update-profile/update-profile.page').then( m => m.UpdateProfilePage)
+  },
+  {
+    path: 'create-profile',
+    loadComponent: () => import('./Profiles/create-profile/create-profile.page').then( m => m.CreateProfilePage)
   }
+
+
 
 ];
