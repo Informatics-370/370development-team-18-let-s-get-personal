@@ -31,5 +31,12 @@ namespace IPKP___API.Controllers.Models.Repository
     Task<Product_Rating[]> GetAllProductRatingsAsync();
     Task<Delivery_Company> GetDeliveryCompanyDetailsAsync(Guid delivery_Company_ID);
     Task<Delivery_Company[]> GetAllDeliveryCompaniesAsync();
-  }
+    Task<Refund> GetRefundDetailsAsync(Guid Refund_ID);
+    Task<Refund_Policy> GetPolicyAsync(Guid policy_ID);
+    Task<Refund_Policy[]> GetAllPoliciesAsync();
+    Task<Discount> GetDiscountAsync(Guid discount_ID);
+    Task<Discount[]> GetAllDiscountsAsync();
+
+
+    }
 }

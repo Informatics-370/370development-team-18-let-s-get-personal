@@ -154,6 +154,43 @@ namespace IPKP___API.Controllers.Models.Repository
       return await query.FirstOrDefaultAsync();
     }
 
+    //refunding ****
+    public async Task<Refund> GetRefundDetailsAsync(Guid Refund_ID)
+    {
+      IQueryable<Refund> query = _appDbContext.Refunds
+                .Where(u => u.Refund_ID == Refund_ID);
+      return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<Refund_Policy> GetPolicyAsync(Guid policy_ID)
+    {
+        IQueryable<Refund_Policy> query = _appDbContext.Refund_Policies
+                .Where(u => u.Refund_Policy_ID == policy_ID);
+        return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<Refund_Policy[]> GetAllPoliciesAsync()
+    {
+        IQueryable<Refund_Policy> query = _appDbContext.Refund_Policies;
+        return await query.ToArrayAsync();
+    }
+//***
+
+    //discounts ***
+     public async Task<Discount[]> GetAllDiscountsAsync()
+     {
+        IQueryable<Discount> query = _appDbContext.Discounts;
+        return await query.ToArrayAsync();
+     }
+
+    public async Task<Discount> GetDiscountAsync(Guid discount_ID)
+    {
+        IQueryable<Discount> query = _appDbContext.Discounts
+                .Where(u => u.Discount_ID == discount_ID);
+        return await query.FirstOrDefaultAsync();
+    }
+//***
+
     public async Task<bool> SaveChangesAsync()
     {
       return await _appDbContext.SaveChangesAsync() > 0;
