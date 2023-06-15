@@ -154,7 +154,13 @@ namespace IPKP___API.Controllers.Models.Repository
       return await query.FirstOrDefaultAsync();
     }
 
-    //refunding ****
+        //refunding ****
+    public async Task<Refund[]> GetAllRefundsAsync()
+    {
+       IQueryable<Refund> query = _appDbContext.Refunds;
+       return await query.ToArrayAsync();
+    }
+
     public async Task<Refund> GetRefundDetailsAsync(Guid Refund_ID)
     {
       IQueryable<Refund> query = _appDbContext.Refunds
