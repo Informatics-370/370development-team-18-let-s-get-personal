@@ -110,6 +110,14 @@ export const routes: Routes = [
         }
       },
       {
+        path: 'discounts',
+        loadComponent: () => import('../Admin/discounts/discounts.page').then( m => m.DiscountsPage),
+        canActivate: [AuthGuard],
+        data: {
+          role: 'Admin'
+        }
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full',

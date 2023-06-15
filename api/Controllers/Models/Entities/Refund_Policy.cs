@@ -12,5 +12,8 @@ namespace IPKP___API.Controllers.Models.Entities
     public Guid Refund_Policy_ID { get; set; }
     public DateTime Refund_Policy_Date { get; set; }
     public int Refund_Policy_Version { get; set; }
+    
+    public string Refund_Policy_Description { get; set; }
+
   }
 }

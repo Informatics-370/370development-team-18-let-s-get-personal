@@ -81,7 +81,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateDiscount")]
-        public async Task<IActionResult> UpdateDiscount(Guid Discount_ID, Discount dm)
+        public async Task<IActionResult> UpdateDiscount(Guid Discount_ID, Discount discount)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace IPKP___API.Controllers
 
                 if (existingDiscount == null) return NotFound("Could Not Find Delivery Company" + Discount_ID);
 
-                existingDiscount.Discount_Name = dm.Discount_Name;
+                existingDiscount.Discount_Name = discount.Discount_Name;
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {

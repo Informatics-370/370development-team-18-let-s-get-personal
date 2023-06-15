@@ -9,6 +9,8 @@ using IPKP___API.Controllers.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Runtime.Intrinsics.Arm;
+using System.
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace IPKP___API.Controllers
@@ -22,9 +24,48 @@ namespace IPKP___API.Controllers
         {
             _IPKPRepository = iPKPRepository;
         }
+        //************* Process refund
 
+        [HttpGet]
+        [Route("GetCustomer")]
+        public async Task<IActionResult> GetCustomer(Guid customer_ID)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetCustomerDetailsAsync(customer_ID);
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+            }
+        }
 
-
+        [HttpPost]
+        [Route("AddRefund")]
+        public async Task<IActionResult> AddRefund(Refund refundm)
+        {
+            var newrefund = new Refund
+            {
+                Refund_ID = refundm.Refund_ID,
+                Refund_Comment = refundm.Refund_Comment,
+                Customer = refundm.Customer,
+                Refund_Policy = refundm.Refund_Policy
+            };
+            try
+            {
+                
+                _IPKPRepository.Add(newrefund);
+                await _IPKPRepository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Invalid Transaction");
+            }
+            return Ok("Delivery Company Added To Database."); 
+            
+        }
+        
 //************** Policies
         [HttpGet]
         [Route("GetAllRefundPolicies")]
@@ -49,7 +90,8 @@ namespace IPKP___API.Controllers
             {
                 Refund_Policy_ID = rpm.Refund_Policy_ID,
                 Refund_Policy_Date = rpm.Refund_Policy_Date,
-                Refund_Policy_Version = rpm.Refund_Policy_Version
+                Refund_Policy_Version = rpm.Refund_Policy_Version,
+                Refund_Policy_Description = rpm.Refund_Policy_Description
             };
             try
             {
@@ -63,29 +105,6 @@ namespace IPKP___API.Controllers
             return Ok("Delivery Company Added To Database.");
         }
 
-        [HttpPut]
-        [Route("UpdateRefundPolicy")]
-        public async Task<IActionResult> UpdateRefundPolicy(Guid policy_ID, Refund_Policy rpm)
-        {
-            try
-            {
-                var existingpoliciy = await _IPKPRepository.GetPolicyAsync(policy_ID);
-
-                if (existingpoliciy == null) return NotFound("Could Not Find Delivery Company" + policy_ID);
-
-                existingpoliciy.Refund_Policy_Version = rpm.Refund_Policy_Version;
-
-                if (await _IPKPRepository.SaveChangesAsync())
-                {
-                    return Ok("Delivery Company Updated Successfully");
-                }
-            }
-            catch (Exception)
-            {
-                return BadRequest("Invalid Transaction");
-            }
-            return Ok("Delivery Company Saved To Database.");
-        }
 
         [HttpDelete]
         [Route("DeleteRefundPolicy")]

@@ -120,7 +120,19 @@ export const routes: Routes = [
   {
     path: 'create-profile',
     loadComponent: () => import('./Profiles/create-profile/create-profile.page').then( m => m.CreateProfilePage)
+  },  {
+    path: 'process-refund',
+    loadComponent: () => import('./Admin/refunds/process-refund/process-refund.page').then( m => m.ProcessRefundPage)
+  },
+  {
+    path: 'discounts',
+    loadComponent: () => import('./Admin/discounts/discounts.page').then( m => m.DiscountsPage)
+  },
+  {
+    path: 'edit-discounts',
+    loadComponent: () => import('./Admin/discounts/edit-discounts/edit-discounts.page').then( m => m.EditDiscountsPage)
   }
+
 
 
 
