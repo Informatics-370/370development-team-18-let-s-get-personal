@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { Refund } from '../Models/refund';
 import { Refund_Policy } from '../Models/refundpolicy';
-
+import { RefundVM } from '../ViewModels/refundVM';
 @Injectable({
     providedIn: 'root' 
   })
@@ -44,7 +44,7 @@ import { Refund_Policy } from '../Models/refundpolicy';
     }
     
     //process refund 
-    AddRefund(refund: Refund){
+    AddRefund(refund: RefundVM){
         return this.httpClient.post(`${this.apiUrl}Refund/AddRefund`, refund)
         .pipe(map(result => result))
     }

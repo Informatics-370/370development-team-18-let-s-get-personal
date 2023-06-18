@@ -25,7 +25,7 @@
         <ion-col>{{item.Effective_From_Date}}</ion-col>
         <ion-col>{{item.Effective_To_Date}}</ion-col>
         <ion-col><ion-button (click)="DeleteDiscount(item.Discount_ID)">Delete</ion-button></ion-col>
-        <ion-col><ion-button  >Update</ion-button></ion-col>      <!--(click)="DeleteRefundPolicy(item.Discount_ID)"-->
+        <ion-col><ion-button (click)="EditDiscount(item.Discount_ID)" >Update</ion-button></ion-col>      
       </ion-row>
     </ion-grid>
 

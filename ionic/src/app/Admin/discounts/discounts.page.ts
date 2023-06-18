@@ -62,6 +62,11 @@ export class DiscountsPage implements OnInit {
     })
   }
 
+  EditDiscount(Discount_ID:Number)
+  {
+    this.thisroute.navigate(['/edit-discounts', Discount_ID]);
+  }
+
   DeleteDiscount(Discount_ID: Number){
     this.service.DeleteDiscount(Discount_ID).subscribe(result => {
       console.log(result);

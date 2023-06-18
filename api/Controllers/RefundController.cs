@@ -43,14 +43,15 @@ namespace IPKP___API.Controllers
 
         [HttpPost]
         [Route("AddRefund")]
-        public async Task<IActionResult> AddRefund(Refund refundm)
+        public async Task<IActionResult> AddRefund(RefundViewModel refundVM)
         {
             var newrefund = new Refund
             {
-                Refund_ID = refundm.Refund_ID,
-                Refund_Comment = refundm.Refund_Comment,
-                Customer = refundm.Customer,
-                Refund_Policy = refundm.Refund_Policy
+                Refund_ID = new Guid(),
+                Customer = refundVM.Customer_ID,
+                Refund_Comment = refundVM.Refund_Comment,                
+                Refund_Policy = refundVM.Refund_Policy,
+                Refund_Status = refundVM.Refund_Status
             };
             try
             {
