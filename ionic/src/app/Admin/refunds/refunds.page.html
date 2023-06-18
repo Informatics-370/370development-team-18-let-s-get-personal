@@ -7,7 +7,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">refunds</ion-title>
+      <ion-title size="large">Refunds</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-button>Process Refund</ion-button>
@@ -23,7 +23,7 @@
         <ion-col>{{item.Refund_Policy_Date}}</ion-col>
         <ion-col>{{item.Refund_Policy_Version}}</ion-col>
         <ion-col>{{item.Refund_Policy_Description}}</ion-col>
-        <ion-button (click)="DeleteRefundPolicy(item.Refund_Policy_ID)" >Delete</ion-button>
+        <ion-button (click)="DeleteRefundPolicy(item.Refund_Policy_ID)">Delete</ion-button>
       </ion-row>
     </ion-grid>
 
