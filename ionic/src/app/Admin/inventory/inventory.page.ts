@@ -3,19 +3,21 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
-//import { StockTypeDataService } from 'src/app/Services/stocktype.service';
-//import { StockTypes } from 'src/app/Models/stocktypes';
+import { StockItemDataService } from 'src/app/Services/stockitem.service';
+import { Stock_Item } from 'src/app/Models/stockitem';
+
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.page.html',
   styleUrls: ['./inventory.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule],
-  //providers: [StockTypeDataService]
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule]
 })
 export class InventoryPage implements OnInit {
-  //stocktype: StockTypes[] =[];
-  constructor(public environmentInjector: EnvironmentInjector, private router: Router) { }
+  stockItems: Stock_Item[] =[];
+  
+  constructor(public environmentInjector: EnvironmentInjector, private router: Router,
+    public stockitemservice: StockItemDataService) { }
 
   ngOnInit() {
   }
@@ -28,9 +30,14 @@ export class InventoryPage implements OnInit {
   {
     this.router.navigate(['./tabsstockitemcolours']);
   }
-  //GetStockTypes(){
-    //this.service.GetStockTypes().subscribe(result =>{
-     // this.stocktype = result as StockTypes[];
-    //})
- // }
+
+  addToBestSellers(Stock_Item_ID: Number){
+
+  }
+  
+  GetAllStockItems(){
+    this.stockitemservice.GetStockItems().subscribe(result =>{
+      this.stockItems = result as Stock_Item[];
+    })
+  }
 }

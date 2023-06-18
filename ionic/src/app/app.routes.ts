@@ -131,6 +131,10 @@ export const routes: Routes = [
   {
     path: 'edit-discounts',
     loadComponent: () => import('./Admin/discounts/edit-discounts/edit-discounts.page').then( m => m.EditDiscountsPage)
+  },
+  {
+    path: 'best-sellers',
+    loadComponent: () => import('./Admin/inventory/best-sellers/best-sellers.page').then( m => m.BestSellersPage)
   }
 
 

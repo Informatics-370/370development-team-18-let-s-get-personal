@@ -37,6 +37,8 @@ namespace IPKP___API.Controllers.Models.Repository
     Task<Refund_Policy[]> GetAllPoliciesAsync();
     Task<Discount> GetDiscountAsync(Guid discount_ID);
     Task<Discount[]> GetAllDiscountsAsync();
+    Task<BestSellers[]> GetAllBestSellersAsync();
+    Task<BestSellers> GetBestSellerAsync(Guid BestSeller_ID);
 
 
     }

@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.Intrinsics.Arm;
-using System.
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace IPKP___API.Controllers

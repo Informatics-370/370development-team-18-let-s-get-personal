@@ -195,9 +195,24 @@ namespace IPKP___API.Controllers.Models.Repository
                 .Where(u => u.Discount_ID == discount_ID);
         return await query.FirstOrDefaultAsync();
     }
-//***
+        //***
 
-    public async Task<bool> SaveChangesAsync()
+        //discounts ***
+        public async Task<BestSellers[]> GetAllBestSellersAsync()
+        {
+            IQueryable<BestSellers> query = _appDbContext.BestSellers;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<BestSellers> GetBestSellerAsync(Guid BestSeller_ID)
+        {
+            IQueryable<BestSellers> query = _appDbContext.BestSellers
+                    .Where(u => u.BestSeller_ID == BestSeller_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+        //***
+
+        public async Task<bool> SaveChangesAsync()
     {
       return await _appDbContext.SaveChangesAsync() > 0;
     }
