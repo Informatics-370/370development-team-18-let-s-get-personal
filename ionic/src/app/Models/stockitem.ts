@@ -1,16 +1,12 @@
 import { StockItemColours } from "./stockitemcolour"
 import { ProductRating } from "./productrating"
-import { StockImage } from "./stockimage"
-export interface  StockItem{
-    StockItemId: number
-    StockItemName: string 
-    Description: string
+import { Stock_Image } from "./stockimage"
 
-    StockItemColourId: number
-    StockItemTypeId: number
-    StockImageId: number
+export interface  Stock_Item{
+    Stock_Item_ID: Number
+    Stock_Item_Name: String 
 
-    stockimage: StockImage
+    stockimage: Stock_Image
     productrating: ProductRating
     stockitemcolours: StockItemColours
 }

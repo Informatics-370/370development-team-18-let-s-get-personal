@@ -20,9 +20,9 @@ namespace IPKP___API.Controllers
     {
       _IPKPRepository = iPKPRepository;
     }
+
     [HttpGet]
     [Route("GetAllStockItems")]
-
     public async Task<IActionResult> GetAllStockItemsAsync()
     {
       try

@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+  selector: 'app-best-sellers',
+  templateUrl: './best-sellers.page.html',
+  styleUrls: ['./best-sellers.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class ProfilePage implements OnInit {
+export class BestSellersPage implements OnInit {
 
   constructor() { }
 

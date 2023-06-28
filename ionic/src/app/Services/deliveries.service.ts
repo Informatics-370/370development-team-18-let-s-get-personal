@@ -21,7 +21,7 @@ import { Delivery } from '../Models/delivery';
     }
   
     //return http.loacalhost:5116/api/Course/GetAllStockTypes
-    public GetDeliveries(): Observable<any>{ 
+    public GetAllDeliveries(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}Deliveries/GetAllDeliveries`)
       .pipe(map(result => result))
     }
@@ -41,13 +41,11 @@ import { Delivery } from '../Models/delivery';
     //edit
     public UpdateDelivery(DeliveryId:Number, delivery:Delivery){
       return this.httpClient.put(`${this.apiUrl}Deliveries/UpdateDelivery/${DeliveryId}`, delivery)
-      .pipe(map(result => result))
     }
   
     //delete 
     public DeleteDelivery(DeliveryId:Number){
       return this.httpClient.delete(`${this.apiUrl}Deliveries/DeleteDelivery/${DeliveryId}`)
-      .pipe(map(result => result))
     }
   
   }

@@ -1,0 +1,74 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Create Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Create Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">First Name</ion-label>
+        <ion-input name="Firstname"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Last Name</ion-label>
+        <ion-input name="Lastname"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Title</ion-label>
+        <ion-input name="title"></ion-input> <!--drop down list-->
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Cellphone Number</ion-label>
+        <ion-input name="cellnumber"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Email adress</ion-label>
+        <ion-input name="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Gender</ion-label>
+        <ion-input name="gender"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Home Adress</ion-label>
+        <ion-input name="province" placeholder="Province"></ion-input>
+        <ion-input name="city" placeholder="City"></ion-input>
+        <ion-input name="street" placeholder="Street"></ion-input>
+        <ion-input name="housenumber" placeholder="House Number"></ion-input>
+        <ion-input name="dwellingtype" placeholder="Dwelling Type i.e. Estate/House/Apartment"></ion-input>
+        <ion-input name="unitnumber" placeholder="Unit Number"></ion-input> <!--if an apartment-->
+        <ion-input name="areacode" placeholder="Area Code/ Postal Code"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Username</ion-label>
+        <ion-input name="username"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input name="password"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Confirm Password</ion-label>
+        <ion-input name="confirmpassword"></ion-input>
+      </ion-item>
+
+      <ion-button onclick="AddProfile()">Create Profile</ion-button>
+    </ion-list>
+  </ion-content>
+</ion-content>

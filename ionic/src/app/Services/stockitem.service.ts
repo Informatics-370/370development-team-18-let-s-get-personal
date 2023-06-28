@@ -28,8 +28,7 @@ import { StockItem } from '../Models/stockitem';
   
     //add
     public AddStockItem(stockitem:StockItem){
-      return this.httpClient.post(`${this.apiUrl}StockItem/AddStockItem`, stockitem)
-      .pipe(map(result => result))
+      return this.httpClient.post(`${this.apiUrl}StockItem/AddStockItem`, stockitem, this.httpOptions)
     }
   
     //get selected one
@@ -41,13 +40,11 @@ import { StockItem } from '../Models/stockitem';
     //edit
     public UpdateStockItem(StockItemId:Number, stockitem:StockItem){
       return this.httpClient.put(`${this.apiUrl}StockItem/UpdateStockItem/${StockItemId}`, stockitem)
-      .pipe(map(result => result))
     }
   
     //delete 
     public DeleteStockItem(StockItemId:Number){
       return this.httpClient.delete(`${this.apiUrl}StockItem/DeleteStockItem/${StockItemId}`)
-      .pipe(map(result => result))
     }
   
   }

@@ -33,11 +33,11 @@ export const routes: Routes = [
       },
       {
         path: 'login',
-        loadComponent: () => import('../Customer/login/login.page').then( m => m.LoginPage)
+        loadComponent: () => import('../Profiles/login/login.page').then( m => m.LoginPage)
       },
       {
         path: 'profile',
-        loadComponent: () => import('../Customer/profile/profile.page').then( m => m.ProfilePage),
+        loadComponent: () => import('../Profiles/profile/profile.page').then( m => m.ProfilePage),
         canActivate: [AuthGuard]
       },
       {
@@ -94,7 +94,7 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'stocktypes',
+        path: 'tabsstocktypes',
         loadComponent: () => import('../Admin/inventory/stocktypes/stocktypes.page').then( m => m.StocktypesPage),
         canActivate: [AuthGuard],
         data: {
@@ -102,8 +102,16 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'stockitemcolours',
+        path: 'tabsstockitemcolours',
         loadComponent: () => import('../Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage),
+        canActivate: [AuthGuard],
+        data: {
+          role: 'Admin'
+        }
+      },
+      {
+        path: 'discounts',
+        loadComponent: () => import('../Admin/discounts/discounts.page').then( m => m.DiscountsPage),
         canActivate: [AuthGuard],
         data: {
           role: 'Admin'

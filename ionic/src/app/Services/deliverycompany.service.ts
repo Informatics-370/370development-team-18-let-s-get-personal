@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { StockTypes } from '../Models/stocktypes';
-import { DeliveryCompany } from '../Models/deliverycompany';
+import { Delivery_Company } from '../Models/deliverycompany';
 
 @Injectable({
     providedIn: 'root' 
@@ -27,7 +27,7 @@ import { DeliveryCompany } from '../Models/deliverycompany';
     }
   
     //add
-    public AddDeliveryCompany(deliveryCompany:DeliveryCompany){
+    public AddDeliveryCompany(deliveryCompany:Delivery_Company){
       return this.httpClient.post(`${this.apiUrl}DeliveryCompany/AddDeliveryCompany`, deliveryCompany)
       .pipe(map(result => result))
     }
@@ -39,15 +39,15 @@ import { DeliveryCompany } from '../Models/deliverycompany';
     }
   
     //edit
-    public UpdateDeliveryCompany(deliveryCompanyId:Number, deliveryCompany:DeliveryCompany){
+    public UpdateDeliveryCompany(deliveryCompanyId:Number, deliveryCompany:Delivery_Company){
       return this.httpClient.put(`${this.apiUrl}DeliveryCompany/UpdateDeliveryCompany/${deliveryCompanyId}`, deliveryCompany)
-      .pipe(map(result => result))
+      //.pipe(map(result => result))
     }
   
     //delete 
     public DeleteDeliveryCompany(deliveryCompanyId:Number){
       return this.httpClient.delete(`${this.apiUrl}DeliveryCompany/DeleteDeliveryCompany/${deliveryCompanyId}`)
-      .pipe(map(result => result))
+      //.pipe(map(result => result))
     }
   
   }

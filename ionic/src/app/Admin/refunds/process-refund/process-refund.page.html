@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Previous Refunds</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Previous Refunds</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-button>New Refund</ion-button>
+  <ion-content>
+    <form [formGroup]="AddForm">          
+      <ion-item>
+        <ion-label position="stacked">Customer Id</ion-label><br>
+        <ion-input type="text" formControlName="Customer_ID" placeholder=""></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Refund Reason</ion-label><br>
+        <ion-input type="text" formControlName="Refund_Reason" placeholder=""></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Refund Comment</ion-label><br>
+        <ion-input type="text" formControlName="Refund_Comment" placeholder=""></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Refund Status</ion-label><br>
+        <ion-input type="text" formControlName="Refund_Status" placeholder="i.e. Approved"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Refund Policy </ion-label><br>
+        <ion-input type="text" formControlName="Refund_Policy" placeholder=""></ion-input>
+      </ion-item>
+      <ion-button (click)="processRefund()">Add refund</ion-button>                    
+  </form>
+  </ion-content>
+</ion-content>

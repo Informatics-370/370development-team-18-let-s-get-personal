@@ -20,6 +20,7 @@ namespace IPKP___API.Controllers.Models.Repository
     }
 
     public DbSet<Address> Addresses {get; set; }
+    public DbSet<BestSellers> BestSellers { get; set; } 
     public DbSet<City> Cities {get; set; }
     public DbSet<Customer> Customers {get; set; }
     public DbSet<Delivery> Deliveries {get; set; }

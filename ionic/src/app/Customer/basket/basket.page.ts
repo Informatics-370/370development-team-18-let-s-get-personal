@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { BasketItem } from 'src/app/Models/basket';
 import { BasketService } from 'src/app/Services/basket.service';
+import { StockItem } from 'src/app/Models/stockitem';
 
 @Component({
   selector: 'app-basket',
@@ -26,10 +27,8 @@ export class BasketPage implements OnInit {
     this.basketItemList = this.basketService.getCurrentBasket();
   }
 
-  removeFromBasket(){
-    this.basketService.removeItemFromBasket(stockItem).subscribe(result =>{
-      window.location.reload();
-     });
+  removeFromBasket(stockItem: StockItem){
+    this.basketService.removeItemFromBasket(stockItem);
   }
 
   

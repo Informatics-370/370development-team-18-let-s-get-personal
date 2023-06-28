@@ -1,10 +1,11 @@
-import { StockItem } from "./stockitem"
+import { Stock_Item } from "./stockitem"
 export class StockPriceHistory{
-    StockPriceHistoryId!: number
-    StockPriceAmount!: number 
-    EffectiveFromDate!: Date
-    EffectiveToDate!: Date
+
+    Stock_Price_History_ID!: number
+    Stock_Price_Amount!: number 
+    Effective_From_Date!: Date
+    Effective_To_Date!: Date
 
     StockItemId!: Number
-    stockitems!: StockItem
+    Stock_Item!: Stock_Item
 }
