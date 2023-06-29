@@ -11,6 +11,7 @@ namespace IPKP___API.Controllers.Models.Entities
         [Key]
         public Guid Refund_ID { get; set; }
         public virtual Customer Customer { get; set; }
+        public string Customer_Email { get; set; }
         public virtual Refund_Policy Refund_Policy { get; set; }
         [StringLength(255)]
         public string Refund_Comment { get; set; }

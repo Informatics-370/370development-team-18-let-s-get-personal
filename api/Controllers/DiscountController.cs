@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace IPKP___API.Controllers
 {
     [Route("api/[controller]")]
@@ -59,24 +60,35 @@ namespace IPKP___API.Controllers
         public async Task<IActionResult> AddDiscount(Discount dm)
         {
             //check if exists 
-
-            var discount = new Discount
+            List<Discount> discounts = new List<Discount>();
+            foreach (var item in discounts)
             {
-                Discount_ID = dm.Discount_ID,
-                Discount_Name = dm.Discount_Name,
-                Discount_Amount = dm.Discount_Amount,
-                Effective_From_Date = dm.Effective_From_Date,
-                Effective_To_Date = dm.Effective_To_Date
-            };
-            try
-            {
-                _IPKPRepository.Add(discount);
-                await _IPKPRepository.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                return BadRequest("Invalid Transaction");
-            }
+                if (item.Discount_Name == dm.Discount_Name)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, "This discount name already exists.");
+                }
+                else
+                {
+                    var discount = new Discount
+                    {
+                        Discount_ID = dm.Discount_ID,
+                        Discount_Name = dm.Discount_Name,
+                        Discount_Amount = dm.Discount_Amount,
+                        Effective_From_Date = dm.Effective_From_Date,
+                        Effective_To_Date = dm.Effective_To_Date
+                    };
+                    try
+                    {
+                        _IPKPRepository.Add(discount);
+                        await _IPKPRepository.SaveChangesAsync();
+                    }
+                    catch (Exception)
+                    {
+                        return BadRequest("Invalid Transaction");
+                    }
+                }
+            }           
+           
             return Ok("Delivery Company Added To Database.");
         }
        

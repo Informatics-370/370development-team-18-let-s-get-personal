@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Discount } from 'src/app/Models/discount';
@@ -17,7 +17,8 @@ import { DiscountService } from 'src/app/Services/discount.service';
 })
 export class EditDiscountsPage implements OnInit {
 
-  constructor(private service:DiscountService, private thisroute: Router, private currentroute: ActivatedRoute) { }
+  constructor(private service:DiscountService, private thisroute: Router, private currentroute: ActivatedRoute,
+    private alertController:AlertController) { }
 
   editForm: FormGroup = new FormGroup({
     name: new FormControl('',[Validators.required]),
@@ -45,8 +46,33 @@ export class EditDiscountsPage implements OnInit {
     editedDiscount.Discount_Amount = this.editForm.value.amount;
     editedDiscount.Effective_From_Date = this.editForm.value.effectiveFromdate;
     editedDiscount.Effective_To_Date = this.editForm.value.effectiveTodate;
+
     this.service.UpdateDiscount(this.discountToEdit.Discount_ID, editedDiscount).subscribe(result =>{
-      this.thisroute.navigate(['/discounts'])
+      if(result == null)
+      {
+        this.editDiscountErrorAlert();
+      }
+      else{
+        this.editDiscountSuccessAlert();
+      }
     })
+  }
+  async editDiscountSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Discount Updated',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async editDiscountErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Discount Was Not Updated',
+      message: 'Please try again',
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 }

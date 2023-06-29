@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { Best_Sellers } from '../Models/bestsellers';
-
+import { Stock_Item } from '../Models/stockitem';
 @Injectable({
     providedIn: 'root' 
   })
@@ -24,7 +24,7 @@ import { Best_Sellers } from '../Models/bestsellers';
     }
   
     //add
-    public AddBestSeller(bestseller:Best_Sellers){
+    public AddBestSeller(bestseller:Stock_Item){
       return this.httpClient.post(`${this.apiUrl}BestSellers/AddBestSeller`, bestseller)
       .pipe(map(result => result))
     }

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { RefundService } from 'src/app/Services/refund.service';
 import { Refund } from 'src/app/Models/refund';
 import { Refund_Policy } from 'src/app/Models/refundpolicy';
@@ -21,9 +21,12 @@ import { OverlayEventDetail } from '@ionic/core/components';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class RefundsPage implements OnInit {
+  filterTerm: string = "";
+  filteredpolicies:  Refund_Policy[] = [];
   refundPolicies: Refund_Policy[] =[]
   @ViewChild(IonModal) modal!: IonModal
-  constructor(private service:RefundService, private thisroute: Router, public modalCtrl: ModalController ) { }
+  constructor(private service:RefundService, private thisroute: Router, public modalCtrl: ModalController,
+    private alertController:AlertController ) { }
 
   AddForm: FormGroup = new FormGroup({
     date: new FormControl('',[Validators.required]),
@@ -33,7 +36,22 @@ export class RefundsPage implements OnInit {
 
   ngOnInit(): void {
     this.getRefundPolicies()
+    
+    if(this.filterTerm==""){
+      this.filteredpolicies = this.refundPolicies;
+    }
   }
+  search(){
+    //empty array
+    this.filteredpolicies = [];
+
+    //filter items
+    this.filteredpolicies = this.refundPolicies.filter((searchitem)=>
+      searchitem.Refund_Policy_Date.toDateString().includes(this.filterTerm)||
+      searchitem.Refund_Policy_Description.toLocaleLowerCase().includes(this.filterTerm.toLocaleLowerCase())||
+      searchitem.Refund_Policy_Version == Number(this.filterTerm)
+    );
+   }
 
   getRefundPolicies(){
     this.service.GetAllRefundPolicies().subscribe(result =>{
@@ -49,13 +67,11 @@ export class RefundsPage implements OnInit {
     addRefund.Refund_Policy_Description = this.AddForm.value.description;
 
     this.service.AddRefundPolicy(addRefund).subscribe((response:any) => {
-      if(response.statusCode == 200)
-      {
-        alert(response.message)
-        //this.thisroute.navigate(['/'])
+      if(response == null){
+        this.addPolicyErrorAlert();
       }
       else{
-        alert(response.message)
+        this.addPolicySuccessAlert();
       }
     })
   }
@@ -63,6 +79,12 @@ export class RefundsPage implements OnInit {
   DeleteRefundPolicy(Refund_Policy_ID: Number){
     this.service.DeleteRefundPolicy(Refund_Policy_ID).subscribe(result => {
       console.log(result);
+      if(result == null){
+        this.DeletePolicyErrorAlert();
+      }
+      else{
+        this.DeletePolicySuccessAlert();
+      }
     })
   }
 
@@ -81,4 +103,43 @@ export class RefundsPage implements OnInit {
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
+
+  async addPolicySuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Policy Added',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async addPolicyErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Policy Was Not Added',
+      message: 'Please try again',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async DeletePolicySuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Policy Deleted',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async DeletePolicyErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Policy Was Not Deleted',
+      message: 'Please try again',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
 }

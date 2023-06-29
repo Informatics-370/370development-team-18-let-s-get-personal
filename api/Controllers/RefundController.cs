@@ -10,7 +10,10 @@ using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.Intrinsics.Arm;
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Net.Mail;
+using System.Net;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 
 namespace IPKP___API.Controllers
 {
@@ -24,20 +27,27 @@ namespace IPKP___API.Controllers
             _IPKPRepository = iPKPRepository;
         }
         //************* Process refund
-        //[HttpDelete]
-        //[Route("RemoveRefundSale")]
-        //public async Task<IActionResult> RemoveRefundSale(int Sale_Id)
-        //{
-        //    try
-        //    {
-        //        //var results = await _IPKPRepository.gets(Sale_Id);
-        //        //return Ok(results);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        //return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-        //    }
-        //}
+        public async Task<IActionResult> DeleteSaleAsync(Guid sale_Id)
+        {
+            try
+            {
+                var existingSale = await _IPKPRepository.GetOrderDetailsAsync(sale_Id);
+
+                if (existingSale == null) return NotFound("Could Not Find Delivery" + sale_Id);
+
+                _IPKPRepository.Delete(existingSale);
+
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok("Delivery Removed Successfully");
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+            }
+            return Ok("Delivery Removed From Database.");
+        }
 
         [HttpGet]
         [Route("GetCustomer")]
@@ -64,12 +74,27 @@ namespace IPKP___API.Controllers
                 Customer = refundVM.Customer_ID,
                 Refund_Comment = refundVM.Refund_Comment,                
                 Refund_Policy = refundVM.Refund_Policy,
-                Refund_Status = refundVM.Refund_Status
+                Refund_Status = refundVM.Refund_Status,
+                Customer_Email = refundVM.Customer_ID.Email
                 //send email 
             };
             try
             {
                 
+                var fromEmailAddress = "resinartnewsletter@gmail.com"; // you must add your own provided email
+                var subject = "Refund processed";
+                var message = $"Good day {refundVM.Customer_ID.FirstName}" +
+                    $"" +
+                    $"You're order has been successfully refunded. We sincerely apologise for the inconvienience!" +
+                    $"You will recieve proof of payment shortly" +
+                    $"" +
+                    $"Kind regards" +
+                    $"It's Personal by Kivashin and Predisha";
+                var toEmailAddress = refundVM.Customer_ID.Email;
+
+                // Sending email
+                await SendEmail(fromEmailAddress, subject, message, toEmailAddress);
+
                 _IPKPRepository.Add(newrefund);
                 await _IPKPRepository.SaveChangesAsync();
             }
@@ -80,8 +105,30 @@ namespace IPKP___API.Controllers
             return Ok("Delivery Company Added To Database."); 
             
         }
-        
-//************** Policies
+        private async Task SendEmail(string fromEmailAddress, string subject, string message, string toEmailAddress)
+        {
+            var fromAddress = new MailAddress(fromEmailAddress);
+            var toAddress = new MailAddress(toEmailAddress);
+
+            using (var compiledMessage = new MailMessage(fromAddress, toAddress))
+            {
+                compiledMessage.Subject = subject;
+                compiledMessage.Body = string.Format("Message: {0}", message);
+
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Host = "smtp.gmail.com"; // for example: smtp.gmail.com
+                    smtp.Port = 587;
+                    smtp.EnableSsl = true;
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new NetworkCredential("resinartnewsletter@gmail.com", "pnyblzriureedwgp"); // your own provided email and password
+                    await smtp.SendMailAsync(compiledMessage);
+                }
+            }
+        }
+
+        //************** Policies
         [HttpGet]
         [Route("GetAllRefundPolicies")]
         public async Task<IActionResult> GetAllRefundPolicies()

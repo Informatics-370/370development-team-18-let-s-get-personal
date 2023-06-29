@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Discount } from 'src/app/Models/discount';
@@ -19,10 +19,12 @@ import { OverlayEventDetail } from '@ionic/core/components';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class DiscountsPage implements OnInit {
-
+  filterTerm: string = "";
+  filtereddiscounts:  Discount[] = [];
   discounts: Discount[] =[]
   @ViewChild(IonModal) modal!: IonModal
-  constructor(private service:DiscountService, private thisroute: Router, public modalCtrl: ModalController ) { }
+  constructor(private service:DiscountService, private thisroute: Router, public modalCtrl: ModalController,
+    private alertController:AlertController ) { }
 
   AddForm: FormGroup = new FormGroup({
     name: new FormControl('',[Validators.required]),
@@ -32,8 +34,24 @@ export class DiscountsPage implements OnInit {
   })
 
   ngOnInit(): void {
-    this.getDiscounts()
+    this.getDiscounts();
+    if(this.filterTerm==""){
+      this.filtereddiscounts = this.discounts;
+    }
   }
+
+  search(){
+    //empty array
+    this.filtereddiscounts = [];
+
+    //filter items
+    this.filtereddiscounts = this.discounts.filter((searchitem)=>
+      searchitem.Effective_From_Date.toDateString().includes(this.filterTerm)||
+      searchitem.Effective_To_Date.toDateString().includes(this.filterTerm)||
+      searchitem.Discount_Name.toLocaleLowerCase().includes(this.filterTerm.toLocaleLowerCase())||
+      searchitem.Discount_Amount == Number(this.filterTerm)
+    );
+   }
 
   getDiscounts(){
     this.service.GetAllDiscounts().subscribe(result =>{
@@ -51,13 +69,12 @@ export class DiscountsPage implements OnInit {
     
 
     this.service.AddDiscount(addDiscount).subscribe((response:any) => {
-      if(response.statusCode == 200)
+      if(response == null)
       {
-        alert(response.message)
-        //this.thisroute.navigate(['/'])
+        this.addDiscountErrorAlert();
       }
       else{
-        alert(response.message)
+        this.addDiscountSuccessAlert();
       }
     })
   }
@@ -70,6 +87,13 @@ export class DiscountsPage implements OnInit {
   DeleteDiscount(Discount_ID: Number){
     this.service.DeleteDiscount(Discount_ID).subscribe(result => {
       console.log(result);
+      if(result == null)
+      {
+        this.DeleteDiscountErrorAlert();
+      }
+      else{
+        this.DeleteDiscountSuccessAlert();
+      }
     })
   }
 
@@ -87,6 +111,44 @@ export class DiscountsPage implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+  async addDiscountSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Discount Added',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async addDiscountErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Discount Was Not Added',
+      message: 'Please try again',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async DeleteDiscountSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Discount Deleted',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async DeleteDiscountErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Discount Was Not Deleted',
+      message: 'Please try again',
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
 }

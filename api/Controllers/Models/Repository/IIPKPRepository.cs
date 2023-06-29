@@ -40,6 +40,7 @@ namespace IPKP___API.Controllers.Models.Repository
     Task<BestSellers[]> GetAllBestSellersAsync();
     Task<BestSellers> GetBestSellerAsync(Guid BestSeller_ID);
 
+    Task<Order> GetOrderDetailsAsync(Guid order_ID);
 
     }
 }

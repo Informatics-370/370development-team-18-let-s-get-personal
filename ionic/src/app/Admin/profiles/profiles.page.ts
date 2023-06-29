@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ProfileService } from 'src/app/Services/profile.service';
 import { IonicModule, AlertController, ModalController, IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-import { elementAt } from 'rxjs';
+import { elementAt, isEmpty } from 'rxjs';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { User } from 'src/app/Models/user';
 import { Customer } from 'src/app/Models/customer';
@@ -19,11 +19,12 @@ import { EmployeeService } from 'src/app/Services/employee.service';
 })
 export class ProfilesPage implements OnInit {
   
-  Profile:User[] = []
+  Profile: User[] = []
   customers: Customer[] = []
   employees: Employee[] = []
   employee: any
   @ViewChild(IonModal) modal!: IonModal
+  
   constructor(private service:ProfileService, private alertController:AlertController, 
     private empservice: EmployeeService, public modalCtrl: ModalController) { }
 
@@ -48,31 +49,34 @@ export class ProfilesPage implements OnInit {
   DeleteEmployee(Employee_ID: Number){
     this.empservice.DeleteEmployee(Employee_ID).subscribe(result => {
       console.log(result);
-    })
+      if(result == null){
+        this.DeleteEmployeeErrorAlert();
+      }
+      else{
+        this.DeleteEmployeeSuccessAlert();
+      }
+    })    
   }
 
-  AddUser(){
-
+  async DeleteEmployeeSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Employee Deleted',
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
-  canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
+  async DeleteEmployeeErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Employee Was Not Deleted',
+      message: 'Please try again',
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
-  confirmaddmodal() {
-    this.modal.dismiss(null, 'cancel');   
-  }
 
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-  }
-  // getProfle(){
- //   this.service.GetProfile().subscribe(result => {
- //     let profilelist:any[] = result
- //     profilelist.forEach((element) => {
- //       this.Profile.push(element)
- //     });
- //   })
- // }
 }
 

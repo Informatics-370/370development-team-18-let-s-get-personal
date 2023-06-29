@@ -198,21 +198,27 @@ namespace IPKP___API.Controllers.Models.Repository
         //***
 
         //discounts ***
-        public async Task<BestSellers[]> GetAllBestSellersAsync()
-        {
-            IQueryable<BestSellers> query = _appDbContext.BestSellers;
-            return await query.ToArrayAsync();
-        }
+    public async Task<BestSellers[]> GetAllBestSellersAsync()
+    {
+        IQueryable<BestSellers> query = _appDbContext.BestSellers;
+        return await query.ToArrayAsync();
+    }
 
-        public async Task<BestSellers> GetBestSellerAsync(Guid BestSeller_ID)
-        {
-            IQueryable<BestSellers> query = _appDbContext.BestSellers
-                    .Where(u => u.BestSeller_ID == BestSeller_ID);
-            return await query.FirstOrDefaultAsync();
-        }
-        //***
+    public async Task<BestSellers> GetBestSellerAsync(Guid BestSeller_ID)
+    {
+        IQueryable<BestSellers> query = _appDbContext.BestSellers
+            .Where(u => u.BestSeller_ID == BestSeller_ID);
+        return await query.FirstOrDefaultAsync();
+    }
+//***
+    public async Task<Order> GetOrderDetailsAsync(Guid order_ID)
+    {
+        IQueryable<Order> query = _appDbContext.Orders
+            .Where(u => u.Order_ID == order_ID);
+        return await query.FirstOrDefaultAsync();
+    }
 
-        public async Task<bool> SaveChangesAsync()
+    public async Task<bool> SaveChangesAsync()
     {
       return await _appDbContext.SaveChangesAsync() > 0;
     }
