@@ -27,11 +27,7 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
   }
 
-  deleteProfile(profileId:Number){
-    this.service.DeleteStockType(profileId).subscribe(result =>{
-     window.location.reload();
-    });
-   }
+
  
    getProfile(){
 

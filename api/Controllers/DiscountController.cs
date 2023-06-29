@@ -58,6 +58,8 @@ namespace IPKP___API.Controllers
         [Route("AddDiscount")]
         public async Task<IActionResult> AddDiscount(Discount dm)
         {
+            //check if exists 
+
             var discount = new Discount
             {
                 Discount_ID = dm.Discount_ID,

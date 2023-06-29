@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule,FormGroup, Validators, FormControl, ReactiveFormsModule  } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { DeliveryCompanyDataService } from 'src/app/Services/deliverycompany.service';
-import { DeliveryCompany } from 'src/app/Models/deliverycompany';
+//import { DeliveryCompany } from 'src/app/Models/deliverycompany';
+import { Delivery_Company } from 'src/app/Models/deliverycompany';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
@@ -23,7 +24,7 @@ import { OverlayEventDetail } from '@ionic/core/components';
 })
 export class DeliverycompanyPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
-  deliverycompanies: DeliveryCompany[] =[];
+  deliverycompanies: Delivery_Company[] =[];
 
   constructor(public modalCtrl: ModalController, private service:DeliveryCompanyDataService,
     private router: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }

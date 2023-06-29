@@ -34,7 +34,7 @@ export class DeliveriesPage implements OnInit {
   }
 
   GetDeliveries(){
-    this.service.GetDeliveries().subscribe(result => {
+    this.service.GetAllDeliveries().subscribe(result => {
       let deliverylist:any[] = result
       deliverylist.forEach((element) => {
         this.deliveries.push(element)

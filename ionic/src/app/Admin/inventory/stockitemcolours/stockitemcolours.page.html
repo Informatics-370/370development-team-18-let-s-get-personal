@@ -16,8 +16,8 @@
                   <!--ng for each-->
                     <ion-item *ngFor="let item of stockitemcolours" >                      
                         <ion-label>
-                            <h5>{{item.ColorName}}</h5>
-                            <ion-img src="{{item.Image}}" ></ion-img> <!--[cldImg]="myImage"-->
+                            <h5>{{item.Stock_Item_Colour_Name}}</h5>
+                            <ion-img src="{{item.Stock_Item_Colour_Image}}" ></ion-img> <!--[cldImg]="myImage"-->
                             <ion-button (click)="getstockcolour(item.stock_Item_Colour_ID)">Edit</ion-button>
                             <ion-button (click)="deletecolour(item.stock_Item_Colour_ID)">Delete</ion-button>
                         </ion-label>

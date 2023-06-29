@@ -7,6 +7,9 @@ import { StockTypes } from '../Models/stocktypes';
     providedIn: 'root' 
   })
   export class ProfileService {
+    DeleteStockType(profileId: Number) {
+      throw new Error('Method not implemented.');
+    }
   
     apiUrl = 'https://localhost:44390/api/'
   

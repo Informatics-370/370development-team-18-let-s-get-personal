@@ -24,6 +24,20 @@ namespace IPKP___API.Controllers
             _IPKPRepository = iPKPRepository;
         }
         //************* Process refund
+        //[HttpDelete]
+        //[Route("RemoveRefundSale")]
+        //public async Task<IActionResult> RemoveRefundSale(int Sale_Id)
+        //{
+        //    try
+        //    {
+        //        //var results = await _IPKPRepository.gets(Sale_Id);
+        //        //return Ok(results);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        //return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+        //    }
+        //}
 
         [HttpGet]
         [Route("GetCustomer")]
@@ -51,6 +65,7 @@ namespace IPKP___API.Controllers
                 Refund_Comment = refundVM.Refund_Comment,                
                 Refund_Policy = refundVM.Refund_Policy,
                 Refund_Status = refundVM.Refund_Status
+                //send email 
             };
             try
             {

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { StockTypes } from '../Models/stocktypes';
-import { StockItem } from '../Models/stockitem';
+import { Stock_Item } from '../Models/stockitem';
 
 @Injectable({
     providedIn: 'root' 
@@ -27,7 +27,7 @@ import { StockItem } from '../Models/stockitem';
     }
   
     //add
-    public AddStockItem(stockitem:StockItem){
+    public AddStockItem(stockitem:Stock_Item){
       return this.httpClient.post(`${this.apiUrl}StockItem/AddStockItem`, stockitem, this.httpOptions)
     }
   
@@ -38,7 +38,7 @@ import { StockItem } from '../Models/stockitem';
     }
   
     //edit
-    public UpdateStockItem(StockItemId:Number, stockitem:StockItem){
+    public UpdateStockItem(StockItemId:Number, stockitem:Stock_Item){
       return this.httpClient.put(`${this.apiUrl}StockItem/UpdateStockItem/${StockItemId}`, stockitem)
     }
   

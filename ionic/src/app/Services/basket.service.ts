@@ -25,7 +25,7 @@ export class BasketService {
     basketItem.quantity = newQuantity;
 
     const findIndex = this.basketItemList.findIndex((item: BasketItem) => {
-      return item.stockItem.StockItemId == stockItem.Stock_Item_ID
+      return item.stockItem.Stock_Item_ID == stockItem.Stock_Item_ID
     });
 
     if (findIndex >= 0) {
@@ -39,7 +39,7 @@ export class BasketService {
 
   public removeItemFromBasket(stockItem: Stock_Item) {
     const findIndex = this.basketItemList.findIndex((item: BasketItem) => {
-      return item.stockItem.StockItemId == stockItem.Stock_Item_ID
+      return item.stockItem.Stock_Item_ID == stockItem.Stock_Item_ID
     });
 
     if (findIndex >= 0 ) {

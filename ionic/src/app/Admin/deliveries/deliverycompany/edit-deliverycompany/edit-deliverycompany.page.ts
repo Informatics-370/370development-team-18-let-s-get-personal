@@ -1,7 +1,7 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { DeliveryCompany } from 'src/app/Models/deliverycompany';
+import { Delivery_Company } from 'src/app/Models/deliverycompany';
 import { DeliveryCompanyDataService } from 'src/app/Services/deliverycompany.service';
 import { AlertController } from '@ionic/angular';
 import { FormsModule, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -22,8 +22,8 @@ import { OverlayEventDetail } from '@ionic/core/components';
 })
 export class EditDeliverycompanyPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
-  //deliverycompanies: DeliveryCompany[] =[];
-deliverycompany:any
+  deliverycompanies: Delivery_Company[] =[];
+  deliverycompany:any
   route: any;
   constructor(public modalCtrl: ModalController, private service:DeliveryCompanyDataService,
     private router: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
@@ -31,6 +31,7 @@ deliverycompany:any
     EditTypeForm:FormGroup = new FormGroup({
       name: new FormControl(['',Validators.required])      
     });
+    
     ngOnInit():void {
       this.service.GetDeliveryCompany(+this.route.snapshot.params['DeliveryCompanyId']).subscribe(result =>{
         this.deliverycompany = result

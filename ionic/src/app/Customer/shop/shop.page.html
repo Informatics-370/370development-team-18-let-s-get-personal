@@ -1,7 +1,20 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> Inside Area
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-card *ngFor="let stockItem of stockItemList">
   <ion-card-header>
-    <ion-card-subtitle>{{stockItem.Description}}</ion-card-subtitle>
-    <ion-card-title>{{stockItem.StockItemName}}</ion-card-title>
+    <ion-card-title>{{stockItem.Stock_Item_Name}}</ion-card-title>
+    <ion-card-subtitle>{{stockItem.productrating.Product_Star_Rating}}</ion-card-subtitle>
+    <p>{{stockItem.stockitemcolours.Stock_Item_Colour_Name}}</p>    
     <ion-button (click)="logout()">
       <ion-icon slot="icon-only" name="log-out"></ion-icon>
     </ion-button>
@@ -26,18 +39,7 @@
   </ion-card-content>
 </ion-card>
 
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>
-      Inside Area
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="logout()">
-        <ion-icon slot="icon-only" name="log-out"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
 

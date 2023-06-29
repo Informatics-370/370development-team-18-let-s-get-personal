@@ -11,6 +11,8 @@ export const routes: Routes = [
         path: '',
         loadChildren: () => import('../tabs/tabs.routes').then((m) => m.routes),
       },
+
+//Customer
       {
         path: 'home',
         loadComponent: () => import('../Customer/home/home.page').then( m => m.HomePage),
@@ -32,12 +34,18 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'login',
-        loadComponent: () => import('../Profiles/login/login.page').then( m => m.LoginPage)
+        path: 'previous_orders',
+        loadComponent: () => import('../Customer/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage),
+        canActivate: [AuthGuard]
       },
       {
-        path: 'profile',
-        loadComponent: () => import('../Profiles/profile/profile.page').then( m => m.ProfilePage),
+        path: 'product_rating',
+        loadComponent: () => import('../Customer/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'edit_product_rating',
+        loadComponent: () => import('../Customer/previous-orders/product-rating/edit-productrating/edit-productrating.page').then( m => m.EditProductratingPage),
         canActivate: [AuthGuard]
       },
       {
@@ -45,6 +53,7 @@ export const routes: Routes = [
         loadComponent: () => import('../Customer/shop/shop.page').then( m => m.ShopPage),
         canActivate: [AuthGuard]
       },
+//Admin...
       {
         path: 'deliveries',
         loadComponent: () => import('../Admin/deliveries/deliveries.page').then( m => m.DeliveriesPage),
@@ -54,8 +63,80 @@ export const routes: Routes = [
         }
       },
       {
+        path: 'delivery_company',
+        loadComponent: () => import('../Admin/deliveries/deliverycompany/deliverycompany.page').then(m => m.DeliverycompanyPage),
+        canActivate: [AuthGuard],
+        data: {
+          role: 'Admin'
+        }
+      },
+      {
+        path: 'edit_delivery_company',
+        loadComponent: () => import('../Admin/deliveries/deliverycompany/edit-deliverycompany/edit-deliverycompany.page').then(m => m.EditDeliverycompanyPage),
+        canActivate: [AuthGuard],
+        data: {
+          role: 'Admin'
+        }
+      },
+      {
+        path: 'discounts',
+        loadComponent: () => import('../Admin/discounts/discounts.page').then( m => m.DiscountsPage),
+        canActivate: [AuthGuard],
+        data: {
+          role: 'Admin'
+        }
+      },
+      {
+        path: 'edit-discounts',
+        loadComponent: () => import('../Admin/discounts/edit-discounts/edit-discounts.page').then( m => m.EditDiscountsPage),
+        canActivate: [AuthGuard],
+        data: {
+          role: 'Admin'
+        }
+      },
+      {
         path: 'inventory',
         loadComponent: () => import('../Admin/inventory/inventory.page').then( m => m.InventoryPage),
+        canActivate: [AuthGuard],
+        data: {
+          role: 'Admin'
+        }
+      },
+      {
+        path: 'best-sellers',
+        loadComponent: () => import('../Admin/inventory/best-sellers/best-sellers.page').then( m => m.BestSellersPage),
+        canActivate: [AuthGuard],
+        data: {
+          role: 'Admin'
+        }
+      },
+      {
+        path: 'stockitemcolours',
+        loadComponent: () => import('../Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage),
+        canActivate: [AuthGuard],
+        data: {
+          role: 'Admin'
+        }
+      },
+      {
+        path: 'editstockitemcolours',
+        loadComponent: () => import('../Admin/inventory/stockitemcolours/editstockitemcolours/editstockitemcolours.page').then( m => m.EditstockitemcoloursPage),
+        canActivate: [AuthGuard],
+        data: {
+          role: 'Admin'
+        }
+      },
+      {
+        path: 'stocktypes',
+        loadComponent: () => import('../Admin/inventory/stocktypes/stocktypes.page').then( m => m.StocktypesPage),
+        canActivate: [AuthGuard],
+        data: {
+          role: 'Admin'
+        }
+      },
+      {
+        path: 'editstocktypes',
+        loadComponent: () => import('../Admin/inventory/stocktypes/editstocktype/editstocktype.page').then( m => m.EditstocktypePage),
         canActivate: [AuthGuard],
         data: {
           role: 'Admin'
@@ -78,7 +159,7 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'profiles',
+        path: 'admin_profiles',
         loadComponent: () => import('../Admin/profiles/profiles.page').then( m => m.ProfilesPage),
         canActivate: [AuthGuard],
         data: {
@@ -94,39 +175,83 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'tabsstocktypes',
-        loadComponent: () => import('../Admin/inventory/stocktypes/stocktypes.page').then( m => m.StocktypesPage),
+        path: 'process-refund',
+        loadComponent: () => import('../Admin/refunds/process-refund/process-refund.page').then( m => m.ProcessRefundPage),
         canActivate: [AuthGuard],
         data: {
           role: 'Admin'
         }
       },
+//Profiles
       {
-        path: 'tabsstockitemcolours',
-        loadComponent: () => import('../Admin/inventory/stockitemcolours/stockitemcolours.page').then( m => m.StockitemcoloursPage),
-        canActivate: [AuthGuard],
-        data: {
-          role: 'Admin'
-        }
+        path: 'changepassword',
+        loadComponent: () => import('../Profiles/changepassword/changepassword.page').then( m => m.ChangepasswordPage),
+        canActivate: [AuthGuard]
       },
       {
-        path: 'discounts',
-        loadComponent: () => import('../Admin/discounts/discounts.page').then( m => m.DiscountsPage),
-        canActivate: [AuthGuard],
-        data: {
-          role: 'Admin'
-        }
+        path: 'create-profile',
+        loadComponent: () => import('../Profiles/create-profile/create-profile.page').then( m => m.CreateProfilePage),
+        canActivate: [AuthGuard]
       },
       {
-        path: '',
-        redirectTo: '/tabs/home',
-        pathMatch: 'full',
+        path: 'forgot-password',
+        loadComponent: () => import('../Profiles/forgot-password/forgot-password.page').then( m => m.ForgotPasswordPage)
       },
+      {
+        path: 'login',
+        loadComponent: () => import('../Profiles/login/login.page').then( m => m.LoginPage)
+      },      
+      {
+        path: 'profile',
+        loadComponent: () => import('../Profiles/profile/profile.page').then( m => m.ProfilePage),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'update-profile',
+        loadComponent: () => import('../Profiles/profile/update-profile/update-profile.page').then( m => m.UpdateProfilePage),
+        canActivate: [AuthGuard]
+      },
+
+//Shop   
+      
+      {
+        path: 'kidsclothing',
+        loadComponent: () => import('../Customer/shop/kidsclothing/kidsclothing.page').then( m => m.KidsclothingPage)
+      },
+      {
+        path: 'adultclothing',
+        loadComponent: () => import('../Customer/shop/adultclothing/adultclothing.page').then( m => m.AdultclothingPage)
+      },
+      {
+        path: 'flasks',
+        loadComponent: () => import('../Customer/shop/flasks/flasks.page').then( m => m.FlasksPage)
+      },
+      {
+        path: 'waterbottles',
+        loadComponent: () => import('../Customer/shop/waterbottles/waterbottles.page').then( m => m.WaterbottlesPage)
+      },
+      {
+        path: 'mugs',
+        loadComponent: () => import('../Customer/shop/mugs/mugs.page').then( m => m.MugsPage)
+      },
+      {
+        path: 'glasses',
+        loadComponent: () => import('../Customer/shop/glasses/glasses.page').then( m => m.GlassesPage)
+      },
+      {
+        path: 'notebooks',
+        loadComponent: () => import('../Customer/shop/notebooks/notebooks.page').then( m => m.NotebooksPage)
+      }
+//      {
+//        path: '',
+//        redirectTo: '/tabs/home',
+//        pathMatch: 'full',
+//      },
     ],
   },
   {
     path: '',
-    redirectTo: '/tabs/home',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
 ];
