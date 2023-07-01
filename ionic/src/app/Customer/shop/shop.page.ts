@@ -21,48 +21,24 @@ export class ShopPage implements OnInit {
   private loadingModel: any;
   public quantity:any;
 
-  constructor(
-    private toastController: ToastController,
-    private loadingController: LoadingController,
-    private stockItemService: StockItemDataService,
-    private basketService: BasketService,
-    private authService: AuthenticationService
-  ) { }
+  constructor( private toastController: ToastController, private loadingController: LoadingController,
+    private stockItemService: StockItemDataService, private basketService: BasketService, 
+    private authService: AuthenticationService) 
+  { 
+
+  }
 
   async ngOnInit() {
     await this.showLoading();
-    this.stockItemService.GetStockItems().subscribe((data) => {
-      this.stockItemList = data;
-      this.loading = false;
-      this.loadingModel.dismiss();
-    });
+    
   }
 
-  logout() {
+  logoutAddToCart() {
     this.authService.Logout();
   }
 
-  async addToBasket(stockItem: Stock_Item, quantity: number) {
-    if (!quantity || quantity < 1) {
-      const toast = await this.toastController.create({
-        message: 'Please enter a quantity above zero',
-        duration: 3000,
-        position: 'top',
-        icon: 'alert-circle-outline',
-        color: 'warning'
-      });
-      toast.present();
-    } else {
-      this.basketService.addProductToBasket(stockItem, quantity);
-      const toast = await this.toastController.create({
-        message: 'Added to basket!',
-        duration: 3000,
-        position: 'top',
-        icon: 'checkmark-circle-outline',
-        color: 'success'
-      });
-      toast.present();
-    }
+  async addToBasket(stockItem: Stock_Item, newQuantity: number) {
+    this.basketService.addProductToBasket(stockItem, newQuantity);
   }
 
   async showLoading() {

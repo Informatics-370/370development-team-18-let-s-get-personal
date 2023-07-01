@@ -1,4 +1,5 @@
-<ion-tabs>
+<!--Admin Nav Bar-->
+<ion-tabs > <!--*ngIf="AuthService.islogged == true"-->
   <ion-tab-bar slot="top">
     <ion-tab-button tab="menu">      
       <ion-label>Menu</ion-label>
@@ -31,7 +32,7 @@
   </ion-tab-bar>
 </ion-tabs>
 
-<!--
+<!--Customer Nav bar-->
 <ion-tab-bar slot="top">
     <ion-tab-button tab="home">      
       <ion-label>Home</ion-label>
@@ -39,7 +40,7 @@
 
     <ion-tab-button tab="shop">      
       <ion-label>Shop</ion-label>
-    </ion-tab-button>
+    </ion-tab-button>  
 
     <ion-tab-button tab="faq">      
       <ion-label>FAQ</ion-label>
@@ -57,10 +58,52 @@
       <ion-icon name="person-outline"></ion-icon>
     </ion-tab-button>
 
-  </ion-tab-bar>
--->
-  
+</ion-tab-bar>
 
+<!--Shop side Nav bar-->
+  
+<ion-menu [type]="menuType" content-id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menu Content</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-menu-toggle>
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-menu-toggle>
+    <ion-tab-bar>
+      <ion-tab-button tab="adultclothing">      
+        <ion-label>Adult Clothing</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="kidsclothing">      
+        <ion-label>Kids Clothing</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="flasks">      
+        <ion-label>Flasks</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="waterbottles">      
+        <ion-label>Water Bottles</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="mugs">      
+        <ion-label>Mugs</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="glasses">      
+        <ion-label>Glasses</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="notebooks">      
+        <ion-label>Notebooks</ion-label>
+      </ion-tab-button>
+
+    </ion-tab-bar>
+  </ion-content>
+</ion-menu>
 
 
 

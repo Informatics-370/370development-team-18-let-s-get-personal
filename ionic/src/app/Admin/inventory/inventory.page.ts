@@ -26,11 +26,11 @@ export class InventoryPage implements OnInit {
 
   stocktypes()
   {
-    this.router.navigate(['./tabsstocktypes']);
+    this.router.navigate(['./stocktypes']);
   }
   stockcoloursnav()
   {
-    this.router.navigate(['./tabsstockitemcolours']);
+    this.router.navigate(['./stockitemcolours']);
   }
 
   addToBestSellers(bestseller: Stock_Item){

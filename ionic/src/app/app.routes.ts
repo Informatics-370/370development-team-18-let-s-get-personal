@@ -239,7 +239,11 @@ export const routes: Routes = [
   {
     path: 'notebooks',
     loadComponent: () => import('./Customer/shop/notebooks/notebooks.page').then( m => m.NotebooksPage)
+  },  {
+    path: 'make-payment',
+    loadComponent: () => import('./Customer/basket/make-payment/make-payment.page').then( m => m.MakePaymentPage)
   }
+
   
   
 ];

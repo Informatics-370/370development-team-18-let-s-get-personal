@@ -31,7 +31,9 @@ export class BasketPage implements OnInit {
     this.basketService.removeItemFromBasket(stockItem);
   }
 
-  
+  emptyBasket(){
+    this.basketService.clearBasket();
+  }
 
   
 

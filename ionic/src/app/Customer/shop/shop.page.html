@@ -3,7 +3,7 @@
     <ion-title> Inside Area
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="logout()">
+      <ion-button (click)="logoutAddToCart()">
         <ion-icon slot="icon-only" name="log-out"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -15,7 +15,7 @@
     <ion-card-title>{{stockItem.Stock_Item_Name}}</ion-card-title>
     <ion-card-subtitle>{{stockItem.productrating.Product_Star_Rating}}</ion-card-subtitle>
     <p>{{stockItem.stockitemcolours.Stock_Item_Colour_Name}}</p>    
-    <ion-button (click)="logout()">
+    <ion-button (click)="logoutAddToCart()">
       <ion-icon slot="icon-only" name="log-out"></ion-icon>
     </ion-button>
   </ion-card-header>
@@ -40,11 +40,9 @@
 </ion-card>
 
 
+<!-- ... Everything from before ...
 
 <ion-content>
-
-  <!-- Everything from before... -->
-
   <ion-card *appHasPermission="['read']">
     <ion-card-header>
       <ion-card-title>My Content</ion-card-title>
@@ -60,3 +58,4 @@
   <ion-button expand="full" appDisableRole disableForRole="USER">Action for Admins</ion-button>
   <ion-button expand="full" appDisableRole disableForRole="ADMIN">Action for Users</ion-button>
 </ion-content>
+-->

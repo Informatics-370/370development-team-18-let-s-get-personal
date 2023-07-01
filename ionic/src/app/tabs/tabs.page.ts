@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class TabsPage {
   public environmentInjector = inject(EnvironmentInjector);
+  menuType: string = 'reveal';
+  shopClicked: boolean = false;
 
   constructor() {}
 }

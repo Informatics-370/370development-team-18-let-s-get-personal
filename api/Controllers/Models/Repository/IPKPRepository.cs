@@ -210,13 +210,27 @@ namespace IPKP___API.Controllers.Models.Repository
             .Where(u => u.BestSeller_ID == BestSeller_ID);
         return await query.FirstOrDefaultAsync();
     }
-//***
+//Order ***
     public async Task<Order> GetOrderDetailsAsync(Guid order_ID)
     {
         IQueryable<Order> query = _appDbContext.Orders
             .Where(u => u.Order_ID == order_ID);
         return await query.FirstOrDefaultAsync();
     }
+
+    public async Task<Order[]> GetAllOrdersAsync()
+    {
+        IQueryable<Order> query = _appDbContext.Orders;
+        return await query.ToArrayAsync();
+    }
+        //Basket
+        public async Task<Basket> GetBasketAsync(Guid basket_ID, int Customer_ID)
+        {
+            IQueryable<Basket> query = _appDbContext.Basket
+                .Where(u => u.Customer_ID == Customer_ID && u.Basket_ID == basket_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+
 
     public async Task<bool> SaveChangesAsync()
     {
