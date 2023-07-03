@@ -12,5 +12,11 @@ namespace IPKP___API.Controllers.Models.Entities
     public Guid Order_ID { get; set; }
     public virtual Order_Request Order_Request { get; set; }
     public virtual Order_Status Order_Status { get; set; }
+
+    [StringLength(255)]
+    public string Order_Notes { get; set; }
+
+    public DateTime Order_Date { get; set; }
+
   }
 }

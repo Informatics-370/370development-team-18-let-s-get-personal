@@ -33,14 +33,15 @@ export class BasketService {
     }
   }
 
-  public getCurrentBasket() {
-    return this.basketItemList;
+  public getCurrentBasket() {    
+      return this.cartitems;    
   }
 
-  public GetCustomer(Customer_ID:Number){ 
+  public GetBasket(Customer_ID:Number){ 
     return this.httpClient.get(`${this.apiUrl}Basket/GetBasketInfo/${Customer_ID}`)
-    .pipe(map(result => result))
+    .pipe(map(result => result))    
   }
+  
 
   public addProductToAPI(basket: BasketItem){
     return this.httpClient.post(`${this.apiUrl}Basket/AddBasketInfo`, basket)

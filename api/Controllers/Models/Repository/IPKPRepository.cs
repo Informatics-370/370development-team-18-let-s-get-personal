@@ -224,10 +224,10 @@ namespace IPKP___API.Controllers.Models.Repository
         return await query.ToArrayAsync();
     }
         //Basket
-        public async Task<Basket> GetBasketAsync(Guid basket_ID, int Customer_ID)
+        public async Task<Basket> GetBasketAsync(int Customer_ID)
         {
             IQueryable<Basket> query = _appDbContext.Basket
-                .Where(u => u.Customer_ID == Customer_ID && u.Basket_ID == basket_ID);
+                .Where(u => u.Customer_ID == Customer_ID);
             return await query.FirstOrDefaultAsync();
         }
 

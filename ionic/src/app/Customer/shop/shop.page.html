@@ -1,61 +1,25 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar color="primary">
-    <ion-title> Inside Area
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="logoutAddToCart()">
-        <ion-icon slot="icon-only" name="log-out"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-title> Shop All </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content>
+  <ion-searchbar show-clear-button="always" (ionInput)="search()" [(ngModel)]="filterTerm"  ></ion-searchbar>
 
-<ion-card *ngFor="let stockItem of stockItemList">
+  <ion-card *ngFor="let stockItem of stockItemList">
+
+  <img alt="Product Image" src="{{stockItem.stockimage.Stock_Image_File}}">
   <ion-card-header>
     <ion-card-title>{{stockItem.Stock_Item_Name}}</ion-card-title>
-    <ion-card-subtitle>{{stockItem.productrating.Product_Star_Rating}}</ion-card-subtitle>
-    <p>{{stockItem.stockitemcolours.Stock_Item_Colour_Name}}</p>    
-    <ion-button (click)="logoutAddToCart()">
-      <ion-icon slot="icon-only" name="log-out"></ion-icon>
-    </ion-button>
+    <ion-card-subtitle>{{stockItem.productrating.Product_Star_Rating}}</ion-card-subtitle>    
   </ion-card-header>
 
   <ion-card-content>
-    <ion-grid>
-
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label position="floating">Quantity</ion-label>
-            <ion-input type="number" name="quantity"></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-button (click)="addToBasket(stockItem, quantity.value)" style="float: right"><ion-icon name="basket-outline"></ion-icon></ion-button>
-        </ion-col>
-      </ion-row>
-
-    </ion-grid>
+    <p>{{stockItem.stockitemcolours.Stock_Item_Colour_Name}}</p>    
+    <ion-button (click)="addToBasket(stockItem)"></ion-button>
   </ion-card-content>
 </ion-card>
-
-
-<!-- ... Everything from before ...
-
-<ion-content>
-  <ion-card *appHasPermission="['read']">
-    <ion-card-header>
-      <ion-card-title>My Content</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      Everyone can read this
-      <ion-button expand="full" *appHasPermission="['write']">
-        Admin action
-      </ion-button>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-button expand="full" appDisableRole disableForRole="USER">Action for Admins</ion-button>
-  <ion-button expand="full" appDisableRole disableForRole="ADMIN">Action for Users</ion-button>
 </ion-content>
--->
+
+
+

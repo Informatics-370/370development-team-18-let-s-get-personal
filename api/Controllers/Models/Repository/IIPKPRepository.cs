@@ -41,6 +41,6 @@ namespace IPKP___API.Controllers.Models.Repository
     Task<BestSellers> GetBestSellerAsync(Guid BestSeller_ID);
 
     Task<Order> GetOrderDetailsAsync(Guid order_ID);
-
+        Task<Basket> GetBasketAsync(int Customer_ID);
     }
 }

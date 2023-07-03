@@ -6,7 +6,8 @@ import { RouterModule, Router } from '@angular/router';
 import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestSellerDataService } from 'src/app/Services/bestsellers.service';
-
+import { BasketService } from 'src/app/Services/basket.service';
+import { BasketItem } from 'src/app/Models/basket';
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.page.html',
@@ -15,11 +16,14 @@ import { BestSellerDataService } from 'src/app/Services/bestsellers.service';
   imports: [IonicModule, CommonModule, FormsModule, RouterModule]
 })
 export class InventoryPage implements OnInit {
-  stockItems: Stock_Item[] =[];
-  
+  Products!: Stock_Item[];
+  quantities: Array<any> = [];
+  //productForm!: FormGroup;
+  basketList: Array<Stock_Item> = [];
+  productIds: Array<any> = [];
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public stockitemservice: StockItemDataService, public bestsellerservice:BestSellerDataService, 
-    private alertController:AlertController) { }
+    private alertController:AlertController, private basketService : BasketService) { }
 
   ngOnInit() {
   }
@@ -33,6 +37,7 @@ export class InventoryPage implements OnInit {
     this.router.navigate(['./stockitemcolours']);
   }
 
+  
   addToBestSellers(bestseller: Stock_Item){
     this.bestsellerservice.AddBestSeller(bestseller).subscribe((response:any) => {
       if(response == null)
@@ -47,7 +52,7 @@ export class InventoryPage implements OnInit {
   
   GetAllStockItems(){
     this.stockitemservice.GetStockItems().subscribe(result =>{
-      this.stockItems = result as Stock_Item[];
+      this.Products = result as Stock_Item[];
     })
   }
 
@@ -69,4 +74,6 @@ export class InventoryPage implements OnInit {
     });
     await alert.present();
   }
+
+ 
 }

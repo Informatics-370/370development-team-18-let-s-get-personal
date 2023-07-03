@@ -14,7 +14,7 @@
 
 <ion-card>
   <ion-card-header>
-    <ion-button onclick="emptyBasket()">
+    <ion-button  id="present-alert">
       Empty Basket
       <ion-icon slot="end" name="trash-outline"></ion-icon>
     </ion-button>
@@ -33,3 +33,10 @@
       </ion-item>
   <ion-button>Checkout</ion-button>
 
+  <ion-alert
+  trigger="present-alert"
+  header="Alert!"
+  [buttons]="alertButtons"
+  
+></ion-alert>
+<!--(didDismiss)="setResult($event)"-->

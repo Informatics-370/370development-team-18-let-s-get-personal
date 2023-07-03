@@ -9,8 +9,9 @@ namespace IPKP___API.Controllers.Models.Entities
 {
   public class Stock_Image
   {
-    [Key]
-    public Guid Stock_Image_ID { get; set; }
-    public string Stock_Image_File { get; set; }
-  }
+        [Key]
+        public Guid Stock_Image_ID { get; set; }
+        public string Stock_Image_File { get; set; }
+        public virtual Stock_Item Stock_Item { get; set; }
+    }
 }

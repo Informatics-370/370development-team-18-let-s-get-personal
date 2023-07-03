@@ -8,9 +8,10 @@ namespace IPKP___API.Controllers.Models.Entities
 {
   public class Stock_Type
   {
-    [Key]
-    public Guid Stock_Type_ID { get; set; }
-    [StringLength(255)]
-    public string Stock_Type_Name { get; set; }
-  }
+        [Key]
+        public Guid Stock_Type_ID { get; set; }
+        [StringLength(255)]
+        public string Stock_Type_Name { get; set; }
+        public virtual Stock_Item Stock_Item { get; set; }
+    }
 }

@@ -25,9 +25,18 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetBasketInfo")]
-        public async Task<IActionResult> GetBasketInfo(Basket bask, int Customer_id)
+        public async Task<IActionResult> GetBasketInfo(int Customer_id)
         {
-            return Ok("Basket Gotten To Database.");
+            try
+            {
+                var results = await _IPKPRepository.GetBasketAsync(Customer_id);
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+            }
+            //return Ok("Basket Gotten To Database.");
         }
 
         [HttpPost]
@@ -46,7 +55,7 @@ namespace IPKP___API.Controllers
             try
             {
                 _IPKPRepository.Add(basketItems);
-                await _IPKPRepository.SaveChangesAsync();
+                await _IPKPRepository.SaveChangesAsync();               
             }
             catch (Exception)
             {

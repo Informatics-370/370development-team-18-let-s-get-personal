@@ -1,13 +1,22 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>notebooks</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title> Shop Notebooks </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content>
+  <ion-searchbar show-clear-button="always" (ionInput)="search()" [(ngModel)]="filterTerm"  ></ion-searchbar>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">notebooks</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card *ngFor="let stockItem of stockItemList">
+
+  <img alt="Product Image" src="{{stockItem.stockimage.Stock_Image_File}}">
+  <ion-card-header>
+    <ion-card-title>{{stockItem.Stock_Item_Name}}</ion-card-title>
+    <ion-card-subtitle>{{stockItem.productrating.Product_Star_Rating}}</ion-card-subtitle>    
+  </ion-card-header>
+
+  <ion-card-content>
+    <p>{{stockItem.stockitemcolours.Stock_Item_Colour_Name}}</p>    
+    <ion-button (click)="addToBasket(stockItem)"></ion-button>
+  </ion-card-content>
+</ion-card>
 </ion-content>
