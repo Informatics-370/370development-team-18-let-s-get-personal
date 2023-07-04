@@ -48,6 +48,10 @@ import { RefundVM } from '../ViewModels/refundVM';
         return this.httpClient.post(`${this.apiUrl}Refund/AddRefund`, refund)
         .pipe(map(result => result))
     }
+
+    DeleteSale(Sale_Id:Number){
+      return this.httpClient.delete(`${this.apiUrl}Refund/DeleteSaleAsync/${Sale_Id}`);
+    }
    
   
   }

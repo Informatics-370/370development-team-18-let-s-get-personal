@@ -47,7 +47,7 @@ namespace IPKP___API.Controllers
 
             try
             {
-                var results = await _IPKPRepository.GetAllProductRatingsAsync();
+                var results = await _IPKPRepository.GetAllStockItemsAsync();
                 return Ok(results);
             }
             catch (Exception)
@@ -55,5 +55,57 @@ namespace IPKP___API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
             }
         }
+
+        //getting by stock type -- 
+
+        //[HttpGet]
+        //[Route("GetWaterbottles")]
+        //public async Task<IActionResult> GetWaterbottlesAsync()
+        //{
+
+        //}
+
+        //[HttpGet]
+        //[Route("GetAdultClothing")]
+        //public async Task<IActionResult>GetAdultClothingAsync()
+        //{
+
+        //}
+
+        //[HttpGet]
+        //[Route("GetFlasks")]
+        //public async Task<IActionResult>GetFlasksAsync()
+        //{
+
+        //}
+
+        //[HttpGet]
+        //[Route("GetKidsClothing")]
+        //public async Task<IActionResult>GetKidsClothingAsync()
+        //{
+
+        //}
+
+        //[HttpGet]
+        //[Route("GetMugs")]
+        //public async Task<IActionResult>GetMugsAsync()
+        //{
+
+        //}
+
+        //[HttpGet]
+        //[Route("GetNoteBooks")]
+        //public async Task<IActionResult>GetNoteBooksAsync()
+        //{
+
+        //}
+
+
+        //[HttpGet]
+        //[Route("GetWaterBottles")]
+        //public async Task<IActionResult>GetWaterBottlesAsync()
+        //{
+
+        //}
     }
 }
