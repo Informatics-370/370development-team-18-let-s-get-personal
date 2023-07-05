@@ -8,6 +8,9 @@ import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestSellerDataService } from 'src/app/Services/bestsellers.service';
 import { BasketService } from 'src/app/Services/basket.service';
 import { BasketItem } from 'src/app/Models/basket';
+import { Experience_Rating } from 'src/app/Models/experiencerating';
+import { ProductRating } from 'src/app/Models/productrating';
+
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.page.html',

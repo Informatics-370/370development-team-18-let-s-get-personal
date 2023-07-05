@@ -62,7 +62,8 @@ namespace IPKP___API.Controllers
         Stock_Item_Name = sivm.Stock_Item_Name,
         Stock_Type_Name = sivm.Stock_Type_Name,
         Stock_Image = sivm.Stock_Image_ID,
-        Stock_Item_Colour = sivm.Stock_Item_Colour
+        Stock_Item_Colour = sivm.Stock_Item_Colour,
+        Stock_Item_Price = sivm.Stock_Item_Price
       };
       try
       {

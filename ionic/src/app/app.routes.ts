@@ -242,6 +242,10 @@ export const routes: Routes = [
   },  {
     path: 'make-payment',
     loadComponent: () => import('./Customer/basket/make-payment/make-payment.page').then( m => m.MakePaymentPage)
+  },
+  {
+    path: 'update-experienc-rating',
+    loadComponent: () => import('./Profiles/profile/update-experienc-rating/update-experienc-rating.page').then( m => m.UpdateExperiencRatingPage)
   }
 
   

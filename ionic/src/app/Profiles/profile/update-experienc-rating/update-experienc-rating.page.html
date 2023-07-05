@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>update_ExperiencRating</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">update_ExperiencRating</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <form [formGroup]="EditForm">          
+    <ion-item>
+      <ion-label position="stacked">Discount Name</ion-label><br>
+      <ion-input type="text" formControlName="name" placeholder="{{experienceRatingToEdit.name}}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Discount Amount</ion-label><br>
+      <ion-input type="text" formControlName="amount" placeholder="{{experienceRatingToEdit.amount}}"></ion-input>
+    </ion-item>                    
+</form>
+</ion-content>
