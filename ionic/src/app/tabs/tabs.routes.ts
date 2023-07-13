@@ -16,12 +16,12 @@ export const routes: Routes = [
       {
         path: 'home',
         loadComponent: () => import('../Customer/home/home.page').then( m => m.HomePage),
-        canActivate: [AuthGuard]
+        //canActivate: [AuthGuard]
       },
       {
         path: 'basket',
         loadComponent: () => import('../Customer/basket/basket.page').then( m => m.BasketPage),
-        canActivate: [AuthGuard]
+        //canActivate: [AuthGuard]
       },
       {
         path: 'contactus',

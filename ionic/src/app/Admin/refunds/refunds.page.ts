@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { RefundService } from 'src/app/Services/refund.service';
 import { Refund } from 'src/app/Models/refund';
 import { Refund_Policy } from 'src/app/Models/refundpolicy';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 //for modal
 import { ModalController} from '@ionic/angular'; 
@@ -25,8 +24,8 @@ export class RefundsPage implements OnInit {
   filteredpolicies:  Refund_Policy[] = [];
   refundPolicies: Refund_Policy[] =[]
   @ViewChild(IonModal) modal!: IonModal
-  constructor(private service:RefundService, private thisroute: Router, public modalCtrl: ModalController,
-    private alertController:AlertController ) { }
+  constructor(private service:RefundService, private thisroute: Router, 
+    private alertController:AlertController, private modalCtrl: ModalController ) { }
 
   AddForm: FormGroup = new FormGroup({
     date: new FormControl('',[Validators.required]),

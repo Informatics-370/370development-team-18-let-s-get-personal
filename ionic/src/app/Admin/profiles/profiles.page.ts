@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { ProfileService } from 'src/app/Services/profile.service';
 import { IonicModule, AlertController, ModalController, IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { elementAt, isEmpty } from 'rxjs';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { User } from 'src/app/Models/user';
 import { Customer } from 'src/app/Models/customer';
 import { Employee } from 'src/app/Models/employee';

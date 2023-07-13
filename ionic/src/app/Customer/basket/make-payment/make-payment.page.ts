@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Md5 } from 'ts-md5';
+//import { Md5 } from 'ts-md5';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BasketService } from 'src/app/Services/basket.service';
@@ -22,15 +22,15 @@ export class MakePaymentPage implements OnInit {
   ngOnInit() {
   }
 
-  getSignature(data : Map<string, string>) : string {
-    let tmp = new URLSearchParams();
-    data.forEach((v, k)=> {
-      tmp.append(k, v)
-    });
-    let queryString = tmp.toString();
-    let sig = Md5.hashStr(queryString);
-    return sig;
-  }
+ // getSignature(data : Map<string, string>) : string {
+ //   let tmp = new URLSearchParams();
+ //   data.forEach((v, k)=> {
+ //     tmp.append(k, v)
+  //  });
+ //   let queryString = tmp.toString();
+    //let sig = Md5.hashStr(queryString);
+    //return sig;
+ // }
 
   doFormPayment() {
     let onSiteUserData = new Map<string, string>();
@@ -47,8 +47,8 @@ export class MakePaymentPage implements OnInit {
 
     onSiteUserData.set('passphrase', 'HelloWorldHello');
 
-    let signature = this.getSignature(onSiteUserData);
-    onSiteUserData.set('signature', signature);
+   // let signature = this.getSignature(onSiteUserData);
+    //onSiteUserData.set('signature', signature);
 
     let autoPaymentForm = this.formBuilder.group(onSiteUserData);
     

@@ -17,10 +17,10 @@
       <!--ng for each-->
         <ion-item *ngFor="let item of productratings" >                      
             <ion-label>
-                <h5>{{item.ProductRatingNotes}}</h5>
-                <p>{{item.ProductRatingId}}</p><!--rating number not in ERD-->
-                <ion-button (click)="getproductrating(item.ProductRatingId)" >Edit</ion-button>
-                <ion-button (click)="DeleteProductRating(item.ProductRatingId)" >Delete</ion-button>
+                <h5>{{item.Product_Rating_Comments}}</h5>
+                <p>{{item.Product_Rating_ID}}</p><!--rating number not in ERD-->
+                <ion-button (click)="getproductrating(item.Product_Rating_ID)" >Edit</ion-button>
+                <ion-button (click)="DeleteProductRating(item.Product_Rating_ID)" >Delete</ion-button>
             </ion-label>
         </ion-item>
     </ion-list>
