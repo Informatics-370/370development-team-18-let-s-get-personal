@@ -15,28 +15,28 @@ export const routes: Routes = [
 //Customer
       {
         path: 'home',
-        loadComponent: () => import('../Customer/home/home.page').then( m => m.HomePage),
+        loadComponent: () => import('../Customer/home/home.page').then( m => m.HomePage)
         //canActivate: [AuthGuard]
       },
       {
         path: 'basket',
-        loadComponent: () => import('../Customer/basket/basket.page').then( m => m.BasketPage),
+        loadComponent: () => import('../Customer/basket/basket.page').then( m => m.BasketPage)
         //canActivate: [AuthGuard]
       },
       {
         path: 'contactus',
-        loadComponent: () => import('../Customer/contactus/contactus.page').then( m => m.ContactusPage),
-        canActivate: [AuthGuard]
+        loadComponent: () => import('../Customer/contactus/contactus.page').then( m => m.ContactusPage)
+        //canActivate: [AuthGuard]
       },
       {
         path: 'faq',
-        loadComponent: () => import('../Customer/faq/faq.page').then( m => m.FaqPage),
-        canActivate: [AuthGuard]
+        loadComponent: () => import('../Customer/faq/faq.page').then( m => m.FaqPage)
+        //canActivate: [AuthGuard]
       },
       {
         path: 'previous_orders',
-        loadComponent: () => import('../Customer/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage),
-        canActivate: [AuthGuard]
+        loadComponent: () => import('../Customer/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage)//,
+        //canActivate: [AuthGuard]
       },
       {
         path: 'product_rating',
@@ -50,8 +50,8 @@ export const routes: Routes = [
       },
       {
         path: 'shop',
-        loadComponent: () => import('../Customer/shop/shop.page').then( m => m.ShopPage),
-        canActivate: [AuthGuard]
+        loadComponent: () => import('../Customer/shop/shop.page').then( m => m.ShopPage)//,
+        //canActivate: [AuthGuard]
       },
 //Admin...
       {

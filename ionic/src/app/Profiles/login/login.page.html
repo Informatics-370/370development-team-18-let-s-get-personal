@@ -32,13 +32,10 @@
   
         <ion-button expand="block" class="main-button" type="submit" [disabled]="!f.valid">Log in</ion-button>
   
-        <div class="ion-padding" *ngIf="f.valid">
-          Form username: {{ f.value.username }}<br />
-          Form password: {{ f.value.password }}
-        </div>
+        
 
         <div class="sign-up">
-          Don't have an account? <ion-button color="dark" fill="clear" routerLink="/signup" routerDirection="forward">Sign up</ion-button>
+          Don't have an account? <ion-button color="dark" fill="clear" routerLink="/create-profile" routerDirection="forward">Sign up</ion-button>
         </div>
       </div>
     </form>

@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <ion-title>Home</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,4 +10,31 @@
       <ion-title size="large">Home</ion-title>
     </ion-toolbar>
   </ion-header>
+  <div style="text-align: center;">
+    <h1>It's Personal</h1>
+  
+    <h2>Best Sellers</h2>
+    <ion-grid *ngFor="let item of bestSellers">
+      <ion-col>
+        <img src="{{item.stockimage.Stock_Image_File}}">
+      </ion-col>
+    </ion-grid>
+  
+    <h2>About Us</h2>
+    <ion-grid>
+      <ion-col>
+        <p></p>
+      </ion-col>
+      <ion-col>
+        <img src=""><!--Image of clients-->
+      </ion-col>
+    </ion-grid>
+  </div>
+  
+
 </ion-content>
+
+<ion-footer>
+  <!--email, phone number, links to social media  -->
+</ion-footer>
+

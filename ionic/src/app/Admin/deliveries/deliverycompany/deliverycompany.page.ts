@@ -28,9 +28,11 @@ export class DeliverycompanyPage implements OnInit {
 
   constructor(public modalCtrl: ModalController, private service:DeliveryCompanyDataService,
     private router: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
+
     AddTypeForm:FormGroup = new FormGroup({
       name: new FormControl(['',Validators.required])      
     }); 
+    
     ngOnInit(): void {
       this.GetDeliveryCompanies();
     }
@@ -39,6 +41,7 @@ export class DeliverycompanyPage implements OnInit {
     {
       this.router.navigate(['./edit-deliverycompany']);
     }
+
     GetDeliveryCompanies(){
       this.service.GetDeliveryCompanies().subscribe(result =>{
         let deliverycompanylist: any[] = result

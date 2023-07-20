@@ -54,15 +54,15 @@ namespace IPKP___API.Controllers
 
     [HttpPost]
     [Route("AddStockItem")]
-    public async Task<IActionResult> AddStockItemAsync(StockItemViewModel sivm)
+    public async Task<IActionResult> AddStockItemAsync(Stock_Item sivm)
     {
       var stockItem = new Stock_Item
       {
         Stock_Item_ID = sivm.Stock_Item_ID,
         Stock_Item_Name = sivm.Stock_Item_Name,
-        Stock_Type_Name = sivm.Stock_Type_Name,
-        Stock_Image = sivm.Stock_Image_ID,
-        Stock_Item_Colour = sivm.Stock_Item_Colour,
+        Stock_Types = sivm.Stock_Types,
+        Stock_Images = sivm.Stock_Images,
+        Stock_Item_Colours = sivm.Stock_Item_Colours,
         Stock_Item_Price = sivm.Stock_Item_Price
       };
       try
@@ -79,7 +79,7 @@ namespace IPKP___API.Controllers
 
     [HttpPut]
     [Route("UpdateStockItem")]
-    public async Task<IActionResult> UpdateStockItemAsync(Guid stock_Item_ID, StockItemViewModel sivm)
+    public async Task<IActionResult> UpdateStockItemAsync(Guid stock_Item_ID, Stock_Item sivm)
     {
       try
       {
@@ -88,9 +88,9 @@ namespace IPKP___API.Controllers
         if (existingStockItem == null) return NotFound("Could Not Find Stock Item" + stock_Item_ID);
 
         existingStockItem.Stock_Item_Name = sivm.Stock_Item_Name;
-        existingStockItem.Stock_Type_Name = sivm.Stock_Type_Name;
-        existingStockItem.Stock_Image = sivm.Stock_Image_ID;
-        existingStockItem.Stock_Item_Colour = sivm.Stock_Item_Colour;
+        existingStockItem.Stock_Types = sivm.Stock_Types;
+        existingStockItem.Stock_Images = sivm.Stock_Images;
+        existingStockItem.Stock_Item_Colours = sivm.Stock_Item_Colours;
 
         if (await _IPKPRepository.SaveChangesAsync())
         {

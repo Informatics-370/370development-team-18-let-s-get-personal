@@ -40,6 +40,7 @@ export class EditDeliverycompanyPage implements OnInit {
         });
       })
     }
+    
     onSubmit(){
       this.service.UpdateDeliveryCompany(this.deliverycompany.DeliveryCompanyId, this.EditTypeForm.value).subscribe(result =>{
         this.router.navigate(['/stocktypes'])

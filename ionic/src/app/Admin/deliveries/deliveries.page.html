@@ -1,27 +1,40 @@
-<ion-header>
-    <ion-button fill="outline" id="addDeliveryModal">
-      Add Delivery
-      <ion-icon slot="end" name="add-outline"></ion-icon>
-    </ion-button>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Deliveries</ion-title>
+  </ion-toolbar>
 </ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Deliveries</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-button fill="outline" id="addDeliveryModal">Add Delivery
+    <ion-icon slot="end" name="add-outline"></ion-icon>
+  </ion-button>
+
+  <ion-button onclick="delCompanynav()">View delivery Companies</ion-button>
   
-<ion-card>
-  <ion-card-header>
-    <ion-card-title>Deliveries In Progress</ion-card-title>
-  </ion-card-header>
-  <ion-card-content>
-    <ion-list>
-      <ion-item *ngFor="let item of deliveries">
-        <ion-label>
-          <h1>{{item.Delivery_Address}}</h1>
-          <h1>{{item.Delivery_Price}}</h1>
-          <h1>{{item.Tracking_Number}}</h1>
-          <h1>{{item.Delivery_Company}}</h1>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-card-content>
-</ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Deliveries In Progress</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let item of deliveries">
+          <ion-label>
+            <h1>{{item.Delivery_Address}}</h1>
+            <h1>{{item.Delivery_Price}}</h1>
+            <h1>{{item.Tracking_Number}}</h1>
+            <h1>{{item.Delivery_Company}}</h1>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
 
 <ion-footer> 
   <ion-modal trigger="addDeliveryModal" (willDismiss)="onWillDismiss($event)">

@@ -2,6 +2,7 @@
 import { Routes, RouterModule, PreloadAllModules} from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './Guards/auth.guard';
+
 export const routes: Routes = [
   {
     path: '',
@@ -11,23 +12,23 @@ export const routes: Routes = [
 //Customer 
   {
     path: 'home',
-    loadComponent: () => import('./Customer/home/home.page').then( m => m.HomePage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/home/home.page').then( m => m.HomePage)
+    ////canActivate: [AuthGuard]
   },
   {
     path: 'basket',
-    loadComponent: () => import('./Customer/basket/basket.page').then( m => m.BasketPage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/basket/basket.page').then( m => m.BasketPage)
+    //canActivate: [AuthGuard]
   },
   {
     path: 'contactus',
-    loadComponent: () => import('./Customer/contactus/contactus.page').then( m => m.ContactusPage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/contactus/contactus.page').then( m => m.ContactusPage)
+    //canActivate: [AuthGuard]
   },
   {
     path: 'faq',
-    loadComponent: () => import('./Customer/faq/faq.page').then( m => m.FaqPage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/faq/faq.page').then( m => m.FaqPage)
+    //canActivate: [AuthGuard]
   },
   {
     path: 'previous_orders',
@@ -47,7 +48,7 @@ export const routes: Routes = [
   {
     path: 'shop',
     loadComponent: () => import('./Customer/shop/shop.page').then( m => m.ShopPage),
-    canActivate: [AuthGuard]
+    //canActivate: [AuthGuard]
   },
 
 //Admin...
