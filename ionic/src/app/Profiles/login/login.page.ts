@@ -28,7 +28,7 @@ export class LoginPage implements OnInit {
       let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
       console.log(roles);
       if(roles.includes('Admin')) {
-        this.router.navigateByUrl('/inventory', {replaceUrl: true});
+        this.router.navigateByUrl('/menu', {replaceUrl: true});
       } else if(roles.includes('User')) {
         this.router.navigateByUrl('/shop', {replaceUrl: true});
       }

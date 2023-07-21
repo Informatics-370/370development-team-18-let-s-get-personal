@@ -1,16 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>editDiscounts</ion-title>
+    <ion-title>Update Discount Policy</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">editDiscounts</ion-title>
+      <ion-title size="large">Update Discount Policy</ion-title>
     </ion-toolbar>
   </ion-header>
-  <form [formGroup]="editForm">          
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit(editForm)">          
     <ion-item>
       <ion-label position="stacked">Discount Name</ion-label><br>
       <ion-input type="text" formControlName="name" placeholder="{{discountToEdit.name}}"></ion-input>

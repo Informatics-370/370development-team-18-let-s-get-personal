@@ -18,6 +18,7 @@ namespace IPKP___API.Controllers
     [ApiController]
     public class BestSellersController : ControllerBase
     {
+        //AppDbContext _CoreDbContext = new AppDbContext();
         private readonly IIPKPRepository _IPKPRepository;
         public BestSellersController(IIPKPRepository iPKPRepository)
         {
@@ -41,26 +42,28 @@ namespace IPKP___API.Controllers
 
         [HttpPost]
         [Route("AddBestSeller")]
-        public async Task<IActionResult> AddBestSeller(StockItemViewModel sivm)
+        public async Task<IActionResult> AddBestSeller(BestSellers bsellers)
         {
-            var bestsellerItem = new BestSellers
+            using (var contextmodel = new AppDbContext())
             {
-                Stock_Item_ID = sivm.Stock_Item_ID,
-                Stock_Item_Name = sivm.Stock_Item_Name,
-                Stock_Type_Name = sivm.Stock_Type_Name,
-                Stock_Image = sivm.Stock_Image,
-                Stock_Item_Colour = sivm.Stock_Item_Colour
-            };
-            try
-            {
-                _IPKPRepository.Add(bestsellerItem);
-                await _IPKPRepository.SaveChangesAsync();
+                var bestsellerItem = new BestSellers
+                {
+                    BestSeller_ID = bsellers.BestSeller_ID,
+                    Stock_Item_ID = bsellers.Stock_Item_ID,                    
+                    Stock_Item = bsellers.Stock_Item
+                };
+                try
+                {
+                    _IPKPRepository.Add(bestsellerItem);
+                    await _IPKPRepository.SaveChangesAsync();
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Invalid Transaction");
+                }
+                return Ok("Stock Item Added To Database.");
             }
-            catch (Exception)
-            {
-                return BadRequest("Invalid Transaction");
-            }
-            return Ok("Stock Item Added To Database.");
+            
 
         }
     }

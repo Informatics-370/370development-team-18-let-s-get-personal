@@ -76,26 +76,26 @@ export class DeliverycompanyPage implements OnInit {
       this.modal.dismiss(null, 'cancel');
     }
   
-    async confirmaddmodal() {
+    async confirmaddAlert() {
       const alert = await this.alertController.create({
         header: 'Please Confirm that you would like to continue',
         buttons: ['Cancel', 'Continue']
       });
       await alert.present();
-      this.modal.dismiss('confirm');
+      this.modal.dismiss('Cancel');
     }
   
     canceleditmodal() {
       this.modal.dismiss(null, 'cancel');
     }
   
-    async confirmeditmodal() {
+    async confirmeditAlert() {
       const alert = await this.alertController.create({
         header: 'Please Confirm that you would like to continue',
         buttons: ['Cancel', 'Continue']
       });
       await alert.present();
-      this.modal.dismiss('confirm');
+      this.modal.dismiss('Cancel');
     }
   
     onWillDismiss(event: Event) {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IPKP___API.Migrations
 {
-    public partial class DbSnapshot : Migration
+    public partial class IPKPSnapShot : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,6 +44,18 @@ namespace IPKP___API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BestSellers",
+                columns: table => new
+                {
+                    BestSeller_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BestSellers", x => x.BestSeller_ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -459,6 +471,30 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BestSellersStock_Item",
+                columns: table => new
+                {
+                    BestSellersBestSeller_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BestSellersStock_Item", x => new { x.BestSellersBestSeller_ID, x.Stock_Item_ID });
+                    table.ForeignKey(
+                        name: "FK_BestSellersStock_Item_BestSellers_BestSellersBestSeller_ID",
+                        column: x => x.BestSellersBestSeller_ID,
+                        principalTable: "BestSellers",
+                        principalColumn: "BestSeller_ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BestSellersStock_Item_Stock_Items_Stock_Item_ID",
+                        column: x => x.Stock_Item_ID,
+                        principalTable: "Stock_Items",
+                        principalColumn: "Stock_Item_ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Stock_ImageStock_Item",
                 columns: table => new
                 {
@@ -524,47 +560,6 @@ namespace IPKP___API.Migrations
                         column: x => x.Stock_Item_ID,
                         principalTable: "Stock_Items",
                         principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BestSellers",
-                columns: table => new
-                {
-                    BestSeller_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Type_NameStock_Type_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Image_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Item_Colour_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Item_Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BestSellers", x => x.BestSeller_ID);
-                    table.ForeignKey(
-                        name: "FK_BestSellers_Stock_Images_Stock_Image_ID",
-                        column: x => x.Stock_Image_ID,
-                        principalTable: "Stock_Images",
-                        principalColumn: "Stock_Image_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_BestSellers_Stock_Item_Colours_Stock_Item_Colour_ID",
-                        column: x => x.Stock_Item_Colour_ID,
-                        principalTable: "Stock_Item_Colours",
-                        principalColumn: "Stock_Item_Colour_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_BestSellers_Stock_Items_Stock_Item_ID1",
-                        column: x => x.Stock_Item_ID1,
-                        principalTable: "Stock_Items",
-                        principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_BestSellers_Stock_Types_Stock_Type_NameStock_Type_ID",
-                        column: x => x.Stock_Type_NameStock_Type_ID,
-                        principalTable: "Stock_Types",
-                        principalColumn: "Stock_Type_ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1174,24 +1169,9 @@ namespace IPKP___API.Migrations
                 column: "Stock_Type_NameStock_Type_ID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BestSellers_Stock_Image_ID",
-                table: "BestSellers",
-                column: "Stock_Image_ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BestSellers_Stock_Item_Colour_ID",
-                table: "BestSellers",
-                column: "Stock_Item_Colour_ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BestSellers_Stock_Item_ID1",
-                table: "BestSellers",
-                column: "Stock_Item_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BestSellers_Stock_Type_NameStock_Type_ID",
-                table: "BestSellers",
-                column: "Stock_Type_NameStock_Type_ID");
+                name: "IX_BestSellersStock_Item_Stock_Item_ID",
+                table: "BestSellersStock_Item",
+                column: "Stock_Item_ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cities_Province_ID",
@@ -1410,7 +1390,7 @@ namespace IPKP___API.Migrations
                 name: "Basket");
 
             migrationBuilder.DropTable(
-                name: "BestSellers");
+                name: "BestSellersStock_Item");
 
             migrationBuilder.DropTable(
                 name: "Deliveries");
@@ -1465,6 +1445,9 @@ namespace IPKP___API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Personalisation_Designs");
+
+            migrationBuilder.DropTable(
+                name: "BestSellers");
 
             migrationBuilder.DropTable(
                 name: "Delivery_Companies");

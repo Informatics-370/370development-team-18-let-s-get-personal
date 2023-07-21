@@ -48,7 +48,7 @@ namespace IPKP___API.Controllers
                 Stock_Item_ID = bask.Stock_Item_ID,
                 Stock_Item_Name = bask.Stock_Item_Name,
                 Stock_Type_Name = bask.Stock_Type_Name,
-                Stock_Image_ID = bask.Stock_Image_ID,
+                Stock_Image_Id = bask.Stock_Image_Id,
                 Stock_Item_Colour = bask.Stock_Item_Colour,
                 Customer_ID = bask.Customer_ID
             };

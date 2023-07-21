@@ -32,17 +32,17 @@ export const routes: Routes = [
   },
   {
     path: 'previous_orders',
-    loadComponent: () => import('./Customer/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage),
+    loadComponent: () => import('./Profiles/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage),
     canActivate: [AuthGuard]
   },
   {
     path: 'product_rating',
-    loadComponent: () => import('./Customer/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage),
+    loadComponent: () => import('./Profiles/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage),
     canActivate: [AuthGuard]
   },
   {
     path: 'edit_product_rating',
-    loadComponent: () => import('./Customer/previous-orders/product-rating/edit-productrating/edit-productrating.page').then( m => m.EditProductratingPage),
+    loadComponent: () => import('./Profiles/previous-orders/product-rating/edit-productrating/edit-productrating.page').then( m => m.EditProductratingPage),
     canActivate: [AuthGuard]
   },
   {

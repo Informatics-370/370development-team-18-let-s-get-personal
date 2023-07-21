@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button class="backbtn" routerLink="/welcome" routerDirection="back">
+      <ion-button class="backbtn" routerLink="/home" routerDirection="back">
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -31,11 +31,11 @@
         </ion-item>
   
         <ion-button expand="block" class="main-button" type="submit" [disabled]="!f.valid">Log in</ion-button>
-  
-        
+        <ion-button expand="block" class="main-button" routerLink="/forgot-password">Forgot Password</ion-button>        
 
         <div class="sign-up">
-          Don't have an account? <ion-button color="dark" fill="clear" routerLink="/create-profile" routerDirection="forward">Sign up</ion-button>
+          Don't have an account? 
+          <ion-button color="dark" fill="clear" routerLink="/create-profile" routerDirection="forward">Sign up</ion-button>
         </div>
       </div>
     </form>

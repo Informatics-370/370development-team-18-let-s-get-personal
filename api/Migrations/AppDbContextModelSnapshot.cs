@@ -19,6 +19,21 @@ namespace IPKP___API.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("BestSellersStock_Item", b =>
+                {
+                    b.Property<Guid>("BestSellersBestSeller_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Stock_Item_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("BestSellersBestSeller_ID", "Stock_Item_ID");
+
+                    b.HasIndex("Stock_Item_ID");
+
+                    b.ToTable("BestSellersStock_Item");
+                });
+
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Address", b =>
                 {
                     b.Property<Guid>("Address_ID")
@@ -114,36 +129,14 @@ namespace IPKP___API.Migrations
                 {
                     b.Property<Guid>("BestSeller_ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Stock_Image_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Stock_Item_Colour_ID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("BestSeller_ID");
 
                     b.Property<Guid>("Stock_Item_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Stock_Item_ID1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Stock_Item_Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<Guid?>("Stock_Type_NameStock_Type_ID")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Stock_Item_ID");
 
                     b.HasKey("BestSeller_ID");
-
-                    b.HasIndex("Stock_Image_ID");
-
-                    b.HasIndex("Stock_Item_Colour_ID");
-
-                    b.HasIndex("Stock_Item_ID1");
-
-                    b.HasIndex("Stock_Type_NameStock_Type_ID");
 
                     b.ToTable("BestSellers");
                 });
@@ -1243,6 +1236,21 @@ namespace IPKP___API.Migrations
                     b.ToTable("Stock_ItemStock_Type");
                 });
 
+            modelBuilder.Entity("BestSellersStock_Item", b =>
+                {
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.BestSellers", null)
+                        .WithMany()
+                        .HasForeignKey("BestSellersBestSeller_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", null)
+                        .WithMany()
+                        .HasForeignKey("Stock_Item_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Address", b =>
                 {
                     b.HasOne("IPKP___API.Controllers.Models.Entities.City", "City_Name")
@@ -1277,7 +1285,7 @@ namespace IPKP___API.Migrations
                         .HasForeignKey("Stock_Item_Colour_ID");
 
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Stock_Item")
-                        .WithMany("basket")
+                        .WithMany()
                         .HasForeignKey("Stock_Item_ID1");
 
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Type", "Stock_Type_Name")
@@ -1289,33 +1297,6 @@ namespace IPKP___API.Migrations
                     b.Navigation("Personalisation_Design");
 
                     b.Navigation("Stock_Image_ID");
-
-                    b.Navigation("Stock_Item");
-
-                    b.Navigation("Stock_Item_Colour");
-
-                    b.Navigation("Stock_Type_Name");
-                });
-
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.BestSellers", b =>
-                {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Image", "Stock_Image")
-                        .WithMany()
-                        .HasForeignKey("Stock_Image_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item_Colour", "Stock_Item_Colour")
-                        .WithMany()
-                        .HasForeignKey("Stock_Item_Colour_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Stock_Item")
-                        .WithMany()
-                        .HasForeignKey("Stock_Item_ID1");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Type", "Stock_Type_Name")
-                        .WithMany()
-                        .HasForeignKey("Stock_Type_NameStock_Type_ID");
-
-                    b.Navigation("Stock_Image");
 
                     b.Navigation("Stock_Item");
 
@@ -1699,11 +1680,6 @@ namespace IPKP___API.Migrations
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Inventory", b =>
                 {
                     b.Navigation("Write_Off");
-                });
-
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Stock_Item", b =>
-                {
-                    b.Navigation("basket");
                 });
 #pragma warning restore 612, 618
         }

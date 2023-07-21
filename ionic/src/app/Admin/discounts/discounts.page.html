@@ -41,32 +41,31 @@
           <ion-buttons slot="start">
             <ion-button (click)="canceladdmodal()">Cancel</ion-button>
           </ion-buttons>
-          <ion-title>Add Stock Type</ion-title>
+          <ion-title>Add Discount Policy Details</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <ion-item>
-          <h3>Add Refund Policy Details</h3>     
+        <ion-item>   
         </ion-item>
         <form [formGroup]="AddForm">          
             <ion-item>
               <ion-label position="stacked">Discount Name</ion-label><br>
-              <ion-input type="text" formControlName="name" placeholder=""></ion-input>
+              <ion-input type="text" formControlName="name" placeholder="" required></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Discount Amount</ion-label><br>
-              <ion-input type="text" formControlName="amount" placeholder=""></ion-input>
+              <ion-input type="text" formControlName="amount" placeholder="" required></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Effective From Date</ion-label><br>
-              <ion-input type="date" formControlName="effectiveFromdate" placeholder=""></ion-input>
+              <ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
             </ion-item> 
             <ion-item>
               <ion-label position="stacked">Effective To Date</ion-label><br>
-              <ion-input type="date" formControlName="effectiveTodate" placeholder=""></ion-input>
+              <ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input>
             </ion-item>                    
         </form>
       </ion-content>

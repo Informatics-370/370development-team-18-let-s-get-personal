@@ -31,16 +31,22 @@ export class EditDiscountsPage implements OnInit {
   ngOnInit(): void {
     this.service.GetDiscount(+this.currentroute.snapshot.params['id']).subscribe(result =>{
       this.discountToEdit = result
-      this.editForm.patchValue({
-        name: this.discountToEdit.name,
-        amount: this.discountToEdit.amount,
-        effectiveFromdate: this.discountToEdit.effectiveFromdate,
-        effectiveTodate: this.discountToEdit.effectiveTodate
-      });
+      if(result == null){
+        this.foundDiscountErrorAlert();
+      }
+      else{
+        this.editForm.patchValue({
+          name: this.discountToEdit.name,
+          amount: this.discountToEdit.amount,
+          effectiveFromdate: this.discountToEdit.effectiveFromdate,
+          effectiveTodate: this.discountToEdit.effectiveTodate
+        });
+      }      
     })
   }
+  //if result = null return error message
 
-  onSubmit(){
+  onSubmit(editForm: FormGroup){
     let editedDiscount = new Discount();
     editedDiscount.Discount_Name = this.editForm.value.name;
     editedDiscount.Discount_Amount = this.editForm.value.amount;
@@ -70,6 +76,16 @@ export class EditDiscountsPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
       subHeader: 'Discount Was Not Updated',
+      message: 'Please try again',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async foundDiscountErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Discount Was Not Found',
       message: 'Please try again',
       buttons: ['OK'],
     });
