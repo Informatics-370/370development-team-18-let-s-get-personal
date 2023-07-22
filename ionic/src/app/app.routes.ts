@@ -119,7 +119,28 @@ export const routes: Routes = [
   {
     path: 'create-profile',
     loadComponent: () => import('./Profiles/create-profile/create-profile.page').then( m => m.CreateProfilePage)
+  },
+  {
+    path: 'view-employees',
+    loadComponent: () => import('./Admin/view-employees/view-employees.page').then( m => m.ViewEmployeesPage)
+  },  {
+    path: 'bestsellers',
+    loadComponent: () => import('./Admin/bestsellers/bestsellers.page').then( m => m.BestsellersPage)
+  },
+  {
+    path: 'order-requests',
+    loadComponent: () => import('./Admin/order-requests/order-requests.page').then( m => m.OrderRequestsPage)
+  },
+  {
+    path: 'orderstatuspopover',
+    loadComponent: () => import('./Admin/orders/orderstatuspopover/orderstatuspopover.page').then( m => m.OrderstatuspopoverPage)
+  },
+  {
+    path: 'personalisation',
+    loadComponent: () => import('./Customer/personalisation/personalisation.page').then( m => m.PersonalisationPage)
   }
+
+
 
 
 

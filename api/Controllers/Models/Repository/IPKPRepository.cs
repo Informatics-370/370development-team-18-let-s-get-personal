@@ -48,6 +48,24 @@ namespace IPKP___API.Controllers.Models.Repository
       return await query.ToArrayAsync();
     }
 
+    public async Task<Order_Request[]> GetAllOrderRequestsAsync()
+    {
+      IQueryable<Order_Request> query = _appDbContext.Order_Requests;
+      return await query.ToArrayAsync();
+    }
+
+    public async Task<Order[]> GetAllOrdersAsync()
+    {
+      IQueryable<Order> query = _appDbContext.Orders;
+      return await query.ToArrayAsync();
+    }
+
+    public async Task<Order_Status[]> GetAllOrderStatusesAsync()
+    {
+      IQueryable<Order_Status> query = _appDbContext.Order_Statuses;
+      return await query.ToArrayAsync();
+    }
+
     public async Task<Product_Rating[]> GetAllProductRatingsAsync()
     {
       IQueryable<Product_Rating> query = _appDbContext.Product_Ratings;
@@ -112,10 +130,51 @@ namespace IPKP___API.Controllers.Models.Repository
       return await query.FirstOrDefaultAsync();
     }
 
+    public async Task<Best_Sellers> GetLatestBestSellersAsync()
+    {
+      IQueryable<Best_Sellers> query = _appDbContext.Best_Sellers;
+      return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<Order> GetOrderDetailsAsync(Guid order_ID)
+    {
+      IQueryable<Order> query = _appDbContext.Orders
+        .Where(u => u.Order_ID == order_ID);
+      return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<Order_Request> GetOrderRequestAsync(Guid order_Request_ID)
+    {
+      IQueryable<Order_Request> query = _appDbContext.Order_Requests
+                .Where(u => u.Order_Request_ID == order_Request_ID);
+      return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<Order_Status> GetOrderStatusByNameAsync(string orderStatus)
+    {
+      IQueryable<Order_Status> query = _appDbContext.Order_Statuses
+        .Where(u => u.Order_Status_Description == orderStatus);
+      return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<Personalisation_Design> GetPersonalisationAsync(Guid personalisation_ID)
+    {
+      IQueryable<Personalisation_Design> query = _appDbContext.Personalisation_Designs
+        .Where(u => u.Personalisation_Design_ID == personalisation_ID);
+      return await query.FirstOrDefaultAsync();
+    }
+
     public async Task<Product_Rating> GetProductRatingDetailsAsync(Guid product_Rating_ID)
     {
       IQueryable<Product_Rating> query = _appDbContext.Product_Ratings
                 .Where(u => u.Product_Rating_ID == product_Rating_ID);
+      return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<Stock_Item> GetStockItemByName(string stock_Item_Name)
+    {
+      IQueryable<Stock_Item> query = _appDbContext.Stock_Items
+        .Where(u => u.Stock_Item_Name == stock_Item_Name);
       return await query.FirstOrDefaultAsync();
     }
 

@@ -34,6 +34,7 @@ namespace IPKP___API.Controllers.Models.Repository
     public DbSet<Inventory> Inventories {get; set; }
     public DbSet<Invoice> Invoices {get; set; }
     public DbSet<Order> Orders {get; set; }
+    public DbSet<Order_Status> Order_Statuses { get; set; }
     public DbSet<Order_Request> Order_Requests {get; set; }
     public DbSet<Payment> Payments {get; set; }
     public DbSet<Payment_Type> Payment_Types {get; set; }
@@ -55,5 +56,6 @@ namespace IPKP___API.Controllers.Models.Repository
     public DbSet<User_Role_Permission> User_Role_Permissions {get; set; }
     public DbSet<Write_Off> Write_Offs {get; set; }
     public DbSet<Write_Off_Line_Item> Write_Off_Line_Items {get; set; }
+    public DbSet<Best_Sellers> Best_Sellers { get; set; }
   }
 }

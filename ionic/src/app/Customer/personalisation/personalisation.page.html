@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Personalize Stock Item
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Upload Image</ion-label>
+    <input type="file" (change)="onImageChange($event)" accept="image/*">
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Item Color</ion-label>
+    <ion-select [(ngModel)]="selectedItemColor">
+      <ion-item-options *ngFor="let color of stockItemColors">{{ color }}</ion-item-options>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Text Message</ion-label>
+    <ion-input [(ngModel)]="textMessage" type="text"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Text Position</ion-label>
+    <ion-input [(ngModel)]="textPosition" type="text"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Text Color</ion-label>
+    <ion-select [(ngModel)]="selectedTextColor">
+      <ion-item-options *ngFor="let color of stockItemColors">{{ color }}</ion-item-options>
+    </ion-select>
+  </ion-item>
+
+  <ion-button expand="full" (click)="savePersonalization()">Save Personalization</ion-button>
+</ion-content>
