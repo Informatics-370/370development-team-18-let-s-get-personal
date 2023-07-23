@@ -11,31 +11,25 @@ import { Employee } from 'src/app/Models/employee';
 import { EmployeeService } from 'src/app/Services/employee.service';
 
 @Component({
-  selector: 'app-profiles',
-  templateUrl: './profiles.page.html',
-  styleUrls: ['./profiles.page.scss'],
+  selector: 'app-customers',
+  templateUrl: './customers.page.html',
+  styleUrls: ['./customers.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class ProfilesPage implements OnInit {
-  
+export class CustomersPage implements OnInit {
   Profile: User[] = []
+  customers: Customer[] = []
+  employees: Employee[] = []
+  employee: any
   @ViewChild(IonModal) modal!: IonModal
-
-  filterTerm: string = "";
-  filteredItems:  User[] = [];
   
   constructor(private service:ProfileService, private alertController:AlertController, 
     private empservice: EmployeeService, public modalCtrl: ModalController) { }
 
+  
+
   ngOnInit() {
-  
-  } 
-
-
-
-  
-
+  }
 
 }
-

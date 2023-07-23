@@ -248,7 +248,15 @@ export const routes: Routes = [
   {
     path: 'update-experienc-rating',
     loadComponent: () => import('./Profiles/profile/update-experienc-rating/update-experienc-rating.page').then( m => m.UpdateExperiencRatingPage)
+  },  {
+    path: 'employees',
+    loadComponent: () => import('./Admin/profiles/employees/employees.page').then( m => m.EmployeesPage)
+  },
+  {
+    path: 'customers',
+    loadComponent: () => import('./Admin/profiles/customers/customers.page').then( m => m.CustomersPage)
   }
+
 
   
   

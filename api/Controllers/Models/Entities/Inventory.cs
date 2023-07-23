@@ -18,9 +18,13 @@ namespace IPKP___API.Controllers.Models.Entities
         [Key]
         [Column("Stock_Item_ID")]
         public Guid Inventory_ID { get; set; }
+
         public DateTime Inventory_Date { get; set; }
+
         [StringLength(255)]
         public string Inventory_Comments { get; set; }
+
+        public int QuantityOnHand { get; set; }
 
         [InverseProperty("Inventory")]
         public virtual ICollection<Write_Off> Write_Off { get; set; }

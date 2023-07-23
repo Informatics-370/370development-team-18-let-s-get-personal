@@ -9,6 +9,11 @@ using System.Linq;
 
 namespace IPKP___API.Controllers
 {
+    //1. Get current Stock Total
+    //2. Get all old stock takes, get specific stock take
+    //3. Get new stock amounts, add new stock take, update inventory
+    //4. Update for foreign keys
+    //5. 
     [Route("api/[controller]")]
     [ApiController]
     public class StockTakeController : ControllerBase
@@ -18,6 +23,8 @@ namespace IPKP___API.Controllers
         {
             _IPKPRepository = iPKPRepository;
         }
+
+         
         [HttpGet]
         [Route("GetInventoryById")]
         public async Task<IActionResult> GetInventoryByIDAsync(Guid id)
@@ -36,14 +43,11 @@ namespace IPKP___API.Controllers
                     if (id == c.Stock_Item_ID)
                     {
                         oInventory.Inventory_ID = c.Stock_Item_ID;
-                        //oInventory.QuantityOnHand = c.QuantityOnHand;
-                        //oInventory.LastUpdated = c.LastUpdated;
-
                         InventoryList.Add(oInventory);
                     }
                     else
                     {
-
+                        return StatusCode(StatusCodes.Status404NotFound , "No stock items in inventory");
                     }
                 }
                 return Ok(InventoryList);
@@ -53,5 +57,11 @@ namespace IPKP___API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
             }
         }
+
+        //enter current quanities
+
+        //compare to system quantities 
+
+
     }
 }

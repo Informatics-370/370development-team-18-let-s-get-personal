@@ -54,24 +54,6 @@ namespace IPKP___API.Controllers.Models.Repository
           return await query.ToArrayAsync();
         }
 
-        public async Task<Stock_Item_Colour[]> GetAllStockItemColoursAsync()
-        {
-          IQueryable<Stock_Item_Colour> query = _appDbContext.Stock_Item_Colours;
-          return await query.ToArrayAsync();
-        }
-
-        public async Task<Stock_Item[]> GetAllStockItemsAsync()
-        {
-          IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
-          return await query.ToArrayAsync();
-        }
-
-        public async Task<Stock_Type[]> GetAllStockTypesAsync()
-        {
-          IQueryable<Stock_Type> query = _appDbContext.Stock_Types;
-          return await query.ToArrayAsync();
-        }
-
         public async Task<User_Role[]> GetAllUserRolesAsync()
         {
           IQueryable<User_Role> query = _appDbContext.User_Roles;
@@ -119,26 +101,7 @@ namespace IPKP___API.Controllers.Models.Repository
           return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Stock_Item_Colour> GetStockItemColourDetailsAsync(Guid stock_Item_Colour_ID)
-        {
-          IQueryable<Stock_Item_Colour> query = _appDbContext.Stock_Item_Colours
-                    .Where(u => u.Stock_Item_Colour_ID == stock_Item_Colour_ID);
-          return await query.FirstOrDefaultAsync();
-        }
-
-        public async Task<Stock_Item> GetStockItemDetailsAsync(Guid stock_Item_ID)
-        {
-          IQueryable<Stock_Item> query = _appDbContext.Stock_Items
-                    .Where(u => u.Stock_Item_ID == stock_Item_ID);
-          return await query.FirstOrDefaultAsync();
-        }
-
-        public async Task<Stock_Type> GetStockTypeDetailsAsync(Guid stock_Type_ID)
-        {
-          IQueryable<Stock_Type> query = _appDbContext.Stock_Types
-                    .Where(u => u.Stock_Type_ID == stock_Type_ID);
-          return await query.FirstOrDefaultAsync();
-        }
+       
 
         public async Task<User> GetUserDetailsAsync(Guid user_ID)
         {
@@ -222,6 +185,7 @@ namespace IPKP___API.Controllers.Models.Repository
             IQueryable<Order> query = _appDbContext.Orders;
             return await query.ToArrayAsync();
         }
+        
     //Basket
         public async Task<Basket> GetBasketAsync(int Customer_ID)
         {
@@ -230,7 +194,7 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        //Experince ratings
+    //Experince ratings
         public async Task<Experience_Rating[]> GetAllExperienceRatingsAsync()
         {
             IQueryable<Experience_Rating> query = _appDbContext.Experience_Ratings;
@@ -242,6 +206,50 @@ namespace IPKP___API.Controllers.Models.Repository
                 .Where(u => u.Experience_Rating_ID == Experience_Rating_ID);
             return await query.FirstOrDefaultAsync();
         }
+
+    //Stock Item Colour
+        public async Task<Stock_Item_Colour> GetStockItemColourDetailsAsync(Guid stock_Item_Colour_ID)
+        {
+            IQueryable<Stock_Item_Colour> query = _appDbContext.Stock_Item_Colours
+                      .Where(u => u.Stock_Item_Colour_ID == stock_Item_Colour_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+        public async Task<Stock_Item_Colour[]> GetAllStockItemColoursAsync()
+        {
+            IQueryable<Stock_Item_Colour> query = _appDbContext.Stock_Item_Colours;
+            return await query.ToArrayAsync();
+        }
+
+    //Stock Type
+        public async Task<Stock_Type> GetStockTypeDetailsAsync(Guid stock_Type_ID)
+        {
+            IQueryable<Stock_Type> query = _appDbContext.Stock_Types
+                      .Where(u => u.Stock_Type_ID == stock_Type_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+        public async Task<Stock_Type[]> GetAllStockTypesAsync()
+        {
+            IQueryable<Stock_Type> query = _appDbContext.Stock_Types;
+            return await query.ToArrayAsync();
+        }
+
+    //Stock Items
+        public async Task<Stock_Item[]> GetAllStockItemsAsync()
+        {
+            IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
+            return await query.ToArrayAsync();
+        }
+        
+
+        public async Task<Stock_Item> GetStockItemDetailsAsync(Guid stock_Item_ID)
+        {
+            IQueryable<Stock_Item> query = _appDbContext.Stock_Items
+                      .Where(u => u.Stock_Item_ID == stock_Item_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        
+
 
         public async Task<bool> SaveChangesAsync()
         {
