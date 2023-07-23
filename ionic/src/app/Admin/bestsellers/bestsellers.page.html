@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Best Seller's List
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of stockItems">
+      <ion-label>{{ item.Stock_Item_Name }}</ion-label>
+      <ion-checkbox slot="end" [(ngModel)]="item.isSelected"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="full" (click)="saveBestSellers()">Save Best Sellers</ion-button>
+</ion-content>

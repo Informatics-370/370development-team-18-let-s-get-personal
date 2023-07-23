@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Order Requests
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let orderRequest of orderRequests">
+      <ion-label>{{ orderRequest.Order_Request_ID }} - {{ orderRequest.Order_Request_Date }}</ion-label>
+      <ion-buttons slot="end">
+        <ion-button color="success" (click)="acceptOrderRequest(orderRequest.Order_Request_ID)">Accept</ion-button>
+        <ion-button color="danger" (click)="declineOrderRequest(orderRequest.Order_Request_ID)">Decline</ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -10,4 +10,5 @@ export interface  Stock_Item{
     stockimage: Stock_Image
     productrating: ProductRating
     stockitemcolours: StockItemColours
+    isSelected: Boolean
 }

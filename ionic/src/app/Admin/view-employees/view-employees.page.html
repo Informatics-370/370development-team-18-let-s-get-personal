@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Employee Grid
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4" *ngFor="let employee of employees">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{ employee.FirstName }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>Title: {{employee.Title}}</p>
+            <p>Gender: {{ employee.Gender }}</p>
+            <p>Address: {{ employee.Address }}</p>
+            <p>First Name: {{ employee.FirstName }}</p>
+            <p>Surname: {{ employee.Surname }}</p>
+            <p>Cell Number: {{ employee.Cell_Number }}</p>
+            <p>Email: {{ employee.Email }}</p>
+          </ion-card-content>
+          <ion-item>
+            <ion-button expand="full" color="danger" (click)="deleteEmployee(employee.Employee_ID)">Delete</ion-button>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
