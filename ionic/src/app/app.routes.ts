@@ -255,6 +255,14 @@ export const routes: Routes = [
   {
     path: 'customers',
     loadComponent: () => import('./Admin/profiles/customers/customers.page').then( m => m.CustomersPage)
+  },
+  {
+    path: 'stock-take',
+    loadComponent: () => import('./Admin/inventory/stock-take/stock-take.page').then( m => m.StockTakePage)
+  },
+  {
+    path: 'write-off',
+    loadComponent: () => import('./Admin/inventory/write-off/write-off.page').then( m => m.WriteOffPage)
   }
 
 

@@ -42,7 +42,7 @@ export class OrdersPage implements OnInit {
 
   async showStatusPopup(order: Order) {
     const popover = await this.popoverController.create({ 
-      component: OrderStatusPopoverPage,
+      component: OrderStatusPopupPage,
       componentProps: { order, statuses: this.statuses },
       translucent: true
     });
@@ -68,8 +68,7 @@ export class OrdersPage implements OnInit {
 }
 
 @Component({
-  template: `
-    <ion-list>
+  template: `<ion-list>
       <ion-list-header>
         <ion-label>Select Status</ion-label>
       </ion-list-header>
@@ -77,12 +76,11 @@ export class OrdersPage implements OnInit {
         <ion-label>{{ status }}</ion-label>
         <ion-radio slot="start" [value]="status" (click)="closePopover(status)"></ion-radio>
       </ion-item>
-    </ion-list>
-  `,
+    </ion-list> `,
 })
 export class OrderStatusPopupPage {
   order: any;
-  statuses: string[];
+  statuses: string[] = [];
 
   constructor(private popoverController: PopoverController) { }
 
