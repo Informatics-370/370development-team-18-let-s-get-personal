@@ -1,13 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>edit-deliverycompany</ion-title>
+    <ion-title>Update Delivery Company</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">edit-deliverycompany</ion-title>
+      <ion-title size="large">Upadte Delivery Company</ion-title>
     </ion-toolbar>
   </ion-header>
 </ion-content>
@@ -21,7 +21,7 @@
           <ion-buttons slot="start">
             <ion-button (click)="canceleditmodal()">Cancel</ion-button>
           </ion-buttons>
-          <ion-title>Update Stock Type</ion-title>
+          <ion-title>Update Delivery Company</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
           </ion-buttons>
@@ -34,7 +34,7 @@
         <form [formGroup]="EditTypeForm">
           <div *ngFor="let item of deliverycompany">
             <ion-item>
-              <ion-label position="stacked">Colour Name</ion-label><br>
+              <ion-label position="stacked">Delivery Company Name</ion-label><br>
               <ion-input type="text" formControlName="name" [(ngModel)]="item.Delivery_Company_Name"></ion-input>
             </ion-item>
           </div>          
