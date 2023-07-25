@@ -11,46 +11,9 @@
     </ion-toolbar>
   </ion-header>
   <ion-card-content>
-      <h2>Employees:</h2>  
-      <ion-grid>
-        <ion-row>
-          <ion-col>Employee Id</ion-col>
-          <ion-col>Employee Name</ion-col>
-          <ion-col>Email Address</ion-col>
-          <ion-col>Phone Number</ion-col>
-          <ion-col>Address</ion-col>
-          <ion-col></ion-col>
-          <ion-col></ion-col>
-        </ion-row>
-        <ion-row *ngFor="let item of employees">
-          <ion-col>{{item.Employee_ID}}</ion-col>
-          <ion-col>{{item.Title}} + ' ' + {{item.FirstName}} + ' ' + {{item.Surname}}</ion-col>
-          <ion-col>{{item.Email}}</ion-col>
-          <ion-col>{{item.Cell_Number}}</ion-col>
-          <ion-col>{{item.Address}}</ion-col>
-          <ion-col><ion-button onclick="DeleteEmployee(Employee_ID)">Delete Employee</ion-button></ion-col>
-          <ion-col><ion-button onclick="GetEmployee(Employee_ID)">View Employee</ion-button></ion-col>          
-        </ion-row>        
-      </ion-grid>                 
+                      
 
-      <h2>Customers:</h2> 
-      <ion-grid>
-        <ion-row>
-          <ion-col>Customer Id</ion-col>
-          <ion-col>Name</ion-col>
-          <ion-col>Email Address</ion-col>
-          <ion-col>Phone Number</ion-col>
-          <ion-col>Address</ion-col>
-        </ion-row>
-        <ion-row *ngFor="let item of customers">
-          <ion-col>{{item.CustomerId}}</ion-col>
-          <ion-col>{{item.Title}} + ' ' + {{item.FirstName}} + ' ' + {{item.Surname}}</ion-col>
-          <ion-col>{{item.Email}}</ion-col>
-          <ion-col>{{item.Cell_Number}}</ion-col>
-          <ion-col>{{item.Address}}</ion-col>
-        </ion-row>
-        
-      </ion-grid>                 
+                      
         
   </ion-card-content>
 

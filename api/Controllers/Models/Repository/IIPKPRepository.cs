@@ -6,8 +6,8 @@ using IPKP___API.Controllers.Models.Entities;
 
 namespace IPKP___API.Controllers.Models.Repository
 {
-      public interface IIPKPRepository
-      {
+  public interface IIPKPRepository
+  {
         void Add<T>(T entity) where T : class;
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
@@ -22,6 +22,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Delivery> GetDeliveryDetailsAsync(Guid delivery_ID);
         Task<Delivery[]> GetAllDeliveriesAsync();
         Task<Stock_Item> GetStockItemDetailsAsync(Guid stock_Item_ID);
+        Task<Stock_Item> GetStockItemByName(string stock_Item_Name);
         Task<Stock_Item[]> GetAllStockItemsAsync();
         Task<Stock_Type> GetStockTypeDetailsAsync(Guid stock_Type_ID);
         Task<Stock_Type[]> GetAllStockTypesAsync();
@@ -31,21 +32,16 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Product_Rating[]> GetAllProductRatingsAsync();
         Task<Delivery_Company> GetDeliveryCompanyDetailsAsync(Guid delivery_Company_ID);
         Task<Delivery_Company[]> GetAllDeliveryCompaniesAsync();
-        Task<Refund[]> GetAllRefundsAsync();
-        Task<Refund> GetRefundDetailsAsync(Guid Refund_ID);
-        Task<Refund_Policy> GetPolicyAsync(Guid policy_ID);
-        Task<Refund_Policy[]> GetAllPoliciesAsync();
-        Task<Discount> GetDiscountAsync(Guid discount_ID);
-        Task<Discount[]> GetAllDiscountsAsync();
-
-        Task<BestSellers[]> GetAllBestSellersAsync();
-        Task<BestSellers> GetBestSellerAsync(Guid BestSeller_ID);
-
+        Task<Personalisation_Design> GetPersonalisationAsync(Guid personalisation_ID);
+        Task<Order[]> GetAllOrdersAsync();
         Task<Order> GetOrderDetailsAsync(Guid order_ID);
-        Task<Basket> GetBasketAsync(int Customer_ID);
+        Task<Order_Request> GetOrderRequestAsync(Guid order_Request_ID);
+        Task<Order_Request[]> GetAllOrderRequestsAsync();
+        Task<Order_Status[]> GetAllOrderStatusesAsync();
+        Task<Order_Status> GetOrderStatusByNameAsync(string orderStatus);
+        Task<Best_Sellers> GetLatestBestSellersAsync();
 
-        Task<Experience_Rating[]> GetAllExperienceRatingsAsync();
-        Task<Experience_Rating> GetExperienceRatingAsync(Guid Experience_Rating_ID);
-
-      }
+        Task<Experience_Rating> GetAllExperienceRatings();
+        Task<Experience_Rating> GetExperienceRatingAsync(Guid Experience_Rating_ID)
+  }
 }

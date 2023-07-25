@@ -28,9 +28,11 @@ export class DeliverycompanyPage implements OnInit {
 
   constructor(public modalCtrl: ModalController, private service:DeliveryCompanyDataService,
     private router: Router, private currentroute: ActivatedRoute, private alertController: AlertController) { }
+
     AddTypeForm:FormGroup = new FormGroup({
       name: new FormControl(['',Validators.required])      
     }); 
+    
     ngOnInit(): void {
       this.GetDeliveryCompanies();
     }
@@ -39,6 +41,7 @@ export class DeliverycompanyPage implements OnInit {
     {
       this.router.navigate(['./edit-deliverycompany']);
     }
+
     GetDeliveryCompanies(){
       this.service.GetDeliveryCompanies().subscribe(result =>{
         let deliverycompanylist: any[] = result
@@ -73,26 +76,26 @@ export class DeliverycompanyPage implements OnInit {
       this.modal.dismiss(null, 'cancel');
     }
   
-    async confirmaddmodal() {
+    async confirmaddAlert() {
       const alert = await this.alertController.create({
         header: 'Please Confirm that you would like to continue',
         buttons: ['Cancel', 'Continue']
       });
       await alert.present();
-      this.modal.dismiss('confirm');
+      this.modal.dismiss('Cancel');
     }
   
     canceleditmodal() {
       this.modal.dismiss(null, 'cancel');
     }
   
-    async confirmeditmodal() {
+    async confirmeditAlert() {
       const alert = await this.alertController.create({
         header: 'Please Confirm that you would like to continue',
         buttons: ['Cancel', 'Continue']
       });
       await alert.present();
-      this.modal.dismiss('confirm');
+      this.modal.dismiss('Cancel');
     }
   
     onWillDismiss(event: Event) {

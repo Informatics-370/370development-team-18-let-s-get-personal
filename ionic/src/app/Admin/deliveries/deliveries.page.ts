@@ -25,7 +25,7 @@ export class DeliveriesPage implements OnInit {
   deliveries:Delivery[] =[];
 
 
-  constructor(private service:DeliveryDataService, private alertController:AlertController) { }
+  constructor(private service:DeliveryDataService, private alertController:AlertController, private router: Router) { }
 
 
   ngOnInit() {
@@ -59,10 +59,15 @@ export class DeliveriesPage implements OnInit {
     this.modal.dismiss('confirm');
   }
 
+  delCompanynav()
+  {
+    this.router.navigate(['./delivery_company']);
+  }
+
   // deleteDeliveries(DeliveryID: Number){
   //   this.deliveries.DeleteDelivery(DeliveryID).subscribe(result => {
   //     window.location.reload();
   //     });
-    }
+}
 
 

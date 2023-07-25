@@ -36,6 +36,12 @@ export class ProfilePage implements OnInit {
     ExperienceRatingComments: new FormControl('',[Validators.required])
   })
 
+  logout(){
+    // if(this.ConfirmLogOut() == 'Continue'){
+
+    // }
+    
+  }
  
   getProfile(){
 
@@ -125,6 +131,34 @@ export class ProfilePage implements OnInit {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
       subHeader: 'Experience Rating Was Not Deleted',
+      message: 'Please try again',
+      buttons: ['OK', 'Cancel'],
+    });
+    await alert.present();
+    //this.modal.dismiss('Cancel');
+  }
+
+  async ConfirmLogOut() {
+    const alert = await this.alertController.create({
+      header: 'Are you sure you want to log out?',
+      buttons: ['Logout', 'Cancel'],
+    });
+    await alert.present();
+    this.modal.dismiss('Cancel');
+  }
+  async LogoutSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'You are logged out',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async LogoutFailedAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Logout was not successful please try again',
       message: 'Please try again',
       buttons: ['OK'],
     });

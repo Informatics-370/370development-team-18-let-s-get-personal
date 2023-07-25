@@ -2,6 +2,7 @@
 import { Routes, RouterModule, PreloadAllModules} from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './Guards/auth.guard';
+
 export const routes: Routes = [
   {
     path: '',
@@ -11,43 +12,43 @@ export const routes: Routes = [
 //Customer 
   {
     path: 'home',
-    loadComponent: () => import('./Customer/home/home.page').then( m => m.HomePage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/home/home.page').then( m => m.HomePage)
+    ////canActivate: [AuthGuard]
   },
   {
     path: 'basket',
-    loadComponent: () => import('./Customer/basket/basket.page').then( m => m.BasketPage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/basket/basket.page').then( m => m.BasketPage)
+    //canActivate: [AuthGuard]
   },
   {
     path: 'contactus',
-    loadComponent: () => import('./Customer/contactus/contactus.page').then( m => m.ContactusPage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/contactus/contactus.page').then( m => m.ContactusPage)
+    //canActivate: [AuthGuard]
   },
   {
     path: 'faq',
-    loadComponent: () => import('./Customer/faq/faq.page').then( m => m.FaqPage),
-    canActivate: [AuthGuard]
+    loadComponent: () => import('./Customer/faq/faq.page').then( m => m.FaqPage)
+    //canActivate: [AuthGuard]
   },
   {
     path: 'previous_orders',
-    loadComponent: () => import('./Customer/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage),
+    loadComponent: () => import('./Profiles/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage),
     canActivate: [AuthGuard]
   },
   {
     path: 'product_rating',
-    loadComponent: () => import('./Customer/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage),
+    loadComponent: () => import('./Profiles/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage),
     canActivate: [AuthGuard]
   },
   {
     path: 'edit_product_rating',
-    loadComponent: () => import('./Customer/previous-orders/product-rating/edit-productrating/edit-productrating.page').then( m => m.EditProductratingPage),
+    loadComponent: () => import('./Profiles/previous-orders/product-rating/edit-productrating/edit-productrating.page').then( m => m.EditProductratingPage),
     canActivate: [AuthGuard]
   },
   {
     path: 'shop',
     loadComponent: () => import('./Customer/shop/shop.page').then( m => m.ShopPage),
-    canActivate: [AuthGuard]
+    //canActivate: [AuthGuard]
   },
 
 //Admin...
@@ -247,7 +248,23 @@ export const routes: Routes = [
   {
     path: 'update-experienc-rating',
     loadComponent: () => import('./Profiles/profile/update-experienc-rating/update-experienc-rating.page').then( m => m.UpdateExperiencRatingPage)
+  },  {
+    path: 'employees',
+    loadComponent: () => import('./Admin/profiles/employees/employees.page').then( m => m.EmployeesPage)
+  },
+  {
+    path: 'customers',
+    loadComponent: () => import('./Admin/profiles/customers/customers.page').then( m => m.CustomersPage)
+  },
+  {
+    path: 'stock-take',
+    loadComponent: () => import('./Admin/inventory/stock-take/stock-take.page').then( m => m.StockTakePage)
+  },
+  {
+    path: 'write-off',
+    loadComponent: () => import('./Admin/inventory/write-off/write-off.page').then( m => m.WriteOffPage)
   }
+
 
   
   
