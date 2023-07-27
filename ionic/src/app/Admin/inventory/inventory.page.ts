@@ -5,7 +5,7 @@ import { AlertController, IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
 import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { Stock_Item } from 'src/app/Models/stockitem';
-import { BestSellerDataService } from 'src/app/Services/bestsellers.service';
+import { BestsellersService } from 'src/app/Services/bestsellers.service';
 import { BasketService } from 'src/app/Services/basket.service';
 import { BasketItem } from 'src/app/Models/basket';
 import { Experience_Rating } from 'src/app/Models/experiencerating';
@@ -25,7 +25,7 @@ export class InventoryPage implements OnInit {
   basketList: Array<Stock_Item> = [];
   productIds: Array<any> = [];
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
-    public stockitemservice: StockItemDataService, public bestsellerservice:BestSellerDataService, 
+    public stockitemservice: StockItemDataService, public bestsellerservice:BestsellersService, 
     private alertController:AlertController, private basketService : BasketService) { }
 
   ngOnInit() {
@@ -41,8 +41,8 @@ export class InventoryPage implements OnInit {
   }
 
   
-  addToBestSellers(bestseller: Stock_Item){
-    this.bestsellerservice.AddBestSeller(bestseller).subscribe((response:any) => {
+  addToBestSellers(bestseller: Stock_Item[]){
+    this.bestsellerservice.SaveBestSellersList(bestseller).subscribe((response:any) => {
       if(response == null)
       {
         this.addToBestSellersErrorAlert();

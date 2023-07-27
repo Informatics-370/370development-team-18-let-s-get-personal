@@ -40,21 +40,21 @@ export class OrdersPage implements OnInit {
     })
   }
 
-  async showStatusPopup(order: Order) {
-    const popover = await this.popoverController.create({ 
-      component: OrderStatusPopupPage,
-      componentProps: { order, statuses: this.statuses },
-      translucent: true
-    });
+  // async showStatusPopup(order: Order) {
+  //   const popover = await this.popoverController.create({ 
+  //     component: OrderStatusPopupPage,
+  //     componentProps: { order, statuses: this.statuses },
+  //     translucent: true
+  //   });
 
-    popover.onDidDismiss().then((data) => {
-      if (data && data.data) {
-        this.UpdateOrderStatus(order.OrderId, data.data);
-      }
-    });
+  //   popover.onDidDismiss().then((data) => {
+  //     if (data && data.data) {
+  //       this.UpdateOrderStatus(order.OrderId, data.data);
+  //     }
+  //   });
 
-    return await popover.present();
-  }
+  //   return await popover.present();
+  // }
 
   public UpdateOrderStatus(OrderID:Number, newStatus: Order_Status){
     if(newStatus.Order_Status_Description == "Processing"){
@@ -67,24 +67,24 @@ export class OrdersPage implements OnInit {
   }
 }
 
-@Component({
-  template: `<ion-list>
-      <ion-list-header>
-        <ion-label>Select Status</ion-label>
-      </ion-list-header>
-      <ion-item *ngFor="let status of statuses">
-        <ion-label>{{ status }}</ion-label>
-        <ion-radio slot="start" [value]="status" (click)="closePopover(status)"></ion-radio>
-      </ion-item>
-    </ion-list> `,
-})
-export class OrderStatusPopupPage {
-  order: any;
-  statuses: string[] = [];
+// @Component({
+//   template: `<ion-list>
+//       <ion-list-header>
+//         <ion-label>Select Status</ion-label>
+//       </ion-list-header>
+//       <ion-item *ngFor="let status of statuses">
+//         <ion-label>{{ status }}</ion-label>
+//         <ion-radio slot="start" [value]="status" (click)="closePopover(status)"></ion-radio>
+//       </ion-item>
+//     </ion-list> `,
+// })
+// export class OrderStatusPopupPage {
+//   order: any;
+//   statuses: string[] = [];
 
-  constructor(private popoverController: PopoverController) { }
+//   constructor(private popoverController: PopoverController) { }
 
-  closePopover(selectedStatus: string) {
-    this.popoverController.dismiss({ newStatus: selectedStatus });
-  }
-}
+//   closePopover(selectedStatus: string) {
+//     this.popoverController.dismiss({ newStatus: selectedStatus });
+//   }
+// }

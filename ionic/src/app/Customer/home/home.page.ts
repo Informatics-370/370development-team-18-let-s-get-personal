@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Best_Sellers } from 'src/app/Models/bestsellers';
-import { BestSellerDataService } from 'src/app/Services/bestsellers.service';
+import { BestsellersService } from 'src/app/Services/bestsellers.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +16,7 @@ export class HomePage implements OnInit {
 
   bestSellers!: Best_Sellers[];
 
-  constructor(public bsdataservice: BestSellerDataService) { }
+  constructor(public bsdataservice: BestsellersService) { }
 
   ngOnInit() {
     this.GetBestSellers()

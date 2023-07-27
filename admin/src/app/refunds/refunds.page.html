@@ -1,0 +1,74 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Refund Policies</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">refunds</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-button>Process Refund</ion-button>
+  <ion-button id="addmodal">Add New Policy</ion-button>
+  <ion-card-content>                        
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-searchbar show-clear-button="always" (ionInput)="search()" [(ngModel)]="filterTerm" ></ion-searchbar>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="font-weight: bold;"><h3>Policy Date</h3></ion-col>
+        <ion-col style="font-weight: bold;"><h3>Version number</h3></ion-col>
+        <ion-col style="font-weight: bold;"><h3>Descrption</h3></ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of refundPolicies">
+        <ion-col>{{item.refund_Policy_Date}}</ion-col>
+        <ion-col>{{item.refund_Policy_Version}}</ion-col>
+        <ion-col>{{item.refund_Policy_Description}}</ion-col>
+        <ion-button (click)="DeleteRefundPolicy(item.refund_Policy_ID)" >Delete</ion-button>
+      </ion-row>
+    </ion-grid>
+
+  </ion-card-content>
+</ion-content>
+
+<!--addmodal-->
+<ion-footer> 
+  <ion-modal trigger="addmodal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceladdmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Add Stock Type</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <h3>Add Refund Policy Details</h3>     
+        </ion-item>
+        <form [formGroup]="AddForm">          
+            <ion-item>
+              <ion-label position="stacked">Refund Policy Date</ion-label><br>
+              <ion-input type="date" formControlName="date" placeholder=""></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Refund Policy Version</ion-label><br>
+              <ion-input type="number" formControlName="version" placeholder=""></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Refund Policy Description</ion-label><br>
+              <ion-input type="text" formControlName="description" placeholder=""></ion-input>
+            </ion-item>                    
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-footer>

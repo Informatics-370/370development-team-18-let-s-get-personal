@@ -14,7 +14,7 @@ namespace IPKP___API.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  [Authorize]
+  //[Authorize]
   public class StockItemColourController : ControllerBase
   {
     private readonly IIPKPRepository _IPKPRepository;

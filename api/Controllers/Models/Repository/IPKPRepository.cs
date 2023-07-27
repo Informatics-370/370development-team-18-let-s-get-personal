@@ -149,8 +149,6 @@ namespace IPKP___API.Controllers.Models.Repository
 
 
         //Stock Items
-        
-
         public async Task<Stock_Item[]> GetAllStockItemsAsync()
         {
           IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
@@ -196,10 +194,10 @@ namespace IPKP___API.Controllers.Models.Repository
         }      
 
         //best sellers
-        public async Task<Best_Sellers> GetLatestBestSellersAsync()
+        public async Task<Best_Sellers[]> GetLatestBestSellersAsync()
         {
           IQueryable<Best_Sellers> query = _appDbContext.Best_Sellers;
-          return await query.FirstOrDefaultAsync();
+          return await query.ToArrayAsync();
         }             
 
 
@@ -223,13 +221,60 @@ namespace IPKP___API.Controllers.Models.Repository
                     .Where(u => u.Experience_Rating_ID == Experience_Rating_ID);
             return await query.FirstOrDefaultAsync();
         }
-        public async Task<Experience_Rating> GetAllExperienceRatings()
+        public async Task<Experience_Rating[]> GetAllExperienceRatings()
         {
             IQueryable<Experience_Rating> query = _appDbContext.Experience_Rating;
+            return await query.ToArrayAsync();
+        }
+
+        //refund policies
+        public async Task<Refund_Policy[]> GetAllPoliciesAsync()
+        {
+            IQueryable<Refund_Policy> query = _appDbContext.Refund_Policies;
+            return await query.ToArrayAsync();
+        }
+        public async Task<Refund_Policy> GetPolicyAsync(Guid Refund_Policy_Id)
+        {
+            IQueryable<Refund_Policy> query = _appDbContext.Refund_Policies
+                    .Where(u => u.Refund_Policy_ID == Refund_Policy_Id);
             return await query.FirstOrDefaultAsync();
         }
 
+        //refunds
+        public async Task<Refund[]> GetAllPreviousRefunds()
+        {
+            IQueryable<Refund> query = _appDbContext.Refunds;
+            return await query.ToArrayAsync();
+        }
+        public async Task<Refund> GetPreviousRefund(Guid refund_Id)
+        {
+            IQueryable<Refund> query = _appDbContext.Refunds
+                    .Where(u => u.Refund_ID == refund_Id);
+            return await query.FirstOrDefaultAsync();
+        }
 
+        //basket
+        public async Task<Basket> GetBasketAsync(Guid Basket_Id)
+        {
+            IQueryable<Basket> query = _appDbContext.Basket
+                    .Where(u => u.Basket_ID == Basket_Id);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        //GetAllDiscountsAsync
+        public async Task<Discount[]> GetAllDiscountsAsync()
+        {
+            IQueryable<Discount> query = _appDbContext.Discounts;
+            return await query.ToArrayAsync();
+        }
+        public async Task<Discount> GetDiscountAsync(Guid discount_Id)
+        {
+            IQueryable<Discount> query = _appDbContext.Discounts
+                    .Where(u => u.Discount_ID == discount_Id);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        //GetAllExperienceRatingsAsync
         public async Task<bool> SaveChangesAsync()
         {
           return await _appDbContext.SaveChangesAsync() > 0;

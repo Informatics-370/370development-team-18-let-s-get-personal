@@ -37,5 +37,8 @@ namespace IPKP___API.Controllers.Models.Entities
 
         [InverseProperty("Stock_Item")]
         public virtual ICollection<BestSellers> BestSellers { get; set; }
+
+        [InverseProperty("Stock_Item")]
+        public virtual ICollection<Basket> Basket { get; set; }
     }
 }
