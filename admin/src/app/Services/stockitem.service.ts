@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { StockTypes } from '../Models/stocktypes';
 import { Stock_Item } from '../Models/stockitem';
+import { Response } from '../Models/response';
 
 @Injectable({
     providedIn: 'root' 
@@ -28,7 +29,7 @@ import { Stock_Item } from '../Models/stockitem';
   
     //add
     public AddStockItem(stockitem:Stock_Item){
-      return this.httpClient.post(`${this.apiUrl}StockItem/AddStockItem`, stockitem, this.httpOptions)
+      return this.httpClient.post<Response>(`${this.apiUrl}StockItem/AddStockItem`, stockitem, this.httpOptions)
     }
   
     //get selected one
@@ -39,12 +40,12 @@ import { Stock_Item } from '../Models/stockitem';
   
     //edit
     public UpdateStockItem(StockItemId:Number, stockitem:Stock_Item){
-      return this.httpClient.put(`${this.apiUrl}StockItem/UpdateStockItem/${StockItemId}`, stockitem)
+      return this.httpClient.put<Response>(`${this.apiUrl}StockItem/UpdateStockItem/${StockItemId}`, stockitem)
     }
   
     //delete 
     public DeleteStockItem(StockItemId:Number){
-      return this.httpClient.delete(`${this.apiUrl}StockItem/DeleteStockItem/${StockItemId}`)
+      return this.httpClient.delete<Response>(`${this.apiUrl}StockItem/DeleteStockItem/${StockItemId}`)
     }
   
   }

@@ -39,8 +39,8 @@ import { Response } from '../Models/response';
       }
 
  //edit
-    public UpdateDiscount(Discount_ID:Number, discount:Discount){
-        return this.httpClient.put<Response>(`${this.apiUrl}Discount/UpdateDiscount/${Discount_ID}`, discount)
+    public UpdateDiscount(discount_ID:Number, discount:Discount){
+        return this.httpClient.put<Response>(`${this.apiUrl}Discount/edit-discounts/${discount_ID}`, discount)
     }
 
   //delete 

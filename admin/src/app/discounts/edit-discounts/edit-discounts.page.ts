@@ -15,8 +15,8 @@ import { DiscountService } from 'src/app/Services/discount.service';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class EditDiscountsPage implements OnInit {
-  discount_ID!: number;
-  discountToEdit: any;
+  //discount_ID!: number;
+  //discountToEdit: any;
   editDiscount: Discount = new Discount();
 
   constructor(private service:DiscountService, private thisroute: Router, 
@@ -36,7 +36,7 @@ export class EditDiscountsPage implements OnInit {
   ngOnInit(): void {
     this.currentroute.params.subscribe(params => { 
       this.service.GetDiscount(params['id']).subscribe(response => { 
- 
+        
        this.editDiscount = response as Discount;
  
        this.editForm.controls['name'].setValue(this.editDiscount.discount_Name);
@@ -54,7 +54,7 @@ export class EditDiscountsPage implements OnInit {
     editedDiscount.effective_From_Date = this.editForm.value.effectiveFromdate;
     editedDiscount.effective_To_Date = this.editForm.value.effectiveTodate;
 
-    this.service.UpdateDiscount(this.discountToEdit.discount_ID, editedDiscount).subscribe(result =>{
+    this.service.UpdateDiscount(this.editDiscount.discount_ID, editedDiscount).subscribe(result =>{
       if(result.status == "Error")
       {
         this.editDiscountErrorAlert();
@@ -77,7 +77,7 @@ export class EditDiscountsPage implements OnInit {
         text: 'OK',
         role: 'cancel',
         handler:() =>{
-          this.reloadPage();
+          this.reloadPage(); //routeBack
         }
     }],
     });
@@ -93,7 +93,7 @@ export class EditDiscountsPage implements OnInit {
         text: 'OK',
         role: 'cancel',
         handler:() =>{
-          this.reloadPage();
+          this.reloadPage(); //routeBack
         }
     }],
     });

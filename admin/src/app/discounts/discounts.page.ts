@@ -95,7 +95,7 @@ export class DiscountsPage implements OnInit {
 
   EditDiscount(discount_ID:Number)
   {
-    this.thisroute.navigate(['/edit-discounts', discount_ID]);
+    this.thisroute.navigate(['/edit-discounts', discount_ID ]);
   }
 
   DeleteDiscount(Discount_ID: Number){
