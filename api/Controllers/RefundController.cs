@@ -21,6 +21,7 @@ namespace IPKP___API.Controllers
     [ApiController]
     public class RefundController : ControllerBase
     {
+
         private readonly IIPKPRepository _IPKPRepository;
         public RefundController(IIPKPRepository iPKPRepository)
         {
@@ -36,20 +37,35 @@ namespace IPKP___API.Controllers
             {
                 var existingSale = await _IPKPRepository.GetOrderDetailsAsync(sale_Id);
 
-                if (existingSale == null) return NotFound("Could Not Find Delivery" + sale_Id);
+                if (existingSale == null) return NotFound("Could Not Order" + sale_Id);
 
                 _IPKPRepository.Delete(existingSale);
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {
-                    return Ok("Delivery Removed Successfully");
+                    return Ok(new Response { Status = "Success", Message = "Sale Removed Successfully" });
                 }
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok("Delivery Removed From Database.");
+        }
+        
+        [HttpGet]
+        [Route("GetAllPreviousRefunds")]
+        public async Task<IActionResult> GetAllPreviousRefunds()
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetAllPreviousRefunds();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
         }
 
         [HttpGet]
@@ -59,11 +75,11 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetCustomerDetailsAsync(customer_ID);
-                return Ok(results);
+                return Ok(new Response { Status = "Success", Message = "Got Customer Successfully" });
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -103,11 +119,11 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return BadRequest("Invalid Transaction");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Delivery Company Added To Database."); 
-            
+            return Ok(new Response { Status = "Success", Message = "Refund has been accepted" });
         }
+
         private async Task SendEmail(string fromEmailAddress, string subject, string message, string toEmailAddress)
         {
             var fromAddress = new MailAddress(fromEmailAddress);
@@ -125,7 +141,7 @@ namespace IPKP___API.Controllers
                     smtp.EnableSsl = true;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential("resinartnewsletter@gmail.com", "pnyblzriureedwgp"); // your own provided email and password
+                    smtp.Credentials = new NetworkCredential("@gmail.com", "pnyblzriureedwgp"); // your own provided email and password
                     await smtp.SendMailAsync(compiledMessage);
                 }
             }
@@ -143,7 +159,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -165,34 +181,36 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return BadRequest("Invalid Transaction");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Delivery Company Added To Database.");
+            return Ok(new Response { Status = "Success", Message = "Refund Policy Added Successfully" });
         }
 
 
         [HttpDelete]
-        [Route("DeleteRefundPolicy")]
+        [Route("DeleteRefundPolicy/{refund_Policy_ID}")]
         public async Task<IActionResult> DeleteRefundPolicy(Guid Refund_Policy_ID)
         {
             try
             {
                 var existingPolicy = await _IPKPRepository.GetPolicyAsync(Refund_Policy_ID);
 
-                if (existingPolicy == null) return NotFound("Could Not Find Delivery Company" + Refund_Policy_ID);
+                if (existingPolicy == null) { 
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Refund Policy" }); 
+                }
 
                 _IPKPRepository.Delete(existingPolicy);
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {
-                    return Ok("Delivery Company Removed Successfully");
+                    return Ok(new Response { Status = "Success", Message = "Refund Policy Removed Successfully" });
                 }
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Delivery Company Removed From Database.");
+            return Ok(new Response { Status = "Success", Message = "Refund Policy Removed Successfully" });
         }
 
         

@@ -19,16 +19,10 @@ namespace IPKP___API.Controllers.Models.Entities
         [Column("Stock_Item_Id")]
         public int? Stock_Item_Id { get; set; }
 
-        //[ForeignKey(nameof(Stock_Item_Id))]
-        //[InverseProperty("Stock_Image")]
-        //public virtual Stock_Item Stock_Item { get; set; }
-
-
         [InverseProperty("Stock_Images")]
         public virtual ICollection<Stock_Item> Stock_Item { get; set; }
 
-        //public List<Stock_Item> Stock_Items { get; set; } = new List<Stock_Item>();
-        //public virtual Stock_Item Stock_Item { get; set; }
-        //public int Stock_Item_Id { get; set; }
+        [InverseProperty("Stock_Images")]
+        public virtual ICollection<Basket> Basket { get; set; }
     }
 }

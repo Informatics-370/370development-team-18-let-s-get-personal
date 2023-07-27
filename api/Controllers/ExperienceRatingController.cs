@@ -11,7 +11,7 @@ namespace IPKP___API.Controllers
     [ApiController]
     public class ExperienceRatingController : ControllerBase
     {
-        AppDbContext _CoreDbContext = new AppDbContext();
+        //AppDbContext _CoreDbContext = new AppDbContext();
 
         private readonly IIPKPRepository _IPKPRepository;
         public ExperienceRatingController(IIPKPRepository iPKPRepository)
@@ -26,7 +26,7 @@ namespace IPKP___API.Controllers
         {
             try
             {
-                var results = await _IPKPRepository.GetAllExperienceRatingsAsync();
+                var results = await _IPKPRepository.GetAllExperienceRatings();
                 return Ok(results);
             }
             catch (Exception)

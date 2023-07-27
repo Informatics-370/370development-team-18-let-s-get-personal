@@ -58,5 +58,6 @@ namespace IPKP___API.Controllers.Models.Repository
         public DbSet<Write_Off_Line_Item> Write_Off_Line_Items {get; set; }
         public DbSet<Best_Sellers> Best_Sellers { get; set; }
         public DbSet<Experience_Rating> Experience_Rating { get; set;}
+        public DbSet<Basket> Basket { get; set; }
   }
 }

@@ -14,7 +14,7 @@ namespace IPKP___API.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  [Authorize]
+  //[Authorize]
   public class DeliveryCompanyController : ControllerBase
   {
     private readonly IIPKPRepository _IPKPRepository;

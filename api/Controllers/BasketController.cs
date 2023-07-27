@@ -25,7 +25,7 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetBasketInfo")]
-        public async Task<IActionResult> GetBasketInfo(int Customer_id)
+        public async Task<IActionResult> GetBasketInfo(Guid Customer_id)
         {
             try
             {
@@ -45,12 +45,10 @@ namespace IPKP___API.Controllers
         {
             var basketItems = new Basket
             {
-                Stock_Item_ID = bask.Stock_Item_ID,
-                Stock_Item_Name = bask.Stock_Item_Name,
-                Stock_Type_Name = bask.Stock_Type_Name,
-                Stock_Image_Id = bask.Stock_Image_Id,
-                Stock_Item_Colour = bask.Stock_Item_Colour,
-                Customer_ID = bask.Customer_ID
+                Basket_ID = bask.Basket_ID,
+                Basket_Quantity = bask.Basket_Quantity,
+                Stock_Item = bask.Stock_Item,
+                Customer = bask.Customer
             };
             try
             {

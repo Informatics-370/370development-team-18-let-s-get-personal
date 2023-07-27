@@ -191,7 +191,7 @@ export const routes: Routes = [
       {
         path: 'create-profile',
         loadComponent: () => import('../Profiles/create-profile/create-profile.page').then( m => m.CreateProfilePage),
-        canActivate: [AuthGuard]
+        //canActivate: [AuthGuard]
       },
       {
         path: 'forgot-password',
