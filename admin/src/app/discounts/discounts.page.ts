@@ -22,8 +22,20 @@ import { OverlayEventDetail } from '@ionic/core/components';
 export class DiscountsPage implements OnInit {
 
   filterTerm: string = "";
+  //====================
+  discounts:any=Discount;
+  filteredDiscount = this.discounts.filter((items: { discount_Name: string,discount_Amount:number,effective_From_Date: Date,effective_To_Date: Date; }) => 
+  items.discount_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
+
+
+  updateSearchResults() {
+    this.filteredDiscount = this.discounts.filter((items: { name: string; }) =>
+     items.name.toLowerCase().includes(this.filterTerm.toLowerCase()));
+  }
+
+  //======================
   filtereddiscounts:  Discount[] = [];
-  discounts: Discount[] =[]
+  //discounts: Discount[] =[]
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DiscountService, private thisroute: Router, public modalCtrl: ModalController,
     private alertController:AlertController ) { }
@@ -42,7 +54,7 @@ export class DiscountsPage implements OnInit {
     }
   }
 
-  search(){
+ /* search(){
     //empty array
     this.filtereddiscounts = [];
 
@@ -53,7 +65,7 @@ export class DiscountsPage implements OnInit {
       searchitem.discount_Name.toLocaleLowerCase().includes(this.filterTerm.toLocaleLowerCase())||
       searchitem.discount_Amount == Number(this.filterTerm)
     );
-   }
+   }*/
 
   getDiscounts(){
     this.service.GetAllDiscounts().subscribe(result =>{
