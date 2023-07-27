@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>stock-types</ion-title>
+    <ion-title>Stock Types</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,4 +10,45 @@
       <ion-title size="large">stock-types</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-grid>
+    <!-- <ion-row>
+      <ion-col style="font-weight: bold;">Stock Type Name</ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+    </ion-row> -->
+    <ion-row *ngFor="let item of stocktypes">
+      <ion-col>Stock Type Name: {{item.stock_Type_Name}}</ion-col>
+      <ion-col><ion-button (click)="getstocktype(item.stock_Type_ID)">Edit</ion-button></ion-col>
+      <ion-col><ion-button (click)="deleteStockTypes(item.stock_Type_ID)">Delete</ion-button> </ion-col>          
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
+<ion-footer> 
+  <ion-modal trigger="addmodal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceladdmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Add Stock Type</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <h3>Add Stock type Details</h3>     
+        </ion-item>
+        <form [formGroup]="AddTypeForm">          
+            <ion-item>
+              <ion-label position="stacked">Stock Type Name</ion-label><br>
+              <ion-input type="text" formControlName="name" placeholder="i.e. stationary"></ion-input>
+            </ion-item>                    
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-footer>

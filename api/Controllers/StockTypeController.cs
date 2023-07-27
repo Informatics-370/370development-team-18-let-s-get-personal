@@ -68,9 +68,9 @@ namespace IPKP___API.Controllers
       }
       catch (Exception)
       {
-        return BadRequest("Invalid Transaction");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
       }
-      return Ok("Stock Type Added To Database.");
+      return Ok(new Response { Status = "Success", Message = "Stock Type Added To Database." });
     }
 
     [HttpPut]
@@ -87,14 +87,14 @@ namespace IPKP___API.Controllers
 
         if (await _IPKPRepository.SaveChangesAsync())
         {
-          return Ok("Stock Type Updated Successfully");
+          return Ok(new Response { Status = "Success", Message = "Stock Type Updated Successfully" });
         }
       }
       catch (Exception)
       {
-        return BadRequest("Invalid Transaction");
+        return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
       }
-      return Ok("Stock Type Saved To Database.");
+        return Ok(new Response { Status = "Success", Message = "Stock Type Saved To Database." });
     }
 
     [HttpDelete]
@@ -105,20 +105,25 @@ namespace IPKP___API.Controllers
       {
         var existingStockType = await _IPKPRepository.GetStockTypeDetailsAsync(stock_Type_ID);
 
-        if (existingStockType == null) return NotFound("Could Not Find Stock Type" + stock_Type_ID);
+            if (existingStockType == null)
+            {
+                return NotFound(new Response { Status = "Success", Message = "Could Not Find Stock Type" + stock_Type_ID });
+            }
+            else
+            {
+                 _IPKPRepository.Delete(existingStockType);
 
-        _IPKPRepository.Delete(existingStockType);
-
-        if (await _IPKPRepository.SaveChangesAsync())
-        {
-          return Ok("Stock Type Removed Successfully");
-        }
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(new Response { Status = "Success", Message = "Stock Type Removed Successfully" });
+                }
+            }
       }
       catch (Exception)
       {
-        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+        return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
       }
-      return Ok("Stock Type Removed From Database.");
+      return Ok(new Response { Status = "Success", Message = "Stock Type Removed From Database." });
     }
   }
 }

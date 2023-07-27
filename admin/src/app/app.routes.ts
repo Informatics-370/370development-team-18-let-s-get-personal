@@ -84,5 +84,11 @@ export const routes: Routes = [
   {
     path: 'process-refund',
     loadComponent: () => import('./refunds/process-refund/process-refund.page').then( m => m.ProcessRefundPage)
+  },  {
+    path: 'view-employees',
+    loadComponent: () => import('./view-employees/view-employees.page').then( m => m.ViewEmployeesPage)
   },
+
+ 
+
 ];

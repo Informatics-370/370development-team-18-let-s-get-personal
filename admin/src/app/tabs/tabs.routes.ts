@@ -93,6 +93,10 @@ export const routes: Routes = [
         loadComponent: () => import('../refunds/process-refund/process-refund.page').then( m => m.ProcessRefundPage)
       },
       {
+        path: 'view-employees',
+        loadComponent: () => import('../view-employees/view-employees.page').then( m => m.ViewEmployeesPage)
+      },
+      {
         path: '',
         redirectTo: '/tabs/menu',
         pathMatch: 'full',

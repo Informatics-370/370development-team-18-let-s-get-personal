@@ -1,4 +1,4 @@
-export interface StockTypes{
-    stock_Type_ID: number;
-    Stock_Type_Name: string;
+export class StockTypes{
+    stock_Type_ID!: number;
+    stock_Type_Name!: string;
 }

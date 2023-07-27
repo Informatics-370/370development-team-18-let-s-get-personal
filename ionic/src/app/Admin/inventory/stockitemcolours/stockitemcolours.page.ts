@@ -38,12 +38,9 @@ export class StockitemcoloursPage implements OnInit {
     image: new FormControl(['',Validators.required])
   });
 
- 
-
   ngOnInit(): void {   
     this.GetStockItemColours();   
   }
- 
 
   GetStockItemColours(){
     this.service.GetStockItemColours().subscribe(result =>{

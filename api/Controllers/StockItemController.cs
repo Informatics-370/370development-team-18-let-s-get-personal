@@ -72,9 +72,9 @@ namespace IPKP___API.Controllers
       }
       catch (Exception)
       {
-        return BadRequest("Invalid Transaction");
+         return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
       }
-      return Ok("Stock Item Added To Database.");
+      return Ok(new Response { Status = "Success", Message = "Stock Item Added To Database." });
     }
 
     [HttpPut]
@@ -94,14 +94,14 @@ namespace IPKP___API.Controllers
 
         if (await _IPKPRepository.SaveChangesAsync())
         {
-          return Ok("Stock Item Updated Successfully");
+          return Ok(new Response { Status = "Success", Message = "Stock Item Updated Successfully" });
         }
       }
       catch (Exception)
       {
-        return BadRequest("Invalid Transaction");
+         return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
       }
-      return Ok("Stock Item Saved To Database.");
+      return Ok(new Response { Status = "Success", Message = "Stock Item Saved To Database." });
     }
 
     [HttpDelete]
@@ -118,14 +118,14 @@ namespace IPKP___API.Controllers
 
         if (await _IPKPRepository.SaveChangesAsync())
         {
-          return Ok("Stock Item Removed Successfully");
+          return Ok(new Response { Status = "Success", Message = "Stock Item Removed Successfully" });
         }
       }
       catch (Exception)
       {
-        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+         return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
       }
-      return Ok("Stock Item Removed From Database.");
+      return Ok(new Response { Status = "Success", Message = "Stock Item Removed From Database." });
     }
   }
 }

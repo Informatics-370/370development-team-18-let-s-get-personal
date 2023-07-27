@@ -11,24 +11,24 @@
     </ion-toolbar>
   </ion-header>
   <ion-button onclick="routeBack()">
-    <ion-icon></ion-icon>
+    <ion-icon name="person-outline"></ion-icon>
   </ion-button>
     <form [formGroup]="editForm" (ngSubmit)="onSubmit(editForm)">          
       <ion-item>
         <ion-label position="stacked">Discount Name</ion-label><br>
-        <ion-input type="text" formControlName="name" placeholder="{{discountToEdit.name}}"></ion-input>
+        <ion-input type="text" formControlName="name"></ion-input> 
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Discount Amount</ion-label><br>
-        <ion-input type="text" formControlName="amount" placeholder="{{discountToEdit.amount}}"></ion-input>
+        <ion-input type="text" formControlName="amount" ></ion-input> <!--placeholder="{{discountToEdit.amount}}"-->
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Effective From Date</ion-label><br>
-        <ion-input type="date" formControlName="effectiveFromdate" placeholder="{{discountToEdit.effectiveFromdate}}"></ion-input>
+        <ion-input type="date" formControlName="effectiveFromdate"></ion-input>
       </ion-item> 
       <ion-item>
         <ion-label position="stacked">Effective To Date</ion-label><br>
-        <ion-input type="date" formControlName="effectiveTodate" placeholder="{{discountToEdit.effectiveTodate}}"></ion-input>
+        <ion-input type="date" formControlName="effectiveTodate"></ion-input>
       </ion-item>                    
   </form>
   

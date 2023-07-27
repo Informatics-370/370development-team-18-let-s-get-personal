@@ -1,20 +1,160 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-
+import { StockTypes } from 'src/app/Models/stocktypes';
+import { StockTypeDataService } from 'src/app/Services/stocktype.service';
+import { FormsModule, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+//for modal
+import { ModalController} from '@ionic/angular'; 
+import { IonModal } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core/components';
 @Component({
   selector: 'app-stock-types',
   templateUrl: './stock-types.page.html',
   styleUrls: ['./stock-types.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class StockTypesPage implements OnInit {
 
-  constructor() { }
+  @ViewChild(IonModal) modal!: IonModal
+  stocktypes: StockTypes[] =[];
+  constructor(
+    public modalCtrl: ModalController, 
+    private service:StockTypeDataService,
+    private router: Router,  
+    private alertController: AlertController, 
+    private route:ActivatedRoute) { }
 
-  ngOnInit() {
+  AddTypeForm:FormGroup = new FormGroup({
+    name: new FormControl('',[Validators.required])      
+  });     
+
+  ngOnInit(): void {
+  this.GetStockTypes();   
   }
 
+  GetStockTypes(){
+  this.service.GetStockTypes().subscribe(result =>{
+    this.stocktypes = result as StockTypes[];
+    console.log(this.stocktypes);
+    // console.log(result);
+    // let stocktypelist: StockTypes[] = result;
+    // stocktypelist.forEach((element)=>{
+    //   this.stocktypes.push(element)
+    // });
+  })
+  }
+
+  addStockTypes(){
+    let addStockType = new StockTypes();
+    addStockType.stock_Type_Name = this.AddTypeForm.value.name;
+
+      this.service.AddStockType(this.AddTypeForm.value).subscribe(result => {
+        if(result.status == "Error")
+        {
+          this.AddStockTypeSuccessAlert();
+        }
+        else if(result.status == "Success"){
+          this.AddStockTypeSuccessAlert();
+        }
+    })
+  }
+
+  getstocktype(stock_Type_ID:Number){
+    //[routerLink]="['/course', course.courseId]"
+    this.router.navigate(['./editstocktype',stock_Type_ID]);
+}
+
+  deleteStockTypes(stock_Type_ID:Number){
+  this.service.DeleteStockType(stock_Type_ID).subscribe(result =>{
+    if(result.status == "Error")
+        {
+          this.DeleteStockTypeErrorAlert();
+        }
+        else if(result.status == "Success"){
+          this.DeleteStockTypeSuccessAlert();
+        }
+  });
+  }
+
+  canceladdmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirmaddmodal() {
+    this.addStockTypes();
+    
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+  async DeleteStockTypeSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Stock Type Deleted',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
+
+  async DeleteStockTypeErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Stock Type was not deleted',
+      message: 'Please try again',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
+  async AddStockTypeSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Stock Type added',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
+
+  async AddStockTypeErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Stock Type was not added',
+      message: 'Please try again',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
+
+  reloadPage(){
+    window.location.reload()
+  }
 }
