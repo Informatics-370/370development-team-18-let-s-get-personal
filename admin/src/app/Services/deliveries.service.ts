@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
-import { StockTypes } from '../Models/stocktypes';
 import { Delivery } from '../Models/delivery';
+import { Response } from '../Models/response';
 
 @Injectable({
     providedIn: 'root' 
@@ -20,7 +20,6 @@ import { Delivery } from '../Models/delivery';
     constructor(private httpClient: HttpClient) { 
     }
   
-    //return http.loacalhost:5116/api/Course/GetAllStockTypes
     public GetAllDeliveries(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}Deliveries/GetAllDeliveries`)
       .pipe(map(result => result))
@@ -28,7 +27,7 @@ import { Delivery } from '../Models/delivery';
   
     //add
     public AddDelivery(delivery:Delivery){
-      return this.httpClient.post(`${this.apiUrl}Deliveries/AddDelivery`, delivery)
+      return this.httpClient.post<Response>(`${this.apiUrl}Deliveries/AddDelivery`, delivery)
       .pipe(map(result => result))
     }
   
@@ -38,14 +37,14 @@ import { Delivery } from '../Models/delivery';
       .pipe(map(result => result))
     }
   
-    //edit
+    /*
     public UpdateDelivery(DeliveryId:Number, delivery:Delivery){
       return this.httpClient.put(`${this.apiUrl}Deliveries/UpdateDelivery/${DeliveryId}`, delivery)
-    }
+    }*/
   
-    //delete 
-    public DeleteDelivery(DeliveryId:Number){
-      return this.httpClient.delete(`${this.apiUrl}Deliveries/DeleteDelivery/${DeliveryId}`)
+    //receive 
+    public ReceiveDelivery(DeliveryId:Number){
+      return this.httpClient.delete<Response>(`${this.apiUrl}Deliveries/ReceiveDelivery/${DeliveryId}`)
     }
   
   }

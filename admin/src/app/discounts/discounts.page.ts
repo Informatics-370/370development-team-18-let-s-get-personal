@@ -34,7 +34,7 @@ export class DiscountsPage implements OnInit {
   }
 
   //======================
-  filtereddiscounts:  Discount[] = [];
+  //filtereddiscounts:  Discount[] = [];
   //discounts: Discount[] =[]
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DiscountService, private thisroute: Router, public modalCtrl: ModalController,
@@ -48,10 +48,10 @@ export class DiscountsPage implements OnInit {
   })
 
   ngOnInit(): void {
-    this.getDiscounts();
+   /* this.getDiscounts();
     if(this.filterTerm==""){
       this.filtereddiscounts = this.discounts;
-    }
+    }*/
   }
 
  /* search(){

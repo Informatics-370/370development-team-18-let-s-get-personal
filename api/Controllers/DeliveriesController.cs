@@ -78,7 +78,7 @@ namespace IPKP___API.Controllers
       return Ok("Delivery Added To Database.");
     }
 
-    [HttpPut]
+    /*[HttpPut]
     [Route("UpdateDelivery")]
     public async Task<IActionResult> UpdateDeliveryAsync(Guid delivery_ID, DeliveryViewModel dvm)
     {
@@ -103,11 +103,11 @@ namespace IPKP___API.Controllers
         return BadRequest("Invalid Transaction");
       }
       return Ok("Delivery Saved To Database.");
-    }
+    }*/
 
     [HttpDelete]
-    [Route("DeleteDelivery")]
-    public async Task<IActionResult> DeleteDeliveryAsync(Guid delivery_ID)
+    [Route("ReceiveDelivery")]
+    public async Task<IActionResult> ReceiveDeliveryAsync(Guid delivery_ID)
     {
       try
       {
@@ -119,7 +119,7 @@ namespace IPKP___API.Controllers
 
         if (await _IPKPRepository.SaveChangesAsync())
         {
-          return Ok("Delivery Removed Successfully");
+          return Ok("Delivery Received Successfully");
         }
       }
       catch (Exception)
