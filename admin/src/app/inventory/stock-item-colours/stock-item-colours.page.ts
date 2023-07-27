@@ -42,10 +42,12 @@ export class StockItemColoursPage implements OnInit {
 
   GetStockItemColours(){
     this.service.GetStockItemColours().subscribe(result =>{
-      let colourlist: any[] = result
-      colourlist.forEach((element) =>{
-        this.colour.push(element)
-      });
+      this.stockitemcolours = result as StockItemColours[];
+      console.log(this.stockitemcolours)
+      // let colourlist: any[] = result
+      // colourlist.forEach((element) =>{
+      //   this.colour.push(element)
+      // });
     })   
   }
   
@@ -54,11 +56,31 @@ export class StockItemColoursPage implements OnInit {
   }
 
   addcolour(){
-    this.service.AddStockItemColour(this.AddColourForm.value).subscribe(result => {
-      this.canceladdmodal();
-      this.modal.dismiss('Continue');
-      console.log(result);
-  })
+    let addColour = new StockItemColours();
+    addColour.Stock_Item_Colour_Name = this.AddColourForm.value.name;
+    addColour.Stock_Item_Colour_Image = this.AddColourForm.value.image;
+
+    this.service.AddStockItemColour(addColour).subscribe(result => {
+      if(result.status == "Error")
+      {
+        this.AddColourErrorAlert();
+      }
+      else if(result.status == "Success"){
+        this.AddColourSuccessAlert();
+      }
+    })
+  }
+
+  deletecolour(stock_Item_Colour_ID:Number){
+    this.service.DeleteStockItemColour(stock_Item_Colour_ID).subscribe(result =>{
+      if(result.status == "Error")
+      {
+        this.DeleteColourErrorAlert();
+      }
+      else if(result.status == "Success"){
+        this.DeleteColourSuccessAlert();
+      }
+     });
   }
 
   canceladdmodal() {
@@ -66,8 +88,7 @@ export class StockItemColoursPage implements OnInit {
   }
 
   confirmaddmodal() {
-    this.addcolour();
-    
+    this.addcolour();    
   }
 
   onWillDismiss(event: Event) {

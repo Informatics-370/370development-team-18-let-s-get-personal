@@ -71,9 +71,9 @@ namespace IPKP___API.Controllers
       }
       catch (Exception)
       {
-        return BadRequest("Invalid Transaction");
+        return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
       }
-      return Ok("Stock Item Colour Added To Database.");
+      return Ok(new Response { Status = "Success", Message = "Stock Item Colour Added To Database." });
     }
 
     [HttpPut]
@@ -90,14 +90,14 @@ namespace IPKP___API.Controllers
 
         if (await _IPKPRepository.SaveChangesAsync())
         {
-          return Ok("Stock Item Colour Updated Successfully");
+          return Ok(new Response { Status = "Success", Message = "Stock Item Colour Updated Successfully" });
         }
       }
       catch (Exception)
       {
-        return BadRequest("Invalid Transaction");
+        return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
       }
-      return Ok("Stock Item Colour Saved To Database.");
+      return Ok(new Response { Status = "Success", Message = "Stock Item Colour Saved To Database." });
     }
 
     [HttpDelete]
@@ -108,20 +108,20 @@ namespace IPKP___API.Controllers
       {
         var existingStockItemColour = await _IPKPRepository.GetStockItemColourDetailsAsync(stock_Item_Colour_ID);
 
-        if (existingStockItemColour == null) return NotFound("Could Not Find Stock Item Colour" + stock_Item_Colour_ID);
+        if (existingStockItemColour == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item Colour" + stock_Item_Colour_ID });
 
         _IPKPRepository.Delete(existingStockItemColour);
 
         if (await _IPKPRepository.SaveChangesAsync())
         {
-          return Ok("Stock Item Colour Removed Successfully");
+          return Ok(new Response { Status = "Success", Message = "Stock Item Colour Removed Successfully" });
         }
       }
       catch (Exception)
       {
         return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
       }
-      return Ok("Stock Item Colour Removed From Database.");
+      return Ok(new Response { Status = "Success", Message = "Stock Item Colour Removed From Database." });
     }
   }
 }
