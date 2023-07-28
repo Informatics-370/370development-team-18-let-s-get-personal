@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stationary',
@@ -12,9 +13,17 @@ import { IonicModule } from '@ionic/angular';
 })
 export class StationaryPage implements OnInit {
 
-  constructor() { }
+  constructor(private _modalController:ModalController,private _router:Router) { }
 
   ngOnInit() {
   }
-
+  public clothing(){
+    this._router.navigate(["/tabs/clothing"])
+  }
+  public drinking(){
+    this._router.navigate(["/tabs/drinking"])
+  }
+  public shopall(){
+    this._router.navigate(["/tabs/shop-all"])
+  }
 }

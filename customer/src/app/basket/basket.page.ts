@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { BasketItem } from '../Models/basket';
 
 @Component({
   selector: 'app-basket',
@@ -12,9 +14,60 @@ import { IonicModule } from '@ionic/angular';
 })
 export class BasketPage implements OnInit {
 
-  constructor() { }
+  constructor(private _modalController:ModalController,private _router:Router) { }
+
+
+  basketItems: BasketItem[] = [];
+  deliveryFee:any =50;
 
   ngOnInit() {
+    this.basketItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+  }
+
+  ionViewWillEnter() {
+    this.basketItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+  }
+
+  public removeFromBasket(item: any):void {
+    this.basketItems = this.basketItems.filter((basketItem) => basketItem.stockItem.Stock_Item_ID !== item.id);
+    localStorage.setItem('cart', JSON.stringify(this.basketItems));
+  }
+
+  public incrementQuantity(item: any):void {
+    item.quantity++;
+    localStorage.setItem('cart', JSON.stringify(this.basketItems));
+  }
+
+  public decrementQuantity(item: any):void {
+    if (item.quantity > 1) {
+      item.quantity--;
+    }
+    localStorage.setItem('cart', JSON.stringify(this.basketItems));
+  }
+
+  public calculateTotalPrice():any {
+    let totalPrice = 0;
+    for (const item of this.basketItems) {
+      totalPrice += item.price * item.quantity;
+    }
+    return totalPrice;
+  }
+
+  //not the final code, just reference
+
+  public  makepayment(price:Number){
+    
+    let pastOrders = JSON.parse(localStorage.getItem('pastorders') as string) || [];
+    pastOrders.push({
+      items: this.basketItems,
+      date: new Date()
+    });
+    localStorage.removeItem('cart')
+    localStorage.setItem('pastorders', JSON.stringify(pastOrders));
+
+    //alert("You have paid R"+price+this.deliveryFee)
+
+    this._router.navigate(["/tabs/make-payment"])
   }
 
 }

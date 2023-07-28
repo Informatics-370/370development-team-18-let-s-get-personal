@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-drinking',
@@ -12,9 +13,17 @@ import { IonicModule } from '@ionic/angular';
 })
 export class DrinkingPage implements OnInit {
 
-  constructor() { }
+  constructor(private _modalController:ModalController,private _router:Router) { }
 
   ngOnInit() {
   }
-
+  public clothing(){
+    this._router.navigate(["/tabs/clothing"])
+  }
+  public shopall(){
+    this._router.navigate(["/tabs/shop-all"])
+  }
+  public stationary(){
+    this._router.navigate(["/tabs/stationary"])
+  }
 }

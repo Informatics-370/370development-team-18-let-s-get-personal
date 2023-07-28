@@ -2,10 +2,10 @@
   <ion-toolbar>
     <!-- <ion-title>Shop All</ion-title> -->
     <ion-buttons slot="start">
-      <ion-button> Shop All </ion-button>
-      <ion-button> Let's Get Dressed </ion-button>
-      <ion-button> Let's Get Drinking </ion-button>
-      <ion-button> Let's Get Working </ion-button>
+      <ion-button > Shop All </ion-button>
+      <ion-button (click)="clothing()"> Let's Get Dressed </ion-button>
+      <ion-button (click)="drinking()"> Let's Get Drinking </ion-button>
+      <ion-button (click)="stationary()"> Let's Get Working </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -16,6 +16,23 @@
       <ion-title size="large">Shop</ion-title>
     </ion-toolbar>
   </ion-header>
-  
+  <ion-grid>
+    <ion-row>
+      <ion-col>1 Random stock item</ion-col>
+      <ion-col>2</ion-col>
+      <ion-col>3</ion-col>
+      <ion-col>4</ion-col>
+      <ion-col>5</ion-col>
+      <ion-col>6</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>7</ion-col>
+      <ion-col>8</ion-col>
+      <ion-col>9</ion-col>
+      <ion-col>10</ion-col>
+      <ion-col>11</ion-col>
+      <ion-col>12</ion-col>
+    </ion-row>
+  </ion-grid>
   
 </ion-content>

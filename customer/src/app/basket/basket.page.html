@@ -1,13 +1,69 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>basket</ion-title>
+    <ion-title>Basket</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">basket</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" *ngIf="basketItems.length > 0">
+  <ion-list>
+    <ion-item *ngFor="let item of basketItems">
+      <ion-thumbnail slot="start">
+        <!--<img [src]="item.img" />-->
+      </ion-thumbnail>
+      <ion-label>
+        <h5>{{ item.stockItem }}</h5>
+        <ion-button (click)="removeFromBasket(item)">Remove</ion-button>
+        <ion-button (click)="decrementQuantity(item)">-</ion-button>
+        <span>{{ item.quantity }}</span>
+        <ion-button (click)="incrementQuantity(item)">+</ion-button>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-item>
+    <ion-textarea  placeholder="Any instructions? We will try our best."></ion-textarea>
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col>Bill Details</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Items Total</ion-col>
+      <ion-col class="ion-text-end">R{{calculateTotalPrice()}}</ion-col>
+    </ion-row>
+   <!--- <ion-row>
+      <ion-col>Delivery Fee</ion-col>
+      <ion-col class="ion-text-end">R{{deliveryFee}}</ion-col>
+    </ion-row>-->
+    <ion-row>
+      <ion-col>To Pay</ion-col>
+      <ion-col class="ion-text-end"><strong>R {{ calculateTotalPrice()+ deliveryFee }}</strong></ion-col>
+    </ion-row>
+  </ion-grid>
+  
 </ion-content>
+
+<ion-content *ngIf="basketItems.length == 0">
+  <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
+    <p>Your basket is empty.</p>
+    <ion-button (click)="makepayment(calculateTotalPrice())">Pay</ion-button>
+  </div>
+</ion-content>
+
+<ion-footer *ngIf="basketItems.length > 0">
+  <ion-item>
+    <ion-icon aria-hidden="true" name="home-outline" ></ion-icon>
+    <ion-textarea  ></ion-textarea>
+    <p></p>
+    <ion-label>Change</ion-label>
+  </ion-item>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="primary" expand="block">R {{calculateTotalPrice()+ deliveryFee}}</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button color="danger" expand="block" (click)="makepayment(calculateTotalPrice())">MAKE PAYMENT</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
+
+

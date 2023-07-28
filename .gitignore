@@ -476,3 +476,4 @@ api/Migrations/20230522121650_initialMigration.Designer.cs
 api/Migrations/20230520152916_initialMigration.Designer.cs
 api/Migrations/20230521113711_changedToIdentityFramework.cs
 api/Migrations/20230521113711_changedToIdentityFramework.cs
+api/appsettings.json
