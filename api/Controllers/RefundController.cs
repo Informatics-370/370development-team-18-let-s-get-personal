@@ -30,7 +30,7 @@ namespace IPKP___API.Controllers
         
         //************* Process refund
         [HttpDelete]
-        [Route("DeleteSaleAsync")]
+        [Route("DeleteSaleAsync/{sale_Id}")]
         public async Task<IActionResult> DeleteSaleAsync(Guid sale_Id)
         {
             try
@@ -69,7 +69,7 @@ namespace IPKP___API.Controllers
         }
 
         [HttpGet]
-        [Route("GetCustomer")]
+        [Route("GetCustomer/{customer_ID}")]
         public async Task<IActionResult> GetCustomer(Guid customer_ID)
         {
             try

@@ -15,117 +15,122 @@ namespace IPKP___API.Controllers
   [ApiController]
   public class StockItemController : ControllerBase
   {
-    private readonly IIPKPRepository _IPKPRepository;
-    public StockItemController(IIPKPRepository iPKPRepository)
-    {
-      _IPKPRepository = iPKPRepository;
-    }
 
-    [HttpGet]
-    [Route("GetAllStockItems")]
-    public async Task<IActionResult> GetAllStockItemsAsync()
-    {
-      try
-      {
-        var results = await _IPKPRepository.GetAllStockItemsAsync();
-        return Ok(results);
-      }
-      catch (Exception)
-      {
-        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-      }
-    }
-
-    [HttpGet]
-    [Route("GetStockItem")]
-
-    public async Task<IActionResult> GetStockItemDetailsAsync(Guid stock_Item_ID)
-    {
-      try
-      {
-        var results = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
-        return Ok(results);
-      }
-      catch (Exception)
-      {
-        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-      }
-    }
-
-    [HttpPost]
-    [Route("AddStockItem")]
-    public async Task<IActionResult> AddStockItemAsync(Stock_Item sivm)
-    {
-      var stockItem = new Stock_Item
-      {
-        Stock_Item_ID = sivm.Stock_Item_ID,
-        Stock_Item_Name = sivm.Stock_Item_Name,
-        Stock_Types = sivm.Stock_Types,
-        Stock_Images = sivm.Stock_Images,
-        Stock_Item_Colours = sivm.Stock_Item_Colours,
-        Stock_Item_Price = sivm.Stock_Item_Price
-      };
-      try
-      {
-        _IPKPRepository.Add(stockItem);
-        await _IPKPRepository.SaveChangesAsync();
-      }
-      catch (Exception)
-      {
-         return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-      }
-      return Ok(new Response { Status = "Success", Message = "Stock Item Added To Database." });
-    }
-
-    [HttpPut]
-    [Route("UpdateStockItem")]
-    public async Task<IActionResult> UpdateStockItemAsync(Guid stock_Item_ID, Stock_Item sivm)
-    {
-      try
-      {
-        var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
-
-        if (existingStockItem == null) return NotFound("Could Not Find Stock Item" + stock_Item_ID);
-
-        existingStockItem.Stock_Item_Name = sivm.Stock_Item_Name;
-        existingStockItem.Stock_Types = sivm.Stock_Types;
-        existingStockItem.Stock_Images = sivm.Stock_Images;
-        existingStockItem.Stock_Item_Colours = sivm.Stock_Item_Colours;
-
-        if (await _IPKPRepository.SaveChangesAsync())
+        private readonly IIPKPRepository _IPKPRepository;
+        public StockItemController(IIPKPRepository iPKPRepository)
         {
-          return Ok(new Response { Status = "Success", Message = "Stock Item Updated Successfully" });
+          _IPKPRepository = iPKPRepository;
         }
-      }
-      catch (Exception)
-      {
-         return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-      }
-      return Ok(new Response { Status = "Success", Message = "Stock Item Saved To Database." });
-    }
 
-    [HttpDelete]
-    [Route("DeleteStockItem")]
-    public async Task<IActionResult> DeleteStockItemAsync(Guid stock_Item_ID)
-    {
-      try
-      {
-        var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
-
-        if (existingStockItem == null) return NotFound("Could Not Find Stock Item" + stock_Item_ID);
-
-        _IPKPRepository.Delete(existingStockItem);
-
-        if (await _IPKPRepository.SaveChangesAsync())
+        [HttpGet]
+        [Route("GetAllStockItems")]
+        public async Task<IActionResult> GetAllStockItemsAsync()
         {
-          return Ok(new Response { Status = "Success", Message = "Stock Item Removed Successfully" });
+            try
+            {
+                var results = await _IPKPRepository.GetAllStockItemsAsync();
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Items" });
+
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
         }
-      }
-      catch (Exception)
-      {
-         return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-      }
-      return Ok(new Response { Status = "Success", Message = "Stock Item Removed From Database." });
-    }
+
+        [HttpGet]
+        [Route("GetStockItem/{stock_Item_ID}")]
+
+        public async Task<IActionResult> GetStockItemDetailsAsync(Guid stock_Item_ID)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
+
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
+        [HttpPost]
+        [Route("AddStockItem")]
+        public async Task<IActionResult> AddStockItemAsync(Stock_Item sivm)
+        {
+            var stockItem = new Stock_Item
+            {
+                Stock_Item_ID = sivm.Stock_Item_ID,
+                Stock_Item_Name = sivm.Stock_Item_Name,
+                Stock_Types = sivm.Stock_Types,
+                Stock_Images = sivm.Stock_Images,
+                Stock_Item_Colours = sivm.Stock_Item_Colours,
+                Stock_Item_Price = sivm.Stock_Item_Price
+            };
+            try
+            {
+                _IPKPRepository.Add(stockItem);
+                await _IPKPRepository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Stock Item Added To Database." });
+        }
+
+        [HttpPut]
+        [Route("UpdateStockItem/{stock_Item_ID}")]
+        public async Task<IActionResult> UpdateStockItemAsync(Guid stock_Item_ID, Stock_Item sivm)
+        {
+            try
+            {
+                var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
+
+                if (existingStockItem == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
+
+                existingStockItem.Stock_Item_Name = sivm.Stock_Item_Name;
+                existingStockItem.Stock_Types = sivm.Stock_Types;
+                existingStockItem.Stock_Images = sivm.Stock_Images;
+                existingStockItem.Stock_Item_Colours = sivm.Stock_Item_Colours;
+
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(new Response { Status = "Success", Message = "Stock Item Updated Successfully" });
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Stock Item Saved To Database." });
+        }
+
+        [HttpDelete]
+        [Route("DeleteStockItem/{stock_Item_ID}")]
+        public async Task<IActionResult> DeleteStockItemAsync(Guid stock_Item_ID)
+        {
+            try
+            {
+                var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
+
+                if (existingStockItem == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
+
+                _IPKPRepository.Delete(existingStockItem);
+
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(new Response { Status = "Success", Message = "Stock Item Removed Successfully" });
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Stock Item Removed From Database." });
+        }
   }
 }

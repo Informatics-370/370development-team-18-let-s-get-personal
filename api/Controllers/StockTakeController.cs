@@ -6,6 +6,7 @@ using System;
 using IPKP___API.Controllers.Models.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using IPKP___API.Controllers.Models.ViewModels;
 
 namespace IPKP___API.Controllers
 {
@@ -26,8 +27,8 @@ namespace IPKP___API.Controllers
 
          
         [HttpGet]
-        [Route("GetInventoryById")]
-        public async Task<IActionResult> GetInventoryByIDAsync(Guid id)
+        [Route("GetInventoryById/{inventory_Id}")]
+        public async Task<IActionResult> GetInventoryByIDAsync(Guid inventory_Id)
         {
             try
             {
@@ -40,21 +41,21 @@ namespace IPKP___API.Controllers
                 {
                     Inventory oInventory = new Inventory();
 
-                    if (id == c.Stock_Item_ID)
+                    if (inventory_Id == c.Stock_Item_ID)
                     {
                         oInventory.Inventory_ID = c.Stock_Item_ID;
                         InventoryList.Add(oInventory);
                     }
                     else
                     {
-                        return StatusCode(StatusCodes.Status404NotFound , "No stock items in inventory");
+                        return NotFound(new Response { Status = "Error", Message = "No stock items in inventory" });
                     }
                 }
                 return Ok(InventoryList);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
