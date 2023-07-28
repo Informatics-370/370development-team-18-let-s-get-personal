@@ -30,7 +30,11 @@ namespace IPKP___API.Controllers
       try
       {
         var results = await _IPKPRepository.GetAllDeliveryCompaniesAsync();
-        return Ok(results);
+       if (results == null)
+       {
+         return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery Company" });
+       }
+       return Ok(results);
       }
       catch (Exception)
       {
@@ -39,14 +43,18 @@ namespace IPKP___API.Controllers
     }
 
     [HttpGet]
-    [Route("GetDeliveryCompany")]
+    [Route("GetDeliveryCompany/{delivery_Company_ID}")]
 
     public async Task<IActionResult> GetDeliveryCompanyDetailsAsync(Guid delivery_Company_ID)
     {
       try
       {
-        var results = await _IPKPRepository.GetDeliveryCompanyDetailsAsync(delivery_Company_ID);
-        return Ok(results);
+            var results = await _IPKPRepository.GetDeliveryCompanyDetailsAsync(delivery_Company_ID);
+            if (results == null)
+            {
+              return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
+            }
+            return Ok(results);
       }
       catch (Exception)
       {
@@ -77,7 +85,7 @@ namespace IPKP___API.Controllers
     }
 
     [HttpPut]
-    [Route("UpdateDeliveryCompany")]
+    [Route("UpdateDeliveryCompany/{delivery_Company_ID}")]
     public async Task<IActionResult> UpdateDeliveryCompanyAsync(Guid delivery_Company_ID, DeliveryCompanyViewModel dcvm)
     {
       try
@@ -101,7 +109,7 @@ namespace IPKP___API.Controllers
     }
 
     [HttpDelete]
-    [Route("DeleteDeliveryCompany")]
+    [Route("DeleteDeliveryCompany/{delivery_Company_ID}")]
     public async Task<IActionResult> DeleteDeliveryCompanyAsync(Guid delivery_Company_ID)
     {
       try

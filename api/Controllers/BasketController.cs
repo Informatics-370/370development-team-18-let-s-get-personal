@@ -30,6 +30,7 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetBasketAsync(customer_ID);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
                 return Ok(results);
             }
             catch (Exception)
@@ -57,9 +58,9 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return BadRequest("Invalid Transaction");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Basket Added To Database.");
+            return Ok(new Response { Status = "Success", Message = "Basket Added To Database." });
 
         }
 
