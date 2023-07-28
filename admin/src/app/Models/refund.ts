@@ -1,9 +1,11 @@
 import { Customer } from "./customer"
-import {Refund_Policy} from "./refundpolicy"
+import { Refund_Policy } from "./refundpolicy"
 
 export class Refund{
-    Refund_ID!: Number
-    Customer!: Customer
-    Refund_Policy!: Refund_Policy
-    Refund_Comment!: String
+    refund_ID!: Number    
+    customer!: Customer
+    customer_Email!: string
+    refund_Policy!: Refund_Policy
+    refund_Comment!: String
+    refund_Status!: String
 }

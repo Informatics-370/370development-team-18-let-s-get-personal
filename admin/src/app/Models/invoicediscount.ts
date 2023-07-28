@@ -1,7 +1,7 @@
 import { Discount } from "./discount";
 
 export class Invoice_Discount{
-    Invoice_Discount_ID!: Number
-    Discount!: Discount
-    Discount_Reason!: String
+    invoice_Discount_ID!: Number
+    discount!: Discount
+    discount_Reason!: String
 }

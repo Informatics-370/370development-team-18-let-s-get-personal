@@ -1,4 +1,5 @@
 export class Payment_Type{
-    Payment_Type_ID!: Number
-    Payment_Type_Name!: String
+    
+    payment_Type_ID!: Number
+    payment_Type_Name!: String
 }

@@ -1,4 +1,4 @@
 export class Province{
-    Province_ID!: Number
-    Province_Name!: String
+    province_ID!: Number
+    province_Name!: String
 }

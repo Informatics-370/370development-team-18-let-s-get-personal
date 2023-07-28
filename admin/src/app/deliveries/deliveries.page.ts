@@ -8,12 +8,12 @@ import { AlertController, IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { DeliveryDataService } from '../Services/deliveries.service';
-
+import { DeliveryCompanyDataService } from 'src/app/Services/deliverycompany.service';
 //for modal
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-
+//Contains: 
 @Component({
   selector: 'app-deliveries',
   templateUrl: './deliveries.page.html',
@@ -24,20 +24,22 @@ import { OverlayEventDetail } from '@ionic/core/components';
 export class DeliveriesPage implements OnInit {
 
   searchValue: string ='';
-  deliveries:any=Delivery;
-filteredDelivery:Delivery[]=[];
-   
+  deliveries:Delivery[]=[];
+  filteredDelivery:Delivery[]=[];
+  deliverycompanies:Delivery_Company[]=[];
 
   updateSearchResults() {
-    this.filteredDelivery = this.deliveries.filter((items: { Tracking_Number: number; }) =>
-     items.Tracking_Number.toString().includes(this.searchValue));
+    // this.filteredDelivery = this.deliveries.filter((items: { Tracking_Number: number; }) =>
+    //  items.Tracking_Number.toString().includes(this.searchValue));
   }
+
   ngOnInit() {
+    this.GetAllDeliveries();
   }
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DeliveryDataService, private router: Router, public modalCtrl: ModalController,
-    private alertController:AlertController ) { }
+    private alertController:AlertController, private companyservice:DeliveryCompanyDataService ) { }
 
   AddForm: FormGroup = new FormGroup({
     address: new FormControl('',[Validators.required]),
@@ -46,7 +48,7 @@ filteredDelivery:Delivery[]=[];
     trackingnumber: new FormControl('',[Validators.required])
   })
   
-deliverycompanies()
+  Routedeliverycompanies()
   {
     this.router.navigate(['./tabs/delivery-companies']);
   }
@@ -58,13 +60,20 @@ deliverycompanies()
     })
   }
 
+  getDeliveryCompany(){
+    this.companyservice.GetDeliveryCompanies().subscribe(result =>{
+      this.deliverycompanies = result as Delivery_Company[];
+      console.log(this.deliverycompanies)
+    })
+  }
+
   AddDelivery(){
     let addDelivery = new Delivery();
 
-    addDelivery.Delivery_Address = this.AddForm.value.address;
-    addDelivery.Delivery_Company = this.AddForm.value.deliverycompany;
-    addDelivery.Delivery_Price = this.AddForm.value.deliveryprice;
-    addDelivery.Tracking_Number = this.AddForm.value.trackingnumber;
+    addDelivery.delivery_Address = this.AddForm.value.address;
+    addDelivery.delivery_Company = this.AddForm.value.deliverycompany;
+    addDelivery.delivery_Price = this.AddForm.value.deliveryprice;
+    addDelivery.tracking_Number = this.AddForm.value.trackingnumber;
 
     this.service.AddDelivery(addDelivery).subscribe(response => {
       if(response.status == "Error")

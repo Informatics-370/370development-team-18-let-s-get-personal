@@ -6,6 +6,8 @@ namespace IPKP___API.Controllers.Models.Entities
     {
         [Required]
         [DataType(DataType.EmailAddress)]
+        public string Email_Address { get; set; }
+
         public string UserName { get; set; }
     }
 }

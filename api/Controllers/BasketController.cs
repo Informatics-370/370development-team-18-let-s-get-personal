@@ -24,12 +24,12 @@ namespace IPKP___API.Controllers
         }
 
         [HttpGet]
-        [Route("GetBasketInfo")]
-        public async Task<IActionResult> GetBasketInfo(Guid Customer_id)
+        [Route("GetBasketInfo/{customer_id}")]
+        public async Task<IActionResult> GetBasketInfo(Guid customer_ID)
         {
             try
             {
-                var results = await _IPKPRepository.GetBasketAsync(Customer_id);
+                var results = await _IPKPRepository.GetBasketAsync(customer_ID);
                 return Ok(results);
             }
             catch (Exception)

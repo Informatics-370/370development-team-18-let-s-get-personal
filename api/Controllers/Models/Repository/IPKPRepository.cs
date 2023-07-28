@@ -194,11 +194,11 @@ namespace IPKP___API.Controllers.Models.Repository
         }      
 
         //best sellers
-        public async Task<Best_Sellers[]> GetLatestBestSellersAsync()
-        {
-          IQueryable<Best_Sellers> query = _appDbContext.Best_Sellers;
-          return await query.ToArrayAsync();
-        }             
+        //public async Task<Best_Sellers[]> GetLatestBestSellersAsync()
+        //{
+        //  IQueryable<Best_Sellers> query = _appDbContext.Best_Sellers;
+        //  return await query.ToArrayAsync();
+        //}             
 
 
         //product ratings

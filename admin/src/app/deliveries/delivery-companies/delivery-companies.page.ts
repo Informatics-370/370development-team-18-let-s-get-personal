@@ -51,7 +51,7 @@ export class DeliveryCompaniesPage implements OnInit {
   AddDeliveryCompany(){
     let AddDeliveryCompany = new Delivery_Company();
 
-    AddDeliveryCompany.Delivery_Company_Name = this.AddForm.value.deliverycompanyname;
+    AddDeliveryCompany.delivery_Company_Name = this.AddForm.value.deliverycompanyname;
 
     this.service.AddDeliveryCompany(AddDeliveryCompany).subscribe(response => {
       if(response.status == "Error")

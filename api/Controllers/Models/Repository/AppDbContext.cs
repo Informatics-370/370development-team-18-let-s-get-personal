@@ -56,7 +56,7 @@ namespace IPKP___API.Controllers.Models.Repository
         public DbSet<User_Role_Permission> User_Role_Permissions {get; set; }
         public DbSet<Write_Off> Write_Offs {get; set; }
         public DbSet<Write_Off_Line_Item> Write_Off_Line_Items {get; set; }
-        public DbSet<Best_Sellers> Best_Sellers { get; set; }
+        //public DbSet<Best_Sellers> Best_Sellers { get; set; }
         public DbSet<Experience_Rating> Experience_Rating { get; set;}
         public DbSet<Basket> Basket { get; set; }
   }

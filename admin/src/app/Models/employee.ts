@@ -4,15 +4,15 @@ import { Address } from "./address";
 import { User } from "./user";
 
 export class Employee{
-    Employee_ID!: Number
+    employee_ID!: Number
 
-    Title!: Title
-    Gender!: Gender
-    Address!: Address
-    User!: User
+    title!: Title
+    gender!: Gender
+    address!: Address
+    user!: User
 
-    FirstName!: String
-    Surname!: String
-    Cell_Number!: Number
-    Email!: String
+    firstName!: String
+    surname!: String
+    cell_Number!: Number
+    email!: String
 }
