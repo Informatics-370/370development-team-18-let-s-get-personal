@@ -51,12 +51,12 @@ import { Response } from '../Models/response';
     
     //process refund 
     AddRefund(refund: RefundVM){
-        return this.httpClient.post(`${this.apiUrl}Refund/AddRefund`, refund)
+        return this.httpClient.post<Response>(`${this.apiUrl}Refund/AddRefund`, refund)
         .pipe(map(result => result))
     }
 
     DeleteSale(Sale_Id:Number){
-      return this.httpClient.delete(`${this.apiUrl}Refund/DeleteSaleAsync/${Sale_Id}`);
+      return this.httpClient.delete<Response>(`${this.apiUrl}Refund/DeleteSaleAsync/${Sale_Id}`);
     }
    
   

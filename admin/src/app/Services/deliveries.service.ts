@@ -32,19 +32,18 @@ import { Response } from '../Models/response';
     }
   
     //get selected one
-    public GetDelivery(DeliveryId:Number){ 
-      return this.httpClient.get(`${this.apiUrl}Deliveries/GetDelivery/${DeliveryId}`)
+    public GetDelivery(deliveryId:Number){ 
+      return this.httpClient.get(`${this.apiUrl}Deliveries/GetDelivery/${deliveryId}`)
       .pipe(map(result => result))
     }
-  
-    /*
-    public UpdateDelivery(DeliveryId:Number, delivery:Delivery){
-      return this.httpClient.put(`${this.apiUrl}Deliveries/UpdateDelivery/${DeliveryId}`, delivery)
-    }*/
+    
+    // public UpdateDelivery(deliveryId:Number, delivery:Delivery){
+    //   return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/UpdateDelivery/${deliveryId}`, delivery)
+    // }
   
     //receive 
-    public ReceiveDelivery(DeliveryId:Number){
-      return this.httpClient.delete<Response>(`${this.apiUrl}Deliveries/ReceiveDelivery/${DeliveryId}`)
+    public ReceiveDelivery(deliveryId:Number){
+      return this.httpClient.delete<Response>(`${this.apiUrl}Deliveries/ReceiveDelivery/${deliveryId}`)
     }
   
   }

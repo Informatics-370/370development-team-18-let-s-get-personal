@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { StockTypes } from '../Models/stocktypes';
 import { ProductRating } from '../Models/productrating';
-
+import { Response } from '../Models/response';
 @Injectable({
     providedIn: 'root' 
   })
@@ -28,7 +28,7 @@ import { ProductRating } from '../Models/productrating';
   
     //add
     public AddProductRating(productRating:ProductRating){
-      return this.httpClient.post(`${this.apiUrl}ProductRating/AddProductRating`, productRating)
+      return this.httpClient.post<Response>(`${this.apiUrl}ProductRating/AddProductRating`, productRating)
       .pipe(map(result => result))
     }
   
@@ -40,13 +40,13 @@ import { ProductRating } from '../Models/productrating';
   
     //edit
     public UpdateProductRating(productRatingId:Number, productRating:ProductRating){
-      return this.httpClient.put(`${this.apiUrl}ProductRating/UpdateProductRating/${productRatingId}`, productRating)
+      return this.httpClient.put<Response>(`${this.apiUrl}ProductRating/UpdateProductRating/${productRatingId}`, productRating)
       .pipe(map(result => result))
     }
   
     //delete 
     public DeleteProductRating(productRatingId:Number){
-      return this.httpClient.delete(`${this.apiUrl}ProductRating/DeleteProductRating/${productRatingId}`)
+      return this.httpClient.delete<Response>(`${this.apiUrl}ProductRating/DeleteProductRating/${productRatingId}`)
       .pipe(map(result => result))
     }
   

@@ -80,7 +80,7 @@ export class DeliveriesPage implements OnInit {
       {
         this.addDeliveryErrorAlert();
       }
-      else if(response.status == "Success"){
+      else{
         this.addDeliverySuccessAlert();
       }
     })

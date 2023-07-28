@@ -85,7 +85,7 @@ export class DiscountsPage implements OnInit {
       {
         this.addDiscountErrorAlert();
       }
-      else if(response.status == "Success"){
+      else {
         this.addDiscountSuccessAlert();
       }
     })

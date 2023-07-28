@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { StockTypes } from '../Models/stocktypes';
 import { Customer } from '../Models/customer';
-
+import { Response } from '../Models/response';
 @Injectable({
     providedIn: 'root' 
   })
@@ -27,7 +27,7 @@ import { Customer } from '../Models/customer';
   
     //add
     public AddCustomer(customer:Customer){
-      return this.httpClient.post(`${this.apiUrl}Customer/AddCustomer`, customer)
+      return this.httpClient.post<Response>(`${this.apiUrl}Customer/AddCustomer`, customer)
       .pipe(map(result => result))
     }
   
@@ -39,12 +39,12 @@ import { Customer } from '../Models/customer';
   
     //edit
     public UpdateCustomer(Customer_ID:Number, customer:Customer){
-      return this.httpClient.put(`${this.apiUrl}Customer/UpdateCustomer/${Customer_ID}`, customer)
+      return this.httpClient.put<Response>(`${this.apiUrl}Customer/UpdateCustomer/${Customer_ID}`, customer)
     }
   
     //delete 
     public DeleteStockType(Customer_ID:Number){
-      return this.httpClient.delete(`${this.apiUrl}Customer/DeleteCustomer/${Customer_ID}`)
+      return this.httpClient.delete<Response>(`${this.apiUrl}Customer/DeleteCustomer/${Customer_ID}`)
     }
   
   }

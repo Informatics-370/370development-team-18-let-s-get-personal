@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { Experience_Rating } from '../Models/experiencerating';
+import { Response } from '../Models/response';
 @Injectable({
     providedIn: 'root' 
   })
@@ -32,18 +33,18 @@ import { Experience_Rating } from '../Models/experiencerating';
 
   //add
     public AddExperienceRating(Experience_Rating:Experience_Rating){
-        return this.httpClient.post(`${this.apiUrl}Experience_Ratings/AddExperienceRating`, Experience_Rating)
+        return this.httpClient.post<Response>(`${this.apiUrl}Experience_Ratings/AddExperienceRating`, Experience_Rating)
         .pipe(map(result => result))
     } 
 
  //edit
     public UpdateExperienceRating(Experience_Rating_ID:Number, Experience_Rating:Experience_Rating){
-        return this.httpClient.put(`${this.apiUrl}Experience_Ratings/UpdateExperienceRating/${Experience_Rating_ID}`, Experience_Rating)
+        return this.httpClient.put<Response>(`${this.apiUrl}Experience_Ratings/UpdateExperienceRating/${Experience_Rating_ID}`, Experience_Rating)
     }
 
   //delete 
     public DeleteExperienceRating(Experience_Rating_ID:Number){
-        return this.httpClient.delete(`${this.apiUrl}Experience_Ratings/DeleteExeperienceRating/${Experience_Rating_ID}`)
+        return this.httpClient.delete<Response>(`${this.apiUrl}Experience_Ratings/DeleteExeperienceRating/${Experience_Rating_ID}`)
         
     }
    

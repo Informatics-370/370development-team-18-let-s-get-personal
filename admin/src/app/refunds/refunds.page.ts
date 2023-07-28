@@ -83,11 +83,11 @@ export class RefundsPage implements OnInit {
     addRefund.refund_Policy_Description = this.AddForm.value.description;
 
     this.service.AddRefundPolicy(addRefund).subscribe(response => {
-      if(response.status == "Success"){
-        this.addPolicySuccessAlert();            
-      }
-      else if (response.status == "Error"){
+      if (response.status == "Error"){
         this.addPolicyErrorAlert();
+      }
+      else{
+        this.addPolicySuccessAlert();            
       }
     })
   }

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-
+import { Response } from '../Models/response';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,12 +28,12 @@ export class OrderService {
   }
 
   public ProcessOrder(OrderID:Number): Observable<any>{
-    return this.httpClient.put(`${this.apiUrl}Order/ProcessOrder/${OrderID}`, this.httpOptions)
+    return this.httpClient.put<Response>(`${this.apiUrl}Order/ProcessOrder/${OrderID}`, this.httpOptions)
     .pipe(map((result: any) => result))
   }
 
   public CompleteOrder(OrderID:Number): Observable<any>{
-    return this.httpClient.put(`${this.apiUrl}Order/CompleteOrder/${OrderID}`, this.httpOptions)
+    return this.httpClient.put<Response>(`${this.apiUrl}Order/CompleteOrder/${OrderID}`, this.httpOptions)
     .pipe(map((result: any) => result))
   }
 }

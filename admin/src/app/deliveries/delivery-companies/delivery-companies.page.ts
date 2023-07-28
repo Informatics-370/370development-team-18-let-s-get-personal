@@ -58,7 +58,7 @@ export class DeliveryCompaniesPage implements OnInit {
       {
         this.addDeliveryCompanyErrorAlert();
       }
-      else if(response.status == "Success"){
+      else{
         this.addDeliveryCompanySuccessAlert();
       }
     })

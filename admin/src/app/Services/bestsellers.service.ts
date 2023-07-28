@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Stock_Item } from '../Models/stockitem';
+import { Response } from '../Models/response';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class BestsellersService {
   }
 
   public SaveBestSellersList(selectedProducts: Stock_Item[]): Observable<any> {
-    return this.httpClient.post(`${this.apiUrl}BestSellers/SaveBestSellersList`, selectedProducts, this.httpOptions)
+    return this.httpClient.post<Response>(`${this.apiUrl}BestSellers/SaveBestSellersList`, selectedProducts, this.httpOptions)
     .pipe(map(result => result))
   }
 
