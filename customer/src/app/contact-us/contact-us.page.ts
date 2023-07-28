@@ -11,10 +11,15 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class ContactUsPage implements OnInit {
+  isModalOpen = false;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
   }
 
 }
