@@ -21,6 +21,11 @@ import { Response } from '../Models/response';
     constructor(private httpClient: HttpClient) { 
     }
   
+    //API
+     GetAllPreviousRefunds(): Observable<any>{ 
+      return this.httpClient.get(`${this.apiUrl}Refund/GetAllPreviousRefunds`)
+      .pipe(map(result => result))
+  }
     //get all previous refund policies
     GetAllRefundPolicies(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}Refund/GetAllRefundPolicies`)

@@ -12,15 +12,15 @@
   </ion-header>
   <ion-card-content>
     <ion-button id="addmodal">Add Delivery Company</ion-button>
-    <ion-searchbar  show-clear-button="always" (ionInput)="updateSearchResults()" [(ngModel)]="filterTerm"  ></ion-searchbar>                    
+    <ion-searchbar [(ngModel)]="filterTerm" (ionInput)="updateSearchResults()"></ion-searchbar>                    
     <ion-grid>
       <ion-row>
         <ion-col style="font-weight: bold;"><h3>Delivery Company Name</h3></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of filteredDeliveryCompany">
         <ion-col>{{item.Delivery_Company_Name}}</ion-col>
-        <ion-col><ion-button (click)="DeleteDeliveryCompany(item.discount_ID)">Delete</ion-button></ion-col>
-        <ion-col><ion-button (click)="EditDeliveryCompany(item.discount_ID)" >Update</ion-button></ion-col>      
+        <ion-col><ion-button (click)="DeleteDeliveryCompany(item.Delivery_Company_ID)">Delete</ion-button></ion-col>
+        <ion-col><ion-button (click)="EditDeliveryCompany(item.Delivery_Company_ID)" >Update</ion-button></ion-col>      
       </ion-row>
     </ion-grid>
 
@@ -35,7 +35,7 @@
           <ion-buttons slot="start">
             <ion-button (click)="canceladdmodal()">Cancel</ion-button>
           </ion-buttons>
-          <ion-title>Add Delivery Company</ion-title>
+          <ion-title id="addmodal">Add Delivery Company</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
           </ion-buttons>

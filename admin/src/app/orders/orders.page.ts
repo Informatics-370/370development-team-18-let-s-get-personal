@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders',
@@ -12,9 +13,12 @@ import { IonicModule } from '@ionic/angular';
 })
 export class OrdersPage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
-
+  prevOrders()
+  {
+    this.router.navigate(['./tabs/orders']);//button needs to be moved in the profile.. or not idk:) 
+  }
 }

@@ -1,13 +1,24 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>best-sellers</ion-title>
+    <ion-title>IPKP Top 10 Best Sellers</ion-title>
   </ion-toolbar>
 </ion-header>
 
+<!--Noticed this and realized we dont have a View Best sellers UC-->
+
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">best-sellers</ion-title>
-    </ion-toolbar>
-  </ion-header>
+ <!-- <ion-button id="addmodal">Select Products</ion-button>
+  <ion-button id="addmodal">View Inventory?</ion-button>   --Narratives--
+  <ion-grid>
+    <ion-row>
+      <ion-col style="font-weight: bold;"><h3>Stock Item Name</h3></ion-col>
+      <ion-col style="font-weight: bold;"><h3>Stock Item Image</h3></ion-col>
+    </ion-row>
+    <ion-row *ngFor="let item of bestsellers">
+      <ion-col>{{item.Stock_Item_Name}}</ion-col>
+      <ion-col>{{item.Stock_Item_Image}}</ion-col>    
+    </ion-row>
+  </ion-grid>-->
+
 </ion-content>
+

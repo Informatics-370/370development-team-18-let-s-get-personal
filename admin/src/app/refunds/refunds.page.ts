@@ -26,8 +26,9 @@ export class RefundsPage implements OnInit {
   filterTerm: string = "";
   filteredpolicies:  Refund_Policy[] = [];
   refundPolicies: Refund_Policy[] =[]
+  prevRefunds:Refund[]=[];
   @ViewChild(IonModal) modal!: IonModal
-  constructor(private service:RefundService, private thisroute: Router, 
+  constructor(private service:RefundService, private router: Router, 
     private alertController:AlertController, private modalCtrl: ModalController ) { }
 
   AddForm: FormGroup = new FormGroup({
@@ -37,11 +38,11 @@ export class RefundsPage implements OnInit {
   })
 
   ngOnInit(): void {
-    this.getRefundPolicies()
+   /* this.getRefundPolicies()
     
     if(this.filterTerm==""){
       this.filteredpolicies = this.refundPolicies;
-    }
+    }*/
   }
   search(){
     //empty array
@@ -54,11 +55,24 @@ export class RefundsPage implements OnInit {
       searchitem.refund_Policy_Version == Number(this.filterTerm)
     );
    }
-   getRefundPolicies(){
+
+   getAllRefundPolicies(){
     this.service.GetAllRefundPolicies().subscribe(result =>{
       this.refundPolicies = result as Refund_Policy[];
       console.log(this.refundPolicies);
     })
+  }
+
+  getPrevRefunds(){
+    this.service.GetAllPreviousRefunds().subscribe(result =>{
+      this.prevRefunds = result as Refund[];
+      console.log(this.prevRefunds);
+    })
+  }
+
+  processRefunds()
+  {
+    this.router.navigate(['./tabs/process-refund']);
   }
 
   AddRefundPolicy(){

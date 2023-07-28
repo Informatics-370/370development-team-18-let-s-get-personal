@@ -23,9 +23,7 @@ export class DeliveryCompaniesPage implements OnInit {
 
   filterTerm: string = "";
   deliverycompanies:any=Delivery_Company;
-  filteredDeliveryCompany = this.deliverycompanies.filter((items: { Delivery_Company_Name: string; }) => 
-  items.Delivery_Company_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
-
+  filteredDeliveryCompany:Delivery_Company[]=[];
 
   updateSearchResults() {
     this.filteredDeliveryCompany = this.deliverycompanies.filter((items: { Delivery_Company_Name: string; }) =>

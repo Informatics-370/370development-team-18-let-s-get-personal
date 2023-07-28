@@ -12,8 +12,8 @@
   </ion-header>
   <ion-card-content>
     <ion-button id="addmodal">Add Delivery</ion-button>
-    <ion-button >View Delivery Companies</ion-button><!--Routing to UC 5.6-->
-    <ion-searchbar  show-clear-button="always" (ionInput)="updateSearchResults()" [(ngModel)]="searchValue"  ></ion-searchbar>                    
+    <ion-button (click)="deliverycompanies()" >View Delivery Companies</ion-button><!--Routing to UC 5.6-->
+    <ion-searchbar [(ngModel)]="searchValue"  (ionInput)="updateSearchResults()" ></ion-searchbar>               
     <ion-grid>
       <ion-row>
         <ion-col style="font-weight: bold;"><h3>Delivery Address</h3></ion-col>

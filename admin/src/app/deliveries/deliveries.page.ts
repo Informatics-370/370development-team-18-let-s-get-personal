@@ -5,7 +5,7 @@ import { Delivery } from '../Models/delivery';
 import { Address } from '../Models/address';
 import { Delivery_Company } from '../Models/deliverycompany';
 import { AlertController, IonicModule } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { DeliveryDataService } from '../Services/deliveries.service';
 
@@ -19,26 +19,24 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: './deliveries.page.html',
   styleUrls: ['./deliveries.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule,RouterModule]
 })
 export class DeliveriesPage implements OnInit {
 
-  searchValue: number =0;
+  searchValue: string ='';
   deliveries:any=Delivery;
-
-  filteredDelivery = this.deliveries.filter((items: { Delivery_Address: Address,Delivery_Company: Delivery_Company,Delivery_Price:number,Tracking_Number: number; }) => 
-  items.Tracking_Number.toLowerCase().includes(this.searchValue));
-
+filteredDelivery:Delivery[]=[];
+   
 
   updateSearchResults() {
     this.filteredDelivery = this.deliveries.filter((items: { Tracking_Number: number; }) =>
-     items.Tracking_Number.toLowerCase().includes(this.searchValue.toLowerCase()));
+     items.Tracking_Number.toString().includes(this.searchValue));
   }
   ngOnInit() {
   }
 
   @ViewChild(IonModal) modal!: IonModal
-  constructor(private service:DeliveryDataService, private thisroute: Router, public modalCtrl: ModalController,
+  constructor(private service:DeliveryDataService, private router: Router, public modalCtrl: ModalController,
     private alertController:AlertController ) { }
 
   AddForm: FormGroup = new FormGroup({
@@ -47,6 +45,11 @@ export class DeliveriesPage implements OnInit {
     deliveryprice: new FormControl('',[Validators.required]),
     trackingnumber: new FormControl('',[Validators.required])
   })
+  
+deliverycompanies()
+  {
+    this.router.navigate(['./tabs/delivery-companies']);
+  }
 
   GetAllDeliveries(){
     this.service.GetAllDeliveries().subscribe(result =>{
@@ -165,4 +168,5 @@ export class DeliveriesPage implements OnInit {
     await alert.present();
   }
 
+  
 }
