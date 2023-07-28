@@ -1,13 +1,15 @@
 import { StockItemColours } from "./stockitemcolour"
 import { ProductRating } from "./productrating"
 import { Stock_Image } from "./stockimage"
+import { StockTypes } from "./stocktypes"
 
 export class  Stock_Item{
-    Stock_Item_ID!: Number
-    Stock_Item_Name!: String 
-    Stock_Item_Price!: Number
+    stock_Item_ID!: Number
+    stock_Item_Name!: String 
+    stock_Item_Price!: Number
 
-    stockimage!: Stock_Image
+    stock_Types!: StockTypes
+    stock_Images!: Stock_Image
     productrating!: ProductRating
     stockitemcolours!: StockItemColours
     isSelected!: Boolean

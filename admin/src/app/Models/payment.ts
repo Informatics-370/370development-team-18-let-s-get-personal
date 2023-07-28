@@ -1,7 +1,7 @@
 import { Invoice } from "./invoice";
 
 export class Payment{
-    Payment_ID!: Number
-    Invoice!: Invoice
-    Payment_Amount!: Number
+    payment_ID!: Number
+    invoice!: Invoice
+    payment_Amount!: Number
 }

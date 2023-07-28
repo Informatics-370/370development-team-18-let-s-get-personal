@@ -17,116 +17,119 @@ namespace IPKP___API.Controllers
   //[Authorize(Roles = User_Role.Admin)]
   public class DeliveriesController : ControllerBase
   {
-    private readonly IIPKPRepository _IPKPRepository;
-    public DeliveriesController(IIPKPRepository iPKPRepository)
-    {
-      _IPKPRepository = iPKPRepository;
-    }
-    [HttpGet]
-    [Route("GetAllDeliveries")]
-
-    public async Task<IActionResult> GetAllDeliveriesAsync()
-    {
-      try
-      {
-        var results = await _IPKPRepository.GetAllDeliveriesAsync();
-        return Ok(results);
-      }
-      catch (Exception)
-      {
-        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-      }
-    }
-
-    [HttpGet]
-    [Route("GetDelivery")]
-
-    public async Task<IActionResult> GetDeliveryDetailsAsync(Guid delivery_ID)
-    {
-      try
-      {
-        var results = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
-        return Ok(results);
-      }
-      catch (Exception)
-      {
-        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-      }
-    }
-
-    [HttpPost]
-    [Route("AddDelivery")]
-    public async Task<IActionResult> AddDeliveryAsync(DeliveryViewModel dvm)
-    {
-      var delivery = new Delivery
-      {
-        Delivery_ID = dvm.Delivery_ID,
-        Delivery_Company = dvm.Delivery_Company_ID,
-        Delivery_Address = dvm.Delivery_Address,
-        Delivery_Price = dvm.Delivery_Price,
-        Tracking_Number = dvm.Tracking_Number
-      };
-      try
-      {
-        _IPKPRepository.Add(delivery);
-        await _IPKPRepository.SaveChangesAsync();
-      }
-      catch (Exception)
-      {
-        return BadRequest("Invalid Transaction");
-      }
-      return Ok("Delivery Added To Database.");
-    }
-
-    /*[HttpPut]
-    [Route("UpdateDelivery")]
-    public async Task<IActionResult> UpdateDeliveryAsync(Guid delivery_ID, DeliveryViewModel dvm)
-    {
-      try
-      {
-        var existingDelivery = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
-
-        if (existingDelivery == null) return NotFound("Could Not Find Delivery" + delivery_ID);
-
-        existingDelivery.Delivery_Company = dvm.Delivery_Company_ID;
-        existingDelivery.Delivery_Address = dvm.Delivery_Address;
-        existingDelivery.Delivery_Price = dvm.Delivery_Price;
-        existingDelivery.Tracking_Number = dvm.Tracking_Number;
-
-        if (await _IPKPRepository.SaveChangesAsync())
+        private readonly IIPKPRepository _IPKPRepository;
+        public DeliveriesController(IIPKPRepository iPKPRepository)
         {
-          return Ok("Delivery Updated Successfully");
+          _IPKPRepository = iPKPRepository;
         }
-      }
-      catch (Exception)
-      {
-        return BadRequest("Invalid Transaction");
-      }
-      return Ok("Delivery Saved To Database.");
-    }*/
+        [HttpGet]
+        [Route("GetAllDeliveries")]
 
-    [HttpDelete]
-    [Route("ReceiveDelivery")]
-    public async Task<IActionResult> ReceiveDeliveryAsync(Guid delivery_ID)
-    {
-      try
-      {
-        var existingDelivery = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
-
-        if (existingDelivery == null) return NotFound("Could Not Find Delivery" + delivery_ID);
-
-        _IPKPRepository.Delete(existingDelivery);
-
-        if (await _IPKPRepository.SaveChangesAsync())
+        public async Task<IActionResult> GetAllDeliveriesAsync()
         {
-          return Ok("Delivery Received Successfully");
+          try
+          {
+            var results = await _IPKPRepository.GetAllDeliveriesAsync();
+            if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
+
+            return Ok(results);
+          }
+          catch (Exception)
+          {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+          }
         }
-      }
-      catch (Exception)
-      {
-        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-      }
-      return Ok("Delivery Removed From Database.");
-    }
+
+        [HttpGet]
+        [Route("GetDelivery/{delivery_ID}")]
+        public async Task<IActionResult> GetDeliveryDetailsAsync(Guid delivery_ID)
+        {
+          try
+          {
+            var results = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
+                    if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
+                    return Ok(results);
+          }
+          catch (Exception)
+          {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+          }
+        }
+
+        [HttpPost]
+        [Route("AddDelivery")]
+        public async Task<IActionResult> AddDeliveryAsync(DeliveryViewModel dvm)
+        {
+          var delivery = new Delivery
+          {
+            Delivery_ID = dvm.Delivery_ID,
+            Delivery_Company = dvm.Delivery_Company_ID,
+            Delivery_Address = dvm.Delivery_Address,
+            Delivery_Price = dvm.Delivery_Price,
+            Tracking_Number = dvm.Tracking_Number
+          };
+          try
+          {
+            _IPKPRepository.Add(delivery);
+            await _IPKPRepository.SaveChangesAsync();
+          }
+          catch (Exception)
+          {
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+          }
+          return Ok(new Response { Status = "Success", Message = "Delivery Added To Database." });
+        }
+
+   
+
+        [HttpDelete]
+        [Route("ReceiveDelivery/{delivery_ID}")]
+        public async Task<IActionResult> ReceiveDeliveryAsync(Guid delivery_ID)
+        {
+          try
+          {
+            var existingDelivery = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
+
+            if (existingDelivery == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" + delivery_ID });
+
+            _IPKPRepository.Delete(existingDelivery);
+
+            if (await _IPKPRepository.SaveChangesAsync())
+            {
+              return Ok(new Response { Status = "Success", Message = "Delivery Received Successfully" });
+            }
+          }
+          catch (Exception)
+          {
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+          }
+          return Ok(new Response { Status = "Success", Message = "Delivery Removed From Database." });
+        }
   }
+    /*[HttpPut]
+   [Route("UpdateDelivery")]
+   public async Task<IActionResult> UpdateDeliveryAsync(Guid delivery_ID, DeliveryViewModel dvm)
+   {
+     try
+     {
+       var existingDelivery = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
+
+       if (existingDelivery == null) return NotFound("Could Not Find Delivery" + delivery_ID);
+
+       existingDelivery.Delivery_Company = dvm.Delivery_Company_ID;
+       existingDelivery.Delivery_Address = dvm.Delivery_Address;
+       existingDelivery.Delivery_Price = dvm.Delivery_Price;
+       existingDelivery.Tracking_Number = dvm.Tracking_Number;
+
+       if (await _IPKPRepository.SaveChangesAsync())
+       {
+         return Ok("Delivery Updated Successfully");
+       }
+     }
+     catch (Exception)
+     {
+       return BadRequest("Invalid Transaction");
+     }
+     return Ok("Delivery Saved To Database.");
+   }*/
 }

@@ -30,7 +30,11 @@ namespace IPKP___API.Controllers
       try
       {
         var results = await _IPKPRepository.GetAllDeliveryCompaniesAsync();
-        return Ok(results);
+       if (results == null)
+       {
+         return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery Company" });
+       }
+       return Ok(results);
       }
       catch (Exception)
       {
@@ -39,19 +43,24 @@ namespace IPKP___API.Controllers
     }
 
     [HttpGet]
-    [Route("GetDeliveryCompany")]
+    [Route("GetDeliveryCompany/{delivery_Company_ID}")]
 
     public async Task<IActionResult> GetDeliveryCompanyDetailsAsync(Guid delivery_Company_ID)
     {
       try
       {
-        var results = await _IPKPRepository.GetDeliveryCompanyDetailsAsync(delivery_Company_ID);
-        return Ok(results);
+            var results = await _IPKPRepository.GetDeliveryCompanyDetailsAsync(delivery_Company_ID);
+            if (results == null)
+            {
+              return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
+            }
+            return Ok(results);
       }
       catch (Exception)
       {
         return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
       }
+
     }
 
     [HttpPost]
@@ -70,57 +79,57 @@ namespace IPKP___API.Controllers
       }
       catch (Exception)
       {
-        return BadRequest("Invalid Transaction");
+        return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
       }
-      return Ok("Delivery Company Added To Database.");
+      return Ok(new Response { Status = "Success", Message = "Delivery Company Added To Database." });
     }
 
     [HttpPut]
-    [Route("UpdateDeliveryCompany")]
+    [Route("UpdateDeliveryCompany/{delivery_Company_ID}")]
     public async Task<IActionResult> UpdateDeliveryCompanyAsync(Guid delivery_Company_ID, DeliveryCompanyViewModel dcvm)
     {
       try
       {
         var existingDeliveryCompany = await _IPKPRepository.GetDeliveryCompanyDetailsAsync(delivery_Company_ID);
 
-        if (existingDeliveryCompany == null) return NotFound("Could Not Find Delivery Company" + delivery_Company_ID);
+        if (existingDeliveryCompany == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery Company" + delivery_Company_ID });
 
         existingDeliveryCompany.Delivery_Company_Name = dcvm.Delivery_Company_Name;
 
         if (await _IPKPRepository.SaveChangesAsync())
         {
-          return Ok("Delivery Company Updated Successfully");
+          return Ok(new Response { Status = "Success", Message = "Delivery Company Updated Successfully" });
         }
       }
       catch (Exception)
       {
-        return BadRequest("Invalid Transaction");
+        return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
       }
-      return Ok("Delivery Company Saved To Database.");
+      return Ok(new Response { Status = "Success", Message = "Delivery Company Saved To Database." });
     }
 
     [HttpDelete]
-    [Route("DeleteDeliveryCompany")]
+    [Route("DeleteDeliveryCompany/{delivery_Company_ID}")]
     public async Task<IActionResult> DeleteDeliveryCompanyAsync(Guid delivery_Company_ID)
     {
       try
       {
         var existingDeliveryCompany = await _IPKPRepository.GetDeliveryCompanyDetailsAsync(delivery_Company_ID);
 
-        if (existingDeliveryCompany == null) return NotFound("Could Not Find Delivery Company" + delivery_Company_ID);
+        if (existingDeliveryCompany == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery Company" + delivery_Company_ID });
 
         _IPKPRepository.Delete(existingDeliveryCompany);
 
         if (await _IPKPRepository.SaveChangesAsync())
         {
-          return Ok("Delivery Company Removed Successfully");
+          return Ok(new Response { Status = "Success", Message = "Delivery Company Removed Successfully" });
         }
       }
       catch (Exception)
       {
-        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+        return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
       }
-      return Ok("Delivery Company Removed From Database.");
+      return Ok(new Response { Status = "Success", Message = "Delivery Company Removed From Database." });
     }
   }
 }

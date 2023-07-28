@@ -18,9 +18,9 @@
         <ion-col style="font-weight: bold;"><h3>Delivery Company Name</h3></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of filteredDeliveryCompany">
-        <ion-col>{{item.Delivery_Company_Name}}</ion-col>
-        <ion-col><ion-button (click)="DeleteDeliveryCompany(item.Delivery_Company_ID)">Delete</ion-button></ion-col>
-        <ion-col><ion-button (click)="EditDeliveryCompany(item.Delivery_Company_ID)" >Update</ion-button></ion-col>      
+        <ion-col>{{item.delivery_Company_Name}}</ion-col>
+        <ion-col><ion-button (click)="DeleteDeliveryCompany(item.delivery_Company_ID)">Delete</ion-button></ion-col>
+        <ion-col><ion-button (click)="EditDeliveryCompany(item.delivery_Company_ID)" >Update</ion-button></ion-col>      
       </ion-row>
     </ion-grid>
 

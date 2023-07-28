@@ -10,6 +10,7 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Title_ID { get; set; }
+
     [StringLength(255)]
     public string Title_Name { get; set; }
   }

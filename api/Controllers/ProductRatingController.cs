@@ -60,7 +60,7 @@ namespace IPKP___API.Controllers
       {
         Product_Rating_ID = prvm.Product_Rating_ID,
         Customer = prvm.Customer_ID,
-        Stock_Item = prvm.Stock_Item_ID,
+        //Stock_Item = prvm.St,
         Product_Star_Rating = prvm.Product_Star_Rating,
         Product_Rating_Comments = prvm.Product_Rating_Comments
       };

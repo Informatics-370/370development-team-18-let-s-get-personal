@@ -25,6 +25,10 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetAllEmployeesAsync();
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Employees" });
+                }
                 return Ok(results);
             }
             catch (Exception)
@@ -34,12 +38,16 @@ namespace IPKP___API.Controllers
         }
 
         [HttpGet]
-        [Route("GetEmployee")]
-        public async Task<IActionResult> GetEmployee(Guid Employee_ID)
+        [Route("GetEmployee/{employee_ID}")]
+        public async Task<IActionResult> GetEmployee(Guid employee_ID)
         {
             try
             {
-                var results = await _IPKPRepository.GetCustomerDetailsAsync(Employee_ID);
+                var results = await _IPKPRepository.GetCustomerDetailsAsync(employee_ID);
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" });
+                }
                 return Ok(results);
             }
             catch (Exception)
@@ -73,20 +81,20 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return BadRequest("Invalid Transaction");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Employee Added To Database.");
+            return Ok(new Response { Status = "Success", Message = "Employee Added To Database." });
         }
 
         [HttpPut]
-        [Route("UpdateEmployee")]
-        public async Task<IActionResult> UpdateEmployeeAsync(Guid Employee_ID, Employee employee)
+        [Route("UpdateEmployee/{employee_ID}")]
+        public async Task<IActionResult> UpdateEmployeeAsync(Guid employee_ID, Employee employee)
         {
             try
             {
-                var existingEmployee = await _IPKPRepository.GetEmployeeDetailsAsync(Employee_ID);
+                var existingEmployee = await _IPKPRepository.GetEmployeeDetailsAsync(employee_ID);
 
-                if (existingEmployee == null) return NotFound("Could Not Find Employee" + Employee_ID);
+                if (existingEmployee == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" + employee_ID });
 
                 existingEmployee.Title = employee.Title;
                 existingEmployee.Gender = employee.Gender;
@@ -99,38 +107,38 @@ namespace IPKP___API.Controllers
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {
-                    return Ok("Employee Updated Successfully");
+                    return Ok(new Response { Status = "Success", Message = "Employee Updated Successfully" });
                 }
             }
             catch (Exception)
             {
-                return BadRequest("Invalid Transaction");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Employee Saved To Database.");
+            return Ok(new Response { Status = "Success", Message = "Employee Saved To Database." });
         }
 
         [HttpDelete]
-        [Route("DeleteEmployee")]
+        [Route("DeleteEmployee/{employee_ID}")]
         public async Task<IActionResult> DeleteEmployee(Guid Employee_ID)
         {
             try
             {
                 var existingEmployee = await _IPKPRepository.GetPolicyAsync(Employee_ID);
 
-                if (existingEmployee == null) return NotFound("Could Not Find Employee" + Employee_ID);
+                if (existingEmployee == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" + Employee_ID });
 
                 _IPKPRepository.Delete(existingEmployee);
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {
-                    return Ok("Employee Removed Successfully");
+                    return Ok(new Response { Status = "Success", Message = "Employee Removed Successfully" });
                 }
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Employee Removed From Database.");
+            return Ok(new Response { Status = "Success", Message = "Employee Removed From Database." });
         }
     }
 }

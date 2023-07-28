@@ -12,7 +12,7 @@
   </ion-header>
   <ion-card-content>
     <ion-button id="addmodal">Add Delivery</ion-button>
-    <ion-button (click)="deliverycompanies()" >View Delivery Companies</ion-button><!--Routing to UC 5.6-->
+    <ion-button (click)="Routedeliverycompanies()" >View Delivery Companies</ion-button><!--Routing to UC 5.6-->
     <ion-searchbar [(ngModel)]="searchValue"  (ionInput)="updateSearchResults()" ></ion-searchbar>               
     <ion-grid>
       <ion-row>
@@ -21,12 +21,12 @@
         <ion-col style="font-weight: bold;"><h3>Delivery Price</h3></ion-col>
         <ion-col style="font-weight: bold;"><h3>Tracking Number</h3></ion-col>
       </ion-row>
-      <ion-row *ngFor="let item of filteredDelivery">
-        <ion-col>{{item.Delivery_Address}}</ion-col>
-        <ion-col>{{item.Delivery_Company}}</ion-col>
-        <ion-col>{{item.Delivery_Price}}</ion-col>
-        <ion-col>{{item.Tracking_Number}}</ion-col>
-        <ion-col><ion-button (click)="ReceiveDelivery(item.Delivery_ID)">Received</ion-button></ion-col>     
+      <ion-row *ngFor="let item of deliveries">
+        <ion-col>{{item.delivery_Address}}</ion-col>
+        <ion-col>{{item.delivery_Company}}</ion-col>
+        <ion-col>{{item.delivery_Price}}</ion-col>
+        <ion-col>{{item.tracking_Number}}</ion-col>
+        <ion-col><ion-button (click)="ReceiveDelivery(item.delivery_ID)">Received</ion-button></ion-col>     
       </ion-row>
     </ion-grid>
 
@@ -58,11 +58,13 @@
 
               <ion-select placeholder="Select a Delivery Company">
                 <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
-                <ion-select-option value="apple">The Courier Guy</ion-select-option>
-                <ion-select-option value="banana">DHL Express</ion-select-option>
-                <ion-select-option value="orange">Fastway Couriers</ion-select-option>
+                <ion-select-option *ngFor="let company of deliverycompanies" [value]="company.delivery_Company_ID">
+                  {{company.delivery_Company_Name}}
+                </ion-select-option>
+                <!-- <ion-select-option>The Courier Guy</ion-select-option>
+                <ion-select-option value="2">DHL Express</ion-select-option>
+                <ion-select-option value="3">Fastway Couriers</ion-select-option> -->
               </ion-select>
-             <!--<ion-input type="price" formControlName="amount" placeholder="" required></ion-input>-->
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Delivery Price</ion-label><br>

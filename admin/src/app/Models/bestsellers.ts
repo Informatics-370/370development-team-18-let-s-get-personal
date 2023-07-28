@@ -3,11 +3,12 @@ import { ProductRating } from "./productrating"
 import { Stock_Image } from "./stockimage"
 import { Stock_Item } from "./stockitem"
 
-export interface Best_Sellers{
-    Best_Sellers_ID: Number
-    Stock_Item_Name: Stock_Item 
+export class Best_Sellers{
+    bestSeller_ID!: Number
+    stock_Item!: Stock_Item 
+    stock_Item_ID!: number
 
-    stockimage: Stock_Image
-    productrating: ProductRating
-    stockitemcolours: StockItemColours
+    // stockimage: Stock_Image
+    // productrating: ProductRating
+    // stockitemcolours: StockItemColours
 }

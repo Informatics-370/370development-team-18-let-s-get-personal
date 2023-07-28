@@ -39,7 +39,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Order_Request[]> GetAllOrderRequestsAsync();
         Task<Order_Status[]> GetAllOrderStatusesAsync();
         Task<Order_Status> GetOrderStatusByNameAsync(string orderStatus);
-        Task<Best_Sellers[]> GetLatestBestSellersAsync();
+        //Task<Best_Sellers[]> GetLatestBestSellersAsync();
         Task<Experience_Rating[]> GetAllExperienceRatings();
         Task<Experience_Rating> GetExperienceRatingAsync(Guid Experience_Rating_ID);
         Task<Refund_Policy> GetPolicyAsync(Guid Refund_Policy_Id);

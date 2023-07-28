@@ -32,6 +32,10 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetAllDiscountsAsync();
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Discounts" });
+                }
                 return Ok(results);
             }
             catch (Exception)
@@ -48,6 +52,10 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetDiscountAsync(discount_ID);
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Discount" });
+                }
                 return Ok(results);
             }
             catch (Exception)

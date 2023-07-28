@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System;
 using IPKP___API.Controllers.Models.Entities;
+using IPKP___API.Controllers.Models.ViewModels;
 
 namespace IPKP___API.Controllers
 {
@@ -27,41 +28,49 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetAllExperienceRatings();
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Rating" });
+                }
                 return Ok(results);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
         //get one
         [HttpGet]
-        [Route("GetExperienceRating")]
-        public async Task<IActionResult> GetExperienceRating(Guid Experience_Rating_ID)
+        [Route("GetExperienceRating/{experience_Rating_ID}")]
+        public async Task<IActionResult> GetExperienceRating(Guid experience_Rating_ID)
         {
             try
             {
-                var results = await _IPKPRepository.GetExperienceRatingAsync(Experience_Rating_ID);
+                var results = await _IPKPRepository.GetExperienceRatingAsync(experience_Rating_ID);
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Rating" + experience_Rating_ID });
+                }
                 return Ok(results);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
         //edit
         [HttpPut]
-        [Route("UpdateExperienceRating")]
-        public async Task<IActionResult> UpdateExperienceRating(Guid Experience_Rating_ID, Experience_Rating exRating)
+        [Route("UpdateExperienceRating/{experience_Rating_ID}")]
+        public async Task<IActionResult> UpdateExperienceRating(Guid experience_Rating_ID, Experience_Rating exRating)
         {
             try
             {
-                var existingRating = await _IPKPRepository.GetExperienceRatingAsync(Experience_Rating_ID);
+                var existingRating = await _IPKPRepository.GetExperienceRatingAsync(experience_Rating_ID);
 
                 if (existingRating == null)
                 {
-                    return NotFound("Could Not Find Rating" + Experience_Rating_ID);
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Rating" + experience_Rating_ID });
                 }
                 else
                 {
@@ -72,15 +81,15 @@ namespace IPKP___API.Controllers
 
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
-                        return Ok("Rating Updated Successfully");
+                        return Ok(new Response { Status = "Success", Message = "Rating Updated Successfully" });
                     }
                 }                      
             }
             catch (Exception)
             {
-                return BadRequest("Invalid Transaction");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Rating Saved To Database.");
+            return Ok(new Response { Status = "Success", Message = "Rating Saved To Database." });
         }
 
         //add
@@ -103,23 +112,23 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return BadRequest("Invalid Transaction");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Rating Added To Database.");
+            return Ok(new Response { Status = "Success", Message = "Rating Added To Database." });
         }
 
         //delete
         [HttpDelete]
-        [Route("DeleteExeperienceRating")]
-        public async Task<IActionResult> DeleteExeperienceRating(Guid Experience_Rating_ID)
+        [Route("DeleteExeperienceRating/{experience_Rating_ID}")]
+        public async Task<IActionResult> DeleteExeperienceRating(Guid experience_Rating_ID)
         {
             try
             {
-                var existingRating = await _IPKPRepository.GetExperienceRatingAsync(Experience_Rating_ID);
+                var existingRating = await _IPKPRepository.GetExperienceRatingAsync(experience_Rating_ID);
 
                 if (existingRating == null) 
                 { 
-                    return NotFound("Could Not Find Rating" + Experience_Rating_ID);
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Rating" + experience_Rating_ID });
                 }
                 else
                 {
@@ -127,15 +136,15 @@ namespace IPKP___API.Controllers
 
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
-                        return Ok("Rating Removed Successfully");
+                        return Ok(new Response { Status = "Success", Message = "Rating Removed Successfully" });
                     }
                 }
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Rating Removed From Database.");
+            return Ok(new Response { Status = "Success", Message = "Rating Removed From Database." });
         }
     }
 }
