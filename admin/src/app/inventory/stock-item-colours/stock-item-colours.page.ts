@@ -21,6 +21,17 @@ import { OverlayEventDetail } from '@ionic/core/components';
 })
 export class StockItemColoursPage implements OnInit {
 
+  /*filterTerm: string = "";
+  stockitemcolours:any=StockItemColours;
+  filteredStockItemColour = this.stockitemcolours.filter((items: { Stock_Item_Colour_Name: string,Stock_Item_Colour_Image:string; }) => 
+  items.Stock_Item_Colour_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
+
+
+  updateSearchResults() {
+    this.filteredStockItemColour = this.stockitemcolours.filter((items: { Stock_Item_Colour_Name: string; }) =>
+     items.Stock_Item_Colour_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
+  }*/
+
   @ViewChild(IonModal) modal!: IonModal
   stockitemcolours: StockItemColours[] = [];
   colour: any;

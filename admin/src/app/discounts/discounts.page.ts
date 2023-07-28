@@ -22,15 +22,13 @@ import { OverlayEventDetail } from '@ionic/core/components';
 export class DiscountsPage implements OnInit {
 
   filterTerm: string = "";
-  //====================
+  //===================
   discounts:any=Discount;
-  filteredDiscount = this.discounts.filter((items: { discount_Name: string,discount_Amount:number,effective_From_Date: Date,effective_To_Date: Date; }) => 
-  items.discount_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
-
+  filteredDiscount:Discount[]=[];
 
   updateSearchResults() {
-    this.filteredDiscount = this.discounts.filter((items: { name: string; }) =>
-     items.name.toLowerCase().includes(this.filterTerm.toLowerCase()));
+    this.filteredDiscount = this.discounts.filter((discount: { discount_Name: string; }) =>
+     this.discounts.discount_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
   }
 
   //======================
@@ -69,7 +67,7 @@ export class DiscountsPage implements OnInit {
 
   getDiscounts(){
     this.service.GetAllDiscounts().subscribe(result =>{
-      this.discounts = result as Discount[];
+      this.discounts = result;
       console.log(this.discounts)
     })
   }

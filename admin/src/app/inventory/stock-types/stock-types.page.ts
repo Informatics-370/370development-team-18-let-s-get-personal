@@ -18,6 +18,18 @@ import { OverlayEventDetail } from '@ionic/core/components';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class StockTypesPage implements OnInit {
+//search function
+/*searchValue: string ='';
+  stocktypes:any=StockTypes;
+
+  filteredStockType = this.stocktypes.filter((items: { stock_Type_Name: string;}) => 
+  items.stock_Type_Name.toLowerCase().includes(this.searchValue));
+
+
+  updateSearchResults() {
+    this.filteredStockType = this.stocktypes.filter((items: { stock_Type_Name: string; }) =>
+     items.stock_Type_Name.toLowerCase().includes(this.searchValue.toLowerCase()));
+  }*/
 
   @ViewChild(IonModal) modal!: IonModal
   stocktypes: StockTypes[] =[];

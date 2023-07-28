@@ -7,12 +7,12 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">discounts</ion-title>
+      <ion-title size="large">Discounts</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-card-content>
     <ion-button id="addmodal">Add Discount</ion-button>
-    <ion-searchbar  show-clear-button="always" (ionInput)="updateSearchResults()" [(ngModel)]="filterTerm"  ></ion-searchbar>                    
+    <ion-searchbar [(ngModel)]="filterTerm"  (ionInput)="updateSearchResults()"></ion-searchbar>                    
     <ion-grid>
       <ion-row>
         <ion-col style="font-weight: bold;"><h3>Discount Name</h3></ion-col>
