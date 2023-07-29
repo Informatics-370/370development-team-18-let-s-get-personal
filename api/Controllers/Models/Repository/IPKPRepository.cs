@@ -24,6 +24,11 @@ namespace IPKP___API.Controllers.Models.Repository
           _appDbContext.Remove(entity);
         }
 
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await _appDbContext.SaveChangesAsync() > 0;
+        }
+
         //Customers
         public async Task<Customer[]> GetAllCustomersAsync()
         {
@@ -275,9 +280,6 @@ namespace IPKP___API.Controllers.Models.Repository
         }
 
         //GetAllExperienceRatingsAsync
-        public async Task<bool> SaveChangesAsync()
-        {
-          return await _appDbContext.SaveChangesAsync() > 0;
-        }
+        
   }
 }

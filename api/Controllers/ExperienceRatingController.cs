@@ -28,10 +28,6 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetAllExperienceRatings();
-                if (results == null)
-                {
-                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Rating" });
-                }
                 return Ok(results);
             }
             catch (Exception)
@@ -47,10 +43,7 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetExperienceRatingAsync(experience_Rating_ID);
-                if (results == null)
-                {
-                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Rating" + experience_Rating_ID });
-                }
+                
                 return Ok(results);
             }
             catch (Exception)

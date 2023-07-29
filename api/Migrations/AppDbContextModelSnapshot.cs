@@ -122,42 +122,6 @@ namespace IPKP___API.Migrations
                     b.ToTable("BestSellers");
                 });
 
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Best_Sellers", b =>
-                {
-                    b.Property<Guid>("Best_Sellers_List_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Item1Stock_Item_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Item2Stock_Item_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Item3Stock_Item_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Item4Stock_Item_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Item5Stock_Item_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Best_Sellers_List_ID");
-
-                    b.HasIndex("Item1Stock_Item_ID");
-
-                    b.HasIndex("Item2Stock_Item_ID");
-
-                    b.HasIndex("Item3Stock_Item_ID");
-
-                    b.HasIndex("Item4Stock_Item_ID");
-
-                    b.HasIndex("Item5Stock_Item_ID");
-
-                    b.ToTable("Best_Sellers");
-                });
-
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.City", b =>
                 {
                     b.Property<Guid>("City_ID")
@@ -704,14 +668,9 @@ namespace IPKP___API.Migrations
                     b.Property<int>("Product_Star_Rating")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("Stock_Item_ID")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Product_Rating_ID");
 
                     b.HasIndex("Customer_ID");
-
-                    b.HasIndex("Stock_Item_ID");
 
                     b.ToTable("Product_Ratings");
                 });
@@ -1223,6 +1182,21 @@ namespace IPKP___API.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Product_RatingStock_Item", b =>
+                {
+                    b.Property<Guid>("Product_Rating_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Stock_Item_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Product_Rating_ID", "Stock_Item_ID");
+
+                    b.HasIndex("Stock_Item_ID");
+
+                    b.ToTable("Product_RatingStock_Item");
+                });
+
             modelBuilder.Entity("Stock_ImageStock_Item", b =>
                 {
                     b.Property<Guid>("Stock_ImagesStock_Image_ID")
@@ -1319,39 +1293,6 @@ namespace IPKP___API.Migrations
                     b.Navigation("Stock_Images");
 
                     b.Navigation("Stock_Item");
-                });
-
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Best_Sellers", b =>
-                {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Item1")
-                        .WithMany()
-                        .HasForeignKey("Item1Stock_Item_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Item2")
-                        .WithMany()
-                        .HasForeignKey("Item2Stock_Item_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Item3")
-                        .WithMany()
-                        .HasForeignKey("Item3Stock_Item_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Item4")
-                        .WithMany()
-                        .HasForeignKey("Item4Stock_Item_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Item5")
-                        .WithMany()
-                        .HasForeignKey("Item5Stock_Item_ID");
-
-                    b.Navigation("Item1");
-
-                    b.Navigation("Item2");
-
-                    b.Navigation("Item3");
-
-                    b.Navigation("Item4");
-
-                    b.Navigation("Item5");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.City", b =>
@@ -1543,13 +1484,7 @@ namespace IPKP___API.Migrations
                         .WithMany()
                         .HasForeignKey("Customer_ID");
 
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Stock_Item")
-                        .WithMany()
-                        .HasForeignKey("Stock_Item_ID");
-
                     b.Navigation("Customer");
-
-                    b.Navigation("Stock_Item");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Refund", b =>
@@ -1677,6 +1612,21 @@ namespace IPKP___API.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Product_RatingStock_Item", b =>
+                {
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Product_Rating", null)
+                        .WithMany()
+                        .HasForeignKey("Product_Rating_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", null)
+                        .WithMany()
+                        .HasForeignKey("Stock_Item_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

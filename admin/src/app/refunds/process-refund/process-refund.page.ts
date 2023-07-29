@@ -24,17 +24,13 @@ export class ProcessRefundPage implements OnInit {
   //constructor() { }
 
   ngOnInit() {
+    
   }
-  refunds:any=Refund;
+
+ 
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:RefundService, private thisroute: Router, public modalCtrl: ModalController,
     private alertController:AlertController ) { }
 
-  getRefunds(){
-    this.service.GetAllPreviousRefunds().subscribe(result =>{
-      this.refunds = result as Refund[];
-      console.log(this.refunds)
-    })
-  }
 }
