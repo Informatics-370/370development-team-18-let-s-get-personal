@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProfileService } from 'src/app/Services/profile.service';
+//import { ProfileService } from 'src/app/Services/profile.service';
 import { IonicModule, AlertController, ModalController, IonModal } from '@ionic/angular';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { User } from 'src/app/Models/user';
@@ -23,8 +23,8 @@ export class ViewEmployeesPage implements OnInit {
   employee: any
   @ViewChild(IonModal) modal!: IonModal
   
-  constructor(private service:ProfileService, private alertController:AlertController, 
-    private empservice: EmployeeService, public modalCtrl: ModalController) { }
+  constructor( private alertController:AlertController, 
+    private empservice: EmployeeService, public modalCtrl: ModalController) { } //private service:ProfileService,
 
   ngOnInit() {
   //  this.getProfle()

@@ -97,7 +97,7 @@ namespace IPKP___API.Controllers
             {
                 var existingPersonalisationDesign = await _IPKPRepository.GetPersonalisationAsync(personalisation_ID);
 
-                if (existingPersonalisationDesign == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Personalisation Design" + personalisation_ID });
+                //if (existingPersonalisationDesign == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Personalisation Design" + personalisation_ID });
 
                 _IPKPRepository.Delete(existingPersonalisationDesign);
 

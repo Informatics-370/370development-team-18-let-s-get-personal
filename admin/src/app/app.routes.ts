@@ -88,6 +88,10 @@ export const routes: Routes = [
     path: 'view-employees',
     loadComponent: () => import('./view-employees/view-employees.page').then( m => m.ViewEmployeesPage)
   },
+  {
+    path: 'refund-policies',
+    loadComponent: () => import('./refunds/refund-policies/refund-policies.page').then( m => m.RefundPoliciesPage)
+  },
 
  
 

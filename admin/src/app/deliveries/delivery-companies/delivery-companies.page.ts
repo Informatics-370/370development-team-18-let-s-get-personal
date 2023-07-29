@@ -22,23 +22,25 @@ import { OverlayEventDetail } from '@ionic/core/components';
 export class DeliveryCompaniesPage implements OnInit {
 
   filterTerm: string = "";
-  deliverycompanies:any=Delivery_Company;
+  deliverycompanies:Delivery_Company[]=[];
   filteredDeliveryCompany:Delivery_Company[]=[];
 
-  updateSearchResults() {
-    this.filteredDeliveryCompany = this.deliverycompanies.filter((items: { Delivery_Company_Name: string; }) =>
-     items.Delivery_Company_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
-  }
+  // updateSearchResults() {
+  //   this.filteredDeliveryCompany = this.deliverycompanies.filter((items: { Delivery_Company_Name: string; }) =>
+  //    items.Delivery_Company_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
+  // }
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DeliveryCompanyDataService, private thisroute: Router, public modalCtrl: ModalController,
     private alertController:AlertController ) { }
 
   AddForm: FormGroup = new FormGroup({
-    Delivery_Company_Name: new FormControl('',[Validators.required])
+    deliverycompanyname: new FormControl('',[Validators.required])
   })
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getDeliveryCompany()
+  }
   
 
   getDeliveryCompany(){

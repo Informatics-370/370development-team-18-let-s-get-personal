@@ -14,10 +14,7 @@ namespace IPKP___API.Controllers.Models.Repository
   {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-          base.OnModelCreating(builder);
-        }
+        
 
         public DbSet<Address> Addresses {get; set; }
         public DbSet<City> Cities {get; set; }
@@ -59,5 +56,10 @@ namespace IPKP___API.Controllers.Models.Repository
         //public DbSet<Best_Sellers> Best_Sellers { get; set; }
         public DbSet<Experience_Rating> Experience_Rating { get; set;}
         public DbSet<Basket> Basket { get; set; }
-  }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
+    }
 }
