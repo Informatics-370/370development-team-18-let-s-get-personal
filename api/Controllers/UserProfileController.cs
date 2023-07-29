@@ -63,7 +63,6 @@ namespace IPKP___API.Controllers
       {
         Customer_ID = upvm.Customer_ID,
         Title = upvm.Title,
-        Gender = upvm.Gender,
         Address = upvm.Address,
         FirstName = upvm.FirstName,
         Surname = upvm.Surname,
@@ -93,7 +92,6 @@ namespace IPKP___API.Controllers
         if (existingCustomerUser == null) return NotFound("Could Not Find Customer" + customer_ID);
 
         existingCustomerUser.Title = upvm.Title;
-        existingCustomerUser.Gender = upvm.Gender;
         existingCustomerUser.FirstName = upvm.FirstName;
         existingCustomerUser.Surname = upvm.Surname;
         existingCustomerUser.Cell_Number = upvm.Cell_Number;

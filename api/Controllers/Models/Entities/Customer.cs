@@ -12,7 +12,6 @@ namespace IPKP___API.Controllers.Models.Entities
         [Key]
         public Guid Customer_ID { get; set; }
         public virtual Title Title {get; set; }
-        public virtual Gender Gender { get; set; }
         public virtual Address Address { get; set; }
         public virtual User User { get; set; }
         [StringLength(255)]

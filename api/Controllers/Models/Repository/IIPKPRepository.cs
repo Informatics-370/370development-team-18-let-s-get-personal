@@ -49,5 +49,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Discount> GetDiscountAsync(Guid discount_Id);
         Task<Refund[]> GetAllPreviousRefunds();
         Task<Refund> GetPreviousRefund(Guid refund_Id);
+        Task<Address[]> GetAllAddressesAsync();
+
   }
 }

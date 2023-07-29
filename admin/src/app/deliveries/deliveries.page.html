@@ -23,7 +23,6 @@
         <ion-col></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of deliveries">
-        <ion-col>{{item.delivery_Address}}</ion-col>
         <ion-col>{{item.delivery_Company}}</ion-col>
         <ion-col>{{item.delivery_Price}}</ion-col>
         <ion-col>{{item.tracking_Number}}</ion-col>
@@ -49,32 +48,31 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <form [formGroup]="AddForm">          
+        <form [formGroup]="AddForm"> 
             <ion-item>
-              <ion-label position="stacked">Delivery Address</ion-label><br>
-              <ion-input type="text" formControlName="address" placeholder="" required></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label position="stacked">Delivery Company</ion-label><br>
+              <ion-item>
+                <ion-label position="stacked">Delivery Price</ion-label><br>
+                <ion-input type="text" formControlName="orderLineItemId" placeholder="" required></ion-input>
+              </ion-item> 
 
+              <ion-label position="stacked">Delivery Company</ion-label><br>
               <ion-select placeholder="Select a Delivery Company">
                 <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
                 <ion-select-option *ngFor="let company of deliverycompanies" [value]="company.delivery_Company_ID">
                   {{company.delivery_Company_Name}}
                 </ion-select-option>
-                <!-- <ion-select-option>The Courier Guy</ion-select-option>
-                <ion-select-option value="2">DHL Express</ion-select-option>
-                <ion-select-option value="3">Fastway Couriers</ion-select-option> -->
               </ion-select>
             </ion-item>
+
             <ion-item>
               <ion-label position="stacked">Delivery Price</ion-label><br>
               <ion-input type="Number" formControlName="deliveryprice" placeholder="" required></ion-input>
-            </ion-item> 
+            </ion-item>            
+
             <ion-item>
               <ion-label position="stacked">Tracking Number</ion-label><br>
               <ion-input type="Number" formControlName="trackingnumber" placeholder="" required></ion-input>
-            </ion-item>                    
+            </ion-item>         
         </form>
       </ion-content>
     </ng-template>

@@ -1,16 +1,17 @@
-using System;
+﻿using IPKP___API.Controllers.Models.Entities;
 using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System;
 
-namespace IPKP___API.Controllers.Models.Entities
+namespace IPKP___API.Controllers.Models.ViewModels
 {
-  public class Address
-  {
-        [Key]
+    public class DeliverAddressVM
+    {
         public Guid Address_ID { get; set; }
-        public string Province_Name {get; set; }
+
+        public int Province_ID { get; set; }
+
+        [StringLength(255)]
+        public string Province_Name { get; set; }
 
         public string City_Name { get; set; }
 
@@ -28,5 +29,5 @@ namespace IPKP___API.Controllers.Models.Entities
 
 
         public int Area_Code { get; set; }
-  }
+    }
 }

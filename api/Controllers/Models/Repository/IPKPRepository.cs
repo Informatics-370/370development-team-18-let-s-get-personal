@@ -196,15 +196,7 @@ namespace IPKP___API.Controllers.Models.Repository
             IQueryable<Stock_Item_Colour> query = _appDbContext.Stock_Item_Colours
                       .Where(u => u.Stock_Item_Colour_ID == stock_Item_Colour_ID);
             return await query.FirstOrDefaultAsync();
-        }      
-
-        //best sellers
-        //public async Task<Best_Sellers[]> GetLatestBestSellersAsync()
-        //{
-        //  IQueryable<Best_Sellers> query = _appDbContext.Best_Sellers;
-        //  return await query.ToArrayAsync();
-        //}             
-
+        } 
 
         //product ratings
         public async Task<Product_Rating[]> GetAllProductRatingsAsync()
@@ -279,7 +271,14 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.FirstOrDefaultAsync();
         }
 
+        //address
+        public async Task<Address[]> GetAllAddressesAsync()
+        {
+            IQueryable<Address> query = _appDbContext.Addresses;
+            return await query.ToArrayAsync();
+        }
+
         //GetAllExperienceRatingsAsync
-        
-  }
+
+    }
 }
