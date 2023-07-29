@@ -26,20 +26,16 @@ export class RefundsPage implements OnInit {
   filterTerm: string = "";
   filteredpolicies:  Refund_Policy[] = [];
   refundPolicies: Refund_Policy[] =[]
-  prevRefunds:Refund[]=[];
+  refunds:Refund[] = [];
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:RefundService, private router: Router, 
     private alertController:AlertController, private modalCtrl: ModalController ) { }
 
-  AddForm: FormGroup = new FormGroup({
-    date: new FormControl('',[Validators.required]),
-    version: new FormControl('',[Validators.required]),
-    description: new FormControl('',[Validators.required])
-  })
+  
 
   ngOnInit(): void {
-   /* this.getRefundPolicies()
-    
+    this.getPrevRefunds()
+    /*
     if(this.filterTerm==""){
       this.filteredpolicies = this.refundPolicies;
     }*/
@@ -63,44 +59,22 @@ export class RefundsPage implements OnInit {
     })
   }
 
+
   getPrevRefunds(){
     this.service.GetAllPreviousRefunds().subscribe(result =>{
-      this.prevRefunds = result as Refund[];
-      console.log(this.prevRefunds);
+      this.refunds = result as Refund[];
+      console.log(this.refunds);
     })
   }
 
-  processRefunds()
+  processRefundsRoute()
   {
     this.router.navigate(['./tabs/process-refund']);
   }
 
-  AddRefundPolicy(){
-    let addRefund = new Refund_Policy();
-
-    addRefund.refund_Policy_Date = this.AddForm.value.date;
-    addRefund.refund_Policy_Version = this.AddForm.value.version;
-    addRefund.refund_Policy_Description = this.AddForm.value.description;
-
-    this.service.AddRefundPolicy(addRefund).subscribe(response => {
-      if (response.status == "Error"){
-        this.addPolicyErrorAlert();
-      }
-      else{
-        this.addPolicySuccessAlert();            
-      }
-    })
-  }
-  DeleteRefundPolicy(refund_Policy_ID: Number){
-    this.service.DeleteRefundPolicy(refund_Policy_ID).subscribe(result => {
-      console.log(result);   
-      if(result.status == "Success"){
-        this.DeletePolicySuccessAlert();            
-      }
-      else if (result.status == "Error"){
-        this.DeletePolicyErrorAlert();
-      }     
-    })
+  RefundPolicyRoute()
+  {
+    this.router.navigate(['./tabs/refund-policies']);
   }
 
   reloadPage(){
@@ -112,76 +86,14 @@ export class RefundsPage implements OnInit {
   }
 
   confirmaddmodal() {
-    this.AddRefundPolicy();    
+    //this.AddRefundPolicy();    
   }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
-  async addPolicySuccessAlert() {
-    const alert = await this.alertController.create({
-      header: 'Success!',
-      subHeader: 'Policy Added',
-      buttons: [
-        {
-          text: 'OK',
-          role: 'cancel',
-          handler:() =>{
-            this.reloadPage();
-          }
-        }
-    ],
-      
-    });
-    await alert.present();    
-  }
-
-  async addPolicyErrorAlert() {
-    const alert = await this.alertController.create({
-      header: 'We are sorry!',
-      subHeader: 'Policy Was Not Added',
-      message: 'Please try again',
-      buttons: [{
-        text: 'OK',
-        role: 'cancel',
-        handler:() =>{
-          this.reloadPage();
-        }
-      }],
-    });
-    await alert.present();
-  }
-  async DeletePolicySuccessAlert() {
-    const alert = await this.alertController.create({
-      header: 'Success!',
-      subHeader: 'Policy Deleted',
-      buttons: [{
-        text: 'OK',
-        role: 'cancel',
-        handler:() =>{
-          this.reloadPage();
-        }
-      }],
-    });
-    await alert.present();
-  }
-
-  async DeletePolicyErrorAlert() {
-    const alert = await this.alertController.create({
-      header: 'We are sorry!',
-      subHeader: 'Policy Was Not Deleted',
-      message: 'Please try again',
-      buttons: [{
-        text: 'OK',
-        role: 'cancel',
-        handler:() =>{
-          this.reloadPage();
-        }
-      }],
-    });
-    await alert.present();
-  }
+ 
 
 
 }

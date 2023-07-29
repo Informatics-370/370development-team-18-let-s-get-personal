@@ -25,10 +25,7 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetAllEmployeesAsync();
-                if (results == null)
-                {
-                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Employees" });
-                }
+                
                 return Ok(results);
             }
             catch (Exception)
@@ -44,10 +41,6 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetCustomerDetailsAsync(employee_ID);
-                if (results == null)
-                {
-                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" });
-                }
                 return Ok(results);
             }
             catch (Exception)

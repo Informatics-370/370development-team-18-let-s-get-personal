@@ -27,10 +27,6 @@ namespace IPKP___API.Controllers
           try
           {
             var results = await _IPKPRepository.GetAllOrdersAsync();
-                if (results == null)
-                {
-                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Orders" });
-                }
                 return Ok(results);
           }
           catch (Exception)
@@ -46,10 +42,6 @@ namespace IPKP___API.Controllers
               try
               {
                     var results = await _IPKPRepository.GetOrderDetailsAsync(order_ID);
-                    if (results == null)
-                    {
-                        return NotFound(new Response { Status = "Error", Message = "Could Not Find Order" });
-                    }
                     return Ok(results);
               }
               catch (Exception)

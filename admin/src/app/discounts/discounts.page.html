@@ -11,7 +11,7 @@
     </ion-toolbar>
   </ion-header>
   <ion-card-content>
-    <ion-button id="addmodal">Add Discount</ion-button>
+    <ion-button id="adddiscountmodal">Add Discount</ion-button>
     <ion-searchbar [(ngModel)]="filterTerm"  (ionInput)="updateSearchResults()"></ion-searchbar>                    
     <ion-grid>
       <ion-row>
@@ -34,7 +34,7 @@
 </ion-content>
 
 <ion-footer> 
-  <ion-modal trigger="addmodal" (willDismiss)="onWillDismiss($event)">
+  <ion-modal trigger="adddiscountmodal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
         <ion-toolbar>

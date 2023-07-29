@@ -30,7 +30,6 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetBasketAsync(customer_ID);
-                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
                 return Ok(results);
             }
             catch (Exception)

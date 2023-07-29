@@ -28,10 +28,6 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetAllStockItemsAsync();
-                if (results == null)
-                {
-                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Inventory" });
-                }
                 return Ok(results);
             }
             catch (Exception)

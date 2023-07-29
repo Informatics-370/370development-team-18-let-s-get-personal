@@ -29,11 +29,12 @@ namespace IPKP___API.Controllers
         {
           try
           {
-            var results = await _IPKPRepository.GetAllDeliveriesAsync();
-            if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
+                var results = await _IPKPRepository.GetAllDeliveriesAsync();
+                return Ok(results);
+                //if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
 
-            return Ok(results);
-          }
+
+            }
           catch (Exception)
           {
             return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
@@ -44,15 +45,16 @@ namespace IPKP___API.Controllers
         [Route("GetDelivery/{delivery_ID}")]
         public async Task<IActionResult> GetDeliveryDetailsAsync(Guid delivery_ID)
         {
+
           try
           {
-            var results = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
-                    if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
-                    return Ok(results);
+                var results = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
+                return Ok(results);
           }
           catch (Exception)
           {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
           }
         }
 
