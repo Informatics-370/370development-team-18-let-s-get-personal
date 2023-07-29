@@ -42,7 +42,7 @@ namespace IPKP___API.Controllers
         [HttpGet]
         [Route("GetProductRating/{product_Rating_ID}")]
 
-        public async Task<IActionResult> GetProductRatingDetailsAsync(Guid product_Rating_ID)
+        public async Task<IActionResult> GetProductRatingDetailsAsync(int product_Rating_ID)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateProductRating/{product_Rating_ID}")]
-        public async Task<IActionResult> UpdateProductRatingAsync(Guid product_Rating_ID, ProductRatingViewModel prvm)
+        public async Task<IActionResult> UpdateProductRatingAsync(int product_Rating_ID, ProductRatingViewModel prvm)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace IPKP___API.Controllers
 
         [HttpDelete]
         [Route("DeleteProductRating/{product_Rating_ID}")]
-        public async Task<IActionResult> DeleteProductRatingAsync(Guid product_Rating_ID)
+        public async Task<IActionResult> DeleteProductRatingAsync(int product_Rating_ID)
         {
             try
             {

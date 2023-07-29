@@ -37,7 +37,7 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetOrder/{order_ID}")]
-        public async Task<IActionResult> GetOrderDetailsAsync(Guid order_ID)
+        public async Task<IActionResult> GetOrderDetailsAsync(int order_ID)
         {
               try
               {
@@ -71,7 +71,7 @@ namespace IPKP___API.Controllers
 
         [HttpPatch]
         [Route("ProcessOrder/{order_ID}")]
-        public async Task<IActionResult> ProcessOrderAsync(Guid order_ID)
+        public async Task<IActionResult> ProcessOrderAsync(int order_ID)
         {
               try
               {
@@ -92,7 +92,7 @@ namespace IPKP___API.Controllers
 
         [HttpPatch]
         [Route("CompleteOrder/{order_ID}")]
-        public async Task<IActionResult> CompleteOrderAsync(Guid order_ID)
+        public async Task<IActionResult> CompleteOrderAsync(int order_ID)
         {
           try
           {

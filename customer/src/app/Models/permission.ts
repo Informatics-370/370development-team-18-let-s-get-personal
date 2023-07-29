@@ -1,4 +1,4 @@
 export class Permission{
-    Permission_ID!: Number
-    Permission_Name!: String
+    permission_ID!: Number
+    permission_Name!: String
 }

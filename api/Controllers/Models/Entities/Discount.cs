@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Discount
   {
     [Key]
-    public Guid Discount_ID { get; set; }
+    public int Discount_ID { get; set; }
     [StringLength(255)]
     public string Discount_Name { get; set; }
     public double Discount_Amount { get; set; }

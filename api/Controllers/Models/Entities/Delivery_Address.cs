@@ -14,7 +14,7 @@ namespace IPKP___API.Controllers.Models.Entities
 
         [Key]
         [Column("Delivery_Address_ID")]
-        public Guid Delivery_Address_ID { get; set; }
+        public int Delivery_Address_ID { get; set; }
 
         [StringLength(255)]
         public string StreetNumber { get; set; }

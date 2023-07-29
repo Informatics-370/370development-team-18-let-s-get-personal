@@ -1,7 +1,11 @@
 import { Employee } from "./employee";
-
+import { Inventory } from "./inventory";
 export class Write_Off{
-    Write_Off_ID!: Number
-    Employee!: Employee
+    write_Off_ID!: Number
+    inventory_ID!: Number
     Write_Off_Date!: Date
+
+    employee!: Employee
+    inventory!: Inventory
+    
 }

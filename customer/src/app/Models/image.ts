@@ -1,5 +1,5 @@
 export class Image{
-    Image_ID!: Number
-    Image_Size!: Number
-    Image_File!: String
+    image_ID!: Number
+    image_Size!: Number
+    image_File!: String
 }

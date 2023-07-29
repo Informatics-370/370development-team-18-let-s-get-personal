@@ -10,7 +10,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Product_Rating
   {
         [Key]
-        public Guid Product_Rating_ID { get; set; }
+        public int Product_Rating_ID { get; set; }
 
         public virtual Customer Customer { get; set; }
 

@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Delivery
   {
     [Key]
-    public Guid Delivery_ID { get; set; }
+    public int Delivery_ID { get; set; }
     public virtual Delivery_Company Delivery_Company { get; set; }
     public virtual Address Delivery_Address { get; set; }
     public double Delivery_Price { get; set; }

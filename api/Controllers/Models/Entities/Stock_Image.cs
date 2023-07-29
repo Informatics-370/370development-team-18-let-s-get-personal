@@ -12,7 +12,7 @@ namespace IPKP___API.Controllers.Models.Entities
   {
         [Key]
         [Column("Stock_Image_ID")]
-        public Guid Stock_Image_ID { get; set; }
+        public int Stock_Image_ID { get; set; }
 
         public string Stock_Image_File { get; set; }
 

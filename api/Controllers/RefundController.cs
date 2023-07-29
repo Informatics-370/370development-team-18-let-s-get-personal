@@ -50,7 +50,7 @@ namespace IPKP___API.Controllers
         //************* Process refund
         [HttpGet]
         [Route("FindOrderRefund/{order_Id}")]
-        public async Task<IActionResult> FindOrderRefund(Guid order_Id)
+        public async Task<IActionResult> FindOrderRefund(int order_Id)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace IPKP___API.Controllers
 
         [HttpDelete]
         [Route("DeleteOrderRefund/{order_Id}")]
-        public async Task<IActionResult> DeleteOrderRefund(Guid order_Id)
+        public async Task<IActionResult> DeleteOrderRefund(int order_Id)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace IPKP___API.Controllers
         {
             var newrefund = new Refund
             {
-                Refund_ID = new Guid(),
+                Refund_ID = new int(),
                 Customer = refundVM.Customer_ID,
                 Refund_Comment = refundVM.Refund_Comment,                
                 Refund_Policy = refundVM.Refund_Policy,
@@ -193,7 +193,7 @@ namespace IPKP___API.Controllers
 
         [HttpDelete]
         [Route("DeleteRefundPolicy/{refund_Policy_ID}")]
-        public async Task<IActionResult> DeleteRefundPolicy(Guid Refund_Policy_ID)
+        public async Task<IActionResult> DeleteRefundPolicy(int Refund_Policy_ID)
         {
             try
             {

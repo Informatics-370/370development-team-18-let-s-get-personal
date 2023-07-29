@@ -45,7 +45,7 @@ namespace IPKP___API.Controllers
         [HttpGet]
         [Route("GetStockItemColour/{stock_Item_Colour_ID}")]
 
-        public async Task<IActionResult> GetStockItemColourDetailsAsync(Guid stock_Item_Colour_ID)
+        public async Task<IActionResult> GetStockItemColourDetailsAsync(int stock_Item_Colour_ID)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateStockItemColour/{stock_Item_Colour_ID}")]
-        public async Task<IActionResult> UpdateStockItemColourAsync(Guid stock_Item_Colour_ID, StockItemColourViewModel sicvm)
+        public async Task<IActionResult> UpdateStockItemColourAsync(int stock_Item_Colour_ID, StockItemColourViewModel sicvm)
         {
               try
               {
@@ -110,7 +110,7 @@ namespace IPKP___API.Controllers
 
         [HttpDelete]
         [Route("DeleteStockItemColour/{stock_Item_Colour_ID}")]
-        public async Task<IActionResult> DeleteStockItemColourAsync(Guid stock_Item_Colour_ID)
+        public async Task<IActionResult> DeleteStockItemColourAsync(int stock_Item_Colour_ID)
         {
               try
               {

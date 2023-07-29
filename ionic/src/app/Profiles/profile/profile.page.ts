@@ -25,7 +25,8 @@ export class ProfilePage implements OnInit {
   experienceRatings: Experience_Rating[] =[]
 
   constructor(public experienceRatingservice:Experience_RatingService, public modalCtrl: ModalController, 
-    private router: Router, private service:ProfileService, private alertController:AlertController, private thisroute: Router) { }
+    private router: Router, private service:ProfileService, private alertController:AlertController, 
+    private thisroute: Router) { }
 
   ngOnInit() {
   

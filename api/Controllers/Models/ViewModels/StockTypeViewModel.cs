@@ -8,7 +8,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
 {
   public class StockTypeViewModel
   {
-    public Guid Stock_Type_ID { get; set; }
+    public int Stock_Type_ID { get; set; }
     [StringLength(255)]
     public string Stock_Type_Name { get; set; }
   }

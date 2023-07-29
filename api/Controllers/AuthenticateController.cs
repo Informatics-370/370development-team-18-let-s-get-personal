@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Net;
+using IPKP___API.Controllers.Models.Repository;
 
 namespace IPKP___API.Controllers
 {
@@ -22,6 +23,7 @@ namespace IPKP___API.Controllers
   [ApiController]
   public class AuthenticateController : ControllerBase
   {
+        private readonly IIPKPRepository _IPKPRepository;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
@@ -30,233 +32,259 @@ namespace IPKP___API.Controllers
           = new Dictionary<string, TwoFactorCode>();
 
         public AuthenticateController(
-        UserManager<IdentityUser> userManager,
+        UserManager<IdentityUser> userManager, IIPKPRepository iPKPRepository,
         RoleManager<IdentityRole> roleManager,
         IConfiguration configuration)
         {
-          _userManager = userManager;
-          _roleManager = roleManager;
-          _configuration = configuration;
+            _IPKPRepository = iPKPRepository;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _configuration = configuration;
         }
 
-        [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
-        {
-            var user = await _userManager.FindByNameAsync(model.Username);
+    //    [HttpPost]
+    //    [Route("login")]
+    //    public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+    //    {
+    //        var user = await _userManager.FindByNameAsync(model.Username);
 
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-            {
-                try
-                {
-                    var userRoles = await _userManager.GetRolesAsync(user);
+    //        if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+    //        {
+    //            try
+    //            {
+    //                var userRoles = await _userManager.GetRolesAsync(user);
+    //                var userId = await _userManager.GetUserIdAsync(user);
+                    
 
-                    var authClaims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    };
+    //                var authClaims = new List<Claim>
+    //                {
+    //                    new Claim(ClaimTypes.Name, user.UserName),
+    //                    new Claim(JwtRegisteredClaimNames.Jti, int.NewGuid().ToString()),
+    //                };
 
-                    foreach (var userRole in userRoles)
-                    {
-                        authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-                    }
+    //                foreach (var userRole in userRoles)
+    //                {
+    //                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+    //                }
 
-                    var token = GetToken(authClaims);
+    //                var token = GetToken(authClaims);
 
-                    return Ok(new
-                    {
-                        token = new JwtSecurityTokenHandler().WriteToken(token),
-                        expiration = token.ValidTo
-                    });
-                    //var loggedInUser = new LoginViewModel { UserName = user.UserName };
-                    //return Ok(loggedInUser);
-                }
-                catch
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
+    //                return Ok( new
+    //                {
+    //                    token = new JwtSecurityTokenHandler().WriteToken(token),
+    //                    expiration = token.ValidTo,
+    //                    //loggedInUser = new LoginViewModel { Username = user.UserName },
+    //                });
+    //                //var loggedInUser = new LoginViewModel { UserName = user.UserName };
+    //                //return Ok(loggedInUser);
+    //            }
+    //            catch
+    //            {
+    //                return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
 
-                }
-            }
-            else
-            {
-                return NotFound("Account does not exist");
-            }          
+    //            }
+    //        }
+    //        else
+    //        {
+    //            return NotFound("Account does not exist");
+    //        }
+    //    }
 
-        } 
+    //    [HttpPost]
+    //    [Route("GetCustomerbyID")]
+    //    public async Task<IActionResult> GetCustomerbyID([FromBody] LoginViewModel model)
+    //    {
+    //        var user = await _userManager.FindByNameAsync(model.Username);
+    //        if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+    //        {
+    //            List<Customer> CustomerList = new List<Customer>();
+                
+    //            var results = await _IPKPRepository.GetAllCustomersAsync();
 
-        [HttpPost]
-        [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
-        {
-          var userExists = await _userManager.FindByNameAsync(model.Username);
-          if (userExists != null)
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+    //            return Ok(user);
+    //        }
+    //        else
+    //        {
+    //            return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
+    //        }
+    //    }
+    //    [HttpPost]
+    //    [Route("register")]
+    //    public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+    //    {
 
-          IdentityUser user = new()
-          {
-            Email = model.Email,
-            SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = model.Username
-          };
-          var result = await _userManager.CreateAsync(user, model.Password);
-          if (!result.Succeeded)
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+    //          var userExists = await _userManager.FindByNameAsync(model.Username);
+    //          if (userExists != null)
+    //            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
 
-          if (!await _roleManager.RoleExistsAsync(User_Role.User))
-            await _roleManager.CreateAsync(new IdentityRole(User_Role.User));
-          if (await _roleManager.RoleExistsAsync(User_Role.User))
-          {
-            await _userManager.AddToRoleAsync(user, User_Role.User);
-          }
-          return Ok(new Response { Status = "Success", Message = "User created successfully!" });
-        }
+    //          IdentityUser user = new()
+    //          {
+    //            Email = model.Email,
+    //            SecurityStamp = int.NewGuid().ToString(),
+    //            UserName = model.Username
+    //          };
+    //          var result = await _userManager.CreateAsync(user, model.Password);
+    //          if (!result.Succeeded)
+    //            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
-        [HttpPost]
-        [Route("register-admin")]
-        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterViewModel model)
-        {
-            var userExists = await _userManager.FindByNameAsync(model.Username);
-            if (userExists != null)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
-            }
-            else
-            {
+    //          if (!await _roleManager.RoleExistsAsync(User_Role.User))
+    //            await _roleManager.CreateAsync(new IdentityRole(User_Role.User));
+    //          if (await _roleManager.RoleExistsAsync(User_Role.User))
+    //          {
+    //            await _userManager.AddToRoleAsync(user, User_Role.User);
+    //          }
+    //          return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+    //    }
 
-                IdentityUser user = new()
-                {
-                    Email = model.Email,
-                    SecurityStamp = Guid.NewGuid().ToString(),
-                    UserName = model.Username
-                };
-                var result = await _userManager.CreateAsync(user, model.Password);
+    //    [HttpPost]
+    //    [Route("register-admin")]
+    //    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterViewModel model)
+    //    {
+    //        var userExists = await _userManager.FindByNameAsync(model.Username);
+    //        if (userExists != null)
+    //        {
+    //            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+    //        }
+    //        else
+    //        {
 
-                if (result.Errors.Count() > 0)//(!result.Succeeded)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+    //            IdentityUser user = new()
+    //            {
+    //                Email = model.Email,
+    //                SecurityStamp = int.NewGuid().ToString(),
+    //                UserName = model.Username
+    //            };
+    //            var result = await _userManager.CreateAsync(user, model.Password);
 
-                }
-                if (!await _roleManager.RoleExistsAsync(User_Role.Admin))
-                {
-                    await _roleManager.CreateAsync(new IdentityRole(User_Role.Admin));
-                }
-                if (await _roleManager.RoleExistsAsync(User_Role.Admin))
-                {
-                    await _userManager.AddToRoleAsync(user, User_Role.Admin);
-                }
+    //            if (result.Errors.Count() > 0)//(!result.Succeeded)
+    //            {
+    //                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
-                //if (!await _roleManager.RoleExistsAsync(User_Role.User))
-                //  await _roleManager.CreateAsync(new IdentityRole(User_Role.User));
+    //            }
+    //            if (!await _roleManager.RoleExistsAsync(User_Role.Admin))
+    //            {
+    //                await _roleManager.CreateAsync(new IdentityRole(User_Role.Admin));
+    //            }
+    //            if (await _roleManager.RoleExistsAsync(User_Role.Admin))
+    //            {
+    //                await _userManager.AddToRoleAsync(user, User_Role.Admin);
+    //            }
 
-                //if (await _roleManager.RoleExistsAsync(User_Role.Admin))
-                //{
-                //  await _userManager.AddToRoleAsync(user, User_Role.User);
-                //}
-                return Ok(new Response { Status = "Success", Message = "User created successfully!" });
-            }
+    //            //if (!await _roleManager.RoleExistsAsync(User_Role.User))
+    //            //  await _roleManager.CreateAsync(new IdentityRole(User_Role.User));
+
+    //            //if (await _roleManager.RoleExistsAsync(User_Role.Admin))
+    //            //{
+    //            //  await _userManager.AddToRoleAsync(user, User_Role.User);
+    //            //}
+    //            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+    //        }
 
             
-        }
+    //    }
+    
+    //    private JwtSecurityToken GetToken(List<Claim> authClaims)
+    //{
+    //  var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
 
-    private JwtSecurityToken GetToken(List<Claim> authClaims)
-    {
-      var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
+    //  var token = new JwtSecurityToken(
+    //      issuer: _configuration["JWT:Issuer"],
+    //      audience: _configuration["JWT:Audience"],
+    //      expires: DateTime.Now.AddHours(3),
+    //      claims: authClaims,
+    //      signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+    //      );
 
-      var token = new JwtSecurityToken(
-          issuer: _configuration["JWT:Issuer"],
-          audience: _configuration["JWT:Audience"],
-          expires: DateTime.Now.AddHours(3),
-          claims: authClaims,
-          signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-          );
+    //  return token;
+    //}
+        
+    //    [HttpPost]
+    //    [Route("ForgotPassword")]
+    //    public async Task<IActionResult> ForgotPassword(ForgotPassword uvm)
+    //    {
+    //        var user = await _userManager.FindByNameAsync(uvm.UserName);
 
-      return token;
-    }
-        [HttpPost]
-        [Route("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword(ForgotPassword uvm)
-        {
-            var user = await _userManager.FindByNameAsync(uvm.UserName);
+    //        if (user != null)
+    //        {
+    //            try
+    //            {
 
-            if (user != null)
-            {
-                try
-                {
+    //                var principal = await _claimsPrincipalFactory.CreateAsync((AppUser)user);
 
-                    var principal = await _claimsPrincipalFactory.CreateAsync((AppUser)user);
+    //                await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
 
-                    await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
+    //                // 2 Step Verification
+    //                var otp = GenerateTwoFactorCodeFor(user.UserName);
 
-                    // 2 Step Verification
-                    var otp = GenerateTwoFactorCodeFor(user.UserName);
+    //                var fromEmailAddress = "resinartnewsletter@gmail.com"; // you must add your own provided email
+    //                var subject = "System Log in";
+    //                var message = $"Enter the following OTP: {otp}";
+    //                var toEmailAddress = user.Email;
 
-                    var fromEmailAddress = "resinartnewsletter@gmail.com"; // you must add your own provided email
-                    var subject = "System Log in";
-                    var message = $"Enter the following OTP: {otp}";
-                    var toEmailAddress = user.Email;
+    //                // Sending email
+    //                await SendEmail(fromEmailAddress, subject, message, toEmailAddress);
 
-                    // Sending email
-                    await SendEmail(fromEmailAddress, subject, message, toEmailAddress);
+    //                //return GenerateJWTToken(user);
 
-                    //return GenerateJWTToken(user);
+    //            }
+    //            catch (Exception)
+    //            {
+    //                return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
+    //            }
+    //        }
+    //        else
+    //        {
+    //            return NotFound("Does not exist");
+    //        }
 
-                }
-                catch (Exception)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
-                }
-            }
-            else
-            {
-                return NotFound("Does not exist");
-            }
+    //        //, Password = user.PasswordHash
+    //        var loggedInUser = new ForgotPassword { UserName = user.UserName };
 
-            //, Password = user.PasswordHash
-            var loggedInUser = new ForgotPassword { UserName = user.UserName };
+    //        return Ok(loggedInUser);
+    //    }
 
-            return Ok(loggedInUser);
-        }
-        private static string GenerateTwoFactorCodeFor(string username)
-        {
-            var code = GetUniqueKey();
+    //    private static string GenerateTwoFactorCodeFor(string username)
+    //    {
+    //        var code = GetUniqueKey();
 
-            var twoFactorCode = new TwoFactorCode(code);
+    //        var twoFactorCode = new TwoFactorCode(code);
 
-            // add or overwrite code
-            _twoFactorCodeDictionary[username] = twoFactorCode;
+    //        // add or overwrite code
+    //        _twoFactorCodeDictionary[username] = twoFactorCode;
 
-            return code;
-        }
-        private static string GetUniqueKey()
-        {
-            Random rnd = new Random();
+    //        return code;
+    //    }
 
-            var optCode = rnd.Next(1000, 9999);
+    //    private static string GetUniqueKey()
+    //    {
+    //        Random rnd = new Random();
 
-            return optCode.ToString();
-        }
-        private async Task SendEmail(string fromEmailAddress, string subject, string message, string toEmailAddress)
-        {
-            var fromAddress = new MailAddress(fromEmailAddress);
-            var toAddress = new MailAddress(toEmailAddress);
+    //        var optCode = rnd.Next(1000, 9999);
 
-            using (var compiledMessage = new MailMessage(fromAddress, toAddress))
-            {
-                compiledMessage.Subject = subject;
-                compiledMessage.Body = string.Format("Message: {0}", message);
+    //        return optCode.ToString();
+    //    }
 
-                using (var smtp = new SmtpClient())
-                {
-                    smtp.Host = "smtp.gmail.com"; // for example: smtp.gmail.com
-                    smtp.Port = 587;
-                    smtp.EnableSsl = true;
-                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential("itspersonal@gmail.com", "pnyblzriureedwgp"); // your own provided email and password
-                    await smtp.SendMailAsync(compiledMessage);
-                }
-            }
-        }
+    //    private async Task SendEmail(string fromEmailAddress, string subject, string message, string toEmailAddress)
+    //    {
+    //        var fromAddress = new MailAddress(fromEmailAddress);
+    //        var toAddress = new MailAddress(toEmailAddress);
+
+    //        using (var compiledMessage = new MailMessage(fromAddress, toAddress))
+    //        {
+    //            compiledMessage.Subject = subject;
+    //            compiledMessage.Body = string.Format("Message: {0}", message);
+
+    //            using (var smtp = new SmtpClient())
+    //            {
+    //                smtp.Host = "smtp.gmail.com"; // for example: smtp.gmail.com
+    //                smtp.Port = 587;
+    //                smtp.EnableSsl = true;
+    //                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+    //                smtp.UseDefaultCredentials = false;
+    //                smtp.Credentials = new NetworkCredential("itspersonal@gmail.com", "pnyblzriureedwgp"); // your own provided email and password
+    //                await smtp.SendMailAsync(compiledMessage);
+    //            }
+    //        }
+    //    }
   }
 }

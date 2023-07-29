@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
 {
   public class StockItemViewModel
   {
-        public Guid Stock_Item_ID { get; set; }
+        public int Stock_Item_ID { get; set; }
         public virtual Stock_Type Stock_Type_Name { get; set; }
         public virtual Stock_Image Stock_Image { get; set; }
         //public List<Stock_Image> Stock_Image { get; set; } = new List<Stock_Image>();

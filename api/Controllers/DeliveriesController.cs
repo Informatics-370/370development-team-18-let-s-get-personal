@@ -43,7 +43,7 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetDelivery/{delivery_ID}")]
-        public async Task<IActionResult> GetDeliveryDetailsAsync(Guid delivery_ID)
+        public async Task<IActionResult> GetDeliveryDetailsAsync(int delivery_ID)
         {
 
           try
@@ -97,7 +97,7 @@ namespace IPKP___API.Controllers
 
         [HttpDelete]
         [Route("ReceiveDelivery/{delivery_ID}")]
-        public async Task<IActionResult> ReceiveDeliveryAsync(Guid delivery_ID)
+        public async Task<IActionResult> ReceiveDeliveryAsync(int delivery_ID)
         {
           try
           {
@@ -121,7 +121,7 @@ namespace IPKP___API.Controllers
   }
     /*[HttpPut]
    [Route("UpdateDelivery")]
-   public async Task<IActionResult> UpdateDeliveryAsync(Guid delivery_ID, DeliveryViewModel dvm)
+   public async Task<IActionResult> UpdateDeliveryAsync(int delivery_ID, DeliveryViewModel dvm)
    {
      try
      {

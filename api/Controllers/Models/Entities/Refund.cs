@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Refund
   {
         [Key]
-        public Guid Refund_ID { get; set; }
+        public int Refund_ID { get; set; }
         public virtual Customer Customer { get; set; }
         public string Customer_Email { get; set; }
         public virtual Refund_Policy Refund_Policy { get; set; }

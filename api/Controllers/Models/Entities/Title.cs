@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Title
   {
     [Key]
-    public Guid Title_ID { get; set; }
+    public int Title_ID { get; set; }
 
     [StringLength(255)]
     public string Title_Name { get; set; }

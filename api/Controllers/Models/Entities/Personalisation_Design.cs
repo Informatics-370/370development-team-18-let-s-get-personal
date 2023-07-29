@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Personalisation_Design
   {
     [Key]
-    public Guid Personalisation_Design_ID { get; set; }
+    public int Personalisation_Design_ID { get; set; }
     public virtual Design_Image Design_Image { get; set; }
     public virtual Design_Text Design_Text { get; set; }
     public string ItemColour { get; set; }

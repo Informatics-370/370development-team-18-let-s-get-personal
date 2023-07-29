@@ -1,20 +1,47 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { AuthenticationService } from 'src/app/Services/authentication.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, HttpClientModule]
 })
 export class LoginPage implements OnInit {
 
-  constructor() { }
+  data = {username: '', password: '', token: []};
+  constructor(
+    private authService: AuthenticationService, private alertController:AlertController, 
+    private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
+  login(form: NgForm) {
+    this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
+      let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
+      console.log(roles);
+      if(roles.includes('Admin')) {
+        this.router.navigateByUrl('/tabs/menu', {replaceUrl: true});
+      } else{
+        this.ErrorAlert()
+      }
+    });
+  }
+  async ErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Customers cannot access this site',
+      message: 'Please try again',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
 }

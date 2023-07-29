@@ -6,7 +6,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
 {
     public class DeliverAddressVM
     {
-        public Guid Address_ID { get; set; }
+        public int Address_ID { get; set; }
 
         public int Province_ID { get; set; }
 

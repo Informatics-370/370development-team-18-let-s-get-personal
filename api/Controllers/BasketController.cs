@@ -25,7 +25,7 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetBasketInfo/{customer_id}")]
-        public async Task<IActionResult> GetBasketInfo(Guid customer_ID)
+        public async Task<IActionResult> GetBasketInfo(int customer_ID)
         {
             try
             {

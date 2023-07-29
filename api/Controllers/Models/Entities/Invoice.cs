@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Invoice
   {
     [Key]
-    public Guid Invoice_ID { get; set; }
+    public int Invoice_ID { get; set; }
     public virtual Customer Customer { get; set; }
     public virtual Employee Employee { get; set; }
     public virtual Invoice_Discount Invoice_Discount { get; set; }

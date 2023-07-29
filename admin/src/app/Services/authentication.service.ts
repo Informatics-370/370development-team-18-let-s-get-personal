@@ -3,7 +3,7 @@ import { BehaviorSubject, map, of, tap } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
-
+import { Response } from '../Models/response';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +18,7 @@ export class AuthenticationService {
     ContentType: 'application/json'
   })
 }
-
+islogged: boolean = false;
 constructor(
   private httpClient: HttpClient,
   private router: Router) { }
@@ -36,8 +36,10 @@ public Login(username: string, password: string) {
     'username': username, 
     'password': password
   };
-  return this.httpClient.post(`${this.apiUrl}Authenticate/login`, loginCredentials)
+  return this.httpClient.post<Response>(`${this.apiUrl}Authenticate/login`, loginCredentials)
   .pipe(tap(res => {
+    res.status == "Success";
+    this.islogged = true;
     let token = this.getDecodedAccessToken(JSON.stringify(res));
     let roleLongName = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';  // TODO: Change to 'role' when using Azure AD 
     let nameLongName = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
@@ -48,7 +50,8 @@ public Login(username: string, password: string) {
       name: token[nameLongName],
       roles: token[roleLongName]
     });
-  }))
+    
+  }))  
 }
 
 public getUser() {

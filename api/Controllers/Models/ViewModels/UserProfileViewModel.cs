@@ -10,7 +10,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
   public class UserProfileViewModel
   {
     [Key]
-    public Guid Customer_ID { get; set; }
+    public int Customer_ID { get; set; }
     public virtual Title Title { get; set; }
     public virtual Address Address { get; set; }
     public virtual User User { get; set; }

@@ -11,7 +11,7 @@ namespace IPKP___API.Controllers.Models.Entities
   {
         [Key]
         [Column("Stock_Type_ID")]
-        public Guid Stock_Type_ID { get; set; }
+        public int Stock_Type_ID { get; set; }
 
         [StringLength(255)]
         public string Stock_Type_Name { get; set; }

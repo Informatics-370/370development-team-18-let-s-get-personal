@@ -23,7 +23,7 @@ namespace IPKP___API.Controllers
         [HttpGet]
         [Route("GetPersonalisation/{personalisation_ID}")]
 
-        public async Task<IActionResult> GetPersonalisationAsync(Guid personalisation_ID)
+        public async Task<IActionResult> GetPersonalisationAsync(int personalisation_ID)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdatePersonalisation/{personalisation_ID}")]
-        public async Task<IActionResult> UpdatePersonalisationAsync(Guid personalisation_ID, PersonalisationDesignViewModel pdvm)
+        public async Task<IActionResult> UpdatePersonalisationAsync(int personalisation_ID, PersonalisationDesignViewModel pdvm)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace IPKP___API.Controllers
 
         [HttpDelete]
         [Route("DeletePersonalisation/{personalisation_ID}")]
-        public async Task<IActionResult> DeletePersonalisationAsync(Guid personalisation_ID)
+        public async Task<IActionResult> DeletePersonalisationAsync(int personalisation_ID)
         {
             try
             {

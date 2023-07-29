@@ -1,5 +1,5 @@
 export class Title{
     
-    Title_ID!: Number
-    Title_Name!: String
+    title_ID!: Number
+    title_Name!: String
 }
