@@ -26,4 +26,7 @@ export class StationaryPage implements OnInit {
   public shopall(){
     this._router.navigate(["/tabs/shop-all"])
   }
+  public Basket() {
+    this._router.navigate(["/tabs/basket"])
+  }
 }

@@ -26,4 +26,7 @@ export class DrinkingPage implements OnInit {
   public stationary(){
     this._router.navigate(["/tabs/stationary"])
   }
+  public Basket() {
+    this._router.navigate(["/tabs/basket"])
+  }
 }

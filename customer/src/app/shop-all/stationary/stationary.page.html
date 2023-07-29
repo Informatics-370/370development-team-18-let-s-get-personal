@@ -2,8 +2,8 @@
   <ion-toolbar>
     
     <ion-buttons slot="start">
-      <ion-title>Let's Get Stationary</ion-title>
-      <ion-button (click)="shopall()"> Shop All </ion-button>
+      <ion-title>Stationary</ion-title>
+      
         <ion-button (click)="clothing()"> Let's Get Dressed </ion-button>
       <ion-button (click)="drinking()"> Let's Get Drinking </ion-button>
     </ion-buttons>
@@ -16,20 +16,51 @@
       <ion-title size="large">Let's Get Working</ion-title>      
     </ion-toolbar>
   </ion-header>
-  <ion-row>
-    <ion-col>1 Random</ion-col>
-    <ion-col>2</ion-col>
-    <ion-col>3</ion-col>
-    <ion-col>4</ion-col>
-    <ion-col>5</ion-col>
-    <ion-col>6</ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>7</ion-col>
-    <ion-col>8</ion-col>
-    <ion-col>9</ion-col>
-    <ion-col>10</ion-col>
-    <ion-col>11</ion-col>
-    <ion-col>12</ion-col>
-  </ion-row>
+  <ion-grid id="grid">
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-title>Name</ion-card-title>
+          <ion-card-content>
+            <p>Image</p>
+            <p>Price</p>
+            <ion-img></ion-img>
+          </ion-card-content>
+        </ion-card>
+        <ion-button>Add To Basket</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <ion-card-title>Name</ion-card-title>
+          <ion-card-content>
+            <p>Image</p>
+            <p>Price</p>
+          </ion-card-content>
+        </ion-card>
+        <ion-button>Add To Basket</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <ion-card-title>Name</ion-card-title>
+          <ion-card-content>
+            <p>Image</p>
+            <p>Price</p>
+          </ion-card-content>
+        </ion-card>
+        <ion-button>Add To Basket</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <ion-card-title>Name</ion-card-title>
+          <ion-card-content>
+            <p>Image</p>
+            <p>Price</p>
+          </ion-card-content>
+        </ion-card>
+        <ion-button>Add To Basket</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-button (click)="Basket()" color="success">Basket<ion-icon slot="end" name="star"></ion-icon></ion-button>
+  <ion-button (click)="shopall()" fill="clear"> Back </ion-button>
 </ion-content>

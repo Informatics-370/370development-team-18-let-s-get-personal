@@ -1,40 +1,65 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <!-- <ion-title>drinking</ion-title> -->
-    <ion-buttons slot="start">
-      <ion-button> Shop All </ion-button>
-      <ion-button> Let's Get Dressed </ion-button>
-      <ion-button> Let's Get Drinking </ion-button>
-      <ion-button> Let's Get Working </ion-button>
+    <ion-buttons slot="start"><ion-title >Cutlery </ion-title>
+   
+        <ion-button (click)="clothing()"> Let's Get Dressed </ion-button>
+      <ion-button (click)="stationary()"> Let's Get Working </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Let's Get Drinking</ion-title>
-      <ion-buttons slot="start">
-        <ion-button (click)="shopall()"> Shop All </ion-button>
-        <ion-button (click)="clothing()"> Let's Get Dressed </ion-button>
-      <ion-button (click)="stationary()"> Let's Get Working </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
   </ion-header>
-  <ion-row>
-    <ion-col>1 Random cup/mug</ion-col>
-    <ion-col>2</ion-col>
-    <ion-col>3</ion-col>
-    <ion-col>4</ion-col>
-    <ion-col>5</ion-col>
-    <ion-col>6</ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>7</ion-col>
-    <ion-col>8</ion-col>
-    <ion-col>9</ion-col>
-    <ion-col>10</ion-col>
-    <ion-col>11</ion-col>
-    <ion-col>12</ion-col>
-  </ion-row>
+  <ion-grid id="grid">
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-title>Name</ion-card-title>
+          <ion-card-content>
+            <p>Image</p>
+            <p>Color</p>
+            <p>Price</p>
+            <ion-img></ion-img>
+          </ion-card-content>
+        </ion-card>
+        <ion-button>Add To Basket</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <ion-card-title>Name</ion-card-title>
+          <ion-card-content>
+            <p>Image</p>
+            <p>Color</p>
+            <p>Price</p>
+          </ion-card-content>
+        </ion-card>
+        <ion-button>Add To Basket</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <ion-card-title>Name</ion-card-title>
+          <ion-card-content>
+            <p>Image</p>
+            <p>Color</p>
+            <p>Price</p>
+          </ion-card-content>
+        </ion-card>
+        <ion-button>Add To Basket</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <ion-card-title>Name</ion-card-title>
+          <ion-card-content>
+            <p>Image</p>
+            <p>Color</p>
+            <p>Price</p>
+          </ion-card-content>
+        </ion-card>
+        <ion-button>Add To Basket</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-button (click)="Basket()" color="success">Basket<ion-icon slot="end" name="star"></ion-icon></ion-button>
+  <ion-button (click)="shopall()" fill="clear"> Back </ion-button>
 </ion-content>
