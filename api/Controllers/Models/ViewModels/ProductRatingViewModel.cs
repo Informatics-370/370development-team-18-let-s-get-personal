@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
 {
   public class ProductRatingViewModel
   {
-    public int Product_Rating_ID { get; set; }
+    public Guid Product_Rating_ID { get; set; }
     public virtual Customer Customer_ID { get; set; }
     public virtual Stock_Item Stock_Item_ID { get; set; }
     public int Product_Star_Rating { get; set; }

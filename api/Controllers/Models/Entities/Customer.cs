@@ -16,7 +16,7 @@ namespace IPKP___API.Controllers.Models.Entities
         }
 
         [Key]
-        public int Customer_ID { get; set; }
+        public Guid Customer_ID { get; set; }
         [StringLength(255)]
         public string FirstName { get; set; }
         [StringLength(255)]
@@ -31,7 +31,7 @@ namespace IPKP___API.Controllers.Models.Entities
         //foreign key Title
 
         [Column("Title_ID")]
-        public int? Title_ID { get; set; }
+        public Guid? Title_ID { get; set; }
 
         [ForeignKey(nameof(Title_ID))]
         [InverseProperty("Customer")]
@@ -39,7 +39,7 @@ namespace IPKP___API.Controllers.Models.Entities
 
         //foreign key user
         [Column("User_ID")]
-        public int User_ID { get; set; }
+        public Guid User_ID { get; set; }
 
         [ForeignKey(nameof(User_ID))]
         [InverseProperty("Customer")]
@@ -47,7 +47,7 @@ namespace IPKP___API.Controllers.Models.Entities
 
         //foreign key address
         [Column("Address_ID")]
-        public int Address_ID { get; set; }
+        public Guid Address_ID { get; set; }
 
         [ForeignKey(nameof(Address_ID))]
         [InverseProperty("Customer")]

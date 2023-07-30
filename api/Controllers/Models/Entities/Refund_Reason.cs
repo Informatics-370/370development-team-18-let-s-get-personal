@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Refund_Reason
   {
     [Key]
-    public int Refund_Reason_ID { get; set; }
+    public Guid Refund_Reason_ID { get; set; }
     [StringLength(255)]
     public string Refund_Reason_Description { get; set; }
   }

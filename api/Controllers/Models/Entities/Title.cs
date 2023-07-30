@@ -3,15 +3,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
   public class Title
   {
-    [Key]
-    public int Title_ID { get; set; }
+        [Key]
+        public Guid Title_ID { get; set; }
 
-    [StringLength(255)]
-    public string Title_Name { get; set; }
-  }
+        [StringLength(255)]
+        public string Title_Name { get; set; }
+
+        [InverseProperty("Title")]
+        public virtual ICollection<Customer> Customer { get; set; }
+    }
 }

@@ -13,10 +13,10 @@ namespace IPKP___API.Controllers.Models.Entities
 
         [Key]
         [Column("BestSeller_ID")]
-        public int BestSeller_ID { get; set; }
+        public Guid BestSeller_ID { get; set; }
 
         [Column("Stock_Item_ID")]
-        public int Stock_Item_ID { get; set; }
+        public Guid Stock_Item_ID { get; set; }
 
         //[ForeignKey(nameof(Stock_Item_ID))]
         [InverseProperty("BestSellers")]

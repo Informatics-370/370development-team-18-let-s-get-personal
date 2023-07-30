@@ -10,7 +10,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Address
   {
         [Key]
-        public int Address_ID { get; set; }
+        public Guid Address_ID { get; set; }
 
         [StringLength(255)]
         public string Province_Name {get; set; }
@@ -30,12 +30,7 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public int Area_Code { get; set; }
 
-        //foreign keys 
-
-        [Column("Customer_ID")]
-        public int? Customer_ID { get; set; }
-
-        [ForeignKey(nameof(Customer_ID))]
+        
         [InverseProperty("Address")]
         public virtual Customer Customer { get; set; }
     }

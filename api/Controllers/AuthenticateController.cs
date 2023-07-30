@@ -23,24 +23,24 @@ namespace IPKP___API.Controllers
   [ApiController]
   public class AuthenticateController : ControllerBase
   {
-        private readonly IIPKPRepository _IPKPRepository;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IConfiguration _configuration;
-        private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
-        private static Dictionary<string, TwoFactorCode> _twoFactorCodeDictionary
-          = new Dictionary<string, TwoFactorCode>();
+        //private readonly IIPKPRepository _IPKPRepository;
+        //private readonly UserManager<IdentityUser> _userManager;
+        //private readonly RoleManager<IdentityRole> _roleManager;
+        //private readonly IConfiguration _configuration;
+        //private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
+        //private static Dictionary<string, TwoFactorCode> _twoFactorCodeDictionary
+        //  = new Dictionary<string, TwoFactorCode>();
 
-        public AuthenticateController(
-        UserManager<IdentityUser> userManager, IIPKPRepository iPKPRepository,
-        RoleManager<IdentityRole> roleManager,
-        IConfiguration configuration)
-        {
-            _IPKPRepository = iPKPRepository;
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _configuration = configuration;
-        }
+        //public AuthenticateController(
+        //UserManager<IdentityUser> userManager, IIPKPRepository iPKPRepository,
+        //RoleManager<IdentityRole> roleManager,
+        //IConfiguration configuration)
+        //{
+        //    _IPKPRepository = iPKPRepository;
+        //    _userManager = userManager;
+        //    _roleManager = roleManager;
+        //    _configuration = configuration;
+        //}
 
     //    [HttpPost]
     //    [Route("login")]

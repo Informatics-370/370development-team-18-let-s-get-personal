@@ -28,7 +28,7 @@ namespace IPKP___API.Controllers
          
         [HttpGet]
         [Route("GetInventoryById/{inventory_Id}")]
-        public async Task<IActionResult> GetInventoryByIDAsync(int inventory_Id)
+        public async Task<IActionResult> GetInventoryByIDAsync(Guid inventory_Id)
         {
             try
             {

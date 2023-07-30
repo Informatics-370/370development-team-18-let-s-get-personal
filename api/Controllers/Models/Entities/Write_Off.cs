@@ -12,10 +12,10 @@ namespace IPKP___API.Controllers.Models.Entities
   {
         [Key]
         [Column("Write_Off_ID")]
-        public int Write_Off_ID { get; set; }
+        public Guid Write_Off_ID { get; set; }
 
         [Column("Inventory_ID")]
-        public int? Inventory_ID { get; set; }
+        public Guid? Inventory_ID { get; set; }
 
         public DateTime Write_Off_Date { get; set; }
 

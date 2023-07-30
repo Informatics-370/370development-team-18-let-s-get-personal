@@ -43,7 +43,7 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetDelivery/{delivery_ID}")]
-        public async Task<IActionResult> GetDeliveryDetailsAsync(int delivery_ID)
+        public async Task<IActionResult> GetDeliveryDetailsAsync(Guid delivery_ID)
         {
 
           try
@@ -60,29 +60,31 @@ namespace IPKP___API.Controllers
 
         [HttpPost]
         [Route("AddDelivery")]
-        public async Task<IActionResult> AddDeliveryAsync(DeliveryViewModel dvm)
+        public async Task<IActionResult> AddDeliveryAsync(Delivery dvm)
         {
             var delivery = new Delivery
             {
-                Delivery_Address = dvm.Delivery_Address,
+                //Delivery_Address = dvm.Delivery_Address,
                 Delivery_Price = dvm.Delivery_Price,
-                Delivery_Company   = dvm.Delivery_Company_ID,
+                //Delivery_Company = dvm.Delivery_Company_ID,
                 Delivery_ID = dvm.Delivery_ID,
-                Tracking_Number = dvm.Tracking_Number,                
-            };
-            var deliverAddress = new Address
-            {
-                Address_ID = dvm.Delivery_Address.Address_ID,
-                Province_Name = dvm.Delivery_Address.Province_Name,
-                City_Name = dvm.Delivery_Address.City_Name,
+                Tracking_Number = dvm.Tracking_Number,
+
+                Delivery_Address = new Delivery_Address
+                {
+                    
 
 
+                }
+        
+        
             };
+       
 
             try
             {
                 _IPKPRepository.Add(delivery);
-                _IPKPRepository.Add(deliverAddress);
+                //_IPKPRepository.Add(deliverAddress);
                 await _IPKPRepository.SaveChangesAsync();
             }
             catch (Exception)
@@ -97,7 +99,7 @@ namespace IPKP___API.Controllers
 
         [HttpDelete]
         [Route("ReceiveDelivery/{delivery_ID}")]
-        public async Task<IActionResult> ReceiveDeliveryAsync(int delivery_ID)
+        public async Task<IActionResult> ReceiveDeliveryAsync(Guid delivery_ID)
         {
           try
           {

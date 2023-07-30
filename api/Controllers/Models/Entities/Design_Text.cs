@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Design_Text
   {
     [Key]
-    public int Design_Text_ID { get; set; }
+    public Guid Design_Text_ID { get; set; }
     public virtual Design_Price_History Design_Price_Pixel_Amount { get; set; }
     public int Design_Text_Size { get; set; }
     [StringLength(255)]

@@ -15,7 +15,7 @@ namespace IPKP___API.Controllers.Models.Entities
 
         }
         [Key]
-        public int User_ID { get; set; }
+        public Guid User_ID { get; set; }
         public virtual User_Role User_Role { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }

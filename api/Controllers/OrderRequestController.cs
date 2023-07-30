@@ -64,7 +64,7 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetOrderRequest/{order_Request_ID}")]
-        public async Task<IActionResult> GetOrderRequestAsync(int order_Request_ID)
+        public async Task<IActionResult> GetOrderRequestAsync(Guid order_Request_ID)
         {
 
             try
@@ -99,7 +99,7 @@ namespace IPKP___API.Controllers
 
         [HttpPatch]
         [Route("AcceptOrderRequest/{order_Request_ID}")]
-        public async Task<IActionResult> AcceptOrderRequestAsync(int order_Request_ID)
+        public async Task<IActionResult> AcceptOrderRequestAsync(Guid order_Request_ID)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace IPKP___API.Controllers
 
         [HttpPatch]
         [Route("RejectOrderRequest/{order_Request_ID}")]
-        public async Task<IActionResult> RejectOrderRequestAsync(int order_Request_ID)
+        public async Task<IActionResult> RejectOrderRequestAsync(Guid order_Request_ID)
         {
 
             try
@@ -156,7 +156,7 @@ namespace IPKP___API.Controllers
 
         [HttpDelete]
         [Route("DeleteOrderRequest/{order_Request_ID}")]
-        public async Task<IActionResult> DeleteOrderRequestAsync(int order_Request_ID)
+        public async Task<IActionResult> DeleteOrderRequestAsync(Guid order_Request_ID)
         {
 
             try

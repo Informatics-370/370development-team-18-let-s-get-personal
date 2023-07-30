@@ -42,7 +42,7 @@ namespace IPKP___API.Controllers
         [HttpGet]
         [Route("GetStockItem/{stock_Item_ID}")]
 
-        public async Task<IActionResult> GetStockItemDetailsAsync(int stock_Item_ID)
+        public async Task<IActionResult> GetStockItemDetailsAsync(Guid stock_Item_ID)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace IPKP___API.Controllers
         {
             var stockItem = new Stock_Item
             {
-                Stock_Item_ID = sivm.Stock_Item_ID,
+                Stock_Item_ID = new Guid(),
                 Stock_Item_Name = sivm.Stock_Item_Name,
                 Stock_Types = sivm.Stock_Types,
                 Stock_Images = sivm.Stock_Images,
@@ -84,7 +84,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateStockItem/{stock_Item_ID}")]
-        public async Task<IActionResult> UpdateStockItemAsync(int stock_Item_ID, Stock_Item sivm)
+        public async Task<IActionResult> UpdateStockItemAsync(Guid stock_Item_ID, Stock_Item sivm)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace IPKP___API.Controllers
 
         [HttpDelete]
         [Route("DeleteStockItem/{stock_Item_ID}")]
-        public async Task<IActionResult> DeleteStockItemAsync(int stock_Item_ID)
+        public async Task<IActionResult> DeleteStockItemAsync(Guid stock_Item_ID)
         {
             try
             {

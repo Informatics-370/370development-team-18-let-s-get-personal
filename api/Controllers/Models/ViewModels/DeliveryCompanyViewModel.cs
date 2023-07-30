@@ -8,7 +8,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
 {
   public class DeliveryCompanyViewModel
   {
-    public int Delivery_Company_ID { get; set; }
+    public Guid Delivery_Company_ID { get; set; }
     [StringLength(255)]
     public string Delivery_Company_Name { get; set; }
   }

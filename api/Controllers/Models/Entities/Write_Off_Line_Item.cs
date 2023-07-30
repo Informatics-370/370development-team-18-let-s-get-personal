@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Write_Off_Line_Item
   {
         [Key]
-        public int Write_Off_Line_Item_ID { get; set; }
+        public Guid Write_Off_Line_Item_ID { get; set; }
 
         [StringLength(255)]
         public string Write_Off_Quantity { get; set; }

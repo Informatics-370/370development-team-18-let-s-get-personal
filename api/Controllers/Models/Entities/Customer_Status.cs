@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Customer_Status
   {
     [Key]
-    public int Customer_Status_ID { get; set; }
+    public Guid Customer_Status_ID { get; set; }
     [StringLength(255)]
     public string Status_Description { get; set; }
   }

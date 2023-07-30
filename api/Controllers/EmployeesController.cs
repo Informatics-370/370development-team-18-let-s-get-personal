@@ -36,7 +36,7 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetEmployee/{employee_ID}")]
-        public async Task<IActionResult> GetEmployee(int employee_ID)
+        public async Task<IActionResult> GetEmployee(Guid employee_ID)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace IPKP___API.Controllers
         {
             var newemployee = new Employee
             {
-                Employee_ID = new int(),
+                Employee_ID = new Guid(),
                 Title = employee.Title,
                 Address = employee.Address,
                 User = employee.User,
@@ -80,7 +80,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateEmployee/{employee_ID}")]
-        public async Task<IActionResult> UpdateEmployeeAsync(int employee_ID, Employee employee)
+        public async Task<IActionResult> UpdateEmployeeAsync(Guid employee_ID, Employee employee)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace IPKP___API.Controllers
 
         [HttpDelete]
         [Route("DeleteEmployee/{employee_ID}")]
-        public async Task<IActionResult> DeleteEmployee(int Employee_ID)
+        public async Task<IActionResult> DeleteEmployee(Guid Employee_ID)
         {
             try
             {

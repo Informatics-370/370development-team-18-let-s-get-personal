@@ -10,7 +10,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
   public class EmployeeViewModel
   {
     [Key]
-    public int Employee_ID { get; set; }
+    public Guid Employee_ID { get; set; }
     public virtual Title Title { get; set; }
     public virtual Address Address { get; set; }
     public virtual User User { get; set; }

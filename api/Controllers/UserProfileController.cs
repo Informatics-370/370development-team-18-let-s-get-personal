@@ -42,7 +42,7 @@ namespace IPKP___API.Controllers
     [HttpGet]
     [Route("GetCustomerUserProfile")]
 
-    public async Task<IActionResult> GetCustomerUserProfileDetailsAsync(int customer_ID)
+    public async Task<IActionResult> GetCustomerUserProfileDetailsAsync(Guid customer_ID)
     {
       try
       {
@@ -61,7 +61,7 @@ namespace IPKP___API.Controllers
     {
       var userCustomer = new Customer
       {
-        Customer_ID = upvm.Customer_ID,
+        Customer_ID = new Guid(),
         Title = upvm.Title,
         Address = upvm.Address,
         FirstName = upvm.FirstName,
@@ -83,7 +83,7 @@ namespace IPKP___API.Controllers
 
     [HttpPut]
     [Route("UpdateCustomerUserProfile")]
-    public async Task<IActionResult> UpdateCustomerUserProfileAsync(int customer_ID, UserProfileViewModel upvm)
+    public async Task<IActionResult> UpdateCustomerUserProfileAsync(Guid customer_ID, UserProfileViewModel upvm)
     {
       try
       {
@@ -111,7 +111,7 @@ namespace IPKP___API.Controllers
 
     [HttpDelete]
     [Route("DeleteCustomerUser")]
-    public async Task<IActionResult> DeleteCustomerUserProfileAsync(int customer_ID)
+    public async Task<IActionResult> DeleteCustomerUserProfileAsync(Guid customer_ID)
     {
       try
       {
@@ -135,7 +135,7 @@ namespace IPKP___API.Controllers
 
     [HttpDelete]
     [Route("DeleteUser")]
-    public async Task<IActionResult> DeleteUserAsync(int user_ID)
+    public async Task<IActionResult> DeleteUserAsync(Guid user_ID)
     {
       try
       {

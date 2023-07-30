@@ -21,7 +21,7 @@ namespace IPKP___API.Controllers
         private readonly IIPKPRepository _IPKPRepository;
         private readonly RoleManager<IdentityRole> _roleManager;
         public AuthController(
-        UserManager<IdentityUser> userManager,
+        UserManager<IdentityUser> userManager, IIPKPRepository iPKPRepository,
         IUserClaimsPrincipalFactory<IdentityUser> userClaimsPrincipalFactory,
         RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
@@ -29,6 +29,7 @@ namespace IPKP___API.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _IPKPRepository = iPKPRepository;
         }
 
         [HttpPost]
@@ -47,7 +48,7 @@ namespace IPKP___API.Controllers
                 }
                 catch (Exception)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
                 }
 
                 var userloggedin = new LoginViewModel { Username = login.Username };
@@ -64,36 +65,58 @@ namespace IPKP___API.Controllers
 
             if (checkuser == null)
             {
-                var customer = new Customer()
+                using (var context = new AppDbContext())
                 {
-                    //Username = register.Username,
-                    Customer_ID = int.NewGuid(),
-                    Title = register.Customer.Title,
+                    var customer = new Customer()
+                    {
+                        Customer_ID = new Guid(),
+                        Title_ID = register.Title_ID,
+                        FirstName = register.FirstName,
+                        Surname = register.Surname,
+                        Cell_Number = register.Cell_Number,
+                        Email = register.Email,
+                        Username = register.Username,
+                        //User_ID = register.User_ID,
 
-                    Cell_Number = register.Customer.Cell_Number,
-                    Email = register.Email,
+                        Address = new Address()
+                        {
+                            Address_ID = new Guid(),
+                            Province_Name = register.Province_Name,
+                            City_Name = register.City_Name,
+                            Street = register.Street,
+                            Number = register.Number,
+                            Dwelling_Type = register.Dwelling_Type,
+                            Unit_Number = register.Unit_Number,
+                            Area_Code = register.Area_Code,
+                        }                       
 
-                };
-                var address = new Address()
-                {
-                   
-
+                    };
                 };
 
                 AppUser user = new()
                 {
-                    Id = int.NewGuid().ToString(),
+                    Id = Guid.NewGuid().ToString(),
                     UserName = register.Username,                    
                 };
-                var result = await _userManager.CreateAsync(user, register.Password);
+                try
+                {
+                    //_IPKPRepository.Add(customer);
+                    //await _IPKPRepository.SaveChangesAsync();
 
-                if (result.Succeeded)
-                {
-                    return Ok();
+                    var result = await _userManager.CreateAsync(user, register.Password);
+                    if (result.Succeeded)
+                    {
+                        return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Unable to Register Account" });
+
+                    }
                 }
-                else
+                catch
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Account registration failed. Please contact support.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Unable to add Account details" });
 
                 }
             }
@@ -101,7 +124,6 @@ namespace IPKP___API.Controllers
             {
                 return StatusCode(StatusCodes.Status403Forbidden, "This account already exists.");
             }
-
         }
 
         [HttpGet]
@@ -118,7 +140,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
     }

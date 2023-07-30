@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Image
   {
     [Key]
-    public int Image_ID { get; set; }
+    public Guid Image_ID { get; set; }
     public int Image_Size { get; set; }
     public string Image_File { get; set; }
   }

@@ -17,7 +17,7 @@ namespace IPKP___API.Controllers.Models.Entities
 
         [Key]
         [Column("Stock_Item_ID")]
-        public int Inventory_ID { get; set; }
+        public Guid Inventory_ID { get; set; }
 
         public DateTime Inventory_Date { get; set; }
 

@@ -9,12 +9,12 @@ namespace IPKP___API.Controllers.Models.Entities
     {
         public Delivery_Address()
         {
-            Order = new HashSet<Order>();
+            Delivery = new HashSet<Delivery>();
         }
 
         [Key]
         [Column("Delivery_Address_ID")]
-        public int Delivery_Address_ID { get; set; }
+        public Guid Delivery_Address_ID { get; set; }
 
         [StringLength(255)]
         public string StreetNumber { get; set; }
@@ -34,14 +34,8 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(255)]
         public string Country { get; set; }
 
-        [Column("Customer_ID")]
-        public int? Customer_ID { get; set; }
-
-        [ForeignKey(nameof(Customer_ID))]
-        [InverseProperty("DeliveryAddress")]
-        public virtual Customer Customer { get; set; }
-
-        [InverseProperty("DeliveryAddress")]
-        public virtual ICollection<Order> Order { get; set; }
+        
+        [InverseProperty("Delivery_Address")]
+        public virtual ICollection<Delivery> Delivery { get; set; }
     }
 }

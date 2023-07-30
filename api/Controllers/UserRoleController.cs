@@ -41,7 +41,7 @@ namespace IPKP___API.Controllers
     [HttpGet]
     [Route("GetUserRole")]
 
-    public async Task<IActionResult> GetUserRoleDetailsAsync(Guid user_Role_ID)
+    public async Task<IActionResult> GetUserRoleDetailsAsync(int user_Role_ID)
     {
       try
       {
@@ -77,7 +77,7 @@ namespace IPKP___API.Controllers
 
     [HttpPut]
     [Route("UpdateUserRole")]
-    public async Task<IActionResult> UpdateUserRoleAsync(Guid user_Role_ID, UserRoleViewModel urvm)
+    public async Task<IActionResult> UpdateUserRoleAsync(int user_Role_ID, UserRoleViewModel urvm)
     {
       try
       {
@@ -101,7 +101,7 @@ namespace IPKP___API.Controllers
 
     [HttpDelete]
     [Route("DeleteUserRole")]
-    public async Task<IActionResult> DeleteUserRoleAsync(Guid user_Role_ID)
+    public async Task<IActionResult> DeleteUserRoleAsync(int user_Role_ID)
     {
       try
       {

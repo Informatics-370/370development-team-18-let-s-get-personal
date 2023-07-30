@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Design_Image
   {
     [Key]
-    public int Design_Image_ID { get; set; }
+    public Guid Design_Image_ID { get; set; }
     public virtual Design_Price_History Design_Price_Pixel_Amount { get; set; }
     public int Design_Image_Size { get; set; }
   }

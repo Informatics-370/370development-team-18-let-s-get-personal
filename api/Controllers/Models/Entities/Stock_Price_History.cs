@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.Entities
   public class Stock_Price_History
   {
     [Key]
-    public int Stock_Price_History_ID { get; set; }
+    public Guid Stock_Price_History_ID { get; set; }
     public virtual Stock_Item Stock_Item { get; set; }
     public double Stock_Price_Amount { get; set; }
     public DateTime Effective_From_Date { get; set; }

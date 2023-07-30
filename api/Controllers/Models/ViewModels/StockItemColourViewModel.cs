@@ -9,7 +9,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
 {
   public class StockItemColourViewModel
   {
-    public int Stock_Item_Colour_ID { get; set; }
+    public Guid Stock_Item_Colour_ID { get; set; }
     [StringLength(255)]
     public string Stock_Item_Colour_Name { get; set; }
 

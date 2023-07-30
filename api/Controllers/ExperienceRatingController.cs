@@ -38,7 +38,7 @@ namespace IPKP___API.Controllers
         //get one
         [HttpGet]
         [Route("GetExperienceRating/{experience_Rating_ID}")]
-        public async Task<IActionResult> GetExperienceRating(int experience_Rating_ID)
+        public async Task<IActionResult> GetExperienceRating(Guid experience_Rating_ID)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace IPKP___API.Controllers
         //edit
         [HttpPut]
         [Route("UpdateExperienceRating/{experience_Rating_ID}")]
-        public async Task<IActionResult> UpdateExperienceRating(int experience_Rating_ID, Experience_Rating exRating)
+        public async Task<IActionResult> UpdateExperienceRating(Guid experience_Rating_ID, Experience_Rating exRating)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace IPKP___API.Controllers
         {
             var newRating = new Experience_Rating
             {
-                Experience_Rating_ID = new int(),
+                Experience_Rating_ID = new Guid(),
                 Experience_Star_Rating = exRating.Experience_Star_Rating,
                 Customer = exRating.Customer,
                 Experience_Rating_Comments = exRating.Experience_Rating_Comments
@@ -113,7 +113,7 @@ namespace IPKP___API.Controllers
         //delete
         [HttpDelete]
         [Route("DeleteExeperienceRating/{experience_Rating_ID}")]
-        public async Task<IActionResult> DeleteExeperienceRating(int experience_Rating_ID)
+        public async Task<IActionResult> DeleteExeperienceRating(Guid experience_Rating_ID)
         {
             try
             {

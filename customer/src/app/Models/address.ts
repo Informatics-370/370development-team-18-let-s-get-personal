@@ -1,5 +1,4 @@
 
-
 export class Address{
     address_ID!: Number
     province_Name!: string

@@ -43,7 +43,7 @@ namespace IPKP___API.Controllers
         [HttpGet]
         [Route("GetDiscount/{discount_ID}")]
 
-        public async Task<IActionResult> GetDiscount(int discount_ID)
+        public async Task<IActionResult> GetDiscount(Guid discount_ID)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("edit-discounts/{Discount_ID}")]
-        public async Task<IActionResult> UpdateDiscount(int Discount_ID, Discount discount)
+        public async Task<IActionResult> UpdateDiscount(Guid Discount_ID, Discount discount)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace IPKP___API.Controllers
 
         [HttpDelete]
         [Route("DeleteDiscount/{Discount_ID}")]
-        public async Task<IActionResult> DeleteDiscount(int Discount_ID)
+        public async Task<IActionResult> DeleteDiscount(Guid Discount_ID)
         {
             try
             {

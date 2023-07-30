@@ -2,6 +2,7 @@ import { User } from "./user"
 import { Title } from "./title"
 import { Address } from "./address"
 import { BasketItems } from "./basket"
+
 export class Customer{  
     customer_ID!: Number
 
