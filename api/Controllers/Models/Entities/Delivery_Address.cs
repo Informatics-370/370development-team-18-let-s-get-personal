@@ -7,11 +7,6 @@ namespace IPKP___API.Controllers.Models.Entities
 {
     public class Delivery_Address
     {
-        public Delivery_Address()
-        {
-            Delivery = new HashSet<Delivery>();
-        }
-
         [Key]
         [Column("Delivery_Address_ID")]
         public Guid Delivery_Address_ID { get; set; }
@@ -34,8 +29,8 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(255)]
         public string Country { get; set; }
 
-        
-        [InverseProperty("Delivery_Address")]
         public virtual ICollection<Delivery> Delivery { get; set; }
+
+        public virtual ICollection<Order_Request> Order_Request { get; set; }
     }
 }

@@ -41,11 +41,7 @@ namespace IPKP___API.Controllers.Models.Repository
                       .Where(u => u.Customer_ID == customer_ID);
             return await query.FirstOrDefaultAsync();
         }
-        public async Task<Title[]> GetTitlesAsync()
-        {
-            IQueryable<Title> query = _appDbContext.Titles;
-            return await query.ToArrayAsync();
-        }
+        
         //employees
         public async Task<Employee[]> GetAllEmployeesAsync()
         {
@@ -276,14 +272,25 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        //address
-        public async Task<Address[]> GetAllAddressesAsync()
+        public async Task<BestSellers[]> GetAllBestSellersAsync()
         {
-            IQueryable<Address> query = _appDbContext.Addresses;
+            IQueryable<BestSellers> query = _appDbContext.BestSellers;
             return await query.ToArrayAsync();
         }
 
-        //GetAllExperienceRatingsAsync
+        public async Task<Inventory[]> GetAllInventoryAsync()
+        {
+            IQueryable<Inventory> query = _appDbContext.Inventories;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<User> GetUser(string username)
+        {
+            return await _appDbContext.Users
+                .Include(x => x.Customer)
+                .Include(x => x.Employee)
+                .FirstOrDefaultAsync(x => x.Username == username);
+        }
 
     }
 }

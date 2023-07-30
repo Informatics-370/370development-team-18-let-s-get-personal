@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { BasketItem } from '../Models/basket';
+import { BasketItems } from '../Models/basket';
 
 @Component({
   selector: 'app-basket',
@@ -17,7 +17,7 @@ export class BasketPage implements OnInit {
   constructor(private _modalController:ModalController,private _router:Router) { }
 
 
-  basketItems: BasketItem[] = [];
+  basketItems: BasketItems[] = [];
   deliveryFee:any =50;
 
   ngOnInit() {
@@ -29,7 +29,7 @@ export class BasketPage implements OnInit {
   }
 
   public removeFromBasket(item: any):void {
-    this.basketItems = this.basketItems.filter((basketItem) => basketItem.stockItem.Stock_Item_ID !== item.id);
+    this.basketItems = this.basketItems.filter((basketItem) => basketItem.stock_Item.stock_Item_ID !== item.id);
     localStorage.setItem('cart', JSON.stringify(this.basketItems));
   }
 

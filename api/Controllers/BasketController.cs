@@ -45,7 +45,7 @@ namespace IPKP___API.Controllers
         {
             var basketItems = new Basket
             {
-                Basket_ID = bask.Basket_ID,
+                Basket_ID = new Guid(),
                 Basket_Quantity = bask.Basket_Quantity,
                 Stock_Item = bask.Stock_Item,
                 Customer = bask.Customer

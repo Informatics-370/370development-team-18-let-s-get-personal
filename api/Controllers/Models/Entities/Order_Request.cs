@@ -7,8 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class Order_Request
-  {
+    public class Order_Request
+    {
         [Key]
         public Guid Order_Request_ID { get; set; }
         public DateTime Order_Request_Date { get; set; }
@@ -16,19 +16,15 @@ namespace IPKP___API.Controllers.Models.Entities
         public bool IsAccepted { get; set; }
 
         //cutsomer fk
-        [Column("Customer_ID")]
         public Guid? Customer_ID { get; set; }
-
-        [ForeignKey(nameof(Customer_ID))]
-        [InverseProperty("Order_Request")]
         public virtual Customer Customer { get; set; }
 
         //invoice fk
-        [Column("Invoice_ID")]
         public Guid? Invoice_ID { get; set; }
-
-        [ForeignKey(nameof(Invoice_ID))]
-        [InverseProperty("Order_Request")]
         public virtual Invoice Invoice { get; set; }
+
+        //invoice fk
+        public Guid? Delivery_Address_ID { get; set; }
+        public virtual Delivery_Address Delivery_Address { get; set; }
     }
 }

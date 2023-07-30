@@ -17,6 +17,8 @@ import { AlertController } from '@ionic/angular';
 export class LoginPage implements OnInit {
 
   data = {username: '', password: '', token: []};
+
+  errorMsg!: string
   constructor(
     private authService: AuthenticationService, private alertController:AlertController, 
     private router: Router) { }
@@ -24,17 +26,42 @@ export class LoginPage implements OnInit {
   ngOnInit(): void {
   }
 
+  logout(){
+
+  }
+
   login(form: NgForm) {
     this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
       let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
       console.log(roles);
-      if(roles.includes('Admin')) {
-        this.router.navigateByUrl('/tabs/menu', {replaceUrl: true});
-      } else{
-        this.ErrorAlert()
+      if(res.status == "Success"){
+        if(roles.includes('user')) {
+          this.ErrorAlert();
+          this.logout();
+        } 
+        else{
+          this.router.navigateByUrl('/tabs/menu', {replaceUrl: true});
+          
+        }
       }
+      else if(res.status == "Error"){
+        this.errorMsg = res.Message;
+        this.LoginFailErrorAlert()
+      }
+      
     });
   }
+
+  async LoginFailErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: this.errorMsg,
+      message: 'Please try again',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+  
   async ErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',

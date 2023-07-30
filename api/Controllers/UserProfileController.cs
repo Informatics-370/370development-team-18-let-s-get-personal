@@ -15,99 +15,46 @@ namespace IPKP___API.Controllers
   [ApiController]
   public class UserProfileController : ControllerBase
   {
-    //Add endpoints here
-    //UserID -> customer/adminID
-    private readonly IIPKPRepository _IPKPRepository;
-    public UserProfileController(IIPKPRepository iPKPRepository)
-    {
-      _IPKPRepository = iPKPRepository;
-    }
 
-    [HttpGet]
-    [Route("GetAllUsers")]
-
-    public async Task<IActionResult> GetAllUsersAsync()
-    {
-      try
-      {
-        var results = await _IPKPRepository.GetAllUsersAsync();
-        return Ok(results);
-      }
-      catch (Exception)
-      {
-        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-      }
-    }
-
-    [HttpGet]
-    [Route("GetCustomerUserProfile")]
-
-    public async Task<IActionResult> GetCustomerUserProfileDetailsAsync(Guid customer_ID)
-    {
-      try
-      {
-        var results = await _IPKPRepository.GetCustomerDetailsAsync(customer_ID);
-        return Ok(results);
-      }
-      catch (Exception)
-      {
-        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-      }
-    }
-
-    [HttpPost]
-    [Route("AddCustomerUserProfile")]
-    public async Task<IActionResult> AddCustomerUserProfileAsync(UserProfileViewModel upvm)
-    {
-      var userCustomer = new Customer
-      {
-        Customer_ID = new Guid(),
-        Title = upvm.Title,
-        Address = upvm.Address,
-        FirstName = upvm.FirstName,
-        Surname = upvm.Surname,
-        Cell_Number = upvm.Cell_Number,
-        Email = upvm.Email
-      };
-      try
-      {
-        _IPKPRepository.Add(userCustomer);
-        await _IPKPRepository.SaveChangesAsync();
-      }
-      catch (Exception)
-      {
-        return BadRequest("Invalid Transaction");
-      }
-      return Ok("New Customer User Added To Database.");
-    }
-
-    [HttpPut]
-    [Route("UpdateCustomerUserProfile")]
-    public async Task<IActionResult> UpdateCustomerUserProfileAsync(Guid customer_ID, UserProfileViewModel upvm)
-    {
-      try
-      {
-        var existingCustomerUser = await _IPKPRepository.GetCustomerDetailsAsync(customer_ID);
-
-        if (existingCustomerUser == null) return NotFound("Could Not Find Customer" + customer_ID);
-
-        existingCustomerUser.Title = upvm.Title;
-        existingCustomerUser.FirstName = upvm.FirstName;
-        existingCustomerUser.Surname = upvm.Surname;
-        existingCustomerUser.Cell_Number = upvm.Cell_Number;
-        existingCustomerUser.Email = upvm.Email;
-
-        if (await _IPKPRepository.SaveChangesAsync())
+        //Add endpoints here
+        //UserID -> customer/adminID
+        private readonly IIPKPRepository _IPKPRepository;
+        public UserProfileController(IIPKPRepository iPKPRepository)
         {
-          return Ok("Customer User Updated Successfully");
+          _IPKPRepository = iPKPRepository;
         }
-      }
-      catch (Exception)
-      {
-        return BadRequest("Invalid Transaction");
-      }
-      return Ok("Customer User Saved To Database.");
-    }
+
+        [HttpGet]
+        [Route("GetAllUsers")]
+        public async Task<IActionResult> GetAllUsersAsync()
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetAllUsersAsync();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetCustomerUserProfile")]
+        public async Task<IActionResult> GetCustomerUserProfileDetailsAsync(Guid customer_ID)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetCustomerDetailsAsync(customer_ID);
+                return Ok(results);
+            }   
+            catch (Exception)
+            {   
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+            }
+        }
+
+       
 
     [HttpDelete]
     [Route("DeleteCustomerUser")]
@@ -158,3 +105,56 @@ namespace IPKP___API.Controllers
     }
   }
 }
+
+//[HttpPost]
+//[Route("AddCustomerUserProfile")]
+//public async Task<IActionResult> AddCustomerUserProfileAsync(UserProfileViewModel upvm)
+//{
+
+//    var userCustomer = new Customer
+//    {
+//        Customer_ID = new Guid(),        
+//        FirstName = upvm.FirstName,
+//        Surname = upvm.Surname,
+//        Cell_Number = upvm.Cell_Number,
+//        Email = upvm.Email
+//    };
+//    try
+//    {
+//        _IPKPRepository.Add(userCustomer);
+//        await _IPKPRepository.SaveChangesAsync();
+//    }
+//    catch (Exception)
+//    {
+//        return BadRequest("Invalid Transaction");
+//    }
+//    return Ok("New Customer User Added To Database.");
+//}
+
+//[HttpPut]
+//[Route("UpdateCustomerUserProfile")]
+//public async Task<IActionResult> UpdateCustomerUserProfileAsync(Guid customer_ID, UserProfileViewModel upvm)
+//{
+//    try
+//    {
+//        var existingCustomerUser = await _IPKPRepository.GetCustomerDetailsAsync(customer_ID);
+
+//        if (existingCustomerUser == null) return NotFound("Could Not Find Customer" + customer_ID);
+
+//        //existingCustomerUser.Title = upvm.Title;
+//        existingCustomerUser.FirstName = upvm.FirstName;
+//        existingCustomerUser.Surname = upvm.Surname;
+//        existingCustomerUser.Cell_Number = upvm.Cell_Number;
+//        existingCustomerUser.Email = upvm.Email;
+
+//        if (await _IPKPRepository.SaveChangesAsync())
+//        {
+//            return Ok("Customer User Updated Successfully");
+//        }
+//    }
+//    catch (Exception)
+//    {
+//        return BadRequest("Invalid Transaction");
+//    }
+//    return Ok("Customer User Saved To Database.");
+//}

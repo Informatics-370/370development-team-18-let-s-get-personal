@@ -27,18 +27,18 @@ namespace IPKP___API.Controllers
 
         public async Task<IActionResult> GetAllDeliveriesAsync()
         {
-          try
-          {
+
+            try
+            {
                 var results = await _IPKPRepository.GetAllDeliveriesAsync();
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
                 return Ok(results);
-                //if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
-
-
+                
             }
-          catch (Exception)
-          {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-          }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+            }
         }
 
         [HttpGet]
@@ -64,27 +64,16 @@ namespace IPKP___API.Controllers
         {
             var delivery = new Delivery
             {
-                //Delivery_Address = dvm.Delivery_Address,
                 Delivery_Price = dvm.Delivery_Price,
                 //Delivery_Company = dvm.Delivery_Company_ID,
                 Delivery_ID = dvm.Delivery_ID,
                 Tracking_Number = dvm.Tracking_Number,
-
-                Delivery_Address = new Delivery_Address
-                {
-                    
-
-
-                }
-        
-        
             };
        
 
             try
             {
                 _IPKPRepository.Add(delivery);
-                //_IPKPRepository.Add(deliverAddress);
                 await _IPKPRepository.SaveChangesAsync();
             }
             catch (Exception)

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
@@ -14,26 +15,15 @@ namespace IPKP___API.Controllers.Models.Entities
         public int Basket_Quantity { get; set; }
 
         //stock item foreign key
-        [Column("Stock_Item_ID")]
         public Guid? Stock_Item_ID { get; set; }
-
-        [ForeignKey(nameof(Stock_Item_ID))]
-        [InverseProperty("Basket")]
         public virtual Stock_Item Stock_Item { get; set; }
 
-        
-
         //Customer foreign key
-        [Column("Customer_ID")]
         public Guid? Customer_ID { get; set; }
-
-        [ForeignKey(nameof(Customer_ID))]
-        [InverseProperty("Basket")]
         public virtual Customer Customer { get; set; }
 
+        //public virtual ICollection<Customer> Customer { get; set; }
         
-
-        
-
     }
 }
+

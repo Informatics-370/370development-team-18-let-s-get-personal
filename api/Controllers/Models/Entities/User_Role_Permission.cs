@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class User_Role_Permission
-  {
-    [Key]
-    public Guid User_Role_Permission_ID { get; set; }
-    public virtual User_Role User_Role { get; set; }
-    public virtual Permission Permission { get; set; }
-  }
+    public class User_Role_Permission
+    {
+        [Key]
+        public Guid User_Role_Permission_ID { get; set; }
+
+        public int User_Role_ID { get; set; }
+        public User_Role User_Role { get; set; }
+
+        public int Permission_ID { get; set; }
+        public Permission Permission { get; set; }
+    }
 }

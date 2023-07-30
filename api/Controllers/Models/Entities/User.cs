@@ -7,20 +7,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class User
-  {
-        public User() 
-        { 
-            Customer = new HashSet<Customer>();
-
-        }
+    public class User
+    {
         [Key]
         public Guid User_ID { get; set; }
-        public virtual User_Role User_Role { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
 
-        [InverseProperty("User")]
+        //fk user-role
+        public int User_Role_ID { get; set; }
+        public User_Role User_Role { get; set; }
+
         public virtual ICollection<Customer> Customer { get; set; }
+        public virtual ICollection<Employee> Employee { get; set; }
+        public virtual ICollection<Admin> Admin { get; set; }
     }
 }

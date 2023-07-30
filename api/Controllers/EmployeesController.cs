@@ -57,8 +57,6 @@ namespace IPKP___API.Controllers
             var newemployee = new Employee
             {
                 Employee_ID = new Guid(),
-                Title = employee.Title,
-                Address = employee.Address,
                 User = employee.User,
                 FirstName = employee.FirstName,
                 Surname = employee.Surname,
@@ -88,8 +86,6 @@ namespace IPKP___API.Controllers
 
                 if (existingEmployee == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" + employee_ID });
 
-                existingEmployee.Title = employee.Title;
-                existingEmployee.Address = employee.Address;
                 existingEmployee.User  = employee.User;
                 existingEmployee.FirstName = employee.FirstName;
                 existingEmployee.Surname = employee.Surname;
