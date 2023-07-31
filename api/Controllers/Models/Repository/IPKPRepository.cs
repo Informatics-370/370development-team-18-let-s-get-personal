@@ -153,6 +153,19 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.FirstOrDefaultAsync();
         }
 
+        //stock item images
+        public async Task<Stock_Image[]> GetAllStockItmagesAsync()
+        {
+            IQueryable<Stock_Image> query = _appDbContext.Stock_Images;
+            return await query.ToArrayAsync();
+        }
+        public async Task<Stock_Image> GetStockImageByID(Guid stock_image_id)
+        {
+            IQueryable<Stock_Image> query = _appDbContext.Stock_Images
+              .Where(u => u.Stock_Image_ID == stock_image_id);
+            return await query.FirstOrDefaultAsync();
+        }
+
 
         //Stock Items
         public async Task<Stock_Item[]> GetAllStockItemsAsync()
@@ -278,9 +291,11 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.ToArrayAsync();
         }
 
-        public async Task<Inventory[]> GetAllInventoryAsync()
+        public async Task<Inventory_Line_Item[]> GetAllInventoryAsync()
         {
-            IQueryable<Inventory> query = _appDbContext.Inventories;
+            IQueryable<Inventory_Line_Item> query = _appDbContext.Inventory_Line_Items
+                .Include(p => p.Stock_Item)
+                .Include(p => p.Inventory);
             return await query.ToArrayAsync();
         }
 

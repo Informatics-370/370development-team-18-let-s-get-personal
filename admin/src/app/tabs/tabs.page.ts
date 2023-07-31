@@ -18,6 +18,7 @@ export class TabsPage {
 
   logout()
   {
+    this.AuthService.Logout()
     this.AuthService.islogged = false;
     this.router.navigateByUrl("/login");
   }

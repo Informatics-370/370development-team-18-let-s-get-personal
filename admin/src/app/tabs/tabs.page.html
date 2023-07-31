@@ -1,5 +1,6 @@
 <ion-tabs >
-  <ion-tab-bar slot="top">
+  <!-- *ngIf="islogged" -->
+  <ion-tab-bar slot="top" *ngIf="islogged"> 
     <ion-tab-button tab="menu">
       <ion-label>Menu</ion-label>
     </ion-tab-button>
@@ -33,7 +34,8 @@
     </ion-tab-button>
 
     <ion-tab-button tab="admin-profile">
-      <ion-icon name="person-outline"></ion-icon>
+      <ion-label onclick="Logout()">Log out</ion-label>
+      <!-- <ion-icon name="person-outline"></ion-icon> -->
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

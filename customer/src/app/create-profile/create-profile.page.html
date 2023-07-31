@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>create-profile</ion-title>
+    <ion-title>Create Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -24,11 +24,6 @@
         </ion-item>
     
         <ion-item>
-          <ion-label position="stacked">Title</ion-label>
-          <ion-input [(ngModel)]="data.Firstname" name="title"></ion-input> <!--drop down list-->
-        </ion-item>
-    
-        <ion-item>
           <ion-label position="stacked">Cell Phone Number</ion-label>
           <ion-input [(ngModel)]="data.Firstname" name="cellnumber"></ion-input>
         </ion-item>
@@ -36,23 +31,7 @@
         <ion-item>
           <ion-label position="stacked">Email adress</ion-label>
           <ion-input name="email"></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position="stacked">Gender</ion-label>
-          <ion-input name="gender"></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position="stacked">Home Adress</ion-label>
-          <ion-input name="province" placeholder="Province"></ion-input>
-          <ion-input name="city" placeholder="City"></ion-input>
-          <ion-input name="street" placeholder="Street"></ion-input>
-          <ion-input name="housenumber" placeholder="House Number"></ion-input>
-          <ion-input name="dwellingtype" placeholder="Dwelling Type i.e. Estate/House/Apartment"></ion-input>
-          <ion-input name="unitnumber" placeholder="Unit Number"></ion-input> <!--if an apartment-->
-          <ion-input name="areacode" placeholder="Area Code/Postal Code"></ion-input>
-        </ion-item>
+        </ion-item>    
     
         <ion-item>
           <ion-label position="stacked">Username</ion-label>
@@ -68,7 +47,10 @@
           <ion-label position="stacked">Confirm Password</ion-label>
           <ion-input name="confirmpassword" required></ion-input>
         </ion-item>
-        <p>Please note password needs an upper case letter, one foreign charatcer and a number</p>
+        
+        <p style="color: red;">
+          Please note password needs ATLEAST 1 Upper case letter, 1 special character and 1 number
+        </p>
         <ion-button onclick="AddProfile()">Create Profile</ion-button>
       </ion-list>
     </div></form>

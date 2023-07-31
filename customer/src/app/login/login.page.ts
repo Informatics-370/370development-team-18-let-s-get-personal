@@ -4,14 +4,14 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/Services/authentication.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, HttpClientModule]
+  imports: [IonicModule, CommonModule, FormsModule, HttpClientModule, RouterModule]
 })
 export class LoginPage implements OnInit {
 
@@ -35,4 +35,13 @@ export class LoginPage implements OnInit {
     });
   }
 
+  CreateProfileNav()
+  {
+    this.router.navigate(['./tabs/create-profile']);
+  }
+
+  ForgotPasswordNav()
+  {
+    this.router.navigate(['./tabs/forgot-password']);
+  }
 }

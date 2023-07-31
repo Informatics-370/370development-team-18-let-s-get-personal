@@ -43,8 +43,15 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetStockTypeDetailsAsync(stock_Type_ID);
-                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Type" });
-                return Ok(results);
+                if (results == null) 
+                { 
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Type" }); 
+                }
+                else
+                {
+                    return Ok(results);
+                }
+                
             }
             catch (Exception)
             {

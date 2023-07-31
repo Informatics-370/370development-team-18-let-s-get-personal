@@ -22,9 +22,15 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<User_Role[]> GetAllUserRolesAsync();
         Task<Delivery> GetDeliveryDetailsAsync(Guid delivery_ID);
         Task<Delivery[]> GetAllDeliveriesAsync();
+        
+        Task<Stock_Image> GetStockImageByID(Guid stock_image_id);
+        Task<Stock_Image[]> GetAllStockItmagesAsync();
+
+        //Stock items
         Task<Stock_Item> GetStockItemDetailsAsync(Guid stock_Item_ID);
         Task<Stock_Item> GetStockItemByName(string stock_Item_Name);
         Task<Stock_Item[]> GetAllStockItemsAsync();
+
         Task<Stock_Type> GetStockTypeDetailsAsync(Guid stock_Type_ID);
         Task<Stock_Type[]> GetAllStockTypesAsync();
         Task<Stock_Item_Colour> GetStockItemColourDetailsAsync(Guid stock_Item_Colour_ID);
@@ -40,7 +46,6 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Order_Request[]> GetAllOrderRequestsAsync();
         Task<Order_Status[]> GetAllOrderStatusesAsync();
         Task<Order_Status> GetOrderStatusByNameAsync(string orderStatus);
-        //Task<Best_Sellers[]> GetLatestBestSellersAsync();
         Task<Experience_Rating[]> GetAllExperienceRatings();
         Task<Experience_Rating> GetExperienceRatingAsync(Guid Experience_Rating_ID);
         Task<Refund_Policy> GetPolicyAsync(Guid Refund_Policy_Id);
@@ -50,8 +55,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Discount> GetDiscountAsync(Guid discount_Id);
         Task<Refund[]> GetAllPreviousRefunds();
         Task<Refund> GetPreviousRefund(Guid refund_Id);
-        
-        Task<Inventory[]> GetAllInventoryAsync();
+        Task<Inventory_Line_Item[]> GetAllInventoryAsync();
 
   }
 }

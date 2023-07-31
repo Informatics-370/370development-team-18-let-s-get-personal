@@ -41,7 +41,7 @@ export class LoginPage implements OnInit {
         } 
         else{
           this.router.navigateByUrl('/tabs/menu', {replaceUrl: true});
-          
+          localStorage.setItem('username', form.value.username,);
         }
       }
       else if(res.status == "Error"){

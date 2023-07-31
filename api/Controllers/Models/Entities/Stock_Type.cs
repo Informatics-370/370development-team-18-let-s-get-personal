@@ -14,12 +14,10 @@ namespace IPKP___API.Controllers.Models.Entities
         public Guid Stock_Type_ID { get; set; }
 
         [StringLength(255)]
-        public string Stock_Type_Name { get; set; }
-        
+        public string Stock_Type_Name { get; set; }        
 
-        [InverseProperty("Stock_Types")]
         public virtual ICollection<Stock_Item> Stock_Item { get; set; }
 
-        public virtual ICollection<Inventory> Inventory { get; set; }
+        //public virtual ICollection<Inventory> Inventory { get; set; }
     }
 }

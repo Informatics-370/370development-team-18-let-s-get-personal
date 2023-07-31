@@ -73,10 +73,7 @@ namespace IPKP___API.Controllers
                     {
                         token = new JwtSecurityTokenHandler().WriteToken(token),
                         expiration = token.ValidTo,
-                        //loggedInUser = new LoginViewModel { Username = user.UserName },
                     });
-                    //var loggedInUser = new LoginViewModel { UserName = user.UserName };
-                    //return Ok(loggedInUser);
                 }
                 catch
                 {
@@ -90,24 +87,7 @@ namespace IPKP___API.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("GetCustomerbyID")]
-        public async Task<IActionResult> GetCustomerbyID([FromBody] LoginViewModel model)
-        {
-            var user = await _userManager.FindByNameAsync(model.Username);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-            {
-                List<Customer> CustomerList = new List<Customer>();
 
-                var results = await _IPKPRepository.GetAllCustomersAsync();
-
-                return Ok(user);
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
-            }
-        }
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
@@ -195,8 +175,6 @@ namespace IPKP___API.Controllers
                 //}
                 return Ok(new Response { Status = "Success", Message = "User created successfully!" });
             }
-
-
         }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
@@ -304,3 +282,21 @@ namespace IPKP___API.Controllers
         }
     }
 }
+//[HttpPost]
+//[Route("GetCustomerbyID")]
+//public async Task<IActionResult> GetCustomerbyID([FromBody] LoginViewModel model)
+//{
+//    var user = await _userManager.FindByNameAsync(model.Username);
+//    if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+//    {
+//        List<Customer> CustomerList = new List<Customer>();
+
+//        var results = await _IPKPRepository.GetAllCustomersAsync();
+
+//        return Ok(user);
+//    }
+//    else
+//    {
+//        return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
+//    }
+//}

@@ -49,8 +49,7 @@ public Login(username: string, password: string) {
     this.currentUser.next({
       name: token[nameLongName],
       roles: token[roleLongName]
-    });
-    
+    });    
   }))  
 }
 

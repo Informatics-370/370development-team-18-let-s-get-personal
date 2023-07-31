@@ -16,13 +16,13 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public string Stock_Image_File { get; set; }
 
-        [Column("Stock_Item_Id")]
-        public Guid? Stock_Item_Id { get; set; }
+        //[Column("Stock_Item_Id")]
+        //public Guid? Stock_Item_Id { get; set; }
 
         
         public virtual ICollection<Stock_Item> Stock_Item { get; set; }
 
-        public virtual ICollection<Inventory> Inventory { get; set; }
+        //public virtual ICollection<Inventory> Inventory { get; set; }
 
     }
 }

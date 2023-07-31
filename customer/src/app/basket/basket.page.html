@@ -11,10 +11,10 @@
         <!--<img [src]="item.img" />-->
       </ion-thumbnail>
       <ion-label>
-        <h5>{{ item.stockItem }}</h5>
+        <h5>{{ item.stock_Item }}</h5>
         <ion-button (click)="removeFromBasket(item)">Remove</ion-button>
         <ion-button (click)="decrementQuantity(item)">-</ion-button>
-        <span>{{ item.quantity }}</span>
+        <span>{{ item.basket_Quantity }}</span>
         <ion-button (click)="incrementQuantity(item)">+</ion-button>
       </ion-label>
     </ion-item>

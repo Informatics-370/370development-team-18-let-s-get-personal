@@ -26,7 +26,6 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetAllStockItemColours")]
-
         public async Task<IActionResult> GetAllStockItemColoursAsync()
         {
             try
@@ -44,7 +43,6 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetStockItemColour/{stock_Item_Colour_ID}")]
-
         public async Task<IActionResult> GetStockItemColourDetailsAsync(Guid stock_Item_Colour_ID)
         {
             try
@@ -69,7 +67,7 @@ namespace IPKP___API.Controllers
             {
                Stock_Item_Colour_ID = new Guid(),
                Stock_Item_Colour_Name = sicvm.Stock_Item_Colour_Name,
-               Stock_Item_Colour_Image =sicvm.Stock_Item_Colour_Image
+               //Stock_Item_Colour_Image =sicvm.Stock_Item_Colour_Image
             };
 
             try

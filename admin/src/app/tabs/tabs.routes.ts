@@ -109,7 +109,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/tabs/login',
+    redirectTo: '/login',
     pathMatch: 'full',
   },
 ];

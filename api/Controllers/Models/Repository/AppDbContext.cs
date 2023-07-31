@@ -33,6 +33,7 @@ namespace IPKP___API.Controllers.Models.Repository
         public DbSet<Experience_Rating> Experience_Ratings {get; set; }
         public DbSet<Image> Images {get; set; }
         public DbSet<Inventory> Inventories {get; set; }
+        public DbSet<Inventory_Line_Item> Inventory_Line_Items { get; set; }
         public DbSet<Invoice> Invoices {get; set; }
         public DbSet<Order> Orders {get; set; }
         public DbSet<Order_Status> Order_Statuses { get; set; }

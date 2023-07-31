@@ -13,7 +13,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   imports: [IonicModule, CommonModule, FormsModule, HttpClientModule]
 })
 export class CreateProfilePage implements OnInit {
-  data = {profileId: 0, email: '', password: '', cellnumber: '', Firstname: '', Lastname: '',adress:''};
+  data = {profileId: 0, email: '', password: '', cellnumber: '', Firstname: '', Lastname: ''};
   constructor(private service:AuthenticationService) { }
 
   ngOnInit() {
