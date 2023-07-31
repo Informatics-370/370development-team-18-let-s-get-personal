@@ -4,14 +4,11 @@ import { Title } from "./title"
 import { Address } from "./address"
 
 export class Customer{  
-    Title!: Title
-    Gender!: Gender
+    Title!: string
+    Gender!: string
     Address!: Address
-    user!: User
-
-    CustomerId!: number
-    FirstName!: String
-    Surname!: String
-    Cell_Number!: Number
-    Email!: String   
+    FirstName!: string
+    Surname!: string
+    Cell_Number!: string
+    Email!: string   
 }

@@ -1,4 +1,4 @@
-﻿using IPKP___API.Controllers.Models.Repository;
+using IPKP___API.Controllers.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using IPKP___API.Controllers.Models.Entities;
@@ -92,7 +92,7 @@ namespace IPKP___API.Controllers
                     $"You will recieve proof of payment shortly" +
                     $"" +
                     $"Kind regards" +
-                    $"It's Personal by Kivashin and Predisha";
+                    $"It's Personal by Kuvashan and Predisha";
                 var toEmailAddress = refundVM.Customer_ID.Email;
 
                 // Sending email
@@ -105,7 +105,7 @@ namespace IPKP___API.Controllers
             {
                 return BadRequest("Invalid Transaction");
             }
-            return Ok("Delivery Company Added To Database."); 
+            return Ok("Refund Processed."); 
             
         }
         private async Task SendEmail(string fromEmailAddress, string subject, string message, string toEmailAddress)

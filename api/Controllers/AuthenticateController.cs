@@ -1,5 +1,7 @@
+using IPKP___API.Controllers.Models.EmailInterface;
 using IPKP___API.Controllers.Models.Entities;
 using IPKP___API.Controllers.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -21,6 +24,7 @@ namespace IPKP___API.Controllers
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
+    private readonly IEmailService _emailService;
 
     public AuthenticateController(
         UserManager<IdentityUser> userManager,
@@ -137,6 +141,66 @@ namespace IPKP___API.Controllers
           );
 
       return token;
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    [Route("ForgotPassword")]
+    public async Task<IActionResult> ForgotPasswordAsync([Required] string email)
+    {
+      var user =await  _userManager.FindByEmailAsync(email);
+      if(user! == null)
+      {
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var forgotPasswordLink = Url.Action(nameof(ResetPassword), "Authenticate",
+          new { token, email = user.Email }, Request.Scheme);
+        var message = new Message(email, "Password Reset",
+          "<p>Please use the link to reset your password: </p>" + forgotPasswordLink);
+        _emailService.SendEmail(message);
+        return StatusCode(StatusCodes.Status200OK,
+          new Response { Status = "Success", Message = $"Email sent successfully!" });
+      }
+      else
+      {
+        return StatusCode(StatusCodes.Status400BadRequest,
+          new Response { Status = "Fail", Message = $"Email not sent! Please contact support." });
+      }
+    }
+
+    [HttpGet("ResetPassword")]
+    public async Task<IActionResult> ResetPassword(string token, string email)
+    {
+      var model = new ResetPassword { Token = token, Email = email };
+      return Ok(new
+      {
+        model
+      });
+    }
+
+    [HttpPost]
+    [Route("ResetPassword")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPassword(ResetPassword resetPassword)
+    {
+      var user = await _userManager.FindByEmailAsync(resetPassword.Email);
+      if(user != null)
+      {
+        var resetPassResult = await _userManager
+          .ResetPasswordAsync(user, resetPassword.Token, resetPassword.ConfirmPassword);
+        if(!resetPassResult.Succeeded)
+        {
+          foreach(var error in resetPassResult.Errors)
+          {
+            ModelState.AddModelError(error.Code, error.Description);
+          }
+          return Ok(ModelState);
+        }
+        return StatusCode(StatusCodes.Status200OK,
+          new Response { Status = "Success", Message = $"Password changed successfully!" });
+      }
+      return StatusCode(StatusCodes.Status400BadRequest,
+          new Response { Status = "Fail", Message = $"Password not changed! Please contact support." });
+
     }
   }
 }

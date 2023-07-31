@@ -19,23 +19,40 @@ import { EmployeeService } from 'src/app/Services/employee.service';
 })
 export class ProfilesPage implements OnInit {
   
-  Profile: User[] = []
+  users: User[] = []
   @ViewChild(IonModal) modal!: IonModal
 
   filterTerm: string = "";
   filteredItems:  User[] = [];
   
-  constructor(private service:ProfileService, private alertController:AlertController, 
-    private empservice: EmployeeService, public modalCtrl: ModalController) { }
+  constructor(private profileService:ProfileService, 
+    private alertController:AlertController, 
+    private empservice: EmployeeService, 
+    public modalCtrl: ModalController) { }
 
   ngOnInit() {
-  
-  } 
+    this.profileService.GetAllUsers().subscribe(res => {
+      this.users = res;
+    })
+  }
 
+  deleteUser(user: User) {
+    var userID = user.User_ID;
+    this.profileService.DeleteUser(userID.toString()).subscribe(res => {
+      this.profileService.GetAllUsers().subscribe(res => {
+        this.users = res;
+        this.presentAlert(`Deleting user: ${user.Email}`);
+      })
+    })
+  }
 
-
-  
-
-
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Admin Action',
+      message: message,
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
 }
 

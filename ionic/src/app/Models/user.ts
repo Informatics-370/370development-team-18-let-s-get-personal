@@ -1,7 +1,7 @@
 import { UserRole } from "./userrole"
 export class User{
     User_ID!: number
-    Username!: String
-    Password!: String
+    Username!: string
+    Password!: string
     User_Role!: UserRole
 }

@@ -3,8 +3,8 @@ import { City } from "./city";
 
 export class Address{
     Address_ID!: Number
-    Province_Name!: Province
-    City_Name!: City
+    Province_Name!: string
+    City_Name!: string
 
     Street!: String
     Number!: Number

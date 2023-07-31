@@ -17,16 +17,27 @@ import { AlertController } from '@ionic/angular';
 })
 export class ChangepasswordPage implements OnInit {
 
-  data = {currPassword: '', newPassword: '', confirmPassword: ''};
-  //form: NgForm;
+  data = {newPassword: '', confirmNewPassword: ''};
   constructor(
-    private authService: AuthenticationService, private router: Router, private alertController:AlertController) { }
+    private authService: AuthenticationService, 
+    private router: Router, 
+    private alertController:AlertController) { }
 
   ngOnInit(): void {
   }
 
   UpdatePassword(form: NgForm) {
-    
+    this.data.newPassword = form.value.newPassword;
+    this.data.confirmNewPassword = form.value.confirmNewPassword;
+    if(this.data.newPassword == this.data.confirmNewPassword) {
+      this.authService.ResetPassword(form.value.Email, 
+        this.data.newPassword, 
+        this.data.confirmNewPassword)
+          .subscribe((res) => {
+          this.ChangeSuccessAlert();
+          this.router.navigateByUrl('/profile', {replaceUrl: true});
+      });
+    }
   }
 
   async ChangeSuccessAlert() {

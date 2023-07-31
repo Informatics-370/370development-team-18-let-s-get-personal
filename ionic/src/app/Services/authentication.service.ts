@@ -74,4 +74,53 @@ hasPermission(permission: string[]): boolean {
   }
   return false;
 }
+
+public Register(username: string, password: string, confirmPassword: string) {
+  let registerCredentials = {
+    'username': username, 
+    'password': password,
+    'confirmPassword': confirmPassword
+  };
+  return this.httpClient.post(`${this.apiUrl}Authenticate/register`, registerCredentials)
+  .pipe(tap(res => {
+    let token = this.getDecodedAccessToken(JSON.stringify(res));
+    let roleLongName = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';  // TODO: Change to 'role' when using Azure AD 
+    let nameLongName = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
+    localStorage.setItem('token', JSON.stringify(token));
+    localStorage.setItem('name', token[nameLongName]);
+    localStorage.setItem('roles', token[roleLongName]);
+    this.currentUser.next({
+      name: token[nameLongName],
+      roles: token[roleLongName]
+    });
+  }))
+}
+
+public ResetPassword(email: string, password: string, confirmPassword: string) {
+  let resetPasswordCredentials = {
+    'email': email, 
+    'password': password,
+    'confirmPassword': confirmPassword
+  };
+  return this.httpClient.post(`${this.apiUrl}Authenticate/ResetPassword`, resetPasswordCredentials)
+  .pipe(tap(res => {
+    let token = this.getDecodedAccessToken(JSON.stringify(res));
+    let roleLongName = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';  // TODO: Change to 'role' when using Azure AD 
+    let nameLongName = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
+    localStorage.setItem('token', JSON.stringify(token));
+    localStorage.setItem('name', token[nameLongName]);
+    localStorage.setItem('roles', token[roleLongName]);
+    this.currentUser.next({
+      name: token[nameLongName],
+      roles: token[roleLongName]
+    });
+  }))
+}
+
+public ForgotPassword(email: string) {
+  let forgotPasswordCredentials = {
+    'email': email
+  };
+  return this.httpClient.post(`${this.apiUrl}Authenticate/ForgotPassword`, forgotPasswordCredentials);
+}
 }

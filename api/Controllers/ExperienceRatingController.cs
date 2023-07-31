@@ -1,4 +1,4 @@
-﻿using IPKP___API.Controllers.Models.Repository;
+using IPKP___API.Controllers.Models.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -11,7 +11,7 @@ namespace IPKP___API.Controllers
     [ApiController]
     public class ExperienceRatingController : ControllerBase
     {
-        AppDbContext _CoreDbContext = new AppDbContext();
+        //AppDbContext _CoreDbContext = new AppDbContext();
 
         private readonly IIPKPRepository _IPKPRepository;
         public ExperienceRatingController(IIPKPRepository iPKPRepository)

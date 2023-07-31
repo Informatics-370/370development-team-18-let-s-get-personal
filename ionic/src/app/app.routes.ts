@@ -255,6 +255,10 @@ export const routes: Routes = [
   {
     path: 'customers',
     loadComponent: () => import('./Admin/profiles/customers/customers.page').then( m => m.CustomersPage)
+  },
+  {
+    path: 'assign-admin-role',
+    loadComponent: () => import('./Admin/profiles/assign-admin-role/assign-admin-role.page').then( m => m.AssignAdminRolePage)
   }
 
 

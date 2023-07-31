@@ -1,5 +1,7 @@
 using IPKP___API.Controllers.Models;
+using IPKP___API.Controllers.Models.EmailInterface;
 using IPKP___API.Controllers.Models.Repository;
+using IPKP___API.Controllers.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,9 +51,14 @@ namespace IPKP___API
           services.AddDbContext<AppDbContext>(options =>
           options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
           services.AddScoped<IIPKPRepository, IPKPRepository>();
+          services.AddScoped<IEmailService, EmailService>();
           services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
+          services.Configure<DataProtectionTokenProviderOptions>(options =>
+            options.TokenLifespan = TimeSpan.FromHours(10));
+          var emailConfiguration = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+          services.AddSingleton(emailConfiguration);
           services.AddAuthentication(options =>
           {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

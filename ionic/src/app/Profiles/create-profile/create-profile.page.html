@@ -1,74 +1,122 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>Create Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Create Profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-list>
-      <ion-item>
-        <ion-label position="stacked">First Name</ion-label>
-        <ion-input name="Firstname"></ion-input>
-      </ion-item>
+<ion-content>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Title</ion-label>
+          <ion-select [(ngModel)]="selectedTitle">
+            <ion-select-option *ngFor="let title of titles" [value]="title">{{ title }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
 
-      <ion-item>
-        <ion-label position="stacked">Last Name</ion-label>
-        <ion-input name="Lastname"></ion-input>
-      </ion-item>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Gender</ion-label>
+          <ion-select [(ngModel)]="selectedGender">
+            <ion-select-option *ngFor="let gender of genders" [value]="gender">{{ gender }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
 
-      <ion-item>
-        <ion-label position="stacked">Title</ion-label>
-        <ion-input name="title"></ion-input> <!--drop down list-->
-      </ion-item>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Province</ion-label>
+          <ion-select [(ngModel)]="selectedProvince" (ionChange)="onProvinceChange()">
+            <ion-select-option *ngFor="let province of provinces" [value]="province">{{ province }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>City</ion-label>
+          <ion-select [(ngModel)]="selectedCity">
+            <ion-select-option *ngFor="let city of cities" [value]="city">{{ city }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Street</ion-label>
+          <ion-input type="text" name="street" [(ngModel)]="street" required></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label>Number</ion-label>
+          <ion-input type="number" name="number" [(ngModel)]="number" required></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12" size-md="6">
+        <ion-item>
+          <ion-label>Unit Number</ion-label>
+          <ion-input type="number" name="unitNumber" [(ngModel)]="unitNumber"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Dwelling Type</ion-label>
+          <ion-input type="text" name="dwellingType" [(ngModel)]="dwellingType"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Area Code</ion-label>
+          <ion-input type="number" name="areaCode" [(ngModel)]="areaCode"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
 
-      <ion-item>
-        <ion-label position="stacked">Cell Phone Number</ion-label>
-        <ion-input name="cellnumber"></ion-input>
-      </ion-item>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>First Name</ion-label>
+          <ion-input type="text" name="firstName" [(ngModel)]="FirstName" required></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
 
-      <ion-item>
-        <ion-label position="stacked">Email adress</ion-label>
-        <ion-input name="email"></ion-input>
-      </ion-item>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Surname</ion-label>
+          <ion-input type="text" name="surname" [(ngModel)]="surname" required></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
 
-      <ion-item>
-        <ion-label position="stacked">Gender</ion-label>
-        <ion-input name="gender"></ion-input>
-      </ion-item>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Cell Number</ion-label>
+          <ion-input type="number" name="cellNumber" [(ngModel)]="cellNumber" required></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
 
-      <ion-item>
-        <ion-label position="stacked">Home Adress</ion-label>
-        <ion-input name="province" placeholder="Province"></ion-input>
-        <ion-input name="city" placeholder="City"></ion-input>
-        <ion-input name="street" placeholder="Street"></ion-input>
-        <ion-input name="housenumber" placeholder="House Number"></ion-input>
-        <ion-input name="dwellingtype" placeholder="Dwelling Type i.e. Estate/House/Apartment"></ion-input>
-        <ion-input name="unitnumber" placeholder="Unit Number"></ion-input> <!--if an apartment-->
-        <ion-input name="areacode" placeholder="Area Code/Postal Code"></ion-input>
-      </ion-item>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Email</ion-label>
+          <ion-input type="email" name="email" [(ngModel)]="email" required></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
 
-      <ion-item>
-        <ion-label position="stacked">Username</ion-label>
-        <ion-input name="username" required></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Password</ion-label>
-        <ion-input name="password" required></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Confirm Password</ion-label>
-        <ion-input name="confirmpassword" required></ion-input>
-      </ion-item>
-
-      <ion-button onclick="AddProfile()">Create Profile</ion-button>
-    </ion-list>
-  </ion-content>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="full" (click)="saveProfile()">Save Profile</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

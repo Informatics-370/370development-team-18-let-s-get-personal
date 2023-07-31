@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule } from '@ionic/angular';
+import { AuthenticationService } from 'src/app/Services/authentication.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -10,11 +11,25 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class ForgotPasswordPage implements OnInit {
+export class ForgotPasswordPage{
+  email!: string;
 
-  constructor() { }
+  constructor(private alertController: AlertController,
+    private authService: AuthenticationService) { }
 
-  ngOnInit() {
+  sendResetLink() {
+    this.authService.ForgotPassword(this.email);
+    this.presentAlert();
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Forgot Password',
+      message: 'A reset link has been sent to your email address.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 }

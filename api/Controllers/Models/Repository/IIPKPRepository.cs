@@ -40,5 +40,13 @@ namespace IPKP___API.Controllers.Models.Repository
     Task<Order_Status[]> GetAllOrderStatusesAsync();
     Task<Order_Status> GetOrderStatusByNameAsync(string orderStatus);
     Task<Best_Sellers> GetLatestBestSellersAsync();
+    Task<Title[]> GetAllTitlesAsync();
+    Task<Title> GetTitleByDescriptionAsync(string titlename);
+    Task<Gender[]> GetAllGendersAsync();
+    Task<Gender> GetGenderByDescriptionAsync(string gendername);
+    Task<Province[]> GetAllProvincesAsync();
+    Task<Province> GetProvinceByNameAsync(string provincename);
+    Task<City[]> GetAllCitiesAsync();
+    Task<City> GetCityByNameAsync(string cityname);
   }
 }

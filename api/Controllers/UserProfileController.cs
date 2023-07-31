@@ -2,10 +2,13 @@ using IPKP___API.Controllers.Models;
 using IPKP___API.Controllers.Models.Entities;
 using IPKP___API.Controllers.Models.Repository;
 using IPKP___API.Controllers.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,9 +21,12 @@ namespace IPKP___API.Controllers
     //Add endpoints here
     //UserID -> customer/adminID
     private readonly IIPKPRepository _IPKPRepository;
-    public UserProfileController(IIPKPRepository iPKPRepository)
+    private readonly UserManager<IdentityUser> _userManager;
+    public UserProfileController(IIPKPRepository iPKPRepository,
+      UserManager<IdentityUser> userManager)
     {
       _IPKPRepository = iPKPRepository;
+      _userManager = userManager;
     }
 
     [HttpGet]
@@ -34,6 +40,35 @@ namespace IPKP___API.Controllers
         return Ok(results);
       }
       catch (Exception)
+      {
+        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+      }
+    }
+
+    [HttpGet]
+    [Route("GetUserByEmail")]
+    public async Task<IActionResult> GetUserByEmailAsync(ForgotResetPasswordViewModel frpvm)
+    {
+      try
+      {
+        var results = await _userManager.FindByEmailAsync(frpvm.Email);
+        return Ok(results);
+      }
+      catch (Exception)
+      {
+        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+      }
+    }
+
+    [HttpGet]
+    [Route("GetAllCustomers")]
+    public async Task<IActionResult> GetAllCustomersAsync()
+    {
+      try
+      {
+        var results = await _IPKPRepository.GetAllCustomersAsync();
+        return Ok(results);
+      }catch (Exception)
       {
         return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
       }
@@ -57,18 +92,19 @@ namespace IPKP___API.Controllers
 
     [HttpPost]
     [Route("AddCustomerUserProfile")]
-    public async Task<IActionResult> AddCustomerUserProfileAsync(UserProfileViewModel upvm)
+    public async Task<IActionResult> AddCustomerUserProfileAsync(IdentityUser user, UserProfileViewModel upvm)
     {
+      var custID = Guid.NewGuid();
       var userCustomer = new Customer
       {
-        Customer_ID = upvm.Customer_ID,
+        Customer_ID = custID,
         Title = upvm.Title,
         Gender = upvm.Gender,
         Address = upvm.Address,
         FirstName = upvm.FirstName,
         Surname = upvm.Surname,
         Cell_Number = upvm.Cell_Number,
-        Email = upvm.Email
+        Email = user.Email
       };
       try
       {
@@ -158,5 +194,6 @@ namespace IPKP___API.Controllers
       }
       return Ok("User Removed From Database.");
     }
+
   }
 }

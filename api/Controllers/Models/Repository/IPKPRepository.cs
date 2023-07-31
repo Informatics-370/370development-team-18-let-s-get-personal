@@ -24,6 +24,12 @@ namespace IPKP___API.Controllers.Models.Repository
       _appDbContext.Remove(entity);
     }
 
+    public async Task<City[]> GetAllCitiesAsync()
+    {
+      IQueryable<City> query = _appDbContext.Cities;
+      return await query.ToArrayAsync();
+    }
+
     public async Task<Customer[]> GetAllCustomersAsync()
     {
       IQueryable<Customer> query = _appDbContext.Customers;
@@ -45,6 +51,12 @@ namespace IPKP___API.Controllers.Models.Repository
     public async Task<Employee[]> GetAllEmployeesAsync()
     {
       IQueryable<Employee> query = _appDbContext.Employees;
+      return await query.ToArrayAsync();
+    }
+
+    public async Task<Gender[]> GetAllGendersAsync()
+    {
+      IQueryable<Gender> query = _appDbContext.Genders;
       return await query.ToArrayAsync();
     }
 
@@ -72,6 +84,12 @@ namespace IPKP___API.Controllers.Models.Repository
       return await query.ToArrayAsync();
     }
 
+    public async Task<Province[]> GetAllProvincesAsync()
+    {
+      IQueryable<Province> query = _appDbContext.Provinces;
+      return await query.ToArrayAsync();
+    }
+
     public async Task<Stock_Item_Colour[]> GetAllStockItemColoursAsync()
     {
       IQueryable<Stock_Item_Colour> query = _appDbContext.Stock_Item_Colours;
@@ -90,6 +108,12 @@ namespace IPKP___API.Controllers.Models.Repository
       return await query.ToArrayAsync();
     }
 
+    public async Task<Title[]> GetAllTitlesAsync()
+    {
+      IQueryable<Title> query = _appDbContext.Titles;
+      return await query.ToArrayAsync();
+    }
+
     public async Task<User_Role[]> GetAllUserRolesAsync()
     {
       IQueryable<User_Role> query = _appDbContext.User_Roles;
@@ -100,6 +124,13 @@ namespace IPKP___API.Controllers.Models.Repository
     {
       IQueryable<User> query = _appDbContext.Users;
       return await query.ToArrayAsync();
+    }
+
+    public async Task<City> GetCityByNameAsync(string cityname)
+    {
+      IQueryable<City> query = _appDbContext.Cities
+        .Where(u => u.City_Name == cityname);
+      return await query.FirstOrDefaultAsync();
     }
 
     public async Task<Customer> GetCustomerDetailsAsync(Guid customer_ID)
@@ -127,6 +158,13 @@ namespace IPKP___API.Controllers.Models.Repository
     {
       IQueryable<Employee> query = _appDbContext.Employees
                 .Where(u => u.Employee_ID == employee_ID);
+      return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<Gender> GetGenderByDescriptionAsync(string gendername)
+    {
+      IQueryable<Gender> query = _appDbContext.Genders
+        .Where(u => u.Gender_Name == gendername);
       return await query.FirstOrDefaultAsync();
     }
 
@@ -171,6 +209,13 @@ namespace IPKP___API.Controllers.Models.Repository
       return await query.FirstOrDefaultAsync();
     }
 
+    public async Task<Province> GetProvinceByNameAsync(string provincename)
+    {
+      IQueryable<Province> query = _appDbContext.Provinces
+                .Where(u => u.Province_Name == provincename);
+      return await query.FirstOrDefaultAsync();
+    }
+
     public async Task<Stock_Item> GetStockItemByName(string stock_Item_Name)
     {
       IQueryable<Stock_Item> query = _appDbContext.Stock_Items
@@ -196,6 +241,13 @@ namespace IPKP___API.Controllers.Models.Repository
     {
       IQueryable<Stock_Type> query = _appDbContext.Stock_Types
                 .Where(u => u.Stock_Type_ID == stock_Type_ID);
+      return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<Title> GetTitleByDescriptionAsync(string titlename)
+    {
+      IQueryable<Title> query = _appDbContext.Titles
+                .Where(u => u.Title_Name == titlename);
       return await query.FirstOrDefaultAsync();
     }
 

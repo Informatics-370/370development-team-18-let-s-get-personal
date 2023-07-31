@@ -11,6 +11,8 @@ import { Experience_RatingService } from 'src/app/Services/experiencerating.serv
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { AuthenticationService } from 'src/app/Services/authentication.service';
+import { User } from 'src/app/Models/user';
 
 @Component({
   selector: 'app-profile',
@@ -21,11 +23,17 @@ import { OverlayEventDetail } from '@ionic/core/components';
 })
 export class ProfilePage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
-  data = {profileId: 0, email: '', password: '', cellnumber: '', Firstname: '', Lastname: '', adress:''};
+  data = {email: '', password: '', cellnumber: '', Firstname: '', Lastname: '', adress:''};
+  currentUser!: User;
   experienceRatings: Experience_Rating[] =[]
 
-  constructor(public experienceRatingservice:Experience_RatingService, public modalCtrl: ModalController, 
-    private router: Router, private service:ProfileService, private alertController:AlertController, private thisroute: Router) { }
+  constructor(public experienceRatingservice:Experience_RatingService, 
+    public modalCtrl: ModalController, 
+    private router: Router, 
+    private profileService:ProfileService,
+    private authenticationService: AuthenticationService,
+    private alertController:AlertController, 
+    private thisroute: Router) { }
 
   ngOnInit() {
   
@@ -37,14 +45,25 @@ export class ProfilePage implements OnInit {
   })
 
   logout(){
-    // if(this.ConfirmLogOut() == 'Continue'){
-
-    // }
-    
+    this.authenticationService.Logout();
+    this.router.navigate(['/login']);
   }
  
-  getProfile(){
+  public getCurrentUser(){
+    this.authenticationService.getUser().subscribe((res:any) => {
+      this.currentUser = res;
+    });
+  }
 
+  getProfile(){
+    this.profileService.GetUserProfile(this.currentUser.Username).subscribe((res:any) => {
+      this.data.Firstname = res.Firstname;
+      this.data.Lastname = res.Lastname;
+      this.data.email = res.Email;
+      this.data.cellnumber = res.Cellnumber;
+      this.data.adress = res.Adress;
+      console.log(res);
+    });
    }
 
    getExRatings(){

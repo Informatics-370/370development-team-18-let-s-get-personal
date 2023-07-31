@@ -1,21 +1,20 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>Profiles</ion-title>
+    <ion-title>View All User Profiles</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">View Users</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-card-content>
-                      
-
-                      
-        
-  </ion-card-content>
-
-
-
+<ion-content>
+  <ion-grid class="ion-padding">
+    <ion-row *ngFor="let user of users">
+      <ion-col size="6">
+        <p>Email: {{ user.Email }}</p>
+        <p>Role: {{ user.User_Role }}</p>
+      </ion-col>
+      <ion-col size="6" class="ion-text-center">
+        <ion-button expand="full" routerLink="/assign-admin-role">Change User Role</ion-button>
+        <ion-button expand="full" (click)="deleteUser(user)">Delete User</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
