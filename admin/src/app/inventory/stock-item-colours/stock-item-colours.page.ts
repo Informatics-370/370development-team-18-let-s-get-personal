@@ -20,7 +20,6 @@ import { OverlayEventDetail } from '@ionic/core/components';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class StockItemColoursPage implements OnInit {
-
   /*filterTerm: string = "";
   stockitemcolours:any=StockItemColours;
   filteredStockItemColour = this.stockitemcolours.filter((items: { Stock_Item_Colour_Name: string,Stock_Item_Colour_Image:string; }) => 
@@ -43,8 +42,8 @@ export class StockItemColoursPage implements OnInit {
     private router: Router, private route: ActivatedRoute, private alertController: AlertController) {  }
 
   AddColourForm:FormGroup = new FormGroup({
-    name: new FormControl(['',Validators.required]),
-    image: new FormControl(['',Validators.required])
+    name: new FormControl('',[Validators.required]),
+    image: new FormControl('',[Validators.required])
   });
 
   ngOnInit(): void {   
