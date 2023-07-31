@@ -1,13 +1,19 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Make Payment</ion-title>
+    <ion-title>Add Delivery Address</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true"><!--This is the third party app view page. -->
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">make-payment</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true">
+  
+  <ion-list>
+      <ion-item>
+        <ion-input label="Name" labelPlacement="floating" placeholder="Your Name and Surname"></ion-input>
+      </ion-item>
+      <ion-item>
+      <ion-input label="Address" labelPlacement="floating" placeholder="Street, Surbarb, City and ZIP Code"></ion-input>
+    </ion-item>
+    </ion-list>
+   <ion-button expand="block" >Continue to Pay</ion-button><!--This takes to the third party app view page. -->
+    
 </ion-content>

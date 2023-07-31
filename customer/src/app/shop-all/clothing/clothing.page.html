@@ -16,46 +16,68 @@
     <ion-row>
       <ion-col>
         <ion-card>
-          <ion-card-title>Name</ion-card-title>
+          <ion-card-title>Plain T-Shirt</ion-card-title>
           <ion-card-content>
-            <p>Image</p>
-            <p>Price</p>
-            <ion-img></ion-img>
+            <ion-img src="/assets/shirt2.jpg" ></ion-img>
+            <p>White</p>
+            <p>R: 100</p>
           </ion-card-content>
         </ion-card>
-        <ion-button>Add To Basket</ion-button>
+        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
       </ion-col>
       <ion-col>
         <ion-card>
-          <ion-card-title>Name</ion-card-title>
+          <ion-card-title>Hoodie</ion-card-title>
           <ion-card-content>
-            <p>Image</p>
-            <p>Price</p>
+            <ion-img src="/assets/shirt3.jpg" ></ion-img>
+            <p>Balck</p>
+            <p>R: 350</p>
           </ion-card-content>
         </ion-card>
-        <ion-button>Add To Basket</ion-button>
+        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
       </ion-col>
+      
       <ion-col>
         <ion-card>
-          <ion-card-title>Name</ion-card-title>
+          <ion-card-title>Long-Sleeve</ion-card-title>
           <ion-card-content>
-            <p>Image</p>
-            <p>Price</p>
+            <ion-img src="/assets/shirt4.jpg"></ion-img>
+            <p>White</p>
+            <p>R: 250</p>
           </ion-card-content>
         </ion-card>
-        <ion-button>Add To Basket</ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-card>
-          <ion-card-title>Name</ion-card-title>
-          <ion-card-content>
-            <p>Image</p>
-            <p>Price</p>
-          </ion-card-content>
-        </ion-card>
-        <ion-button>Add To Basket</ion-button>
+        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
       </ion-col>
     </ion-row>
+
+
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-title>Money-Heist</ion-card-title>
+          <ion-card-content>
+            <ion-img src="/assets/shirt1.jpg"></ion-img>
+            <p>Blue</p>
+            <p>R: 300</p>
+          </ion-card-content>
+        </ion-card>
+        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
+      </ion-col>
+      
+      <ion-col>
+        <ion-card>
+          <ion-card-title>Black Long-Sleeve Shirt</ion-card-title>
+          <ion-card-content>
+            <ion-img src="/assets/shirt5.jpg"></ion-img>
+            <p>Black</p>
+            <p>R: 200</p>
+          </ion-card-content>
+        </ion-card>
+        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
+      </ion-col>
+     
+    </ion-row>
+
   </ion-grid>
   <ion-button (click)="Basket()" color="success">Basket<ion-icon slot="end" name="star"></ion-icon></ion-button>
   <ion-button (click)="shopall()" fill="clear"> Back </ion-button>

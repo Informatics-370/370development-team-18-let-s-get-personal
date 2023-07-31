@@ -13,51 +13,51 @@
   </ion-header>
   <ion-grid id="grid">
     <ion-row>
-      <ion-col>
+       <ion-col>
         <ion-card>
-          <ion-card-title>Name</ion-card-title>
+          <ion-card-title>Huggies</ion-card-title>
           <ion-card-content>
-            <p>Image</p>
-            <p>Color</p>
-            <p>Price</p>
-            <ion-img></ion-img>
+            <ion-img src="/assets/cup1.jpg"></ion-img>
+            <p>Baige</p>
+            <p>R: 250</p>
           </ion-card-content>
         </ion-card>
-        <ion-button>Add To Basket</ion-button>
+        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
+      </ion-col>
+       <ion-col>
+        <ion-card>
+          <ion-card-title>Soul-Mate</ion-card-title>
+          <ion-card-content>
+            <ion-img src="/assets/cup2.jpg"></ion-img>
+            <p>Deep brown / White</p>
+            <p>R: 260</p>
+          </ion-card-content>
+        </ion-card>
+        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
+      </ion-col>
+       <ion-col>
+        <ion-card>
+          <ion-card-title>Long Cup</ion-card-title>
+          <ion-card-content>
+            <ion-img src="/assets/cup3.jpg" ></ion-img>
+            <p>Dusty White and Brown</p>
+            <p>R: 70</p>
+          </ion-card-content>
+        </ion-card>
+        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
       </ion-col>
       <ion-col>
         <ion-card>
-          <ion-card-title>Name</ion-card-title>
+          <ion-card-title>Cool cat</ion-card-title>
           <ion-card-content>
-            <p>Image</p>
-            <p>Color</p>
-            <p>Price</p>
+            <ion-img src="/assets/cup4.jpg"></ion-img>
+            <p>White</p>
+            <p>R: 60</p>
           </ion-card-content>
         </ion-card>
-        <ion-button>Add To Basket</ion-button>
+        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
       </ion-col>
-      <ion-col>
-        <ion-card>
-          <ion-card-title>Name</ion-card-title>
-          <ion-card-content>
-            <p>Image</p>
-            <p>Color</p>
-            <p>Price</p>
-          </ion-card-content>
-        </ion-card>
-        <ion-button>Add To Basket</ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-card>
-          <ion-card-title>Name</ion-card-title>
-          <ion-card-content>
-            <p>Image</p>
-            <p>Color</p>
-            <p>Price</p>
-          </ion-card-content>
-        </ion-card>
-        <ion-button>Add To Basket</ion-button>
-      </ion-col>
+     
     </ion-row>
   </ion-grid>
   <ion-button (click)="Basket()" color="success">Basket<ion-icon slot="end" name="star"></ion-icon></ion-button>
