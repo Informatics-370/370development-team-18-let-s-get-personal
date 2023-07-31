@@ -4,14 +4,16 @@ using IPKP___API.Controllers.Models.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IPKP___API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230730194915_newMigrate")]
+    partial class newMigrate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,42 +36,43 @@ namespace IPKP___API.Migrations
                     b.ToTable("BestSellersStock_Item");
                 });
 
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Address", b =>
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Admin", b =>
                 {
-                    b.Property<Guid>("Address_ID")
+                    b.Property<Guid>("Admin_ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Area_Code")
-                        .HasColumnType("int");
+                    b.Property<string>("Cell_Number")
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
-                    b.Property<Guid?>("City_NameCity_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Dwelling_Type")
+                    b.Property<string>("Email")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("Province_NameProvince_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Street")
+                    b.Property<string>("FirstName")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("Unit_Number")
-                        .HasColumnType("int");
+                    b.Property<string>("Surname")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("Address_ID");
+                    b.Property<Guid>("User_ID")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("City_NameCity_ID");
+                    b.Property<Guid?>("User_ID1")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("Province_NameProvince_ID");
+                    b.Property<string>("Username")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.ToTable("Addresses");
+                    b.HasKey("Admin_ID");
+
+                    b.HasIndex("User_ID1");
+
+                    b.ToTable("Admin");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Basket", b =>
@@ -84,24 +87,22 @@ namespace IPKP___API.Migrations
                         .HasColumnName("Basket_Quantity");
 
                     b.Property<Guid?>("Customer_ID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Customer_ID");
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Stock_Image_ID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Stock_Image_ID");
+                    b.Property<Guid?>("Customer_ID1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("Stock_Item_ID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Stock_Item_ID");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Stock_Item_ID1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Basket_ID");
 
-                    b.HasIndex("Customer_ID");
+                    b.HasIndex("Customer_ID1");
 
-                    b.HasIndex("Stock_Image_ID");
-
-                    b.HasIndex("Stock_Item_ID");
+                    b.HasIndex("Stock_Item_ID1");
 
                     b.ToTable("Basket");
                 });
@@ -122,33 +123,10 @@ namespace IPKP___API.Migrations
                     b.ToTable("BestSellers");
                 });
 
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.City", b =>
-                {
-                    b.Property<Guid>("City_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("City_Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<Guid?>("Province_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("City_ID");
-
-                    b.HasIndex("Province_ID");
-
-                    b.ToTable("Cities");
-                });
-
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Customer", b =>
                 {
                     b.Property<Guid>("Customer_ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Address_ID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Cell_Number")
@@ -163,28 +141,23 @@ namespace IPKP___API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid?>("Gender_ID")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Surname")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid?>("Title_ID")
+                    b.Property<Guid>("User_ID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("User_ID")
+                    b.Property<Guid?>("User_ID1")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Username")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Customer_ID");
 
-                    b.HasIndex("Address_ID");
-
-                    b.HasIndex("Gender_ID");
-
-                    b.HasIndex("Title_ID");
-
-                    b.HasIndex("User_ID");
+                    b.HasIndex("User_ID1");
 
                     b.ToTable("Customers");
                 });
@@ -195,10 +168,16 @@ namespace IPKP___API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Delivery_AddressAddress_ID")
+                    b.Property<Guid?>("Delivery_Address_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Delivery_Address_ID1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("Delivery_Company_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Delivery_Company_ID1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Delivery_Price")
@@ -209,11 +188,47 @@ namespace IPKP___API.Migrations
 
                     b.HasKey("Delivery_ID");
 
-                    b.HasIndex("Delivery_AddressAddress_ID");
+                    b.HasIndex("Delivery_Address_ID1");
 
-                    b.HasIndex("Delivery_Company_ID");
+                    b.HasIndex("Delivery_Company_ID1");
 
                     b.ToTable("Deliveries");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Delivery_Address", b =>
+                {
+                    b.Property<Guid>("Delivery_Address_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("Delivery_Address_ID");
+
+                    b.Property<string>("AreaCode")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Province")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("StreetName")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("StreetNumber")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Delivery_Address_ID");
+
+                    b.ToTable("Delivery_Address");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Delivery_Company", b =>
@@ -323,9 +338,6 @@ namespace IPKP___API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Address_ID")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Cell_Number")
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");
@@ -338,28 +350,23 @@ namespace IPKP___API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid?>("Gender_ID")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Surname")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid?>("Title_ID")
+                    b.Property<Guid>("User_ID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("User_ID")
+                    b.Property<Guid?>("User_ID1")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Username")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Employee_ID");
 
-                    b.HasIndex("Address_ID");
-
-                    b.HasIndex("Gender_ID");
-
-                    b.HasIndex("Title_ID");
-
-                    b.HasIndex("User_ID");
+                    b.HasIndex("User_ID1");
 
                     b.ToTable("Employees");
                 });
@@ -387,21 +394,6 @@ namespace IPKP___API.Migrations
                     b.ToTable("Experience_Rating");
                 });
 
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Gender", b =>
-                {
-                    b.Property<Guid>("Gender_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Gender_Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Gender_ID");
-
-                    b.ToTable("Genders");
-                });
-
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Image", b =>
                 {
                     b.Property<Guid>("Image_ID")
@@ -424,7 +416,7 @@ namespace IPKP___API.Migrations
                     b.Property<Guid>("Inventory_ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Stock_Item_ID");
+                        .HasColumnName("Inventory_ID");
 
                     b.Property<string>("Inventory_Comments")
                         .HasMaxLength(255)
@@ -433,12 +425,59 @@ namespace IPKP___API.Migrations
                     b.Property<DateTime>("Inventory_Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("QuantityOnHand")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("Stock_Image_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Stock_Item_Colour_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Stock_Price_History_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Stock_Type_ID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Inventory_ID");
 
+                    b.HasIndex("Stock_Image_ID");
+
+                    b.HasIndex("Stock_Item_Colour_ID");
+
+                    b.HasIndex("Stock_Price_History_ID");
+
+                    b.HasIndex("Stock_Type_ID");
+
                     b.ToTable("Inventories");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Inventory_Line_Item", b =>
+                {
+                    b.Property<Guid>("Inventory_Line_Item_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Inventory_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Inventory_ID1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Inventory_Line_Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("Stock_Item_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Stock_Item_ID1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Inventory_Line_Item_ID");
+
+                    b.HasIndex("Inventory_ID1");
+
+                    b.HasIndex("Stock_Item_ID1");
+
+                    b.ToTable("Inventory_Line_Item");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Invoice", b =>
@@ -447,14 +486,8 @@ namespace IPKP___API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Customer_ID")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<double>("Delivery_Price")
                         .HasColumnType("float");
-
-                    b.Property<Guid?>("Employee_ID")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("Invoice_Discount_ID")
                         .HasColumnType("uniqueidentifier");
@@ -469,10 +502,6 @@ namespace IPKP___API.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Invoice_ID");
-
-                    b.HasIndex("Customer_ID");
-
-                    b.HasIndex("Employee_ID");
 
                     b.HasIndex("Invoice_Discount_ID");
 
@@ -536,6 +565,21 @@ namespace IPKP___API.Migrations
                     b.Property<Guid?>("Customer_ID")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("Customer_ID1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Delivery_Address_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Delivery_Address_ID1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Invoice_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Invoice_ID1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("bit");
 
@@ -547,7 +591,11 @@ namespace IPKP___API.Migrations
 
                     b.HasKey("Order_Request_ID");
 
-                    b.HasIndex("Customer_ID");
+                    b.HasIndex("Customer_ID1");
+
+                    b.HasIndex("Delivery_Address_ID1");
+
+                    b.HasIndex("Invoice_ID1");
 
                     b.ToTable("Order_Requests");
                 });
@@ -675,21 +723,6 @@ namespace IPKP___API.Migrations
                     b.ToTable("Product_Ratings");
                 });
 
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Province", b =>
-                {
-                    b.Property<Guid>("Province_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Province_Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Province_ID");
-
-                    b.ToTable("Provinces");
-                });
-
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Refund", b =>
                 {
                     b.Property<Guid>("Refund_ID")
@@ -766,8 +799,8 @@ namespace IPKP___API.Migrations
                     b.Property<string>("Stock_Image_File")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Stock_Item_Id")
-                        .HasColumnType("int")
+                    b.Property<Guid?>("Stock_Item_Id")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Stock_Item_Id");
 
                     b.HasKey("Stock_Image_ID");
@@ -858,21 +891,6 @@ namespace IPKP___API.Migrations
                     b.ToTable("Stock_Types");
                 });
 
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Title", b =>
-                {
-                    b.Property<Guid>("Title_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Title_Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Title_ID");
-
-                    b.ToTable("Titles");
-                });
-
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.User", b =>
                 {
                     b.Property<Guid>("User_ID")
@@ -882,24 +900,28 @@ namespace IPKP___API.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("User_Role_ID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("User_Role_ID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("User_Role_ID1")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("User_ID");
 
-                    b.HasIndex("User_Role_ID");
+                    b.HasIndex("User_Role_ID1");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.User_Role", b =>
                 {
-                    b.Property<Guid>("User_Role_ID")
+                    b.Property<int>("User_Role_ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("User_Role_Name")
                         .HasMaxLength(255)
@@ -916,17 +938,23 @@ namespace IPKP___API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Permission_ID")
+                    b.Property<int>("Permission_ID")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("Permission_ID1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("User_Role_ID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("User_Role_ID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("User_Role_ID1")
+                        .HasColumnType("int");
 
                     b.HasKey("User_Role_Permission_ID");
 
-                    b.HasIndex("Permission_ID");
+                    b.HasIndex("Permission_ID1");
 
-                    b.HasIndex("User_Role_ID");
+                    b.HasIndex("User_Role_ID1");
 
                     b.ToTable("User_Role_Permissions");
                 });
@@ -938,21 +966,18 @@ namespace IPKP___API.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Write_Off_ID");
 
-                    b.Property<Guid?>("Employee_ID")
+                    b.Property<Guid?>("Inventory_ID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Inventory_ID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Inventory_ID");
+                    b.Property<Guid?>("Inventory_ID1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Write_Off_Date")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Write_Off_ID");
 
-                    b.HasIndex("Employee_ID");
-
-                    b.HasIndex("Inventory_ID");
+                    b.HasIndex("Inventory_ID1");
 
                     b.ToTable("Write_Offs");
                 });
@@ -1257,89 +1282,48 @@ namespace IPKP___API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Address", b =>
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Admin", b =>
                 {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.City", "City_Name")
-                        .WithMany()
-                        .HasForeignKey("City_NameCity_ID");
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.User", "User")
+                        .WithMany("Admin")
+                        .HasForeignKey("User_ID1");
 
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Province", "Province_Name")
-                        .WithMany()
-                        .HasForeignKey("Province_NameProvince_ID");
-
-                    b.Navigation("City_Name");
-
-                    b.Navigation("Province_Name");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Basket", b =>
                 {
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Customer", "Customer")
                         .WithMany("Basket")
-                        .HasForeignKey("Customer_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Image", "Stock_Images")
-                        .WithMany("Basket")
-                        .HasForeignKey("Stock_Image_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Customer_ID1");
 
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Stock_Item")
                         .WithMany("Basket")
-                        .HasForeignKey("Stock_Item_ID");
+                        .HasForeignKey("Stock_Item_ID1");
 
                     b.Navigation("Customer");
-
-                    b.Navigation("Stock_Images");
 
                     b.Navigation("Stock_Item");
                 });
 
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.City", b =>
-                {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Province", "Province")
-                        .WithMany()
-                        .HasForeignKey("Province_ID");
-
-                    b.Navigation("Province");
-                });
-
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Customer", b =>
                 {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("Address_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Gender", "Gender")
-                        .WithMany()
-                        .HasForeignKey("Gender_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Title", "Title")
-                        .WithMany()
-                        .HasForeignKey("Title_ID");
-
                     b.HasOne("IPKP___API.Controllers.Models.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("User_ID");
-
-                    b.Navigation("Address");
-
-                    b.Navigation("Gender");
-
-                    b.Navigation("Title");
+                        .WithMany("Customer")
+                        .HasForeignKey("User_ID1");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Delivery", b =>
                 {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Address", "Delivery_Address")
-                        .WithMany()
-                        .HasForeignKey("Delivery_AddressAddress_ID");
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Delivery_Address", "Delivery_Address")
+                        .WithMany("Delivery")
+                        .HasForeignKey("Delivery_Address_ID1");
 
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Delivery_Company", "Delivery_Company")
-                        .WithMany()
-                        .HasForeignKey("Delivery_Company_ID");
+                        .WithMany("Delivery")
+                        .HasForeignKey("Delivery_Company_ID1");
 
                     b.Navigation("Delivery_Address");
 
@@ -1366,27 +1350,9 @@ namespace IPKP___API.Migrations
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Employee", b =>
                 {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("Address_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Gender", "Gender")
-                        .WithMany()
-                        .HasForeignKey("Gender_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Title", "Title")
-                        .WithMany()
-                        .HasForeignKey("Title_ID");
-
                     b.HasOne("IPKP___API.Controllers.Models.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("User_ID");
-
-                    b.Navigation("Address");
-
-                    b.Navigation("Gender");
-
-                    b.Navigation("Title");
+                        .WithMany("Employee")
+                        .HasForeignKey("User_ID1");
 
                     b.Navigation("User");
                 });
@@ -1400,23 +1366,45 @@ namespace IPKP___API.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Inventory", b =>
+                {
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Image", null)
+                        .WithMany("Inventory")
+                        .HasForeignKey("Stock_Image_ID");
+
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item_Colour", null)
+                        .WithMany("Inventory")
+                        .HasForeignKey("Stock_Item_Colour_ID");
+
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Price_History", null)
+                        .WithMany("Inventory")
+                        .HasForeignKey("Stock_Price_History_ID");
+
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Type", null)
+                        .WithMany("Inventory")
+                        .HasForeignKey("Stock_Type_ID");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Inventory_Line_Item", b =>
+                {
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Inventory", "Inventory")
+                        .WithMany("Inventory_Line_Item")
+                        .HasForeignKey("Inventory_ID1");
+
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Stock_Item")
+                        .WithMany("Inventory_Line_Item")
+                        .HasForeignKey("Stock_Item_ID1");
+
+                    b.Navigation("Inventory");
+
+                    b.Navigation("Stock_Item");
+                });
+
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Invoice", b =>
                 {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("Customer_ID");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("Employee_ID");
-
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Invoice_Discount", "Invoice_Discount")
                         .WithMany()
                         .HasForeignKey("Invoice_Discount_ID");
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Employee");
 
                     b.Navigation("Invoice_Discount");
                 });
@@ -1448,10 +1436,22 @@ namespace IPKP___API.Migrations
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Order_Request", b =>
                 {
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("Customer_ID");
+                        .WithMany("Order_Request")
+                        .HasForeignKey("Customer_ID1");
+
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Delivery_Address", "Delivery_Address")
+                        .WithMany("Order_Request")
+                        .HasForeignKey("Delivery_Address_ID1");
+
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Invoice", "Invoice")
+                        .WithMany("Order_Request")
+                        .HasForeignKey("Invoice_ID1");
 
                     b.Navigation("Customer");
+
+                    b.Navigation("Delivery_Address");
+
+                    b.Navigation("Invoice");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Payment", b =>
@@ -1514,8 +1514,8 @@ namespace IPKP___API.Migrations
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.User", b =>
                 {
                     b.HasOne("IPKP___API.Controllers.Models.Entities.User_Role", "User_Role")
-                        .WithMany()
-                        .HasForeignKey("User_Role_ID");
+                        .WithMany("User")
+                        .HasForeignKey("User_Role_ID1");
 
                     b.Navigation("User_Role");
                 });
@@ -1523,12 +1523,12 @@ namespace IPKP___API.Migrations
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.User_Role_Permission", b =>
                 {
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Permission", "Permission")
-                        .WithMany()
-                        .HasForeignKey("Permission_ID");
+                        .WithMany("User_Role_Permission")
+                        .HasForeignKey("Permission_ID1");
 
                     b.HasOne("IPKP___API.Controllers.Models.Entities.User_Role", "User_Role")
-                        .WithMany()
-                        .HasForeignKey("User_Role_ID");
+                        .WithMany("User_Role_Permission")
+                        .HasForeignKey("User_Role_ID1");
 
                     b.Navigation("Permission");
 
@@ -1537,15 +1537,9 @@ namespace IPKP___API.Migrations
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Write_Off", b =>
                 {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("Employee_ID");
-
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Inventory", "Inventory")
-                        .WithMany("Write_Off")
-                        .HasForeignKey("Inventory_ID");
-
-                    b.Navigation("Employee");
+                        .WithMany()
+                        .HasForeignKey("Inventory_ID1");
 
                     b.Navigation("Inventory");
                 });
@@ -1679,21 +1673,78 @@ namespace IPKP___API.Migrations
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Customer", b =>
                 {
                     b.Navigation("Basket");
+
+                    b.Navigation("Order_Request");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Delivery_Address", b =>
+                {
+                    b.Navigation("Delivery");
+
+                    b.Navigation("Order_Request");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Delivery_Company", b =>
+                {
+                    b.Navigation("Delivery");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Inventory", b =>
                 {
-                    b.Navigation("Write_Off");
+                    b.Navigation("Inventory_Line_Item");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Invoice", b =>
+                {
+                    b.Navigation("Order_Request");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Permission", b =>
+                {
+                    b.Navigation("User_Role_Permission");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Stock_Image", b =>
                 {
-                    b.Navigation("Basket");
+                    b.Navigation("Inventory");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Stock_Item", b =>
                 {
                     b.Navigation("Basket");
+
+                    b.Navigation("Inventory_Line_Item");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Stock_Item_Colour", b =>
+                {
+                    b.Navigation("Inventory");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Stock_Price_History", b =>
+                {
+                    b.Navigation("Inventory");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Stock_Type", b =>
+                {
+                    b.Navigation("Inventory");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.User", b =>
+                {
+                    b.Navigation("Admin");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.User_Role", b =>
+                {
+                    b.Navigation("User");
+
+                    b.Navigation("User_Role_Permission");
                 });
 #pragma warning restore 612, 618
         }

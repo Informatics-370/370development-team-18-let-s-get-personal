@@ -1,10 +1,9 @@
-import { Province } from "./province";
-import { City } from "./city";
+
 
 export class Address{
     address_ID!: Number
-    province_Name!: Province
-    city_Name!: City
+    province_Name!: string
+    city_Name!: string
 
     street!: String
     number!: Number

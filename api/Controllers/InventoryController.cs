@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using IPKP___API.Controllers.Models.ViewModels;
 using System.Linq;
+using System.IO;
+using IPKP___API.Controllers.Models.Entities;
 
 namespace IPKP___API.Controllers
 {
@@ -27,7 +29,15 @@ namespace IPKP___API.Controllers
         {
             try
             {
-                var results = await _IPKPRepository.GetAllStockItemsAsync();
+                var results = await _IPKPRepository.GetAllInventoryAsync();
+
+                dynamic products = results.Select(p => new
+                {
+                    //p.Inventory_ID,
+                    //p.QuantityOnHand,
+                    //StockItemName = p.Stock_Item.Stock_Item_Name,
+                    //StockTypeName = p.Stock_Type.Stock_Type_Name,
+                });
                 return Ok(results);
             }
             catch (Exception)
@@ -36,64 +46,64 @@ namespace IPKP___API.Controllers
             }
         }
 
-        //getting by stock type -- 
-
-        //[HttpGet]
-        //[Route("GetWaterbottles")]
-        //public async Task<IActionResult> GetWaterbottlesAsync()
+        //[HttpPost, DisableRequestSizeLimit]
+        //[Route("AddProduct")]
+        //public async Task<IActionResult> AddProduct([FromForm] IFormCollection formData)
         //{
         //    try
         //    {
-        //        var results = await _IPKPRepository.GetAllStockItemsAsync();
-        //        return Ok(results);
+        //        var formCollection = await Request.ReadFormAsync();
+
+        //        var file = formCollection.Files.First();
+
+        //        if (file.Length > 0)
+        //        {
+
+        //            using (var ms = new MemoryStream())
+        //            {
+        //                file.CopyTo(ms);
+        //                var fileBytes = ms.ToArray();
+        //                string base64 = Convert.ToBase64String(fileBytes);
+
+        //                string price = formData["price"];
+        //                decimal num = decimal.Parse(price.Replace(".", ","));
+
+        //                var product = new Inventory
+        //                {
+        //                    Price = num
+        //                    ,
+        //                    Stock_Item_Name = formData["name"]
+        //                    ,
+        //                    Description = formData["description"]
+        //                    ,
+        //                    Stock_Item_ID = formData["brand"]
+        //                    ,
+        //                    ProductTypeId = Convert.ToInt32(formData["producttype"])
+        //                    ,
+        //                    Image = base64
+        //                    ,
+        //                    DateCreated = DateTime.Now
+        //                };
+
+
+        //                _IPKPRepository.Add(product);
+        //                await _IPKPRepository.SaveChangesAsync();
+        //            }
+
+        //            return Ok();
+        //        }
+        //        else
+        //        {
+        //            return BadRequest();
+        //        }
         //    }
-        //    catch (Exception)
+        //    catch (Exception ex)
         //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+        //        return StatusCode(500, $"Internal server error: {ex}");
         //    }
         //}
 
-        //[HttpGet]
-        //[Route("GetAdultClothing")]
-        //public async Task<IActionResult> GetAdultClothingAsync()
-        //{
-
-        //}
-
-        //[HttpGet]
-        //[Route("GetFlasks")]
-        //public async Task<IActionResult>GetFlasksAsync()
-        //{
-
-        //}
-
-        //[HttpGet]
-        //[Route("GetKidsClothing")]
-        //public async Task<IActionResult>GetKidsClothingAsync()
-        //{
-
-        //}
-
-        //[HttpGet]
-        //[Route("GetMugs")]
-        //public async Task<IActionResult>GetMugsAsync()
-        //{
-
-        //}
-
-        //[HttpGet]
-        //[Route("GetNoteBooks")]
-        //public async Task<IActionResult>GetNoteBooksAsync()
-        //{
-
-        //}
 
 
-        //[HttpGet]
-        //[Route("GetWaterBottles")]
-        //public async Task<IActionResult>GetWaterBottlesAsync()
-        //{
-
-        //}
     }
 }

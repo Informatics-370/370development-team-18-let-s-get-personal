@@ -2,7 +2,7 @@
 
 namespace IPKP___API.Migrations
 {
-    public partial class IPKPDatabase : Migration
+    public partial class newMigrate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

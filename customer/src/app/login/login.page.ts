@@ -23,16 +23,16 @@ export class LoginPage implements OnInit {
   ngOnInit(): void {
   }
 
-  // login(form: NgForm) {
-  //   this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
-  //     let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
-  //     console.log(roles);
-  //     if(roles.includes('Admin')) {
-  //       this.router.navigateByUrl('/home', {replaceUrl: true});
-  //     } else if(roles.includes('User')) {
-  //       this.router.navigateByUrl('/shop', {replaceUrl: true});
-  //     }
-  //   });
-  // }
+  login(form: NgForm) {
+    this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
+      let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
+      console.log(roles);
+      if(roles.includes('Admin')) {
+        this.router.navigateByUrl('/home', {replaceUrl: true});
+      } else if(roles.includes('User')) {
+        this.router.navigateByUrl('/shop', {replaceUrl: true});
+      }
+    });
+  }
 
 }

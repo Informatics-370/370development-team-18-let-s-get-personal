@@ -1,5 +1,9 @@
+import { Write_Off } from "./writeoff"
 export class Inventory{
-    Inventory_ID!: Number
-    Inventory_Date!: Date
-    Inventory_Comments!: String
+    inventory_ID!: Number
+    inventory_Date!: Date
+    inventory_Comments!: String
+    quantityOnHand!: Number
+
+    write_Off!: Write_Off
 }

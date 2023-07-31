@@ -7,16 +7,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class Inventory
-  {
-        public Inventory()
-        {
-            Write_Off = new HashSet<Write_Off>();
-            //StockTakeTotal = new HashSet<StockTakeTotal>();
-        }
-
+    public class Inventory
+    {
         [Key]
-        [Column("Stock_Item_ID")]
+        [Column("Inventory_ID")]
         public Guid Inventory_ID { get; set; }
 
         public DateTime Inventory_Date { get; set; }
@@ -24,12 +18,7 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(255)]
         public string Inventory_Comments { get; set; }
 
-        public int QuantityOnHand { get; set; }
+        public virtual ICollection<Inventory_Line_Item> Inventory_Line_Item { get; set; }
 
-        [InverseProperty("Inventory")]
-        public virtual ICollection<Write_Off> Write_Off { get; set; }
-
-        //[InverseProperty("Inventory")]
-        //public virtual ICollection<StockTakeTotal> StockTakeTotal { get; set; }
     }
 }

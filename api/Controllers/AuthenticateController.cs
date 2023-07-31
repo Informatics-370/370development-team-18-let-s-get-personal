@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Net;
+using IPKP___API.Controllers.Models.Repository;
 
 namespace IPKP___API.Controllers
 {
@@ -22,6 +23,7 @@ namespace IPKP___API.Controllers
   [ApiController]
   public class AuthenticateController : ControllerBase
   {
+        private readonly IIPKPRepository _IPKPRepository;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
@@ -30,13 +32,14 @@ namespace IPKP___API.Controllers
           = new Dictionary<string, TwoFactorCode>();
 
         public AuthenticateController(
-        UserManager<IdentityUser> userManager,
+        UserManager<IdentityUser> userManager, IIPKPRepository iPKPRepository,
         RoleManager<IdentityRole> roleManager,
         IConfiguration configuration)
         {
-          _userManager = userManager;
-          _roleManager = roleManager;
-          _configuration = configuration;
+            _IPKPRepository = iPKPRepository;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -50,6 +53,8 @@ namespace IPKP___API.Controllers
                 try
                 {
                     var userRoles = await _userManager.GetRolesAsync(user);
+                    var userId = await _userManager.GetUserIdAsync(user);
+
 
                     var authClaims = new List<Claim>
                     {
@@ -67,7 +72,8 @@ namespace IPKP___API.Controllers
                     return Ok(new
                     {
                         token = new JwtSecurityTokenHandler().WriteToken(token),
-                        expiration = token.ValidTo
+                        expiration = token.ValidTo,
+                        //loggedInUser = new LoginViewModel { Username = user.UserName },
                     });
                     //var loggedInUser = new LoginViewModel { UserName = user.UserName };
                     //return Ok(loggedInUser);
@@ -81,35 +87,69 @@ namespace IPKP___API.Controllers
             else
             {
                 return NotFound("Account does not exist");
-            }          
+            }
+        }
 
-        } 
+        [HttpPost]
+        [Route("GetCustomerbyID")]
+        public async Task<IActionResult> GetCustomerbyID([FromBody] LoginViewModel model)
+        {
+            var user = await _userManager.FindByNameAsync(model.Username);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                List<Customer> CustomerList = new List<Customer>();
 
+                var results = await _IPKPRepository.GetAllCustomersAsync();
+
+                return Ok(user);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
+            }
+        }
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
-          var userExists = await _userManager.FindByNameAsync(model.Username);
-          if (userExists != null)
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
 
-          IdentityUser user = new()
-          {
-            Email = model.Email,
-            SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = model.Username
-          };
-          var result = await _userManager.CreateAsync(user, model.Password);
-          if (!result.Succeeded)
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+            var userExists = await _userManager.FindByNameAsync(model.Username);
+            if (userExists != null)
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
 
-          if (!await _roleManager.RoleExistsAsync(User_Role.User))
-            await _roleManager.CreateAsync(new IdentityRole(User_Role.User));
-          if (await _roleManager.RoleExistsAsync(User_Role.User))
-          {
-            await _userManager.AddToRoleAsync(user, User_Role.User);
-          }
-          return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            IdentityUser user = new()
+            {
+                Email = model.Email,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = model.Username
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            var customer = new Customer
+            {
+                Customer_ID = new Guid(),
+                FirstName = model.FirstName,
+                Surname = model.Surname,
+                Email = model.Email,
+                Username = model.Username,
+                Cell_Number = model.Cell_Number,
+                User_ID = new Guid(),
+            };
+
+            _IPKPRepository.Add(customer);
+            await _IPKPRepository.SaveChangesAsync();
+
+            if (!result.Succeeded)
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+
+            if (!await _roleManager.RoleExistsAsync(User_Role.user))
+                await _roleManager.CreateAsync(new IdentityRole(User_Role.user));
+            if (await _roleManager.RoleExistsAsync(User_Role.user))
+            {
+                await _userManager.AddToRoleAsync(user, User_Role.user);
+            }
+            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
 
         [HttpPost]
@@ -137,42 +177,43 @@ namespace IPKP___API.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
                 }
-                if (!await _roleManager.RoleExistsAsync(User_Role.Admin))
+                if (!await _roleManager.RoleExistsAsync(User_Role.admin))
                 {
-                    await _roleManager.CreateAsync(new IdentityRole(User_Role.Admin));
+                    await _roleManager.CreateAsync(new IdentityRole(User_Role.admin));
                 }
-                if (await _roleManager.RoleExistsAsync(User_Role.Admin))
+                if (await _roleManager.RoleExistsAsync(User_Role.admin))
                 {
-                    await _userManager.AddToRoleAsync(user, User_Role.Admin);
+                    await _userManager.AddToRoleAsync(user, User_Role.admin);
                 }
 
                 //if (!await _roleManager.RoleExistsAsync(User_Role.User))
-                //  await _roleManager.CreateAsync(new IdentityRole(User_Role.User));
+                //    await _roleManager.CreateAsync(new IdentityRole(User_Role.User));
 
                 //if (await _roleManager.RoleExistsAsync(User_Role.Admin))
                 //{
-                //  await _userManager.AddToRoleAsync(user, User_Role.User);
+                //    await _userManager.AddToRoleAsync(user, User_Role.User);
                 //}
                 return Ok(new Response { Status = "Success", Message = "User created successfully!" });
             }
 
-            
+
         }
 
-    private JwtSecurityToken GetToken(List<Claim> authClaims)
-    {
-      var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
+        private JwtSecurityToken GetToken(List<Claim> authClaims)
+        {
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
 
-      var token = new JwtSecurityToken(
-          issuer: _configuration["JWT:Issuer"],
-          audience: _configuration["JWT:Audience"],
-          expires: DateTime.Now.AddHours(3),
-          claims: authClaims,
-          signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-          );
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:Issuer"],
+                audience: _configuration["JWT:Audience"],
+                expires: DateTime.Now.AddHours(3),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                );
 
-      return token;
-    }
+            return token;
+        }
+
         [HttpPost]
         [Route("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword(ForgotPassword uvm)
@@ -217,6 +258,7 @@ namespace IPKP___API.Controllers
 
             return Ok(loggedInUser);
         }
+
         private static string GenerateTwoFactorCodeFor(string username)
         {
             var code = GetUniqueKey();
@@ -228,6 +270,7 @@ namespace IPKP___API.Controllers
 
             return code;
         }
+
         private static string GetUniqueKey()
         {
             Random rnd = new Random();
@@ -236,6 +279,7 @@ namespace IPKP___API.Controllers
 
             return optCode.ToString();
         }
+
         private async Task SendEmail(string fromEmailAddress, string subject, string message, string toEmailAddress)
         {
             var fromAddress = new MailAddress(fromEmailAddress);
@@ -258,5 +302,5 @@ namespace IPKP___API.Controllers
                 }
             }
         }
-  }
+    }
 }

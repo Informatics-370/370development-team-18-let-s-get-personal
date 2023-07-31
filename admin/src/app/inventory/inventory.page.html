@@ -12,4 +12,18 @@
   </ion-header>
   <ion-button (click)="stocktypes()">Manage Stock Types</ion-button>
   <ion-button (click)="stockcoloursnav()">Manage Stock Item Colours</ion-button>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col><h2>Stock Type</h2></ion-col>
+      <ion-col><h2>Product</h2></ion-col>
+      <ion-col><h2>Colours</h2></ion-col>
+    </ion-row>
+    <ion-row *ngFor="let item of Products">
+      <ion-col>{{item.stock_Types.stock_Type_Name}}</ion-col>
+      <ion-col>{{item.stock_Item_Name}}</ion-col>
+      <ion-col>{{item.stockitemcolours.Stock_Item_Colour_Name}}</ion-col>
+      <!-- <ion-col>{{item.}}</ion-col> -->
+    </ion-row>
+  </ion-grid>
 </ion-content>

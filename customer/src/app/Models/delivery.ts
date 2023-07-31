@@ -1,12 +1,10 @@
 import { Delivery_Company } from "./deliverycompany"
-import { Address } from "./address"
+import { Order_Line_Item } from "./orderlineitem"
 
 export class Delivery{
-    Delivery_ID!: Number
-    Delivery_Address!: Address
-    Delivery_Company!: Delivery_Company
-
-    Delivery_Price!: Number
-    Tracking_Number!: Number
-
+    delivery_ID!: Number
+    delivery_Company!: Delivery_Company
+    order_line_Item!: Order_Line_Item
+    delivery_Price!: Number
+    tracking_Number!: Number
 }

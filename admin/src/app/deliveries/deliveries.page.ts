@@ -2,7 +2,6 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Delivery } from '../Models/delivery';
-import { Address } from '../Models/address';
 import { Delivery_Company } from '../Models/deliverycompany';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
@@ -35,17 +34,18 @@ export class DeliveriesPage implements OnInit {
 
   ngOnInit() {
     this.GetAllDeliveries();
+    this.getDeliveryCompany();
   }
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DeliveryDataService, private router: Router, public modalCtrl: ModalController,
-    private alertController:AlertController, private companyservice:DeliveryCompanyDataService ) { }
+    private alertController:AlertController, private companyservice:DeliveryCompanyDataService, ) { }
 
   AddForm: FormGroup = new FormGroup({
-    address: new FormControl('',[Validators.required]),
+    orderLineItemId: new FormControl('',[Validators.required]),
     deliverycompany: new FormControl('',[Validators.required]),
     deliveryprice: new FormControl('',[Validators.required]),
-    trackingnumber: new FormControl('',[Validators.required])
+    trackingnumber: new FormControl('',[Validators.required]),
   })
   
   Routedeliverycompanies()
@@ -67,13 +67,13 @@ export class DeliveriesPage implements OnInit {
     })
   }
 
+
   AddDelivery(){
     let addDelivery = new Delivery();
 
-    addDelivery.delivery_Address = this.AddForm.value.address;
     addDelivery.delivery_Company = this.AddForm.value.deliverycompany;
     addDelivery.delivery_Price = this.AddForm.value.deliveryprice;
-    addDelivery.tracking_Number = this.AddForm.value.trackingnumber;
+    addDelivery.tracking_Number = this.AddForm.value.trackingnumber;    
 
     this.service.AddDelivery(addDelivery).subscribe(response => {
       if(response.status == "Error")

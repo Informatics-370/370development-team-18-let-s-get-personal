@@ -63,7 +63,7 @@ namespace IPKP___API.Controllers
         {
             var productRating = new Product_Rating
             {
-                Product_Rating_ID = prvm.Product_Rating_ID,
+                Product_Rating_ID = new Guid(),
                 Customer = prvm.Customer_ID,
                 //Stock_Item = prvm.St,
                 Product_Star_Rating = prvm.Product_Star_Rating,

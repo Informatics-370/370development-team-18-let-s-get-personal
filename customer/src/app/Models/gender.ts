@@ -1,6 +1,6 @@
 
 export class Gender{
-    GenderID!: number
-    Name!: String
+    gender_ID!: Number
+    gender_Name!: String
    
 }

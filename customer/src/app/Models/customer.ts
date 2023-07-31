@@ -1,17 +1,20 @@
 import { User } from "./user"
-import { Gender } from "./gender"
 import { Title } from "./title"
 import { Address } from "./address"
+import { BasketItems } from "./basket"
 
 export class Customer{  
-    Title!: Title
-    Gender!: Gender
-    Address!: Address
-    user!: User
+    customer_ID!: Number
 
-    CustomerId!: number
-    FirstName!: String
-    Surname!: String
-    Cell_Number!: Number
-    Email!: String   
+    title!: Title
+    address!: Address
+    user!: User
+    
+    username!: String
+    firstName!: String
+    surname!: String
+    cell_Number!: Number
+    email!: String   
+
+    basket!: BasketItems
 }

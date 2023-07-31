@@ -63,7 +63,7 @@ namespace IPKP___API.Controllers
         {
             var stockItem = new Stock_Item
             {
-                Stock_Item_ID = sivm.Stock_Item_ID,
+                Stock_Item_ID = new Guid(),
                 Stock_Item_Name = sivm.Stock_Item_Name,
                 Stock_Types = sivm.Stock_Types,
                 Stock_Images = sivm.Stock_Images,

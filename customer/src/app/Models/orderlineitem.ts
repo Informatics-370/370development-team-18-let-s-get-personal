@@ -4,14 +4,16 @@ import { Stock_Item } from "./stockitem";
 import { Personalisation_Design } from "./personalisationdesign";
 
 export class Order_Line_Item{
-    Order_Line_Item_ID!: Number
+    
+    order_Line_Item_ID!: Number
 
-    Write_Off!: Write_Off
-    Order_Request!: Order_Request
-    Stock_Item!: Stock_Item
-    Personalisation_Design!: Personalisation_Design
+    write_Off!: Write_Off
+    order_Request!: Order_Request
+    stock_Item!: Stock_Item
+    personalisation_Design!: Personalisation_Design
 
-    Order_Line_Item_Price!: Number
-    Order_Line_Item_Quantity!: Number
-    Order_Line_Item_Total_Price!: Number
+    stock_Item_Size!: String
+    order_Line_Item_Price!: Number
+    order_Line_Item_Quantity!: Number
+    order_Line_Item_Total_Price!: Number
 }

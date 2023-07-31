@@ -14,15 +14,10 @@ namespace IPKP___API.Controllers.Models.Entities
         [Column("Write_Off_ID")]
         public Guid Write_Off_ID { get; set; }
 
-        [Column("Inventory_ID")]
-        public Guid? Inventory_ID { get; set; }
-
         public DateTime Write_Off_Date { get; set; }
 
-        public virtual Employee Employee { get; set; }
-        
-        [ForeignKey(nameof(Inventory_ID))]
-        [InverseProperty("Write_Off")]
+
+        public Guid? Inventory_ID { get; set; }
         public virtual Inventory Inventory { get; set; }
     }
 }

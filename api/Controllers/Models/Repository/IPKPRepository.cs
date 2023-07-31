@@ -41,6 +41,7 @@ namespace IPKP___API.Controllers.Models.Repository
                       .Where(u => u.Customer_ID == customer_ID);
             return await query.FirstOrDefaultAsync();
         }
+        
         //employees
         public async Task<Employee[]> GetAllEmployeesAsync()
         {
@@ -73,7 +74,7 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<User_Role> GetUserRoleDetailsAsync(Guid user_Role_ID)
+        public async Task<User_Role> GetUserRoleDetailsAsync(int user_Role_ID)
         {
             IQueryable<User_Role> query = _appDbContext.User_Roles
                       .Where(u => u.User_Role_ID == user_Role_ID);
@@ -196,15 +197,7 @@ namespace IPKP___API.Controllers.Models.Repository
             IQueryable<Stock_Item_Colour> query = _appDbContext.Stock_Item_Colours
                       .Where(u => u.Stock_Item_Colour_ID == stock_Item_Colour_ID);
             return await query.FirstOrDefaultAsync();
-        }      
-
-        //best sellers
-        //public async Task<Best_Sellers[]> GetLatestBestSellersAsync()
-        //{
-        //  IQueryable<Best_Sellers> query = _appDbContext.Best_Sellers;
-        //  return await query.ToArrayAsync();
-        //}             
-
+        } 
 
         //product ratings
         public async Task<Product_Rating[]> GetAllProductRatingsAsync()
@@ -279,7 +272,25 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        //GetAllExperienceRatingsAsync
-        
-  }
+        public async Task<BestSellers[]> GetAllBestSellersAsync()
+        {
+            IQueryable<BestSellers> query = _appDbContext.BestSellers;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Inventory[]> GetAllInventoryAsync()
+        {
+            IQueryable<Inventory> query = _appDbContext.Inventories;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<User> GetUser(string username)
+        {
+            return await _appDbContext.Users
+                .Include(x => x.Customer)
+                .Include(x => x.Employee)
+                .FirstOrDefaultAsync(x => x.Username == username);
+        }
+
+    }
 }

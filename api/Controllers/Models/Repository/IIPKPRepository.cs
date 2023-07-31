@@ -15,9 +15,10 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Employee[]> GetAllEmployeesAsync();
         Task<Customer> GetCustomerDetailsAsync(Guid customer_ID);
         Task<Customer[]> GetAllCustomersAsync();
+        Task<BestSellers[]> GetAllBestSellersAsync();
         Task<User> GetUserDetailsAsync(Guid user_ID);
         Task<User[]> GetAllUsersAsync();
-        Task<User_Role> GetUserRoleDetailsAsync(Guid user_Role_ID);
+        Task<User_Role> GetUserRoleDetailsAsync(int user_Role_ID);
         Task<User_Role[]> GetAllUserRolesAsync();
         Task<Delivery> GetDeliveryDetailsAsync(Guid delivery_ID);
         Task<Delivery[]> GetAllDeliveriesAsync();
@@ -49,5 +50,8 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Discount> GetDiscountAsync(Guid discount_Id);
         Task<Refund[]> GetAllPreviousRefunds();
         Task<Refund> GetPreviousRefund(Guid refund_Id);
+        
+        Task<Inventory[]> GetAllInventoryAsync();
+
   }
 }

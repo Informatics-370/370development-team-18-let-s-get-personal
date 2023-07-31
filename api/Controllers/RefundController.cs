@@ -21,38 +21,17 @@ namespace IPKP___API.Controllers
     [ApiController]
     public class RefundController : ControllerBase
     {
-
+        //Processing:
+        //1. Find order
+        //3. Add to refund table
+        //4. Delete from order table
+        //5. Send confirmation email
         private readonly IIPKPRepository _IPKPRepository;
         public RefundController(IIPKPRepository iPKPRepository)
         {
             _IPKPRepository = iPKPRepository;
         }
-        
-        //************* Process refund
-        [HttpDelete]
-        [Route("DeleteSaleAsync/{sale_Id}")]
-        public async Task<IActionResult> DeleteSaleAsync(Guid sale_Id)
-        {
-            try
-            {
-                var existingSale = await _IPKPRepository.GetOrderDetailsAsync(sale_Id);
 
-                if (existingSale == null) return NotFound("Could Not Order" + sale_Id);
-
-                _IPKPRepository.Delete(existingSale);
-
-                if (await _IPKPRepository.SaveChangesAsync())
-                {
-                    return Ok(new Response { Status = "Success", Message = "Sale Removed Successfully" });
-                }
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-            }
-            return Ok("Delivery Removed From Database.");
-        }
-        
         [HttpGet]
         [Route("GetAllPreviousRefunds")]
         public async Task<IActionResult> GetAllPreviousRefunds()
@@ -68,20 +47,45 @@ namespace IPKP___API.Controllers
             }
         }
 
+        //************* Process refund
         [HttpGet]
-        [Route("GetCustomer/{customer_ID}")]
-        public async Task<IActionResult> GetCustomer(Guid customer_ID)
+        [Route("FindOrderRefund/{order_Id}")]
+        public async Task<IActionResult> FindOrderRefund(Guid order_Id)
         {
             try
             {
-                var results = await _IPKPRepository.GetCustomerDetailsAsync(customer_ID);
-                return Ok(new Response { Status = "Success", Message = "Got Customer Successfully" });
+                var results = await _IPKPRepository.GetOrderDetailsAsync(order_Id);
+                return Ok(new Response { Status = "Success", Message = "Got Order Successfully" });
             }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
+
+        [HttpDelete]
+        [Route("DeleteOrderRefund/{order_Id}")]
+        public async Task<IActionResult> DeleteOrderRefund(Guid order_Id)
+        {
+            try
+            {
+                var existingSale = await _IPKPRepository.GetOrderDetailsAsync(order_Id);
+
+                if (existingSale == null) return NotFound("Could Not Order" + order_Id);
+
+                _IPKPRepository.Delete(existingSale);
+
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(new Response { Status = "Success", Message = "Sale Removed Successfully" });
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok("Delivery Removed From Database.");
+        }      
 
         [HttpPost]
         [Route("AddRefund")]

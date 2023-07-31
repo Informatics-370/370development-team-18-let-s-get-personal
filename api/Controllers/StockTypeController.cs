@@ -58,7 +58,7 @@ namespace IPKP___API.Controllers
         {
             var stock_Type = new Stock_Type
             {
-                Stock_Type_ID = stvm.Stock_Type_ID,
+                Stock_Type_ID = new Guid(),
                 Stock_Type_Name = stvm.Stock_Type_Name
             };
             try
