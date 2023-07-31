@@ -7,7 +7,9 @@ import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
 import { BasketService } from 'src/app/Services/basket.service';
-
+import { Inventory } from '../Models/inventory';
+import { Inventory_Line_Item } from '../Models/inventorylineitem';
+import { InventoryDataService } from '../Services/inventory.service';
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.page.html',
@@ -24,7 +26,8 @@ export class InventoryPage implements OnInit {
   productIds: Array<any> = [];
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public stockitemservice: StockItemDataService, public bestsellerservice:BestsellersService, 
-    private alertController:AlertController, private basketService : BasketService) { }
+    private alertController:AlertController, private basketService : BasketService,
+    private inventoryservice: InventoryDataService) { }
 
   ngOnInit() {
   }
