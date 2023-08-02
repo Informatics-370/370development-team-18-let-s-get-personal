@@ -43,7 +43,6 @@ export class StockItemColoursPage implements OnInit {
 
   AddColourForm:FormGroup = new FormGroup({
     name: new FormControl('',[Validators.required]),
-    image: new FormControl('',[Validators.required])
   });
 
   ngOnInit(): void {   
@@ -53,23 +52,17 @@ export class StockItemColoursPage implements OnInit {
   GetStockItemColours(){
     this.service.GetStockItemColours().subscribe(result =>{
       this.stockitemcolours = result as StockItemColours[];
-      console.log(this.stockitemcolours)
-      // let colourlist: any[] = result
-      // colourlist.forEach((element) =>{
-      //   this.colour.push(element)
-      // });
+      console.log(this.stockitemcolours)      
     })   
   }
   
-  getstockcolour(stock_Item_Colour_ID:Number){
+  getstockcolour(stock_Item_Colour_ID:string){
     this.router.navigate(['./editstockitemcolours',stock_Item_Colour_ID]);
   }
 
   addcolour(){
     let addColour = new StockItemColours();
-    addColour.Stock_Item_Colour_Name = this.AddColourForm.value.name;
-    addColour.Stock_Item_Colour_Image = this.AddColourForm.value.image;
-
+    addColour.stock_Item_Colour_Name = this.AddColourForm.value.name;
     this.service.AddStockItemColour(addColour).subscribe(result => {
       if(result.status == "Error")
       {
@@ -81,7 +74,7 @@ export class StockItemColoursPage implements OnInit {
     })
   }
 
-  deletecolour(stock_Item_Colour_ID:Number){
+  deletecolour(stock_Item_Colour_ID:string){
     this.service.DeleteStockItemColour(stock_Item_Colour_ID).subscribe(result =>{
       if(result.status == "Error")
       {

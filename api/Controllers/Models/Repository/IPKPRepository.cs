@@ -295,7 +295,13 @@ namespace IPKP___API.Controllers.Models.Repository
         {
             IQueryable<Inventory_Line_Item> query = _appDbContext.Inventory_Line_Items
                 .Include(p => p.Stock_Item)
-                .Include(p => p.Inventory);
+                .Include(p => p.Inventory)
+                //.Include(p => p.Stock_Item.Stock_Type_ID)
+                //.Include(p => p.Stock_Item.Stock_Item_Colour)
+                //.Include(p => p.Stock_Item.Stock_Image)
+                ////.Include(p => p.Inventory.)
+                ;
+            
             return await query.ToArrayAsync();
         }
 

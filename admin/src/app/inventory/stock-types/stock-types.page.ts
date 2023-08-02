@@ -70,12 +70,12 @@ export class StockTypesPage implements OnInit {
     })
   }
 
-  getstocktype(stock_Type_ID:Number){
+  getstocktype(stock_Type_ID:string){
     //[routerLink]="['/course', course.courseId]"
     this.router.navigate(['./editstocktype',stock_Type_ID]);
   }
 
-  deleteStockTypes(stock_Type_ID:Number){
+  deleteStockTypes(stock_Type_ID:string){
     this.service.DeleteStockType(stock_Type_ID).subscribe(result =>{
       if(result.status == "Error")
           {

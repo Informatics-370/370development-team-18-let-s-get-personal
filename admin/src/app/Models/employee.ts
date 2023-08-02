@@ -1,18 +1,12 @@
-import { Title } from "./title";
-import { Gender } from "./gender";
-import { Address } from "./address";
-import { User } from "./user";
-
-export class Employee{
-    employee_ID!: Number
-
-    title!: Title
-    gender!: Gender
-    address!: Address
-    user!: User
-
+import { User } from "./user"
+export class Employee{  
+    employee_ID!: string
     firstName!: String
     surname!: String
     cell_Number!: Number
-    email!: String
+    email!: String  
+    username!: string
+
+    user!: User  
+    user_ID!: number
 }

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
-//import { StockTypes } from '../Models/stocktypes';
+import { StockTypes } from '../Models/stocktypes';
 import { StockItemColours } from '../Models/stockitemcolour';
 
 @Injectable({
@@ -34,19 +34,19 @@ import { StockItemColours } from '../Models/stockitemcolour';
       
   
     //get selected one
-    public GetStockItemColour(stock_Item_Colour_ID:Number){ 
+    public GetStockItemColour(stock_Item_Colour_ID:string){ 
       return this.httpClient.get(`${this.apiUrl}StockItemColour/GetStockItemColour`+ "/" + stock_Item_Colour_ID)
       .pipe(map(result => result))
     }
   
     //edit
-    public UpdateStockItemColour(stock_Item_Colour_ID:Number, stockitemcolour:StockItemColours){
+    public UpdateStockItemColour(stock_Item_Colour_ID:string, stockitemcolour:StockItemColours){
       return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockItemColour/${stock_Item_Colour_ID}`, stockitemcolour, this.httpOptions)
       //.pipe(map(result => result))
     }
   
     //delete 
-    public DeleteStockItemColour(stock_Item_Colour_ID:Number){
+    public DeleteStockItemColour(stock_Item_Colour_ID:string){
       return this.httpClient.delete<string>(`${this.apiUrl}StockItemColour/DeleteStockItemColour`+ "/"+ stock_Item_Colour_ID, this.httpOptions)
       .pipe(map(result => result))
     }

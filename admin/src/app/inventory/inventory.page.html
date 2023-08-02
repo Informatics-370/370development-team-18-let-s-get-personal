@@ -13,6 +13,7 @@
   <ion-button (click)="stocktypes()">Manage Stock Types</ion-button>
   <ion-button (click)="stockcoloursnav()">Manage Stock Item Colours</ion-button>
   <ion-button (click)="stockcoloursnav()">Stock Take</ion-button>
+  <ion-button (click)="stockcoloursnav()">Add Stock Item</ion-button>
   <ion-grid>
     <ion-row>
       <ion-col><h3>Product</h3></ion-col>
@@ -28,12 +29,13 @@
       <ion-col>3</ion-col>      
       <ion-col><ion-button>Add to Best Sellers</ion-button></ion-col>
     </ion-row>
-    <ion-row *ngFor="let item of Products">      
+    <!-- <ion-row *ngFor="let item of Products">      
       <ion-col>{{item.stock_Item_Name}}</ion-col>
       <ion-col>{{item.stock_Types.stock_Type_Name}}</ion-col>
       <ion-col>{{item.stockitemcolours.Stock_Item_Colour_Name}}</ion-col>
       <ion-col></ion-col>
-      <!-- <ion-col>{{item.Quantity}}</ion-col> -->
-    </ion-row>
+      <ion-col>{{item.Quantity}}</ion-col> 
+      <ion-col><ion-button>Add to Best Sellers</ion-button></ion-col>
+    </ion-row> -->
   </ion-grid>
 </ion-content>

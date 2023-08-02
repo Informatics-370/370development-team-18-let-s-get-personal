@@ -34,7 +34,8 @@ import { Inventory_Line_Item } from '../Models/inventorylineitem';
     }
 
     public AddToInventoryLineItem(lineitem:Inventory_Line_Item){
-        return this.httpClient.post<Response>(`${this.apiUrl}Inventory/AddToInventoryLineItem`, lineitem, this.httpOptions)
-      }
+      return this.httpClient.post<Response>(`${this.apiUrl}Inventory/AddToInventoryLineItem`, lineitem, this.httpOptions)
+    }
   
+    
 }

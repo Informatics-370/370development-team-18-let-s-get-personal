@@ -39,12 +39,12 @@ import { Response } from '../Models/response';
     }
 
     //delete 
-    DeleteRefundPolicy(refund_Policy_ID:Number){
+    DeleteRefundPolicy(refund_Policy_ID:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}Refund/DeleteRefundPolicy/${refund_Policy_ID}`);
     }
 
     //get customer
-    GetCustomer(customer_ID:Number){ 
+    GetCustomer(customer_ID:string){ 
         return this.httpClient.get(`${this.apiUrl}Refund/GetCustomer/${customer_ID}`)
         .pipe(map(result => result))
     }
@@ -55,7 +55,7 @@ import { Response } from '../Models/response';
         .pipe(map(result => result))
     }
 
-    DeleteSale(Sale_Id:Number){
+    DeleteSale(Sale_Id:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}Refund/DeleteSaleAsync/${Sale_Id}`);
     }
    

@@ -1,9 +1,8 @@
-import { Write_Off } from "./writeoff"
+import { Inventory_Line_Item } from "./inventorylineitem"
 export class Inventory{
-    inventory_ID!: Number
+    inventory_ID!: string
     inventory_Date!: Date
     inventory_Comments!: String
-    quantityOnHand!: Number
-
-    write_Off!: Write_Off
+    
+    inventory_Line_Item!: Inventory_Line_Item
 }

@@ -1,4 +1,4 @@
 export class Order_Status{
-    Order_Status_ID!: Number
-    Order_Status_Description!: String
+    order_Status_ID!: string
+    order_Status_Description!: String
 }

@@ -86,7 +86,7 @@ export class DeliveriesPage implements OnInit {
     })
   }
 
-  ReceiveDelivery(DeliveryId: Number){
+  ReceiveDelivery(DeliveryId: string){
     this.service.ReceiveDelivery(DeliveryId).subscribe(result => {
       console.log(result);
       if(result.status == "Error")

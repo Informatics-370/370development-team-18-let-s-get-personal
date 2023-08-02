@@ -33,19 +33,19 @@ import { Response } from '../Models/response';
     }
   
     //get selected one
-    public GetDeliveryCompany(deliveryCompanyId:Number){ 
+    public GetDeliveryCompany(deliveryCompanyId:string){ 
       return this.httpClient.get(`${this.apiUrl}DeliveryCompany/GetDeliveryCompany/${deliveryCompanyId}`)
       .pipe(map(result => result))
     }
   
     //edit
-    public UpdateDeliveryCompany(deliveryCompanyId:Number, deliveryCompany:Delivery_Company){
+    public UpdateDeliveryCompany(deliveryCompanyId:string, deliveryCompany:Delivery_Company){
       return this.httpClient.put<Response>(`${this.apiUrl}DeliveryCompany/UpdateDeliveryCompany/${deliveryCompanyId}`, deliveryCompany)
       //.pipe(map(result => result))
     }
   
     //delete 
-    public DeleteDeliveryCompany(deliveryCompanyId:Number){
+    public DeleteDeliveryCompany(deliveryCompanyId:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}DeliveryCompany/DeleteDeliveryCompany/${deliveryCompanyId}`)
       //.pipe(map(result => result))
     }

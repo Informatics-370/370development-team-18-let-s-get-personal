@@ -20,7 +20,9 @@ export class ShopAllPage implements OnInit {
   constructor(private _modalController: ModalController, private _router: Router, private alertController:AlertController) { }
 
   ngOnInit() {
+    
   }
+
   public clothing() {
     this._router.navigate(["/tabs/clothing"])
   }
@@ -37,40 +39,12 @@ export class ShopAllPage implements OnInit {
 
   //Load Stock Items
   updateGrid() {
-    var grid = document.querySelector("#grid");
-
-    if (grid) {
-      grid.innerHTML = " ";
-      for (var i = 0; i < this.stockItem.length; i++) {
-        `<ion-row>` +
-          `<ion-col>` +
-          `<ion-card>` +
-          `<ion-card-title>Name: ${this.stockItem[i].stock_Item_Name}</ion-card-title>` +
-          `<ion-card-content>` +
-          `<ion-img>${this.stockItem[i].stock_Images.stock_Image_File}</ion-img>` +
-          `<p>${this.stockItem[i].stockitemcolours.Stock_Item_Colour_Name}</p>` +
-          `<p>R: ${this.stockItem[i].stock_Item_Price}</p>` +
-          `</ion-card-content>` +
-          `</ion-card>` +
-          `<ion-button (click)="addToBasket(${this.stockItem[i].stock_Item_ID})" >Add To Basket</ion-button>` +
-          `</ion-col>` +
-          `<ion-row>`;
-      }
-
-      //visibility();
-      //Subtotal();
-    }
-    //save to local storage
-    // localStorage.setItem("cart",JSON.stringify(cart));
+    
   }
 
-  /*!!!!!!!!!!!!!!UPDATE!!!!!!!!!!! */
   addToBasket(){
-//const item=this.stockItem.find((stockItem)=>stockItem.Stock_Item_ID==id);
-this.addToBasketSuccessAlert();
-//alert("Added to basket successfully")
+    this.addToBasketSuccessAlert();
   }
-/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
   reloadPage(){
     window.location.reload()
   }

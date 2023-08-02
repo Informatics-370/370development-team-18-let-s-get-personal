@@ -26,7 +26,7 @@
         <ion-col><ion-button>Update</ion-button></ion-col>      
       </ion-row>
       <ion-row *ngFor="let item of stockitemcolours">
-        <ion-col>{{item.Stock_Item_Colour_Name}}</ion-col>
+        <ion-col>{{item.stock_Item_Colour_Name}}</ion-col>
         <!-- <ion-col>{{item.Stock_Item_Colour_Image}}</ion-col> -->
         <ion-col><ion-button (click)="deletecolour(item.stock_Item_Colour_ID)">Delete</ion-button></ion-col>
         <ion-col><ion-button>Update</ion-button></ion-col>      
@@ -56,11 +56,9 @@
               <ion-label position="stacked">Stock Item Colour Name</ion-label><br>
               <ion-input type="text" formControlName="name" placeholder="" required></ion-input>
             </ion-item>
-            <ion-item>
+            <!-- <ion-item>
               <ion-label position="stacked">Stock Item Colour Image</ion-label><br>
-             <!--- <ion-input type="price" formControlName="amount" placeholder="" required></ion-input>-->
-             <!--upload?-->
-            </ion-item>                  
+            </ion-item>                   -->
         </form>
       </ion-content>
     </ng-template>

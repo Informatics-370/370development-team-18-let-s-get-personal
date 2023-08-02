@@ -2,7 +2,7 @@ import { Customer } from "./customer"
 import { Refund_Policy } from "./refundpolicy"
 
 export class Refund{
-    refund_ID!: Number    
+    refund_ID!: string    
     customer!: Customer
     customer_Email!: string
     refund_Policy!: Refund_Policy

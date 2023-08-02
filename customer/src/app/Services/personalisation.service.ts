@@ -32,12 +32,12 @@ export class PersonalisationService {
     .pipe(map(result => result))
   }
 
-  public UpdatePersonalisation(personalisationId:Number, personalisation:any): Observable<any>{
+  public UpdatePersonalisation(personalisationId:string, personalisation:any): Observable<any>{
     return this.httpClient.put(`${this.apiUrl}Personalisation/UpdatePersonalisation/${personalisationId}`, personalisation)
     .pipe(map(result => result))
   }
 
-  public DeletePersonalisation(personalisationId:Number): Observable<any>{
+  public DeletePersonalisation(personalisationId:string): Observable<any>{
     return this.httpClient.delete(`${this.apiUrl}Personalisation/DeletePersonalisation/${personalisationId}`)
     .pipe(map(result => result))
   }

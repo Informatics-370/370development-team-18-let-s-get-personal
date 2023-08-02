@@ -1,7 +1,16 @@
 import { UserRole } from "./userrole"
+import { Customer } from "./customer"
+import { Employee } from "./employee"
+import { Admin } from "./admin"
 export class User{
-    user_ID!: Number
-    username!: String
-    password!: String
+    user_ID!: string
+    username!: string
+    password!: string
+
+    user_Role_ID!: string
     user_Role!: UserRole
+
+    customer!: Customer
+    employee!: Employee
+    admin!: Admin
 }

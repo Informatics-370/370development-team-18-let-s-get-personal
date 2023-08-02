@@ -73,7 +73,7 @@ export class RefundPoliciesPage implements OnInit {
       }
     })
   }
-  DeleteRefundPolicy(refund_Policy_ID: Number){
+  DeleteRefundPolicy(refund_Policy_ID: string){
     this.service.DeleteRefundPolicy(refund_Policy_ID).subscribe(result => {
       console.log(result);   
       if(result.status == "Success"){

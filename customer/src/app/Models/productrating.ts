@@ -2,7 +2,7 @@ import { Customer } from "./customer"
 import { Stock_Item } from "./stockitem"
 
 export class ProductRating{
-    product_Rating_ID!: Number
+    product_Rating_ID!: string
     customer!: Customer
     stock_Item!: Stock_Item
 

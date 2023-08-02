@@ -18,7 +18,7 @@ import { InventoryDataService } from '../Services/inventory.service';
   imports: [IonicModule, CommonModule, FormsModule, RouterModule]
 })
 export class InventoryPage implements OnInit {
-
+  inventory: Inventory[] =[];
   Products!: Stock_Item[];
   quantities: Array<any> = [];
   //productForm!: FormGroup;

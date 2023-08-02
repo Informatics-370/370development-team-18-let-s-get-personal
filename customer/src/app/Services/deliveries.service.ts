@@ -33,18 +33,18 @@ import { Delivery } from '../Models/delivery';
     }
   
     //get selected one
-    public GetDelivery(DeliveryId:Number){ 
+    public GetDelivery(DeliveryId:string){ 
       return this.httpClient.get(`${this.apiUrl}Deliveries/GetDelivery/${DeliveryId}`)
       .pipe(map(result => result))
     }
   
     //edit
-    public UpdateDelivery(DeliveryId:Number, delivery:Delivery){
+    public UpdateDelivery(DeliveryId:string, delivery:Delivery){
       return this.httpClient.put(`${this.apiUrl}Deliveries/UpdateDelivery/${DeliveryId}`, delivery)
     }
   
     //delete 
-    public DeleteDelivery(DeliveryId:Number){
+    public DeleteDelivery(DeliveryId:string){
       return this.httpClient.delete(`${this.apiUrl}Deliveries/DeleteDelivery/${DeliveryId}`)
     }
   

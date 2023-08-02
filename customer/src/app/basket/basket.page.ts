@@ -48,7 +48,7 @@ export class BasketPage implements OnInit {
   public calculateTotalPrice():any {
     let totalPrice = 0;
     for (const item of this.basketItems) {
-      totalPrice += item.price * item.basket_Quantity;
+      totalPrice += item.basket_Price * item.basket_Quantity;
     }
     return totalPrice;
   }

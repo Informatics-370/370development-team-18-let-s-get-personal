@@ -2,12 +2,12 @@ import { Stock_Item } from 'src/app/Models/stockitem';
 import { Customer } from './customer';
 
 export class BasketItems {
-    basket_ID! : Number
-    basket_Quantity!: number;
+    basket_ID! : string
+    basket_Quantity!: number
+    basket_Price!: number
     stock_Item_ID!: number
-    stock_Image_ID!: number
+    stock_Item!: Stock_Item
 
-    stock_Item!: Stock_Item;
     customer!: Customer
-    price!: number;
+    customer_ID!: number;
 }

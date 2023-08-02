@@ -32,18 +32,18 @@ import { Response } from '../Models/response';
     }
   
     //get selected one
-    public GetCustomer(Customer_ID:Number){ 
+    public GetCustomer(Customer_ID:string){ 
       return this.httpClient.get(`${this.apiUrl}Customer/GetCustomer/${Customer_ID}`)
       .pipe(map(result => result))
     }
   
     //edit
-    public UpdateCustomer(Customer_ID:Number, customer:Customer){
+    public UpdateCustomer(Customer_ID:string, customer:Customer){
       return this.httpClient.put<Response>(`${this.apiUrl}Customer/UpdateCustomer/${Customer_ID}`, customer)
     }
   
     //delete 
-    public DeleteStockType(Customer_ID:Number){
+    public DeleteStockType(Customer_ID:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}Customer/DeleteCustomer/${Customer_ID}`)
     }
   

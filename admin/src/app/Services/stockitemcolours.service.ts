@@ -35,19 +35,19 @@ import { Response } from '../Models/response';
       
   
     //get selected one
-    public GetStockItemColour(stock_Item_Colour_ID:Number){ 
+    public GetStockItemColour(stock_Item_Colour_ID:string){ 
       return this.httpClient.get(`${this.apiUrl}StockItemColour/GetStockItemColour`+ "/" + stock_Item_Colour_ID)
       .pipe(map(result => result))
     }
   
     //edit
-    public UpdateStockItemColour(stock_Item_Colour_ID:Number, stockitemcolour:StockItemColours){
+    public UpdateStockItemColour(stock_Item_Colour_ID:string, stockitemcolour:StockItemColours){
       return this.httpClient.put<Response>(`${this.apiUrl}StockType/UpdateStockItemColour/${stock_Item_Colour_ID}`, stockitemcolour, this.httpOptions)
       //.pipe(map(result => result))
     }
   
     //delete 
-    public DeleteStockItemColour(stock_Item_Colour_ID:Number){
+    public DeleteStockItemColour(stock_Item_Colour_ID:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}StockItemColour/DeleteStockItemColour`+ "/"+ stock_Item_Colour_ID, this.httpOptions)
       .pipe(map(result => result))
     }

@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Add Stock</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">add-stock</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <form [formGroup]="AddStockForm"> 
+    
+    <ion-item>
+      <ion-label position="stacked">Stock Item Name</ion-label><br>
+      <ion-input type="text" formControlName="orderLineItemId" placeholder="" required></ion-input>
+    </ion-item> 
+
+    <ion-item>
+      <ion-label position="stacked">Stock Item Price</ion-label><br>
+      <ion-input type="text" formControlName="orderLineItemId" placeholder="" required></ion-input>
+    </ion-item> 
+
+    <ion-item>
+      <ion-label position="stacked">Stock Item Size</ion-label><br>
+      <ion-input type="text" formControlName="orderLineItemId" placeholder="" required></ion-input>
+    </ion-item> 
+
+    <!-- Stock Type -->
+    <ion-item>
+      <ion-label position="stacked">Stock Item Type</ion-label><br>
+      <!-- <ion-select placeholder="Select a Delivery Company">
+        <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
+        <ion-select-option *ngFor="let types of deliverycompanies" [value]="company.delivery_Company_ID">
+          {{company.delivery_Company_Name}}
+        </ion-select-option>
+      </ion-select> -->
+    </ion-item>
+
+    <!-- Stock Colour -->
+    <ion-item>
+      <ion-label position="stacked">Stock Item Colour</ion-label><br>
+      <!-- <ion-select placeholder="Select a Delivery Company">
+        <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
+        <ion-select-option *ngFor="let types of deliverycompanies" [value]="company.delivery_Company_ID">
+          {{company.delivery_Company_Name}}
+        </ion-select-option>
+      </ion-select> -->
+    </ion-item> 
+    
+    <!-- Stock Image -->
+    <ion-item>
+      <ion-label position="stacked">Stock Item Image</ion-label><br>
+      <!-- <ion-select placeholder="Select a Delivery Company">
+        <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
+        <ion-select-option *ngFor="let types of deliverycompanies" [value]="company.delivery_Company_ID">
+          {{company.delivery_Company_Name}}
+        </ion-select-option>
+      </ion-select> -->
+    </ion-item>
+</form>
+
+</ion-content>

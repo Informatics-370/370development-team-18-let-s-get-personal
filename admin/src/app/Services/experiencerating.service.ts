@@ -26,7 +26,7 @@ import { Response } from '../Models/response';
     }
 
  //get selected one
-    public GetExperienceRating(Experience_Rating_ID:Number){ 
+    public GetExperienceRating(Experience_Rating_ID:string){ 
         return this.httpClient.get(`${this.apiUrl}Experience_Ratings/GetExperienceRating/${Experience_Rating_ID}`)
         .pipe(map(result => result))
       }
@@ -38,12 +38,12 @@ import { Response } from '../Models/response';
     } 
 
  //edit
-    public UpdateExperienceRating(Experience_Rating_ID:Number, Experience_Rating:Experience_Rating){
+    public UpdateExperienceRating(Experience_Rating_ID:string, Experience_Rating:Experience_Rating){
         return this.httpClient.put<Response>(`${this.apiUrl}Experience_Ratings/UpdateExperienceRating/${Experience_Rating_ID}`, Experience_Rating)
     }
 
   //delete 
-    public DeleteExperienceRating(Experience_Rating_ID:Number){
+    public DeleteExperienceRating(Experience_Rating_ID:string){
         return this.httpClient.delete<Response>(`${this.apiUrl}Experience_Ratings/DeleteExeperienceRating/${Experience_Rating_ID}`)
         
     }

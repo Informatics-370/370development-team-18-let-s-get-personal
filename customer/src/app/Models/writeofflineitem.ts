@@ -2,7 +2,7 @@ import { Write_Off } from "./writeoff";
 import { Stock_Item } from "./stockitem";
 
 export class Write_Off_Line_Item{
-    write_Off_Line_Item_ID!: Number
+    write_Off_Line_Item_ID!: string
     write_Off_Quantity!: Number
     write_Off_Reason!: String
 

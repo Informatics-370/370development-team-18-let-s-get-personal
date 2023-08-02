@@ -37,7 +37,7 @@ export class BasketService {
       return this.cartitems;    
   }
 
-  public GetBasket(Customer_ID:Number){ 
+  public GetBasket(Customer_ID:string){ 
     return this.httpClient.get<Response>(`${this.apiUrl}Basket/GetBasketInfo/${Customer_ID}`)
     .pipe(map(result => result))    
   }

@@ -21,7 +21,11 @@ import { OverlayEventDetail } from '@ionic/core/components';
 })
 export class ProcessRefundPage implements OnInit {
 
-  //constructor() { }
+  @ViewChild(IonModal) modal!: IonModal;
+  
+  constructor(private service:RefundService, private thisroute: Router, public modalCtrl: ModalController,
+    private alertController:AlertController ) { }
+
 
   ngOnInit() {
     
@@ -29,8 +33,5 @@ export class ProcessRefundPage implements OnInit {
 
  
 
-  @ViewChild(IonModal) modal!: IonModal
-  constructor(private service:RefundService, private thisroute: Router, public modalCtrl: ModalController,
-    private alertController:AlertController ) { }
-
+  
 }

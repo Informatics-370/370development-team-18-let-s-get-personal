@@ -43,14 +43,14 @@ export class ClothingPage implements OnInit {
         `<ion-row>` +
           `<ion-col>` +
           `<ion-card>` +
-          `<ion-card-title>Name: ${this.stockItem[i].Stock_Item_Name}</ion-card-title>` +
+          `<ion-card-title>Name: ${this.stockItem[i].stock_Item_Name}</ion-card-title>` +
           `<ion-card-content>` +
-          `<ion-img>${this.stockItem[i].stockimage.Stock_Image_File}</ion-img>` +
+          `<ion-img>${this.stockItem[i].stock_Images.stock_Image_File}</ion-img>` +
           `<p>${this.stockItem[i].stockitemcolours.Stock_Item_Colour_Name}</p>` +
-          `<p>R: ${this.stockItem[i].Stock_Item_Price}</p>` +
+          `<p>R: ${this.stockItem[i].stock_Item_Price}</p>` +
           `</ion-card-content>` +
           `</ion-card>` +
-          `<ion-button (click)="addToBasket(${this.stockItem[i].Stock_Item_ID})" >Add To Basket</ion-button>` +
+          `<ion-button (click)="addToBasket(${this.stockItem[i].stock_Item_ID})" >Add To Basket</ion-button>` +
           `</ion-col>` +
           `<ion-row>`;
       }

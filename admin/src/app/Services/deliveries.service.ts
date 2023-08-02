@@ -32,17 +32,17 @@ import { Response } from '../Models/response';
     }
   
     //get selected one
-    public GetDelivery(deliveryId:Number){ 
+    public GetDelivery(deliveryId:string){ 
       return this.httpClient.get(`${this.apiUrl}Deliveries/GetDelivery/${deliveryId}`)
       .pipe(map(result => result))
     }
     
-    // public UpdateDelivery(deliveryId:Number, delivery:Delivery){
-    //   return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/UpdateDelivery/${deliveryId}`, delivery)
-    // }
+    public UpdateDelivery(deliveryId:string, delivery:Delivery){
+      return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/UpdateDelivery/${deliveryId}`, delivery)
+    }
   
     //receive 
-    public ReceiveDelivery(deliveryId:Number){
+    public ReceiveDelivery(deliveryId:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}Deliveries/ReceiveDelivery/${deliveryId}`)
     }
   

@@ -31,22 +31,23 @@ namespace IPKP___API.Controllers
             {
                 var results = await _IPKPRepository.GetAllInventoryAsync();
 
-                dynamic products = results.Select(p => new
-                {
-                    p.Inventory_Line_Item_ID,
-                    p.Inventory_Line_Quantity,
-                    p.Stock_Item_ID,
-                    p.Inventory_ID,
-                    StockItem = p.Stock_Item.Stock_Item_Name,
-                    StockType = p.Stock_Item.Stock_Type,
-                    StockItemColours = p.Stock_Item.Stock_Item_Colour.Stock_Item_Colour_Name,
-                    StockPriceHistory = p.Stock_Item.Stock_Price_History,
-                    StockImage = p.Stock_Item.Stock_Image.Stock_Image_File,
-                    StockItemSize = p.Stock_Item.Stock_Item_Size,
-                    InventoryDate = p.Inventory.Inventory_Date,
-                    InventoryComment = p.Inventory.Inventory_Comments,
-                });
-                return Ok(products);
+                //dynamic products = results.Select(p => new
+                //{
+                //    p.Inventory_Line_Item_ID,
+                //    p.Inventory_Line_Quantity,                    
+                //    p.Stock_Item_ID,
+                //    p.Inventory_ID,
+                    
+                //    //p.Stock_Item.Stock_Type_ID,
+                //    //StockItemName = p.Stock_Item.Stock_Item_Name.Where(p.Stock_Item.Stock_Item_Name == ),
+                //    //p.Stock_Item.Stock_Item_Colour.Stock_Item_Colour_Name,
+                //    //p.Stock_Item.Stock_Price_History,
+                //    //p.Stock_Item.Stock_Image.Stock_Image_File,
+                //    //p.Stock_Item.Stock_Item_Size,
+                //    //p.Inventory.Inventory_Date,
+                //    //p.Inventory.Inventory_Comments,
+                //});
+                return Ok(results);
             }
             catch (Exception)
             {
@@ -62,6 +63,8 @@ namespace IPKP___API.Controllers
             {
                 Stock_Item_ID = ivm.Stock_Item_ID,
                 Inventory_ID = ivm.Inventory_ID,
+                //Stock_Item = ivm.Stock_Item,
+
             };
             try
             {

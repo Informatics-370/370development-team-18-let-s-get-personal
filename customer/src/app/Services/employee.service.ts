@@ -26,7 +26,7 @@ import { Employee } from '../Models/employee';
     }
 
  //get selected one
-    public GetEmployee(Employee_ID:Number){ 
+    public GetEmployee(Employee_ID:string){ 
         return this.httpClient.get(`${this.apiUrl}Employees/GetEmployee/${Employee_ID}`)
         .pipe(map(result => result))
       }
@@ -38,12 +38,12 @@ import { Employee } from '../Models/employee';
     } 
 
  //edit
-    public UpdateEmployee(Employee_ID:Number, employee:Employee){
+    public UpdateEmployee(Employee_ID:string, employee:Employee){
         return this.httpClient.put(`${this.apiUrl}Employees/UpdateEmployee/${Employee_ID}`, employee)
     }
 
   //delete 
-    public DeleteEmployee(Employee_ID:Number){
+    public DeleteEmployee(Employee_ID:string){
         return this.httpClient.delete(`${this.apiUrl}Employees/DeleteEmployee/${Employee_ID}`)
         
     }

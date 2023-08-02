@@ -37,14 +37,14 @@ export class ViewEmployeesPage implements OnInit {
     })
   }
   
-  GetEmployee(Employee_ID: Number){
+  GetEmployee(Employee_ID: string){
     this.empservice.GetEmployee(Employee_ID).subscribe(result => {
       this.employee = result  
       console.log(result);
     })
   }
 
-  DeleteEmployee(Employee_ID: Number){
+  DeleteEmployee(Employee_ID: string){
     this.empservice.DeleteEmployee(Employee_ID).subscribe(result => {
       console.log(result);
       if(result == null){

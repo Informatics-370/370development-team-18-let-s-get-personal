@@ -33,12 +33,12 @@ import { RefundVM } from '../ViewModels/refundVM';
     }
 
     //delete 
-    DeleteRefundPolicy(Refund_Policy_ID:Number){
+    DeleteRefundPolicy(Refund_Policy_ID:string){
       return this.httpClient.delete(`${this.apiUrl}Refund/DeleteRefundPolicy/${Refund_Policy_ID}`);
     }
 
     //get customer
-    GetCustomer(customer_ID:Number){ 
+    GetCustomer(customer_ID:string){ 
         return this.httpClient.get(`${this.apiUrl}Refund/GetCustomer/${customer_ID}`)
         .pipe(map(result => result))
     }
@@ -49,7 +49,7 @@ import { RefundVM } from '../ViewModels/refundVM';
         .pipe(map(result => result))
     }
 
-    DeleteSale(Sale_Id:Number){
+    DeleteSale(Sale_Id:string){
       return this.httpClient.delete(`${this.apiUrl}Refund/DeleteSaleAsync/${Sale_Id}`);
     }
    
