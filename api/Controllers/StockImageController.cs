@@ -53,8 +53,8 @@ namespace IPKP___API.Controllers
         }
 
         [HttpPost]
-        [Route("AddStockImagerAsync")]
-        public async Task<IActionResult> AddStockImagerAsync(Stock_Image si)
+        [Route("AddStockImage")]
+        public async Task<IActionResult> AddStockImageAsync(Stock_Image si)
         {
 
             var image = new Stock_Image
@@ -76,7 +76,7 @@ namespace IPKP___API.Controllers
         }
 
         [HttpPut]
-        [Route("UpdateStockImageAsync/{stock_Image_ID}")]
+        [Route("UpdateStockImage/{stock_Image_ID}")]
         public async Task<IActionResult> UpdateStockImageAsync(Guid stock_Image_ID, StockImageVM si)
         {
             try
@@ -101,7 +101,7 @@ namespace IPKP___API.Controllers
 
 
         [HttpDelete]
-        [Route("DeleteImageAsync/{stock_Image_ID}")]
+        [Route("DeleteImage/{stock_Image_ID}")]
         public async Task<IActionResult> DeleteImageAsync(Guid stock_Image_ID)
         {
             try
