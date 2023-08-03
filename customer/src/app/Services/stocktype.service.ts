@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
 import { StockTypes } from '../Models/stocktypes';
-
+import { Response } from '../Models/response';
 @Injectable({
     providedIn: 'root' 
   })
@@ -27,7 +27,7 @@ import { StockTypes } from '../Models/stocktypes';
   
     //add
     public AddStockType(stocktype:StockTypes){
-      return this.httpClient.post(`${this.apiUrl}StockType/AddStockType`, stocktype, this.httpOptions)
+      return this.httpClient.post<Response>(`${this.apiUrl}StockType/AddStockType`, stocktype, this.httpOptions)
     }
   
     //get selected one
@@ -38,14 +38,12 @@ import { StockTypes } from '../Models/stocktypes';
   
     //edit
     public UpdateStockType(stock_Type_ID:string, stocktype:StockTypes){
-      return this.httpClient.put(`${this.apiUrl}StockType/UpdateStockType/${stock_Type_ID}`, stocktype, this.httpOptions)
-      .pipe(map(result => result))
+      return this.httpClient.put<Response>(`${this.apiUrl}StockType/UpdateStockType/${stock_Type_ID}`, stocktype, this.httpOptions)
     }
   
     //delete 
     public DeleteStockType(stock_Type_ID:string){
-      return this.httpClient.delete<string>(`${this.apiUrl}StockType/DeleteStockType` + "/" + stock_Type_ID, this.httpOptions)
-      .pipe(map(result => result))
+      return this.httpClient.delete<Response>(`${this.apiUrl}StockType/DeleteStockType` + "/" + stock_Type_ID, this.httpOptions)
     }
   
   }

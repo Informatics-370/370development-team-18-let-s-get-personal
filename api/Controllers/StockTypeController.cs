@@ -11,15 +11,16 @@ using System.Threading.Tasks;
 
 namespace IPKP___API.Controllers
 {
-  [Route("api/[controller]")]
-  [ApiController]
-  public class StockTypeController : ControllerBase
-  {
-    private readonly IIPKPRepository _IPKPRepository;
-    public StockTypeController(IIPKPRepository iPKPRepository)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class StockTypeController : ControllerBase
     {
-      _IPKPRepository = iPKPRepository;
-    }
+        private readonly IIPKPRepository _IPKPRepository;
+        public StockTypeController(IIPKPRepository iPKPRepository)
+        {
+            _IPKPRepository = iPKPRepository;
+        }
+
         [HttpGet]
         [Route("GetAllStockTypes")]
         public async Task<IActionResult> GetAllStockTypesAsync()
@@ -43,15 +44,15 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetStockTypeDetailsAsync(stock_Type_ID);
-                if (results == null) 
-                { 
-                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Type" }); 
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Type" });
                 }
                 else
                 {
                     return Ok(results);
                 }
-                
+
             }
             catch (Exception)
             {
@@ -118,7 +119,7 @@ namespace IPKP___API.Controllers
                 }
                 else
                 {
-                     _IPKPRepository.Delete(existingStockType);
+                    _IPKPRepository.Delete(existingStockType);
 
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
@@ -132,5 +133,5 @@ namespace IPKP___API.Controllers
             }
             return Ok(new Response { Status = "Success", Message = "Stock Type Removed From Database." });
         }
-  }
+    }
 }

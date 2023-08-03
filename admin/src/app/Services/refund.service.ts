@@ -21,43 +21,39 @@ import { Response } from '../Models/response';
     constructor(private httpClient: HttpClient) { 
     }
   
-    //API
-     GetAllPreviousRefunds(): Observable<any>{ 
+
+    GetAllPreviousRefunds(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}Refund/GetAllPreviousRefunds`)
       .pipe(map(result => result))
-  }
-    //get all previous refund policies
+    }
+
+    //*************** Process Refund ***************\\
+    public FindOrderRefund(order_Id:string){ 
+      return this.httpClient.get(`${this.apiUrl}Refund/FindOrderRefund/${order_Id}`)
+      .pipe(map(result => result))
+    }
+
+    DeleteOrderRefund(order_Id:string){
+      return this.httpClient.delete<Response>(`${this.apiUrl}Refund/DeleteOrderRefund/${order_Id}`);
+    }
+
+    AddRefund(refund:RefundVM){
+      return this.httpClient.post<Response>(`${this.apiUrl}Refund/AddRefund`, refund)
+      .pipe(map(result => result))
+    }
+
+    //*************** Refund Policies ***************\\
     GetAllRefundPolicies(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}Refund/GetAllRefundPolicies`)
       .pipe(map(result => result))
-    }
-  
-    //add
+    }  
+    
     AddRefundPolicy(policy:Refund_Policy){
       return this.httpClient.post<Response>(`${this.apiUrl}Refund/AddRefundPolicy`, policy)
       .pipe(map(result => result))
     }
-
-    //delete 
+    
     DeleteRefundPolicy(refund_Policy_ID:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}Refund/DeleteRefundPolicy/${refund_Policy_ID}`);
-    }
-
-    //get customer
-    GetCustomer(customer_ID:string){ 
-        return this.httpClient.get(`${this.apiUrl}Refund/GetCustomer/${customer_ID}`)
-        .pipe(map(result => result))
-    }
-    
-    //process refund 
-    AddRefund(refund: RefundVM){
-        return this.httpClient.post<Response>(`${this.apiUrl}Refund/AddRefund`, refund)
-        .pipe(map(result => result))
-    }
-
-    DeleteSale(Sale_Id:string){
-      return this.httpClient.delete<Response>(`${this.apiUrl}Refund/DeleteSaleAsync/${Sale_Id}`);
-    }
-   
-  
+    }  
   }

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-
+import { Response } from '../Models/response';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,20 +28,17 @@ export class PersonalisationService {
   }
 
   public AddPersonalisation(personalisation:any): Observable<any>{
-    return this.httpClient.post(`${this.apiUrl}Personalisation/AddPersonalisation`, personalisation, this.httpOptions)
+    return this.httpClient.post<Response>(`${this.apiUrl}Personalisation/AddPersonalisation`, personalisation, this.httpOptions)
     .pipe(map(result => result))
   }
 
   public UpdatePersonalisation(personalisationId:string, personalisation:any): Observable<any>{
-    return this.httpClient.put(`${this.apiUrl}Personalisation/UpdatePersonalisation/${personalisationId}`, personalisation)
+    return this.httpClient.put<Response>(`${this.apiUrl}Personalisation/UpdatePersonalisation/${personalisationId}`, personalisation)
     .pipe(map(result => result))
   }
 
   public DeletePersonalisation(personalisationId:string): Observable<any>{
-    return this.httpClient.delete(`${this.apiUrl}Personalisation/DeletePersonalisation/${personalisationId}`)
+    return this.httpClient.delete<Response>(`${this.apiUrl}Personalisation/DeletePersonalisation/${personalisationId}`)
     .pipe(map(result => result))
   }
-
-  // private async savePicture(photo: Photo) { }
-
 }

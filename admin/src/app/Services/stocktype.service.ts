@@ -39,13 +39,11 @@ import { Response } from '../Models/response';
     //edit
     public UpdateStockType(stock_Type_ID:string, stocktype:StockTypes){
       return this.httpClient.put<Response>(`${this.apiUrl}StockType/UpdateStockType/${stock_Type_ID}`, stocktype, this.httpOptions)
-      .pipe(map(result => result))
     }
   
     //delete 
     public DeleteStockType(stock_Type_ID:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}StockType/DeleteStockType` + "/" + stock_Type_ID, this.httpOptions)
-      .pipe(map(result => result))
     }
   
   }

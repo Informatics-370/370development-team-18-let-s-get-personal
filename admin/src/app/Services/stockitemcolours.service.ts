@@ -21,35 +21,26 @@ import { Response } from '../Models/response';
     constructor(private httpClient: HttpClient) { 
     }
   
-    //return http.loacalhost:5116/api/Course/GetAllStockTypes
     public GetStockItemColours(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}StockItemColour/GetAllStockItemColours`)
       .pipe(map(result => result))
     }  
     
-    //add
     public AddStockItemColour(stockitemcolour:StockItemColours){
       return this.httpClient.post<Response>(`${this.apiUrl}StockItemColour/AddStockItemColour`, stockitemcolour, this.httpOptions)
-      //.pipe(map(result => result))
-    }
-      
+    }     
   
-    //get selected one
     public GetStockItemColour(stock_Item_Colour_ID:string){ 
       return this.httpClient.get(`${this.apiUrl}StockItemColour/GetStockItemColour`+ "/" + stock_Item_Colour_ID)
       .pipe(map(result => result))
     }
   
-    //edit
     public UpdateStockItemColour(stock_Item_Colour_ID:string, stockitemcolour:StockItemColours){
       return this.httpClient.put<Response>(`${this.apiUrl}StockType/UpdateStockItemColour/${stock_Item_Colour_ID}`, stockitemcolour, this.httpOptions)
-      //.pipe(map(result => result))
     }
   
-    //delete 
     public DeleteStockItemColour(stock_Item_Colour_ID:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}StockItemColour/DeleteStockItemColour`+ "/"+ stock_Item_Colour_ID, this.httpOptions)
-      .pipe(map(result => result))
     }
   
   }

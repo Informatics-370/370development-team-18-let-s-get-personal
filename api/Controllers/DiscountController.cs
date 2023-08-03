@@ -16,9 +16,9 @@ namespace IPKP___API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
     public class DiscountController : ControllerBase
     {
+        //METHODS: disocunt crud
         private readonly IIPKPRepository _IPKPRepository;
         public DiscountController(IIPKPRepository iPKPRepository)
         {
@@ -42,7 +42,6 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetDiscount/{discount_ID}")]
-
         public async Task<IActionResult> GetDiscount(Guid discount_ID)
         {
             try
@@ -83,7 +82,6 @@ namespace IPKP___API.Controllers
             }
             return Ok(new Response { Status = "Success", Message = "Discount Added Successfully" });
         }
-
 
         [HttpPut]
         [Route("edit-discounts/{Discount_ID}")]

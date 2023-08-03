@@ -3,7 +3,7 @@ import { Stock_Item } from 'src/app/Models/stockitem';
 import { BasketItems } from 'src/app/Models/basket';
 import { map, Observable, Subject } from "rxjs";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { Response } from '../Models/response';
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +19,20 @@ export class BasketService {
 
   static tmpCartName : string = "ls-cart-subscriptions";
   public basketChange: EventEmitter<BasketItems[]> = new EventEmitter<BasketItems[]>();
-  private BasketItemsList: BasketItems[];
+  private basketItemList: BasketItems[];
   cartProductsNumberDS = new Subject<number>();
   cartitems!: BasketItems;
   constructor(private httpClient: HttpClient) {
-    this.BasketItemsList = JSON.parse(localStorage.getItem('basket')!);
+    this.basketItemList = JSON.parse(localStorage.getItem('basket')!);
+  }
+  public GetBasketFromAPI(Customer_ID:string){ 
+    return this.httpClient.get<Response>(`${this.apiUrl}Basket/GetBasketInfo/${Customer_ID}`)
+    .pipe(map(result => result))    
+  }  
+
+  public addProductToAPI(basket: BasketItems){
+    return this.httpClient.post<Response>(`${this.apiUrl}Basket/AddBasketInfo`, basket)
+      .pipe(map(result => result))
   }
 
   checkcartitems(){
@@ -37,33 +46,22 @@ export class BasketService {
       return this.cartitems;    
   }
 
-  public GetBasket(Customer_ID:Number){ 
-    return this.httpClient.get(`${this.apiUrl}Basket/GetBasketInfo/${Customer_ID}`)
-    .pipe(map(result => result))    
-  }
-  
-
-  public addProductToAPI(basket: BasketItems){
-    return this.httpClient.post(`${this.apiUrl}Basket/AddBasketInfo`, basket)
-      .pipe(map(result => result))
-  }
-
   public addProductToBasket(stockItem: Stock_Item, newQuantity: number) {
-    const BasketItem = new BasketItems();
-    BasketItem.stock_Item = stockItem;
-    BasketItem.basket_Quantity = newQuantity;
+    const basketItem = new BasketItems();
+    basketItem.stock_Item = stockItem;
+    basketItem.basket_Quantity = newQuantity;
 
-    const findIndex = this.BasketItemsList.findIndex((item: BasketItems) => {
+    const findIndex = this.basketItemList.findIndex((item: BasketItems) => {
       return item.stock_Item.stock_Item_ID == stockItem.stock_Item_ID
     });
 
     if (findIndex >= 0) {
-      this.BasketItemsList[findIndex].basket_Quantity = newQuantity;
+      this.basketItemList[findIndex].basket_Quantity = newQuantity;
     } else {
-      this.BasketItemsList.push(BasketItem);
+      this.basketItemList.push(basketItem);
     }
-    localStorage.setItem('basket', JSON.stringify(this.BasketItemsList));
-    this.basketChange.next(this.BasketItemsList);
+    localStorage.setItem('basket', JSON.stringify(this.basketItemList));
+    this.basketChange.next(this.basketItemList);
 
     this.notifyOnNewItemInCart();
   }
@@ -88,7 +86,7 @@ export class BasketService {
   }
 
   getNumberOfItemsInCart() : number {
-    return this.BasketItemsList.length
+    return this.basketItemList.length
   }
 
   notifyOnNewItemInCart() {

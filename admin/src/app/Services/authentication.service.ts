@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 import { Response } from '../Models/response';
+import { Customer } from '../Models/customer';
+import { ForgotPasswordViewModel } from '../ViewModels/forgotPasswordVM';
 @Injectable({
   providedIn: 'root'
 })
@@ -76,7 +78,13 @@ export class AuthenticationService {
     return false;
   }
 
-  
+  public CreateProfile(customer: Customer){
+    return this.httpClient.post(`${this.apiUrl}Authenticate/register`, customer, this.httpOptions)
+  }
+
+  public ForgotPassword(forgotpassword: ForgotPasswordViewModel){
+    return this.httpClient.post(`${this.apiUrl}Authenticate/ForgotPassword`, forgotpassword, this.httpOptions)
+  }
 }
 
 

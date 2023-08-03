@@ -19,10 +19,11 @@ using IPKP___API.Controllers.Models.Repository;
 
 namespace IPKP___API.Controllers
 {
-  [Route("api/[controller]")]
-  [ApiController]
-  public class AuthenticateController : ControllerBase
-  {
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthenticateController : ControllerBase
+    {
+        //METHODS: login, register, register admin, forgot password, generate2factorcode, getuniquekey, send email
         private readonly IIPKPRepository _IPKPRepository;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -282,6 +283,7 @@ namespace IPKP___API.Controllers
         }
     }
 }
+
 //[HttpPost]
 //[Route("GetCustomerbyID")]
 //public async Task<IActionResult> GetCustomerbyID([FromBody] LoginViewModel model)

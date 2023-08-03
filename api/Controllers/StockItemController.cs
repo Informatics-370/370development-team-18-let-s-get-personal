@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace IPKP___API.Controllers
 {
-  [Route("api/[controller]")]
-  [ApiController]
-  public class StockItemController : ControllerBase
-  {
+    [Route("api/[controller]")]
+    [ApiController]
+    public class StockItemController : ControllerBase
+    {
 
         private readonly IIPKPRepository _IPKPRepository;
         public StockItemController(IIPKPRepository iPKPRepository)
         {
-          _IPKPRepository = iPKPRepository;
+            _IPKPRepository = iPKPRepository;
         }
 
         [HttpPost]
@@ -48,7 +48,6 @@ namespace IPKP___API.Controllers
             return Ok(new Response { Status = "Success", Message = "Stock Item Added To Database." });
         }
 
-
         [HttpGet]
         [Route("GetAllStockItems")]
         public async Task<IActionResult> GetAllStockItemsAsync()
@@ -68,7 +67,6 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetStockItem/{stock_Item_ID}")]
-
         public async Task<IActionResult> GetStockItemDetailsAsync(Guid stock_Item_ID)
         {
             try
@@ -111,7 +109,6 @@ namespace IPKP___API.Controllers
             return Ok(new Response { Status = "Success", Message = "Stock Item Saved To Database." });
         }
 
-
         [HttpDelete]
         [Route("DeleteStockItem/{StockItemId}")]
         public async Task<IActionResult> DeleteStockItem(Guid StockItemId)
@@ -135,10 +132,6 @@ namespace IPKP___API.Controllers
             }
             return Ok(new Response { Status = "Success", Message = "Stock Item  Removed From Database." });
         }
-
-
-
-
 
     }
 }

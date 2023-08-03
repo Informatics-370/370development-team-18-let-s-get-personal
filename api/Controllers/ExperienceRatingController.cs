@@ -13,7 +13,7 @@ namespace IPKP___API.Controllers
     public class ExperienceRatingController : ControllerBase
     {
         //AppDbContext _CoreDbContext = new AppDbContext();
-
+        //METHODS: exp rating crud
         private readonly IIPKPRepository _IPKPRepository;
         public ExperienceRatingController(IIPKPRepository iPKPRepository)
         {

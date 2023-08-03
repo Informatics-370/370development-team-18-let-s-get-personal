@@ -9,29 +9,15 @@ using System.Threading.Tasks;
 
 namespace IPKP___API.Controllers
 {
-  [Route("api/[controller]")]
-  [ApiController]
-  public class BestSellersController : ControllerBase
-  {
-    private readonly IIPKPRepository _IPKPRepository;
-    public BestSellersController(IIPKPRepository iPKPRepository)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BestSellersController : ControllerBase
     {
-      _IPKPRepository = iPKPRepository;
-    }
-        [HttpGet]
-        [Route("GetAllStockItems")]
-
-        public async Task<IActionResult> GetAllStockItemsAsync()
+        //METHODS: get best sellers, save best sellers list
+        private readonly IIPKPRepository _IPKPRepository;
+        public BestSellersController(IIPKPRepository iPKPRepository)
         {
-            try
-            {
-                var results = await _IPKPRepository.GetAllStockItemsAsync();
-                return Ok(results);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-            }
+            _IPKPRepository = iPKPRepository;
         }
 
         [HttpGet]

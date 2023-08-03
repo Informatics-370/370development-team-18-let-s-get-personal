@@ -7,6 +7,7 @@ import { Response } from '../Models/response';
 @Injectable({
     providedIn: 'root' 
   })
+
   export class DiscountService {
   
     apiUrl = 'https://localhost:44390/api/'
@@ -19,7 +20,7 @@ import { Response } from '../Models/response';
   
     constructor(private httpClient: HttpClient) { 
     }
-
+    
   //get all
     public GetAllDiscounts(): Observable<any>{ 
         return this.httpClient.get(`${this.apiUrl}Discount/GetAllDiscounts`)
@@ -32,21 +33,20 @@ import { Response } from '../Models/response';
         .pipe(map(result => result))
     }
 
- //get selected one
+  //get selected one
     public GetDiscount(discount_ID:string){ 
         return this.httpClient.get(`${this.apiUrl}Discount/GetDiscount/${discount_ID}`)
         .pipe(map(result => result))
       }
 
- //edit
+  //edit
     public UpdateDiscount(discount_ID:string, discount:Discount){
         return this.httpClient.put<Response>(`${this.apiUrl}Discount/edit-discounts/${discount_ID}`, discount)
     }
 
-  //delete 
+    //delete 
     public DeleteDiscount(Discount_ID:string){
-        return this.httpClient.delete<Response>(`${this.apiUrl}Discount/DeleteDiscount/${Discount_ID}`)
-        
+        return this.httpClient.delete<Response>(`${this.apiUrl}Discount/DeleteDiscount/${Discount_ID}`)  
     }
    
   

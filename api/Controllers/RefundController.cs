@@ -21,6 +21,8 @@ namespace IPKP___API.Controllers
     [ApiController]
     public class RefundController : ControllerBase
     {
+        //Processing, emailing, policies
+
         //Processing:
         //1. Find order
         //3. Add to refund table

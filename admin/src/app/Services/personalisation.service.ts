@@ -41,7 +41,4 @@ export class PersonalisationService {
     return this.httpClient.delete<Response>(`${this.apiUrl}Personalisation/DeletePersonalisation/${personalisationId}`)
     .pipe(map(result => result))
   }
-
-  // private async savePicture(photo: Photo) { }
-
 }

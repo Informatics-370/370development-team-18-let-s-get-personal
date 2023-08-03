@@ -22,7 +22,6 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetPersonalisation/{personalisation_ID}")]
-
         public async Task<IActionResult> GetPersonalisationAsync(Guid personalisation_ID)
         {
             try

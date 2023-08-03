@@ -15,7 +15,7 @@ namespace IPKP___API.Controllers
     [ApiController]
     public class InventoryController : ControllerBase
     {
-       
+       //METHODS: Inevntory, write off, stock take
 
         private readonly IIPKPRepository _IPKPRepository;
         public InventoryController(IIPKPRepository iPKPRepository)
@@ -23,6 +23,7 @@ namespace IPKP___API.Controllers
             _IPKPRepository = iPKPRepository;
         }
 
+        //*************** Inventory ***************\\
         [HttpGet]
         [Route("GetAllProducts")]
         public async Task<IActionResult> GetAllProductsAsync()
@@ -102,8 +103,52 @@ namespace IPKP___API.Controllers
             return Ok(new Response { Status = "Success", Message = "Stock Item Added To Database." });
         }
 
+        //*************** Write off ***************\\
 
-     
+
+        //*************** Stock Take ***************\\
+        //1. Get current Stock Total
+        //2. Get all old stock takes, get specific stock take
+        //3. Get new stock amounts, add new stock take, update inventory
+        //4. Update for foreign keys
+        //5. 
+        [HttpGet]
+        [Route("GetInventoryById/{inventory_Id}")]
+        public async Task<IActionResult> GetInventoryByIDAsync(Guid inventory_Id)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetAllStockItemsAsync();
+
+                List<Stock_Item> dbInventory = results.ToList();
+                List<Inventory> InventoryList = new List<Inventory>();
+
+                foreach (var c in dbInventory)
+                {
+                    Inventory oInventory = new Inventory();
+
+                    if (inventory_Id == c.Stock_Item_ID)
+                    {
+                        oInventory.Inventory_ID = c.Stock_Item_ID;
+                        InventoryList.Add(oInventory);
+                    }
+                    else
+                    {
+                        return NotFound(new Response { Status = "Error", Message = "No stock items in inventory" });
+                    }
+                }
+                return Ok(InventoryList);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
+        //enter current quanities
+
+        //compare to system quantities 
+
 
     }
 }

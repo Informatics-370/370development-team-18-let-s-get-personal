@@ -23,7 +23,6 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetAllProductRatings")]
-
         public async Task<IActionResult> GetAllProductRatingsAsync()
         {
             try
@@ -41,7 +40,6 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetProductRating/{product_Rating_ID}")]
-
         public async Task<IActionResult> GetProductRatingDetailsAsync(Guid product_Rating_ID)
         {
             try

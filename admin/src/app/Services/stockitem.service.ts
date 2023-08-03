@@ -33,19 +33,19 @@ import { Response } from '../Models/response';
     }
   
     //get selected one
-    public GetStockItem(StockItemId:string){ 
-      return this.httpClient.get(`${this.apiUrl}StockItem/GetStockItem/${StockItemId}`)
+    public GetStockItem(stock_Item_ID:string){ 
+      return this.httpClient.get(`${this.apiUrl}StockItem/GetStockItem/${stock_Item_ID}`)
       .pipe(map(result => result))
     }
   
     //edit
-    public UpdateStockItem(StockItemId:string, stockitem:Stock_Item){
-      return this.httpClient.put<Response>(`${this.apiUrl}StockItem/UpdateStockItem/${StockItemId}`, stockitem)
+    public UpdateStockItem(stock_Item_ID:string, stockitem:Stock_Item){
+      return this.httpClient.put<Response>(`${this.apiUrl}StockItem/UpdateStockItem/${stock_Item_ID}`, stockitem)
     }
   
     //delete 
-    public DeleteStockItem(StockItemId:string){
-      return this.httpClient.delete<Response>(`${this.apiUrl}StockItem/DeleteStockItem/${StockItemId}`)
+    public DeleteStockItem(stock_Item_ID:string){
+      return this.httpClient.delete<Response>(`${this.apiUrl}StockItem/DeleteStockItem/${stock_Item_ID}`)
     }
   
   }
