@@ -60,7 +60,7 @@ namespace IPKP___API.Controllers
 
         [HttpPost]
         [Route("AddStockItemColour")]
-        public async Task<IActionResult> AddStockItemColourAsync(StockItemColourViewModel sicvm)
+        public async Task<IActionResult> AddStockItemColourAsync(Stock_Item_Colour sicvm)
         {
 
             var stock_Item_Colour = new Stock_Item_Colour
@@ -84,7 +84,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateStockItemColour/{stock_Item_Colour_ID}")]
-        public async Task<IActionResult> UpdateStockItemColourAsync(Guid stock_Item_Colour_ID, StockItemColourViewModel sicvm)
+        public async Task<IActionResult> UpdateStockItemColourAsync(Guid stock_Item_Colour_ID, Stock_Item_Colour sicvm)
         {
               try
               {
