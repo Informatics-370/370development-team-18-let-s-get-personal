@@ -1,12 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Profile</ion-title>
+    <ion-title>view-profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-button (click)="updateProfile()">Update Profile</ion-button>
-  <ion-button (click)="deleteProfile()">Delete Profile</ion-button>
-  <ion-button (click)="ExpRating()">Experience Rating</ion-button>
-  <ion-button (click)="PreviousOrders()">View Previous Orders</ion-button>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">view-profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
 </ion-content>

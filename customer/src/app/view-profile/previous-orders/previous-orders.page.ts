@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController,AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-previous-orders',
@@ -13,12 +12,9 @@ import { Router } from '@angular/router';
 })
 export class PreviousOrdersPage implements OnInit {
 
-  constructor(private _modalController: ModalController, private _router: Router, private alertController:AlertController) { }
-
+  constructor() { }
 
   ngOnInit() {
   }
-  public ProductRating() {
-    this._router.navigate(["/tabs/product-rating"])
-  }
+
 }

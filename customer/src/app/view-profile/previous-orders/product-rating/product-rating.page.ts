@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController,AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-product-rating',
@@ -13,15 +12,9 @@ import { Router } from '@angular/router';
 })
 export class ProductRatingPage implements OnInit {
 
-  constructor(private _modalController: ModalController, private _router: Router, private alertController:AlertController) { }
-
+  constructor() { }
 
   ngOnInit() {
   }
-  public updateProdRating() {
-    this._router.navigate(["/tabs/edit-product-rating"])
-  }
-  public deleteProdRating() {
-    this._router.navigate(["/tabs/"])
-  }
+
 }

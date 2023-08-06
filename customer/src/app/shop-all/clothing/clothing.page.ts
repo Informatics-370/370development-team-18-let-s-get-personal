@@ -34,7 +34,7 @@ export class ClothingPage implements OnInit {
   }
 
   //Load Stock Items
- /* updateGrid() {
+  updateGrid() {
     var grid = document.querySelector("#grid");
 
     if (grid) {
@@ -60,7 +60,7 @@ export class ClothingPage implements OnInit {
     }
     //save to local storage
     // localStorage.setItem("cart",JSON.stringify(cart));
-  }*/
+  }
 
   /*!!!!!!!!!!!!!!UPDATE!!!!!!!!!!! */
   addToBasket(){

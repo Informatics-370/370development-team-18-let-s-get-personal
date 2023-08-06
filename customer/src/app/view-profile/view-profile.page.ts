@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController,AlertController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-view-profile',
@@ -13,22 +12,9 @@ import { Router } from '@angular/router';
 })
 export class ViewProfilePage implements OnInit {
 
-  constructor(private _modalController: ModalController, private _router: Router, private alertController:AlertController) { }
-
+  constructor() { }
 
   ngOnInit() {
   }
-  public updateProfile() {
-    this._router.navigate(["/tabs/update-profile"])
-  }
-  public deleteProfile() {
-    this._router.navigate(["/tabs/"])
-  }
-  
-  public PreviousOrders() {
-    this._router.navigate(["/tabs/previous-orders"])
-  }
-  public ExpRating() {
-    this._router.navigate(["/tabs/experience-rating"])
-  }
+
 }

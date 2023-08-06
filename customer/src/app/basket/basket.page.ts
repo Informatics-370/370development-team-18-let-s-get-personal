@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { BasketItems } from '../Models/basket';
-import { Delivery_Company } from '../Models/deliverycompany';
 
 @Component({
   selector: 'app-basket',
@@ -19,7 +18,7 @@ export class BasketPage implements OnInit {
 
 
   basketItems: BasketItems[] = [];
-  deliverycompany:Delivery_Company[]=[];
+  deliveryFee:any =50;
 
   ngOnInit() {
     this.basketItems = JSON.parse(localStorage.getItem('cart') as string) || [];
@@ -46,17 +45,17 @@ export class BasketPage implements OnInit {
     localStorage.setItem('cart', JSON.stringify(this.basketItems));
   }
 
-  /*public calculateTotalPrice():any {
+  public calculateTotalPrice():any {
     let totalPrice = 0;
     for (const item of this.basketItems) {
       totalPrice += item.basket_Price * item.basket_Quantity;
     }
     return totalPrice;
-  }*/
+  }
 
   //not the final code, just reference
 
-  public  makepayment(){
+  public  makepayment(price:Number){
     
     let pastOrders = JSON.parse(localStorage.getItem('pastorders') as string) || [];
     pastOrders.push({

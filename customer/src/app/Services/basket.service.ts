@@ -1,10 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Stock_Item } from 'src/app/Models/stockitem';
-<<<<<<< Updated upstream
 import { BasketItems } from 'src/app/Models/basket';
-=======
-import { BasketItems } from '../Models/basket';
->>>>>>> Stashed changes
 import { map, Observable, Subject } from "rxjs";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Response } from '../Models/response';
@@ -50,20 +46,6 @@ export class BasketService {
       return this.cartitems;    
   }
 
-<<<<<<< Updated upstream
-=======
-  public GetBasket(Customer_ID:Number){ 
-    return this.httpClient.get(`${this.apiUrl}Basket/GetBasketInfo/${Customer_ID}`)
-    .pipe(map(result => result))    
-  }
-  
-
-  public addProductToAPI(basket: BasketItems){
-    return this.httpClient.post(`${this.apiUrl}Basket/AddBasketInfo`, basket)
-      .pipe(map(result => result))
-  }
-
->>>>>>> Stashed changes
   public addProductToBasket(stockItem: Stock_Item, newQuantity: number) {
     const basketItem = new BasketItems();
     basketItem.stock_Item = stockItem;
