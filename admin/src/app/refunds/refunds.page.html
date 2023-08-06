@@ -10,9 +10,10 @@
       <ion-title size="large">Refunds</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-button (click)="processRefundsRoute()">Process Refund</ion-button>
-  <ion-button (click)="RefundPolicyRoute()">Manage Refund Policies</ion-button>
-  <ion-card-content>                        
+  <ion-content id="content">
+    <ion-button (click)="processRefundsRoute()">Process Refund</ion-button>
+    <ion-button (click)="RefundPolicyRoute()">Manage Refund Policies</ion-button>
+                         
     <ion-grid>
       <ion-row>
         <ion-col style="font-weight: bold;">Customer Email</ion-col>
@@ -23,8 +24,9 @@
         <ion-col>{{item.refund_Comment}}</ion-col>     
       </ion-row>
     </ion-grid>
+  </ion-content>
+  
 
-  </ion-card-content>
 </ion-content>
 
 

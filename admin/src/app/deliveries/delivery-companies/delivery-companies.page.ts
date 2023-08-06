@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { DeliveryCompanyDataService } from 'src/app/Services/deliverycompany.service';
+import { DeliveryDataService } from 'src/app/Services/deliveries.service';
 import { Delivery_Company } from 'src/app/Models/deliverycompany';
 
 //for modal
@@ -31,7 +31,7 @@ export class DeliveryCompaniesPage implements OnInit {
   // }
 
   @ViewChild(IonModal) modal!: IonModal
-  constructor(private service:DeliveryCompanyDataService, private thisroute: Router, public modalCtrl: ModalController,
+  constructor(private service:DeliveryDataService, private thisroute: Router, public modalCtrl: ModalController,
     private alertController:AlertController ) { }
 
   AddForm: FormGroup = new FormGroup({
@@ -67,12 +67,12 @@ export class DeliveryCompaniesPage implements OnInit {
 
   }
 
-  EditDeliveryCompany(delivery_Company_ID:string)
+  EditDeliveryCompany(delivery_Company_ID:number)
   {
     this.thisroute.navigate(['/edit-company', delivery_Company_ID]);
   }
 
-  DeleteDeliveryCompany(delivery_Company_ID: string){
+  DeleteDeliveryCompany(delivery_Company_ID: number){
     this.service.DeleteDeliveryCompany(delivery_Company_ID).subscribe(result => {
       console.log(result);
       if(result.status == "Error")

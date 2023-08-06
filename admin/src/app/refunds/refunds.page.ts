@@ -28,37 +28,14 @@ export class RefundsPage implements OnInit {
   refundPolicies: Refund_Policy[] =[]
   refunds:Refund[] = [];
   @ViewChild(IonModal) modal!: IonModal
-  constructor(private service:RefundService, private router: Router, 
-    private alertController:AlertController, private modalCtrl: ModalController ) { }
-
   
+  constructor(private service:RefundService, private router: Router, 
+    private alertController:AlertController, private modalCtrl: ModalController ) 
+  {}  
 
   ngOnInit(): void {
     this.getPrevRefunds()
-    /*
-    if(this.filterTerm==""){
-      this.filteredpolicies = this.refundPolicies;
-    }*/
   }
-  search(){
-    //empty array
-    this.filteredpolicies = [];
-
-    //filter items
-    this.filteredpolicies = this.refundPolicies.filter((searchitem)=>
-      searchitem.refund_Policy_Date.toDateString().includes(this.filterTerm)||
-      searchitem.refund_Policy_Description.toLocaleLowerCase().includes(this.filterTerm.toLocaleLowerCase())||
-      searchitem.refund_Policy_Version == Number(this.filterTerm)
-    );
-   }
-
-   getAllRefundPolicies(){
-    this.service.GetAllRefundPolicies().subscribe(result =>{
-      this.refundPolicies = result as Refund_Policy[];
-      console.log(this.refundPolicies);
-    })
-  }
-
 
   getPrevRefunds(){
     this.service.GetAllPreviousRefunds().subscribe(result =>{
@@ -76,24 +53,5 @@ export class RefundsPage implements OnInit {
   {
     this.router.navigate(['./tabs/refund-policies']);
   }
-
-  reloadPage(){
-    window.location.reload()
-  }
-  
-  canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  confirmaddmodal() {
-    //this.AddRefundPolicy();    
-  }
-
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-  }
-
- 
-
 
 }

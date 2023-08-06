@@ -6,7 +6,7 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } 
 import { User } from 'src/app/Models/user';
 import { Customer } from 'src/app/Models/customer';
 import { Employee } from 'src/app/Models/employee';
-import { EmployeeService } from 'src/app/Services/employee.service';
+import { UserProfileDataService } from '../Services/userprofile.service';
 
 @Component({
   selector: 'app-view-employees',
@@ -18,13 +18,12 @@ import { EmployeeService } from 'src/app/Services/employee.service';
 export class ViewEmployeesPage implements OnInit {
 
   Profile: User[] = []
-  customers: Customer[] = []
   employees: Employee[] = []
   employee: any
   @ViewChild(IonModal) modal!: IonModal
   
   constructor( private alertController:AlertController, 
-    private empservice: EmployeeService, public modalCtrl: ModalController) { } //private service:ProfileService,
+    private empservice: UserProfileDataService, public modalCtrl: ModalController) { } //private service:ProfileService,
 
   ngOnInit() {
   //  this.getProfle()
@@ -37,14 +36,14 @@ export class ViewEmployeesPage implements OnInit {
     })
   }
   
-  GetEmployee(Employee_ID: string){
+  GetEmployee(Employee_ID: number){
     this.empservice.GetEmployee(Employee_ID).subscribe(result => {
       this.employee = result  
       console.log(result);
     })
   }
 
-  DeleteEmployee(Employee_ID: string){
+  DeleteEmployee(Employee_ID: number){
     this.empservice.DeleteEmployee(Employee_ID).subscribe(result => {
       console.log(result);
       if(result == null){

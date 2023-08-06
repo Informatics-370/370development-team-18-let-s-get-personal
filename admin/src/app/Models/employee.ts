@@ -1,6 +1,6 @@
 import { User } from "./user"
 export class Employee{  
-    employee_ID!: string
+    employee_ID!: number
     firstName!: String
     surname!: String
     cell_Number!: Number

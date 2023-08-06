@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>stock-take</ion-title>
+    <ion-title>Stock Take</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,4 +10,25 @@
       <ion-title size="large">stock-take</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-button>Add Inventory Item</ion-button>
+  <ion-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col style="font-weight: bold;">Product Name</ion-col>
+        <ion-col style="font-weight: bold;">Product Type</ion-col>
+        <ion-col style="font-weight: bold;">Product Colour</ion-col>
+        <ion-col style="font-weight: bold;">Product Image</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of Products">
+        <ion-col>{{item.stock_Item_Name}}</ion-col>
+        <ion-col>{{item.stockTypeName}}</ion-col>
+        <ion-col>{{item.stockColourName}}</ion-col>
+        <ion-col>
+          <!-- <p>{{item.stockImageName}}</p> -->
+          <img src='data:image/png;base64,{{item.stockImageFile}}'>
+        </ion-col>        
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+  
 </ion-content>

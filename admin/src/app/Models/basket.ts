@@ -2,7 +2,7 @@ import { Stock_Item } from 'src/app/Models/stockitem';
 import { Customer } from './customer';
 
 export class BasketItems {
-    basket_ID! : string
+    basket_ID! : number
     basket_Quantity!: number
     
     stock_Item_ID!: number

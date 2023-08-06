@@ -10,26 +10,30 @@
       <ion-title size="large">refund-policies</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-button id="addRefundmodal">Add New Policy</ion-button>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-searchbar show-clear-button="always" (ionInput)="search()" [(ngModel)]="filterTerm" ></ion-searchbar>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col style="font-weight: bold;">Policy Date</ion-col>
-      <ion-col style="font-weight: bold;">Version number</ion-col>
-      <ion-col style="font-weight: bold;">Descrption</ion-col>
-    </ion-row>
-    <ion-row *ngFor="let item of refundPolicies">
-      <ion-col>{{item.refund_Policy_Date}}</ion-col>
-      <ion-col>{{item.refund_Policy_Version}}</ion-col>
-      <ion-col>{{item.refund_Policy_Description}}</ion-col>
-      <ion-button (click)="DeleteRefundPolicy(item.refund_Policy_ID)" >Delete</ion-button>
-    </ion-row>
-  </ion-grid>
+  <ion-content id="content">
+    <ion-button id="addRefundmodal">Add New Policy</ion-button>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-searchbar show-clear-button="always" (ionInput)="search()" [(ngModel)]="filterTerm" ></ion-searchbar>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="font-weight: bold;">Policy Date</ion-col>
+        <ion-col style="font-weight: bold;">Version number</ion-col>
+        <ion-col style="font-weight: bold;">Descrption</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of refundPolicies">
+        <ion-col>{{item.refund_Policy_Date}}</ion-col>
+        <ion-col>{{item.refund_Policy_Version}}</ion-col>
+        <ion-col>{{item.refund_Policy_Description}}</ion-col>
+        <ion-button (click)="DeleteRefundPolicy(item.refund_Policy_ID)" >Delete</ion-button>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+ 
 </ion-content>
+
 <!--addmodal-->
 <ion-footer> 
   <ion-modal trigger="addRefundmodal" (willDismiss)="onWillDismiss($event)">

@@ -34,11 +34,8 @@ export class StockTypesPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   stocktypes: StockTypes[] =[];
   constructor(
-    public modalCtrl: ModalController, 
-    private service:StockTypeDataService,
-    private router: Router,  
-    private alertController: AlertController, 
-    private route:ActivatedRoute) { }
+    public modalCtrl: ModalController, private service:StockTypeDataService, private router: Router,  
+    private alertController: AlertController, private route:ActivatedRoute) { }
 
   AddTypeForm:FormGroup = new FormGroup({
     name: new FormControl('',[Validators.required])      
@@ -49,17 +46,17 @@ export class StockTypesPage implements OnInit {
   }
 
   GetStockTypes(){
-  this.service.GetStockTypes().subscribe(result =>{
-    this.stocktypes = result as StockTypes[];
-    console.log(this.stocktypes);
-  })
+    this.service.GetStockTypes().subscribe(result =>{
+      this.stocktypes = result as StockTypes[];
+      console.log(this.stocktypes);
+    })
   }
 
   addStockTypes(){
     let addStockType = new StockTypes();
     addStockType.stock_Type_Name = this.AddTypeForm.value.name;
 
-      this.service.AddStockType(this.AddTypeForm.value).subscribe(result => {
+      this.service.AddStockType(addStockType).subscribe(result => {
         if(result.status == "Error")
         {
           this.AddStockTypeSuccessAlert();
@@ -70,12 +67,12 @@ export class StockTypesPage implements OnInit {
     })
   }
 
-  getstocktype(stock_Type_ID:string){
+  getstocktype(stock_Type_ID:number){
     //[routerLink]="['/course', course.courseId]"
     this.router.navigate(['./editstocktype',stock_Type_ID]);
   }
 
-  deleteStockTypes(stock_Type_ID:string){
+  deleteStockTypes(stock_Type_ID:number){
     this.service.DeleteStockType(stock_Type_ID).subscribe(result =>{
       if(result.status == "Error")
           {

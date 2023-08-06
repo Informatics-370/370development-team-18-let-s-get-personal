@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPKP___API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230731000032_initial")]
+    [Migration("20230805160003_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -403,6 +403,9 @@ namespace IPKP___API.Migrations
                     b.Property<string>("Image_File")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Image_Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Image_Size")
                         .HasColumnType("int");
 
@@ -779,6 +782,9 @@ namespace IPKP___API.Migrations
                     b.Property<string>("Stock_Image_File")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Stock_Image_Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Stock_Image_ID");
 
                     b.ToTable("Stock_Images");
@@ -809,7 +815,7 @@ namespace IPKP___API.Migrations
 
                     b.Property<decimal>("Stock_Item_Price")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnName("Price");
+                        .HasColumnName("Stock_Item_Price");
 
                     b.Property<string>("Stock_Item_Size")
                         .HasMaxLength(255)
@@ -837,7 +843,7 @@ namespace IPKP___API.Migrations
                     b.Property<Guid>("Stock_Item_Colour_ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Stock_Item_Colour_ID");
+                        .HasColumnName("Stock_Item_ID");
 
                     b.Property<string>("Stock_Item_Colour_Name")
                         .HasMaxLength(255)

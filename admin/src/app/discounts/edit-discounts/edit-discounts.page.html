@@ -10,26 +10,28 @@
       <ion-title size="large">edit-discounts</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-button onclick="routeBack()">
-    <ion-icon name="person-outline"></ion-icon>
-  </ion-button>
-    <form [formGroup]="editForm" (ngSubmit)="onSubmit(editForm)">          
-      <ion-item>
-        <ion-label position="stacked">Discount Name</ion-label><br>
-        <ion-input type="text" formControlName="name"></ion-input> 
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Discount Amount</ion-label><br>
-        <ion-input type="text" formControlName="amount" ></ion-input> <!--placeholder="{{discountToEdit.amount}}"-->
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Effective From Date</ion-label><br>
-        <ion-input type="date" formControlName="effectiveFromdate"></ion-input>
-      </ion-item> 
-      <ion-item>
-        <ion-label position="stacked">Effective To Date</ion-label><br>
-        <ion-input type="date" formControlName="effectiveTodate"></ion-input>
-      </ion-item>                    
-  </form>
   
+  <ion-content id="content">
+    <ion-button onclick="routeBack()">
+      <ion-icon name="person-outline"></ion-icon>
+    </ion-button>
+      <form [formGroup]="editForm" (ngSubmit)="onSubmit(editForm)">          
+        <ion-item>
+          <ion-label position="stacked">Discount Name</ion-label><br>
+          <ion-input type="text" formControlName="name"></ion-input> 
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Discount Amount</ion-label><br>
+          <ion-input type="text" formControlName="amount" ></ion-input> <!--placeholder="{{discountToEdit.amount}}"-->
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Effective From Date</ion-label><br>
+          <ion-input type="date" formControlName="effectiveFromdate"></ion-input>
+        </ion-item> 
+        <ion-item>
+          <ion-label position="stacked">Effective To Date</ion-label><br>
+          <ion-input type="date" formControlName="effectiveTodate"></ion-input>
+        </ion-item>                    
+    </form>
+  </ion-content>
 </ion-content>

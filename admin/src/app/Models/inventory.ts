@@ -1,6 +1,6 @@
 import { Inventory_Line_Item } from "./inventorylineitem"
 export class Inventory{
-    inventory_ID!: string
+    inventory_ID!: number
     inventory_Date!: Date
     inventory_Comments!: String
     

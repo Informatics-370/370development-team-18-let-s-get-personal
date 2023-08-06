@@ -110,7 +110,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateDelivery")]
-        public async Task<IActionResult> UpdateDeliveryAsync(Guid delivery_ID, DeliveryViewModel dvm)
+        public async Task<IActionResult> UpdateDeliveryAsync(Guid delivery_ID, Delivery dvm)
         {
             try
             {
@@ -118,7 +118,7 @@ namespace IPKP___API.Controllers
 
                 if (existingDelivery == null) return NotFound("Could Not Find Delivery" + delivery_ID);
 
-                existingDelivery.Delivery_Company = dvm.Delivery_Company_ID;
+                existingDelivery.Delivery_Company_ID = dvm.Delivery_Company_ID;
                 existingDelivery.Delivery_Address = dvm.Delivery_Address;
                 existingDelivery.Delivery_Price = dvm.Delivery_Price;
                 existingDelivery.Tracking_Number = dvm.Tracking_Number;

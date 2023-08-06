@@ -10,16 +10,17 @@
       <ion-title size="large">Deliveries In Progress</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-card-content>
+  
+  <ion-content id="content">
     <ion-button id="addmodal">Add Delivery</ion-button>
     <ion-button (click)="Routedeliverycompanies()" >View Delivery Companies</ion-button><!--Routing to UC 5.6-->
     <ion-searchbar [(ngModel)]="searchValue"  (ionInput)="updateSearchResults()" ></ion-searchbar>               
     <ion-grid>
       <ion-row>
-        <ion-col style="font-weight: bold;"><h3>Delivery Address</h3></ion-col>
-        <ion-col style="font-weight: bold;"><h3>Delivery Company</h3></ion-col>
-        <ion-col style="font-weight: bold;"><h3>Delivery Price</h3></ion-col>
-        <ion-col style="font-weight: bold;"><h3>Tracking Number</h3></ion-col>
+        <ion-col style="font-weight: bold;">Delivery Address</ion-col>
+        <ion-col style="font-weight: bold;">Delivery Company</ion-col>
+        <ion-col style="font-weight: bold;">Delivery Price</ion-col>
+        <ion-col style="font-weight: bold;">Tracking Number</ion-col>
         <ion-col></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of deliveries">
@@ -30,7 +31,7 @@
       </ion-row>
     </ion-grid>
 
-  </ion-card-content>
+  </ion-content>
 </ion-content>
 
 <ion-footer> 
@@ -59,7 +60,7 @@
               <ion-label position="stacked">Delivery Company</ion-label><br>
               <ion-select placeholder="Select a Delivery Company">
                 <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
-                <ion-select-option *ngFor="let company of deliverycompanies" [value]="company.delivery_Company_ID">
+                <ion-select-option *ngFor="let company of deliverycompanies" value ="{{company.delivery_Company_ID}}">
                   {{company.delivery_Company_Name}}
                 </ion-select-option>
               </ion-select>

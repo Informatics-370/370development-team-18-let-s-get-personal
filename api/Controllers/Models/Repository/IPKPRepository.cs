@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IPKP___API.Controllers.Models.Entities;
+using IPKP___API.Controllers.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace IPKP___API.Controllers.Models.Repository
@@ -166,12 +167,17 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.FirstOrDefaultAsync();
         }
 
+        //public async Task<Product[]> GetProductsAsync()
+        //{
+        //    IQueryable<Product> query = _appDbContext.Products.Include(p => p.Brand).Include(p => p.ProductType);
 
+        //    return await query.ToArrayAsync();
+        //}
         //Stock Items
         public async Task<Stock_Item[]> GetAllStockItemsAsync()
         {
-          IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
-          return await query.ToArrayAsync();
+            IQueryable<Stock_Item> query = _appDbContext.Stock_Items.Include(s => s.Stock_Image).Include(s => s.Stock_Item_Colour).Include(s => s.Stock_Type);
+            return await query.ToArrayAsync();
         }
         public async Task<Stock_Item> GetStockItemByName(string stock_Item_Name)
         {
@@ -313,5 +319,42 @@ namespace IPKP___API.Controllers.Models.Repository
                 .FirstOrDefaultAsync(x => x.Username == username);
         }
 
+        //public async Task<Stock_Item[]> GetAllStockItemsToList()
+        //{
+        //    IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
+        //    return await query.ToListAsync();
+        //}
+
+        public object GetStockNames()
+        {
+            List<StockItemViewModel> stockitems = (
+                from c in _appDbContext.Stock_Item_Colours.ToList()
+                join s in _appDbContext.Stock_Items.ToList()
+                on c.Stock_Item_Colour_ID equals s.Stock_Item_Colour_ID
+                join t in _appDbContext.Stock_Types.ToList()
+                on s.Stock_Type_ID equals t.Stock_Type_ID
+                join i in _appDbContext.Stock_Images.ToList()
+                on s.Stock_Image_ID equals i.Stock_Image_ID
+
+                select new StockItemViewModel
+                {
+                    Stock_Item_ID = s.Stock_Item_ID,
+                    Stock_Item_Name = s.Stock_Item_Name,
+                    Stock_Item_Price = s.Stock_Item_Price,
+                    Stock_Item_Size = s.Stock_Item_Size,
+
+                    Stock_Item_Colour_ID = c.Stock_Item_Colour_ID,
+                    StockColourName = c.Stock_Item_Colour_Name,
+
+                    Stock_Type_ID = t.Stock_Type_ID,
+                    StockTypeName = t.Stock_Type_Name,
+
+                    Stock_Image_ID = i.Stock_Image_ID,
+                    StockImageName = i.Stock_Image_Name,
+                    StockImageFile = i.Stock_Image_File,
+                }
+                ).ToList();
+            return stockitems;
+        }
     }
 }

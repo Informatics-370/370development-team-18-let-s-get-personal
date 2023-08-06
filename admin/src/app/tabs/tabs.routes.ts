@@ -13,10 +13,6 @@ export const routes: Routes = [
       //     import('../tab3/tab3.page').then((m) => m.Tab3Page),
       // },
       {
-        path: 'menu',
-        loadComponent: () => import('../menu/menu.page').then((m) => m.MenuPage),
-      },
-      {
         path: 'deliveries',
         loadComponent: () => import('../deliveries/deliveries.page').then( m => m.DeliveriesPage)
       },
@@ -103,6 +99,10 @@ export const routes: Routes = [
       {
         path: 'add-stock',
         loadComponent: () => import('../inventory/add-stock/add-stock.page').then( m => m.AddStockPage)
+      },
+      {
+        path: 'stock-image',
+        loadComponent: () => import('../inventory/stock-image/stock-image.page').then( m => m.StockImagePage)
       },
       {
         path: '',

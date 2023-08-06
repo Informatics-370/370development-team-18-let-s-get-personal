@@ -32,22 +32,22 @@ namespace IPKP___API.Controllers
             {
                 var results = await _IPKPRepository.GetAllInventoryAsync();
 
-                //dynamic products = results.Select(p => new
-                //{
-                //    p.Inventory_Line_Item_ID,
-                //    p.Inventory_Line_Quantity,                    
-                //    p.Stock_Item_ID,
-                //    p.Inventory_ID,
-                    
-                //    //p.Stock_Item.Stock_Type_ID,
-                //    //StockItemName = p.Stock_Item.Stock_Item_Name.Where(p.Stock_Item.Stock_Item_Name == ),
-                //    //p.Stock_Item.Stock_Item_Colour.Stock_Item_Colour_Name,
-                //    //p.Stock_Item.Stock_Price_History,
-                //    //p.Stock_Item.Stock_Image.Stock_Image_File,
-                //    //p.Stock_Item.Stock_Item_Size,
-                //    //p.Inventory.Inventory_Date,
-                //    //p.Inventory.Inventory_Comments,
-                //});
+                dynamic products = results.Select(p => new
+                {
+                    p.Inventory_Line_Item_ID,
+                    p.Inventory_Line_Quantity,
+                    p.Stock_Item_ID,
+                    p.Inventory_ID,
+
+                    //p.Stock_Item.StockTypeID,
+                    //StockItemName = p.Stock_Item.Stock_Item_Name.Where(p.Stock_Item.Stock_Item_Name == ),
+                    p.Stock_Item.Stock_Item_Colour.Stock_Item_Colour_Name,
+                    p.Stock_Item.Stock_Price_History,
+                    p.Stock_Item.Stock_Image.Stock_Image_File,
+                    p.Stock_Item.Stock_Item_Size,
+                    p.Inventory.Inventory_Date,
+                    p.Inventory.Inventory_Comments,
+                });
                 return Ok(results);
             }
             catch (Exception)

@@ -122,7 +122,8 @@ namespace IPKP___API.Migrations
                 {
                     Image_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Image_Size = table.Column<int>(type: "int", nullable: false),
-                    Image_File = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Image_File = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image_Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -209,7 +210,8 @@ namespace IPKP___API.Migrations
                 columns: table => new
                 {
                     Stock_Image_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Image_File = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Stock_Image_File = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Stock_Image_Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -220,12 +222,12 @@ namespace IPKP___API.Migrations
                 name: "Stock_Item_Colours",
                 columns: table => new
                 {
-                    Stock_Item_Colour_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Stock_Item_Colour_Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stock_Item_Colours", x => x.Stock_Item_Colour_ID);
+                    table.PrimaryKey("PK_Stock_Item_Colours", x => x.Stock_Item_ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -471,14 +473,14 @@ namespace IPKP___API.Migrations
                 columns: table => new
                 {
                     Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Item_Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Stock_Item_Size = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Stock_Type_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Type_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Stock_Image_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Image_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Stock_Type_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Stock_Item_Colour_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Item_Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Stock_Item_Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Stock_Item_Size = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Stock_Type_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Stock_Image_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Stock_Item_Colour_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -494,7 +496,7 @@ namespace IPKP___API.Migrations
                         name: "FK_Stock_Items_Stock_Item_Colours_Stock_Item_Colour_ID1",
                         column: x => x.Stock_Item_Colour_ID1,
                         principalTable: "Stock_Item_Colours",
-                        principalColumn: "Stock_Item_Colour_ID",
+                        principalColumn: "Stock_Item_ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Stock_Items_Stock_Types_Stock_Type_ID1",

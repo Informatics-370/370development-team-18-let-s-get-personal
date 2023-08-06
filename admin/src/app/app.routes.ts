@@ -26,10 +26,6 @@ export const routes: Routes = [
     loadComponent: () => import('./discounts/edit-discounts/edit-discounts.page').then( m => m.EditDiscountsPage)
   },
   {
-    path: 'menu',
-    loadComponent: () => import('./menu/menu.page').then( m => m.MenuPage)
-  },
-  {
     path: 'inventory',
     loadComponent: () => import('./inventory/inventory.page').then( m => m.InventoryPage)
   },
@@ -84,7 +80,8 @@ export const routes: Routes = [
   {
     path: 'process-refund',
     loadComponent: () => import('./refunds/process-refund/process-refund.page').then( m => m.ProcessRefundPage)
-  },  {
+  },
+  {
     path: 'view-employees',
     loadComponent: () => import('./view-employees/view-employees.page').then( m => m.ViewEmployeesPage)
   },

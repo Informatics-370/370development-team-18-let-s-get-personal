@@ -17,6 +17,7 @@ export class OrdersPage implements OnInit {
 
   ngOnInit() {
   }
+  
   prevOrders()
   {
     this.router.navigate(['./tabs/orders']);//button needs to be moved in the profile.. or not idk:) 

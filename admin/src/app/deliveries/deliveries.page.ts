@@ -7,7 +7,6 @@ import { AlertController, IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { DeliveryDataService } from '../Services/deliveries.service';
-import { DeliveryCompanyDataService } from 'src/app/Services/deliverycompany.service';
 //for modal
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
@@ -39,7 +38,7 @@ export class DeliveriesPage implements OnInit {
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DeliveryDataService, private router: Router, public modalCtrl: ModalController,
-    private alertController:AlertController, private companyservice:DeliveryCompanyDataService, ) { }
+    private alertController:AlertController) { }
 
   AddForm: FormGroup = new FormGroup({
     orderLineItemId: new FormControl('',[Validators.required]),
@@ -61,7 +60,7 @@ export class DeliveriesPage implements OnInit {
   }
 
   getDeliveryCompany(){
-    this.companyservice.GetDeliveryCompanies().subscribe(result =>{
+    this.service.GetDeliveryCompanies().subscribe(result =>{
       this.deliverycompanies = result as Delivery_Company[];
       console.log(this.deliverycompanies)
     })
@@ -86,7 +85,7 @@ export class DeliveriesPage implements OnInit {
     })
   }
 
-  ReceiveDelivery(DeliveryId: string){
+  ReceiveDelivery(DeliveryId: number){
     this.service.ReceiveDelivery(DeliveryId).subscribe(result => {
       console.log(result);
       if(result.status == "Error")

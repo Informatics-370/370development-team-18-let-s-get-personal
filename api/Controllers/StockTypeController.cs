@@ -62,7 +62,7 @@ namespace IPKP___API.Controllers
 
         [HttpPost]
         [Route("AddStockType")]
-        public async Task<IActionResult> AddStockTypeAsync(StockTypeViewModel stvm)
+        public async Task<IActionResult> AddStockTypeAsync(Stock_Type stvm)
         {
             var stock_Type = new Stock_Type
             {
@@ -83,7 +83,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateStockType/{stock_Type_ID}")]
-        public async Task<IActionResult> UpdateStockTypeAsync(Guid stock_Type_ID, StockTypeViewModel stvm)
+        public async Task<IActionResult> UpdateStockTypeAsync(Guid stock_Type_ID, Stock_Type stvm)
         {
             try
             {

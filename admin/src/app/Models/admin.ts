@@ -1,7 +1,7 @@
 import { User } from "./user"
 
 export class Admin{  
-    admin_ID!: string
+    admin_ID!: number
     firstName!: String
     surname!: String
     cell_Number!: Number

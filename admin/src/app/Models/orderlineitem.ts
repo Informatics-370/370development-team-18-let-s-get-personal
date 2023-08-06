@@ -4,7 +4,7 @@ import { Personalisation_Design } from "./personalisationdesign";
 
 export class Order_Line_Item{
     
-    order_Line_Item_ID!: string
+    order_Line_Item_ID!: number
 
     order_Request!: Order_Request
     stock_Item!: Stock_Item

@@ -3,7 +3,7 @@ import { Customer } from "./customer"
 import { Employee } from "./employee"
 import { Admin } from "./admin"
 export class User{
-    user_ID!: string
+    user_ID!: number
     username!: string
     password!: string
 

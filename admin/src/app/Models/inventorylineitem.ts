@@ -2,7 +2,7 @@ import { Inventory } from "./inventory"
 import { Stock_Item } from "./stockitem"
 
 export class Inventory_Line_Item{
-    inventory_Line_Item_ID!: string    
+    inventory_Line_Item_ID!: number    
     inventory_Line_Quantity!: Number
 
     inventory!: Inventory

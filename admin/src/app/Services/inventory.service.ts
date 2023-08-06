@@ -36,7 +36,7 @@ import { Inventory_Line_Item } from '../Models/inventorylineitem';
       return this.httpClient.post<Response>(`${this.apiUrl}Inventory/AddToInventoryLineItem`, lineitem, this.httpOptions)
     }
 
-    public GetInventoryById(inventory_Id:string){ 
+    public GetInventoryById(inventory_Id:number){ 
       return this.httpClient.get(`${this.apiUrl}Inventory/GetInventoryById/${inventory_Id}`)
       .pipe(map(result => result))
     }

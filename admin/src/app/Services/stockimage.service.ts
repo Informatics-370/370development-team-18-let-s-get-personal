@@ -8,7 +8,7 @@ import { Response } from '../Models/response';
 @Injectable({
     providedIn: 'root' 
   })
-  export class StockItemDataService {
+  export class StockImageDataService {
   
     apiUrl = 'https://localhost:44390/api/'
   
@@ -26,20 +26,20 @@ import { Response } from '../Models/response';
       .pipe(map(result => result))
     }
   
-    public AddStockItem(stockimage:Stock_Image){
+    public AddStockImage(stockimage:FormData){
       return this.httpClient.post<Response>(`${this.apiUrl}StockImage/AddStockImage`, stockimage, this.httpOptions)
     }
 
-    public GetStockImage(stock_Image_ID:string){ 
+    public GetStockImage(stock_Image_ID:number){ 
       return this.httpClient.get(`${this.apiUrl}StockImage/GetStockImage/${stock_Image_ID}`)
       .pipe(map(result => result))
     }
 
-    public UpdateStockImage(stock_Image_ID:string, stockimage:Stock_Image){
+    public UpdateStockImage(stock_Image_ID:number, stockimage:Stock_Image){
       return this.httpClient.put<Response>(`${this.apiUrl}StockImage/UpdateStockImage/${stock_Image_ID}`, stockimage)
     }
 
-    public DeleteStockItem(stock_Image_ID:string){
+    public DeleteStockImage(stock_Image_ID:number){
       return this.httpClient.delete<Response>(`${this.apiUrl}StockImage/DeleteImage/${stock_Image_ID}`)
     }  
   }

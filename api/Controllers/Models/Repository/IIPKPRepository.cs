@@ -56,6 +56,8 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Refund[]> GetAllPreviousRefunds();
         Task<Refund> GetPreviousRefund(Guid refund_Id);
         Task<Inventory_Line_Item[]> GetAllInventoryAsync();
+        Task<User> GetUser(string username);
+        object GetStockNames();
 
   }
 }
