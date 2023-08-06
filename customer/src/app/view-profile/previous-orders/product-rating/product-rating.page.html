@@ -1,13 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>product-rating</ion-title>
+    <ion-title>Product Rating</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">product-rating</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  
+  <ion-button (click)="updateProdRating()">Update Profile</ion-button>
+  <ion-button (click)="deleteProdRating()">Delete Profile</ion-button>
 </ion-content>

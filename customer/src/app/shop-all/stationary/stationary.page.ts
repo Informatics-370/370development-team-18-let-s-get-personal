@@ -34,7 +34,7 @@ export class StationaryPage implements OnInit {
   }
 
   //Load Stock Items
-  updateGrid() {
+ /* updateGrid() {
     var grid = document.querySelector("#grid");
 
     if (grid) {
