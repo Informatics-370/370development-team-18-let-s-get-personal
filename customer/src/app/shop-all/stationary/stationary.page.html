@@ -18,65 +18,17 @@
   </ion-header>
   <ion-grid id="grid">
     <ion-row>
-      <ion-col>
+      <ion-col *ngFor="let item of stockItems">
         <ion-card>
-          <ion-card-title>Diary</ion-card-title>
+          <ion-card-title>{{item.stock_Item_Name}}</ion-card-title>
           <ion-card-content>
-            <ion-img src="/assets/stat1.jpg" ></ion-img>
-            <p>Baige</p>
-            <p>R: 100</p>
-          </ion-card-content>
+            <ion-img src={{item.stock_Images.stock_Image_File}}></ion-img>
+            <p>{{item.stock_Item_Colour.stock_Item_Colour_Name}}</p>
+            <p>R: {{item.stock_Item_Price}}</p>
+          </ion-card-content> <ion-button (click)="addToBasket(item)">Add To Basket</ion-button>
         </ion-card>
-        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-card>
-          <ion-card-title>Pencils</ion-card-title>
-          <ion-card-content>
-            <ion-img src="/assets/stat2.jpg" ></ion-img>
-            <p>Multi-colours</p>
-            <p>R: 70</p>
-          </ion-card-content>
-        </ion-card>
-        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-card>
-          <ion-card-title>Notebook</ion-card-title>
-          <ion-card-content>
-            <ion-img src="/assets/stat3.jpg"></ion-img>
-            <p>Pink</p>
-            <p>R: 150</p>
-          </ion-card-content>
-        </ion-card>
-        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-card>
-          <ion-card-title>Cards</ion-card-title>
-          <ion-card-content>
-            <ion-img src="/assets/stat4.jpg"></ion-img>
-            <p>White</p>
-            <p>R: 50</p>
-          </ion-card-content>
-        </ion-card>
-        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
-      </ion-col>
-      <ion-col>
-      <ion-card>
-          <ion-card-title>Wallet</ion-card-title>
-          <ion-card-content>
-            <ion-img src="/assets/stat5.jpg"></ion-img>
-            <p>Black</p>
-            <p>R: 110</p>
-          </ion-card-content>
-        </ion-card>
-        <ion-button (click)="addToBasket()">Add To Basket</ion-button>
       </ion-col>
     </ion-row>
-
-
-    
   </ion-grid>
   <ion-button (click)="Basket()" color="success">Basket<ion-icon slot="end" name="star"></ion-icon></ion-button>
   <ion-button (click)="shopall()" fill="clear"> Back </ion-button>

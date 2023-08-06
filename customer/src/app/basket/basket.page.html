@@ -4,24 +4,21 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" *ngIf="basketItems.length > 0">
+<ion-content [fullscreen]="true" *ngIf="cartItems.length > 0">
   
   <ion-list>
-    <ion-item *ngFor="let item of basketItems">
+    <ion-item *ngFor="let item of cartItems">
       <ion-thumbnail slot="start">
-        <img [src]="item.stock_Image_ID" />
+        <img [src]="item.image_url" />
       </ion-thumbnail>
       <ion-label>
-<<<<<<< Updated upstream
-        <h5>{{ item.stock_Item }}</h5>
-=======
-        <h5>{{ item.basket_ID }}</h5>
->>>>>>> Stashed changes
-        <ion-button (click)="removeFromBasket(item)">Remove</ion-button>
+        <h5>{{ item.title }}</h5>
+        <ion-button (click)="removeItemFromBasket(item)">Remove</ion-button>
         <ion-button (click)="decrementQuantity(item)">-</ion-button>
-        <span>{{ item.basket_Quantity }}</span>
+        <span>{{ item.quantity }}</span>
         <ion-button (click)="incrementQuantity(item)">+</ion-button>
       </ion-label>
+      <ion-button (click)="personalize()">Personalize Item</ion-button>
     </ion-item>
   </ion-list>
   <ion-grid>
@@ -30,33 +27,17 @@
     </ion-row>
     <ion-row>
       <ion-col>Items Total (Excluding Delivery)</ion-col>
-      <!--<ion-col class="ion-text-end"><strong>R{{calculateTotalPrice()}}</strong></ion-col>-->
+      <ion-col><strong>R{{calculateTotalPrice()}}</strong></ion-col>
       <ion-button (click)="makepayment()">Checkout</ion-button>
     </ion-row>
   </ion-grid>
 </ion-content>
 
-<ion-content *ngIf="basketItems.length == 0">
+<ion-content *ngIf="cartItems.length == 0">
   <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
     <p>Your basket is empty.</p>
+    <ion-button (click)="shopall()">Return to shop</ion-button>
   </div>
 </ion-content>
-<!--
-<ion-footer *ngIf="basketItems.length > 0">
-  <ion-item>
-    <ion-icon aria-hidden="true" name="home-outline" ></ion-icon>
-    <ion-textarea  ></ion-textarea>
-    <p></p>
-    <ion-label>Change</ion-label>
-  </ion-item>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <!-<ion-button color="primary" expand="block">R {{calculateTotalPrice()+ deliveryFee}}</ion-button>>
-    </ion-buttons>
-    <ion-buttons slot="end">
-     <!- <ion-button color="danger" expand="block" (click)="makepayment(calculateTotalPrice())">MAKE PAYMENT</ion-button>>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer>-->
 
 

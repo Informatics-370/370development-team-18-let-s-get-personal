@@ -4,7 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController,AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Stock_Item } from '../Models/stockitem';
-
+import { BasketItems } from '../Models/basket';
+import { Subject } from 'rxjs';
+import { BasketService } from '../Services/basket.service';
+import { StockItemDataService } from '../Services/stockitem.service';
 
 @Component({
   selector: 'app-shop-all',
@@ -16,11 +19,45 @@ import { Stock_Item } from '../Models/stockitem';
 export class ShopAllPage implements OnInit {
   menuType: string = 'overlay';
 
-  stockItem: Stock_Item[] = [];
-  constructor(private _modalController: ModalController, private _router: Router, private alertController:AlertController) { }
+  stockItems: Stock_Item[] = [];
+
+  constructor(private _modalController: ModalController,
+     private _router: Router, private alertController:AlertController,
+     private basketservice:BasketService,
+     private service:StockItemDataService) { }
+
+     //Data for testing
+      dummy_data = [{
+      id: 0, title: "Plain T-shirt", colour: "White",
+      image_url: "https://supremetextiles.co.za/761-large_default/adult-plain-round-neck-t-shirt-white.jpg", price: 90,
+      quantity: 0
+    },
+    {
+      id: 1, title: "Photo Mug", colour: "White",
+      image_url: "https://smash-images.photobox.com/optimised/f10581d7b173933f6b5670a7191ef11caad09a4e_file_image_Simple-mug-lifestyle-5760x4512.jpg", price: 160,
+      quantity: 0
+    },
+    {
+      id: 2, title: "Diary", colour: "Brown",
+      image_url: "https://cdn.igp.com/f_auto,q_auto,t_pnopt6prodlp/products/p-stationery-addict-personalized-stationery-kit-122187-m.jpg", price: 120,
+      quantity: 0
+    },
+    {
+      id: 3, title: "Twin Babies", colour: "Dusty White",
+      image_url: "https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/Search/676/K62163.jpg", price: 350,
+      quantity: 0
+    }
+    ];
 
   ngOnInit() {
-    
+    this.GetStockItems();
+  }
+
+  public GetStockItems(){
+    this.service.GetStockItems().subscribe(result =>{
+      this.stockItems = result as Stock_Item[];
+      console.log(this.stockItems)
+    })
   }
 
   public clothing() {
@@ -37,48 +74,41 @@ export class ShopAllPage implements OnInit {
     this._router.navigate(["/tabs/basket"])
   }
 
-  //Load Stock Items
-<<<<<<< Updated upstream
-  updateGrid() {
-    
-  }
-=======
- /* updateGrid() {
-    var grid = document.querySelector("#grid");
+  addToBasket(dummy_data:any):void{
 
-    if (grid) {
-      grid.innerHTML = " ";
-      for (var i = 0; i < this.stockItem.length; i++) {
-        `<ion-row>` +
-          `<ion-col>` +
-          `<ion-card>` +
-          `<ion-card-title>Name: ${this.stockItem[i].Stock_Item_Name}</ion-card-title>` +
-          `<ion-card-content>` +
-          `<ion-img>${this.stockItem[i].stockimage.Stock_Image_File}</ion-img>` +
-          `<p>${this.stockItem[i].stockitemcolours.Stock_Item_Colour_Name}</p>` +
-          `<p>R: ${this.stockItem[i].Stock_Item_Price}</p>` +
-          `</ion-card-content>` +
-          `</ion-card>` +
-          `<ion-button (click)="addToBasket(${this.stockItem[i].Stock_Item_ID})" >Add To Basket</ion-button>` +
-          `</ion-col>` +
-          `<ion-row>`;
-      }
+    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+    let existingItem = cartItems.find((cartItem:any) => cartItem.id === dummy_data.id);
 
-      //visibility();
-      //Subtotal();
+    if (!existingItem) {
+      cartItems.push({ ...dummy_data, quantity: 1 });
+    } else {
+      
+      existingItem.quantity += 1;
     }
-    //save to local storage
-    // localStorage.setItem("cart",JSON.stringify(cart));
-  }*/
->>>>>>> Stashed changes
-
-  addToBasket(){
+    localStorage.setItem('cart',JSON.stringify(cartItems));
     this.addToBasketSuccessAlert();
   }
+
+  /*addToBasket(stockItems:any):void{
+
+    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+    let existingItem = cartItems.find((cartItem:any) => cartItem.id === stockItems.stock_Item_ID);
+
+    if (!existingItem) {
+      cartItems.push({ ...stockItems, basket_Quantity: 1 });
+    } else {
+      
+      existingItem.basket_Quantity += 1;
+    }
+    localStorage.setItem('cart',JSON.stringify(cartItems));
+    this.addToBasketSuccessAlert();
+  }*/
+
   reloadPage(){
     window.location.reload()
   }
 
+  
   async addToBasketSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
@@ -96,7 +126,7 @@ export class ShopAllPage implements OnInit {
   async addToBasketErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Discount Was Not Added',
+      subHeader: 'Item Was Not Added',
       message: 'Please try again',
       buttons: [{
         text: 'OK',
@@ -107,5 +137,10 @@ export class ShopAllPage implements OnInit {
     }],
     });
     await alert.present();
-  }
+  } 
+  
+  /* addToBasket(stockItem: Stock_Item, newQuantity: number){
+    this.basketservice.addProductToBasket(stockItem,newQuantity);
+    this.addToBasketSuccessAlert();
+  }*/
 }
