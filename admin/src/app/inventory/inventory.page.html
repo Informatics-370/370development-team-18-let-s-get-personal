@@ -15,26 +15,41 @@
       <ion-title size="large">inventory</ion-title>
     </ion-toolbar>
   </ion-header>
-  <h2>Inventory</h2>
-  <ion-content id="content">    
+  
+  <ion-button (click)="openPDF()" >Download Inventory PDF</ion-button>
+
+  <div id="htmlData">
+    <h2>Inventory</h2>    
     <ion-grid>
       <ion-row>
-        
-        <ion-col style="font-weight: bold;">Product</ion-col>
-        <ion-col style="font-weight: bold;">Stock Type</ion-col>
-        <ion-col style="font-weight: bold;">Colours</ion-col>
-        <ion-col style="font-weight: bold;">Image</ion-col>
-        <ion-col style="font-weight: bold;">Quantity</ion-col>
-        <ion-col style="font-weight: bold;">Price</ion-col>  
-      </ion-row><br>
-      <!-- <ion-row *ngFor="let item of Products">      
+        <ion-col style="font-weight: bold;">Product Name</ion-col>
+        <ion-col style="font-weight: bold;">Product Price</ion-col>
+        <ion-col style="font-weight: bold;">Product Size</ion-col>
+        <ion-col style="font-weight: bold;">Product Type</ion-col>
+        <ion-col style="font-weight: bold;">Product Colour</ion-col>
+        <ion-col style="font-weight: bold;">Product Image</ion-col>
+        <!-- Inventory -->
+        <ion-col style="font-weight: bold;">Quantity In Stock</ion-col>
+        <ion-col style="font-weight: bold;">Date Added</ion-col>
+        <ion-col style="font-weight: bold;">Inventory Comments</ion-col>
+        <!-- Invntory Line -->
+      </ion-row>
+      <ion-row *ngFor="let item of Products" class="cell-class">
         <ion-col>{{item.stock_Item_Name}}</ion-col>
-        <ion-col>{{item.stock_Types.stock_Type_Name}}</ion-col>
-        <ion-col>{{item.stockitemcolours.Stock_Item_Colour_Name}}</ion-col>
-        <ion-col></ion-col>
-        <ion-col>{{item.Quantity}}</ion-col> 
-        <ion-col><ion-button>Add to Best Sellers</ion-button></ion-col>
-      </ion-row> -->
+        <ion-col>{{item.stock_Item_Price}}</ion-col>
+        <ion-col>{{item.stock_Item_Size}}</ion-col>
+
+        <ion-col>{{item.stockTypeName}}</ion-col>
+        <ion-col>{{item.stockColourName}}</ion-col>
+        <ion-col>
+          <!-- <p>{{item.stockImageName}}</p> -->
+          <img src='data:image/png;base64,{{item.stockImageFile}}'>
+        </ion-col>     
+
+        <ion-col>{{item.stock_Item_Quantity}}</ion-col>
+        <ion-col>{{item.inventory_Date}}</ion-col>
+        <ion-col>{{item.inventory_Comments}}</ion-col>
+      </ion-row>
     </ion-grid>
-  </ion-content>
+  </div>
 </ion-content>

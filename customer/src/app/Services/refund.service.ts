@@ -28,12 +28,12 @@ import { Response } from '../Models/response';
     }
 
     //*************** Process Refund ***************\\
-    public FindOrderRefund(order_Id:string){ 
+    public FindOrderRefund(order_Id:number){ 
       return this.httpClient.get(`${this.apiUrl}Refund/FindOrderRefund/${order_Id}`)
       .pipe(map(result => result))
     }
 
-    DeleteOrderRefund(order_Id:string){
+    DeleteOrderRefund(order_Id:number){
       return this.httpClient.delete<Response>(`${this.apiUrl}Refund/DeleteOrderRefund/${order_Id}`);
     }
 
@@ -53,7 +53,7 @@ import { Response } from '../Models/response';
       .pipe(map(result => result))
     }
     
-    DeleteRefundPolicy(refund_Policy_ID:string){
+    DeleteRefundPolicy(refund_Policy_ID:number){
       return this.httpClient.delete<Response>(`${this.apiUrl}Refund/DeleteRefundPolicy/${refund_Policy_ID}`);
     }  
   }

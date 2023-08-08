@@ -1,6 +1,6 @@
 import { User } from "./user"
 export class Customer{  
-    customer_ID!: string
+    customer_ID!: number
     firstName!: String
     surname!: String
     cell_Number!: Number

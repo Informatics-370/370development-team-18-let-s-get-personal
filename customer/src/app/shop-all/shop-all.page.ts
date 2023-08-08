@@ -3,9 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController,AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { Stock_Item } from '../Models/stockitem';
 
-
+import { StockItemDataService } from 'src/app/Services/stockitem.service';
+import { Stock_Item } from 'src/app/Models/stockitem';
+import { BestsellersService } from 'src/app/Services/bestsellers.service';
+import { BasketService } from 'src/app/Services/basket.service';
+import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 @Component({
   selector: 'app-shop-all',
   templateUrl: './shop-all.page.html',
@@ -15,14 +18,21 @@ import { Stock_Item } from '../Models/stockitem';
 })
 export class ShopAllPage implements OnInit {
   menuType: string = 'overlay';
-
+  Products: StockItemViewModel[] = [];
   stockItem: Stock_Item[] = [];
-  constructor(private _modalController: ModalController, private _router: Router, private alertController:AlertController) { }
+  constructor(private _modalController: ModalController, private _router: Router, 
+    private alertController:AlertController, private basketService : BasketService,  
+    public stockitemservice: StockItemDataService,) { }
 
   ngOnInit() {
-    
+    this.GetAllStockItems();
   }
 
+  GetAllStockItems(){
+    this.stockitemservice.GetStockItems().subscribe(result =>{
+      this.Products = result as StockItemViewModel[];
+    })    
+  }
   public clothing() {
     this._router.navigate(["/tabs/clothing"])
   }
@@ -38,41 +48,36 @@ export class ShopAllPage implements OnInit {
   }
 
   //Load Stock Items
-<<<<<<< Updated upstream
-  updateGrid() {
-    
-  }
-=======
- /* updateGrid() {
-    var grid = document.querySelector("#grid");
+  // updateGrid() {
+  //   var grid = document.querySelector("#grid");
 
-    if (grid) {
-      grid.innerHTML = " ";
-      for (var i = 0; i < this.stockItem.length; i++) {
-        `<ion-row>` +
-          `<ion-col>` +
-          `<ion-card>` +
-          `<ion-card-title>Name: ${this.stockItem[i].Stock_Item_Name}</ion-card-title>` +
-          `<ion-card-content>` +
-          `<ion-img>${this.stockItem[i].stockimage.Stock_Image_File}</ion-img>` +
-          `<p>${this.stockItem[i].stockitemcolours.Stock_Item_Colour_Name}</p>` +
-          `<p>R: ${this.stockItem[i].Stock_Item_Price}</p>` +
-          `</ion-card-content>` +
-          `</ion-card>` +
-          `<ion-button (click)="addToBasket(${this.stockItem[i].Stock_Item_ID})" >Add To Basket</ion-button>` +
-          `</ion-col>` +
-          `<ion-row>`;
-      }
+  //   if (grid) {
+  //     grid.innerHTML = " ";
+  //     for (var i = 0; i < this.Products.length; i++) {
+  //       `<ion-row>` +
+  //         `<ion-col>` +
+  //         `<ion-card>` +
+  //         `<ion-card-title>Name: ${this.stockItem[i].Stock_Item_Name}</ion-card-title>` +
+  //         `<ion-card-content>` +
+  //         `<ion-img>${this.stockItem[i].stockimage.Stock_Image_File}</ion-img>` +
+  //         `<p>${this.stockItem[i].stockitemcolours.Stock_Item_Colour_Name}</p>` +
+  //         `<p>R: ${this.stockItem[i].Stock_Item_Price}</p>` +
+  //         `</ion-card-content>` +
+  //         `</ion-card>` +
+  //         `<ion-button (click)="addToBasket(${this.stockItem[i].Stock_Item_ID})" >Add To Basket</ion-button>` +
+  //         `</ion-col>` +
+  //         `<ion-row>`;
+  //     }
 
-      //visibility();
-      //Subtotal();
-    }
-    //save to local storage
-    // localStorage.setItem("cart",JSON.stringify(cart));
-  }*/
->>>>>>> Stashed changes
+  //     //visibility();
+  //     //Subtotal();
+  //   }
+  //   //save to local storage
+  //   // localStorage.setItem("cart",JSON.stringify(cart));
+  // }
 
-  addToBasket(){
+
+  addToBasket(stock_Item_ID: number){
     this.addToBasketSuccessAlert();
   }
   reloadPage(){

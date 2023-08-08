@@ -30,16 +30,16 @@ import { Response } from '../Models/response';
       return this.httpClient.post<Response>(`${this.apiUrl}StockItemColour/AddStockItemColour`, stockitemcolour, this.httpOptions)
     }     
   
-    public GetStockItemColour(stock_Item_Colour_ID:string){ 
+    public GetStockItemColour(stock_Item_Colour_ID:number){ 
       return this.httpClient.get(`${this.apiUrl}StockItemColour/GetStockItemColour`+ "/" + stock_Item_Colour_ID)
       .pipe(map(result => result))
     }
   
-    public UpdateStockItemColour(stock_Item_Colour_ID:string, stockitemcolour:StockItemColours){
+    public UpdateStockItemColour(stock_Item_Colour_ID:number, stockitemcolour:StockItemColours){
       return this.httpClient.put<Response>(`${this.apiUrl}StockType/UpdateStockItemColour/${stock_Item_Colour_ID}`, stockitemcolour, this.httpOptions)
     }
   
-    public DeleteStockItemColour(stock_Item_Colour_ID:string){
+    public DeleteStockItemColour(stock_Item_Colour_ID:number){
       return this.httpClient.delete<Response>(`${this.apiUrl}StockItemColour/DeleteStockItemColour`+ "/"+ stock_Item_Colour_ID, this.httpOptions)
     }
   

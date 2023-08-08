@@ -22,11 +22,11 @@ export class OrderRequestService {
     .pipe(map((result: any) => result))
   }
 
-  public AcceptOrderRequest(OrderRequestID:string){
+  public AcceptOrderRequest(OrderRequestID:number){
     return this.httpClient.put<Response>(`${this.apiUrl}OrderRequest/AcceptOrderRequest/${OrderRequestID}`, this.httpOptions)
   }
 
-  public RejectOrderRequest(OrderRequestID:string){
+  public RejectOrderRequest(OrderRequestID:number){
     return this.httpClient.put<Response>(`${this.apiUrl}OrderRequest/RejectOrderRequest/${OrderRequestID}`, this.httpOptions)
   }
 }
