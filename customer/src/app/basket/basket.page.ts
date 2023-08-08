@@ -5,13 +5,18 @@ import { IonicModule, AlertController } from '@ionic/angular';
 import { RouterModule,Router } from '@angular/router';
 import { BasketItems } from '../Models/basket';
 import { BasketService } from '../Services/basket.service';
-import { IonModal } from '@ionic/angular';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ModalController} from '@ionic/angular'; 
 import { Stock_Item } from '../Models/stockitem';
 import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
 //import { Customer } from '../Models/customer';
+
+//for modal
+
+import { IonModal } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core/components';
+
 
 @Component({
   selector: 'app-basket',
@@ -79,6 +84,7 @@ export class BasketPage implements OnInit {
   }
   public  personalize(){
     //this.AddPersonalisation();
+    
     this._router.navigate(["/tabs/personalisation"])
   }
 
@@ -132,5 +138,16 @@ export class BasketPage implements OnInit {
       }],
     });
     await alert.present();
+  }
+  canceladdmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirmaddmodal() {
+    this.AddPersonalisation();
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 }
