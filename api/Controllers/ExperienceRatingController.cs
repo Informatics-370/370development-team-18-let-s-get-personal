@@ -32,7 +32,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
         //get one
@@ -48,7 +48,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -80,7 +80,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Rating Saved To Database." });
         }
@@ -90,22 +90,22 @@ namespace IPKP___API.Controllers
         [Route("AddExperienceRating")]
         public async Task<IActionResult> AddExperienceRating(Experience_Rating exRating)
         {
-            var newRating = new Experience_Rating
-            {
-                Experience_Rating_ID = new Guid(),
-                Experience_Star_Rating = exRating.Experience_Star_Rating,
-                Customer = exRating.Customer,
-                Experience_Rating_Comments = exRating.Experience_Rating_Comments
-            };
             try
             {
 
+                var newRating = new Experience_Rating
+                {
+                    Experience_Rating_ID = new Guid(),
+                    Experience_Star_Rating = exRating.Experience_Star_Rating,
+                    Customer = exRating.Customer,
+                    Experience_Rating_Comments = exRating.Experience_Rating_Comments
+                };
                 _IPKPRepository.Add(newRating);
                 await _IPKPRepository.SaveChangesAsync();
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Rating Added To Database." });
         }
@@ -135,7 +135,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Rating Removed From Database." });
         }

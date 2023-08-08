@@ -74,7 +74,7 @@ export class StockItemColoursPage implements OnInit {
     })
   }
 
-  deletecolour(stock_Item_Colour_ID:string){
+  deletecolour(stock_Item_Colour_ID:number){
     this.service.DeleteStockItemColour(stock_Item_Colour_ID).subscribe(result =>{
       if(result.status == "Error")
       {
@@ -101,7 +101,7 @@ export class StockItemColoursPage implements OnInit {
   async DeleteColourSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
-      subHeader: 'Stock Type Deleted',
+      subHeader: 'Stock Colour Deleted',
       buttons: [{
           text: 'OK',
           role: 'cancel',
@@ -116,7 +116,7 @@ export class StockItemColoursPage implements OnInit {
   async DeleteColourErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Stock Type was not deleted',
+      subHeader: 'Stock Colour was not deleted',
       message: 'Please try again',
       buttons: [{
           text: 'OK',
@@ -131,7 +131,7 @@ export class StockItemColoursPage implements OnInit {
   async AddColourSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
-      subHeader: 'Stock Type added',
+      subHeader: 'Stock Colour added',
       buttons: [{
           text: 'OK',
           role: 'cancel',
@@ -146,7 +146,7 @@ export class StockItemColoursPage implements OnInit {
   async AddColourErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Stock Type was not added',
+      subHeader: 'Stock Colour was not added',
       message: 'Please try again',
       buttons: [{
           text: 'OK',

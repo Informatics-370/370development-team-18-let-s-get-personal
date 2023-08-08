@@ -1,5 +1,6 @@
 using IPKP___API.Controllers.Models.Entities;
 using IPKP___API.Controllers.Models.Repository;
+using IPKP___API.Controllers.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -31,23 +32,22 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
         [HttpPost]
         [Route("SaveBestSellersList")]
         public async Task<IActionResult> SaveBestSellersListAsync(BestSellers selectedProducts)
-        {
-            var bestSellers = new BestSellers
-            {
-                BestSeller_ID = new Guid(),
-                Stock_Item_ID = selectedProducts.Stock_Item_ID,
-                Stock_Item = selectedProducts.Stock_Item,
-            };
-
+        {          
             try
             {
+                var bestSellers = new BestSellers
+                {
+                    BestSeller_ID = new Guid(),
+                    Stock_Item_ID = selectedProducts.Stock_Item_ID,
+                    //Stock_Item = selectedProducts.Stock_Item,
+                };
                 _IPKPRepository.Add(bestSellers);
                 await _IPKPRepository.SaveChangesAsync();
             }

@@ -11,29 +11,26 @@
       <ion-title size="large">Stock Item Colours</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-card-content>
-    <ion-button id="addmodal">Add Stock Item Colour</ion-button>
-    <!-- <ion-searchbar [(ngModel)]="filterTerm"  (ionInput)="updateSearchResults()"></ion-searchbar>                     -->
-    <ion-grid>
-      <ion-row>
-        <ion-col style="font-weight: bold;">Stock Item Colour Name</ion-col>        
-        <ion-col style="font-weight: bold;"></ion-col>
-        <ion-col style="font-weight: bold;"></ion-col>
-      </ion-row>
-      <ion-row >
-        <ion-col>Blue</ion-col>        
-        <ion-col><ion-button>Delete</ion-button></ion-col>
-        <ion-col><ion-button>Update</ion-button></ion-col>      
-      </ion-row>
-      <ion-row *ngFor="let item of stockitemcolours">
-        <ion-col>{{item.stock_Item_Colour_Name}}</ion-col>
-        <!-- <ion-col>{{item.Stock_Item_Colour_Image}}</ion-col> -->
-        <ion-col><ion-button (click)="deletecolour(item.stock_Item_Colour_ID)">Delete</ion-button></ion-col>
-        <ion-col><ion-button>Update</ion-button></ion-col>      
-      </ion-row>
-    </ion-grid>     
-
-  </ion-card-content>
+  
+  <ion-content id="content">
+    <ion-card-content>
+      <ion-button id="addmodal">Add Stock Item Colour</ion-button>
+      <!-- <ion-searchbar [(ngModel)]="filterTerm"  (ionInput)="updateSearchResults()"></ion-searchbar>                     -->
+      <ion-grid>
+        <ion-row>
+          <ion-col style="font-weight: bold;">Stock Item Colour Name</ion-col>        
+          <ion-col style="font-weight: bold;"></ion-col>
+          <ion-col style="font-weight: bold;"></ion-col>
+        </ion-row>
+        <ion-row *ngFor="let item of stockitemcolours">
+          <ion-col>{{item.stock_Item_Colour_Name}}</ion-col>
+          <ion-col><ion-button (click)="deletecolour(item.stock_Item_Colour_ID)">Delete</ion-button></ion-col>
+          <ion-col><ion-button>Update</ion-button></ion-col>      
+        </ion-row>
+      </ion-grid>  
+    </ion-card-content>
+  </ion-content>
+  
 </ion-content>
 
 <ion-footer> 

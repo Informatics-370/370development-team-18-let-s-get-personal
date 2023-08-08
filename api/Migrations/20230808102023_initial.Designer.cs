@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPKP___API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230731000032_initial")]
+    [Migration("20230808102023_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -403,61 +403,15 @@ namespace IPKP___API.Migrations
                     b.Property<string>("Image_File")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Image_Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Image_Size")
                         .HasColumnType("int");
 
                     b.HasKey("Image_ID");
 
                     b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Inventory", b =>
-                {
-                    b.Property<Guid>("Inventory_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Inventory_ID");
-
-                    b.Property<string>("Inventory_Comments")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime>("Inventory_Date")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Inventory_ID");
-
-                    b.ToTable("Inventories");
-                });
-
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Inventory_Line_Item", b =>
-                {
-                    b.Property<Guid>("Inventory_Line_Item_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("Inventory_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Inventory_ID1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Inventory_Line_Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("Stock_Item_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Stock_Item_ID1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Inventory_Line_Item_ID");
-
-                    b.HasIndex("Inventory_ID1");
-
-                    b.HasIndex("Stock_Item_ID1");
-
-                    b.ToTable("Inventory_Line_Items");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Invoice", b =>
@@ -779,6 +733,9 @@ namespace IPKP___API.Migrations
                     b.Property<string>("Stock_Image_File")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Stock_Image_Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Stock_Image_ID");
 
                     b.ToTable("Stock_Images");
@@ -790,6 +747,13 @@ namespace IPKP___API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Stock_Item_ID");
+
+                    b.Property<string>("Inventory_Comments")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime>("Inventory_Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("Stock_Image_ID")
                         .HasColumnType("uniqueidentifier");
@@ -809,7 +773,10 @@ namespace IPKP___API.Migrations
 
                     b.Property<decimal>("Stock_Item_Price")
                         .HasColumnType("decimal(18,2)")
-                        .HasColumnName("Price");
+                        .HasColumnName("Stock_Item_Price");
+
+                    b.Property<int>("Stock_Item_Quantity")
+                        .HasColumnType("int");
 
                     b.Property<string>("Stock_Item_Size")
                         .HasMaxLength(255)
@@ -837,7 +804,7 @@ namespace IPKP___API.Migrations
                     b.Property<Guid>("Stock_Item_Colour_ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Stock_Item_Colour_ID");
+                        .HasColumnName("Stock_Item_ID");
 
                     b.Property<string>("Stock_Item_Colour_Name")
                         .HasMaxLength(255)
@@ -967,10 +934,10 @@ namespace IPKP___API.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("Write_Off_ID");
 
-                    b.Property<Guid?>("Inventory_ID")
+                    b.Property<Guid?>("Stock_Item_ID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Inventory_ID1")
+                    b.Property<Guid?>("Stock_Item_ID1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Write_Off_Date")
@@ -978,7 +945,7 @@ namespace IPKP___API.Migrations
 
                     b.HasKey("Write_Off_ID");
 
-                    b.HasIndex("Inventory_ID1");
+                    b.HasIndex("Stock_Item_ID1");
 
                     b.ToTable("Write_Offs");
                 });
@@ -1322,21 +1289,6 @@ namespace IPKP___API.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Inventory_Line_Item", b =>
-                {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Inventory", "Inventory")
-                        .WithMany("Inventory_Line_Item")
-                        .HasForeignKey("Inventory_ID1");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Stock_Item")
-                        .WithMany("Inventory_Line_Item")
-                        .HasForeignKey("Stock_Item_ID1");
-
-                    b.Navigation("Inventory");
-
-                    b.Navigation("Stock_Item");
-                });
-
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Invoice", b =>
                 {
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Invoice_Discount", "Invoice_Discount")
@@ -1495,11 +1447,11 @@ namespace IPKP___API.Migrations
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Write_Off", b =>
                 {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Inventory", "Inventory")
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Stock_Item")
                         .WithMany()
-                        .HasForeignKey("Inventory_ID1");
+                        .HasForeignKey("Stock_Item_ID1");
 
-                    b.Navigation("Inventory");
+                    b.Navigation("Stock_Item");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Write_Off_Line_Item", b =>
@@ -1602,11 +1554,6 @@ namespace IPKP___API.Migrations
                     b.Navigation("Delivery");
                 });
 
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Inventory", b =>
-                {
-                    b.Navigation("Inventory_Line_Item");
-                });
-
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Invoice", b =>
                 {
                     b.Navigation("Order_Request");
@@ -1625,8 +1572,6 @@ namespace IPKP___API.Migrations
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Stock_Item", b =>
                 {
                     b.Navigation("Basket");
-
-                    b.Navigation("Inventory_Line_Item");
 
                     b.Navigation("Stock_Price_History");
                 });

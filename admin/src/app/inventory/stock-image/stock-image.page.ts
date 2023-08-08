@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { StockTypes } from 'src/app/Models/stocktypes';
-import { StockTypeDataService } from 'src/app/Services/stocktype.service';
 import { FormsModule, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
@@ -10,6 +8,9 @@ import { AlertController } from '@ionic/angular';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+
+import { Stock_Image } from 'src/app/Models/stockimage';
+import { StockImageDataService } from 'src/app/Services/stockimage.service';
 
 @Component({
   selector: 'app-stock-image',
@@ -19,136 +20,143 @@ import { OverlayEventDetail } from '@ionic/core/components';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class StockImagePage implements OnInit {
-
+  formData = new FormData();
   @ViewChild(IonModal) modal!: IonModal
-  stocktypes: StockTypes[] =[];
-  constructor(
-    public modalCtrl: ModalController, 
-    private service:StockTypeDataService,
-    private router: Router,  
-    private alertController: AlertController, 
-    private route:ActivatedRoute) { }
+  stockimages: Stock_Image[] =[];
+  fileNameUploaded = ''
 
-  AddTypeForm:FormGroup = new FormGroup({
-    name: new FormControl('',[Validators.required])      
+  constructor(public modalCtrl: ModalController, private service:StockImageDataService,
+    private router: Router, private alertController: AlertController, private route:ActivatedRoute) { }
+
+  AddImageForm:FormGroup = new FormGroup({
+    imagefile: new FormControl('',[Validators.required]),     
+    name: new FormControl('',[Validators.required]), 
   });     
 
   ngOnInit(): void {
-  this.GetStockTypes();   
+  this.GetStockImages();   
   }
-  GetStockTypes(){
-    this.service.GetStockTypes().subscribe(result =>{
-      this.stocktypes = result as StockTypes[];
-      console.log(this.stocktypes);
-    })
-    }
-  
-    addStockTypes(){
-      let addStockType = new StockTypes();
-      addStockType.stock_Type_Name = this.AddTypeForm.value.name;
-  
-        this.service.AddStockType(this.AddTypeForm.value).subscribe(result => {
-          if(result.status == "Error")
-          {
-            this.AddStockTypeSuccessAlert();
-          }
-          else if(result.status == "Success"){
-            this.AddStockTypeSuccessAlert();
-          }
+
+  GetStockImages(){
+    this.service.GetAllStockImages().subscribe(result =>{
+      this.stockimages = result as Stock_Image[];
+      console.log(this.stockimages);
+    })    
+  }
+
+  uploadFile = (files: any) => {
+    let fileToUpload = <File>files[0];
+    this.formData.append('file', fileToUpload , fileToUpload.name); //
+    this.fileNameUploaded = fileToUpload.name
+  }
+
+  addStockImage(){
+    //if(this.AddImageForm.valid)
+    //{
+      this.formData.append('name', this.AddImageForm.get('name')!.value);
+      this.service.AddStockImage(this.formData).subscribe(result => {
+        if(result.status == "Error"){        
+          this.AddStockImageSuccessAlert();
+        }
+        else if(result.status == "Success"){
+          this.AddStockImageSuccessAlert();
+        }
       })
-    }
-    getstocktype(stock_Type_ID:string){
-      //[routerLink]="['/course', course.courseId]"
-      this.router.navigate(['./editstocktype',stock_Type_ID]);
-    }
+    //}          
+  }
+
+  EditStockImage(stock_Image_ID:number){
+    this.router.navigate(['./editStockImage',stock_Image_ID]);
+  }
+
+  deleteStockImage(stock_Image_ID:number){
+    this.service.DeleteStockImage(stock_Image_ID).subscribe(result =>{
+      if(result.status == "Error") {
+        this.DeleteStockImageErrorAlert();
+      }
+      else if(result.status == "Success"){
+        this.DeleteStockImageSuccessAlert();
+      }         
+    });
+  }
+
+  canceladdImagemodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirmaddImagemodal() {
+    this.addStockImage();    
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+ 
+  async DeleteStockImageSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Stock Image Deleted',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }  
   
-    deleteStockTypes(stock_Type_ID:string){
-      this.service.DeleteStockType(stock_Type_ID).subscribe(result =>{
-        if(result.status == "Error")
-            {
-              this.DeleteStockTypeErrorAlert();
-            }
-            else if(result.status == "Success"){
-              this.DeleteStockTypeSuccessAlert();
-            }
-      });
-    }
-    anceladdmodal() {
-      this.modal.dismiss(null, 'cancel');
-    }
+  async DeleteStockImageErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Stock Image was not deleted',
+      message: 'Please try again',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
   
-    confirmaddmodal() {
-      this.addStockTypes();
-      
-    }
+  async AddStockImageSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Stock Image added',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  } 
   
-    onWillDismiss(event: Event) {
-      const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    }
+  async AddStockImageErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Stock Image was not added',
+      message: 'Please try again',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
+
+  reloadPage(){
+    window.location.reload()
+  }
   
-    async DeleteStockTypeSuccessAlert() {
-      const alert = await this.alertController.create({
-        header: 'Success!',
-        subHeader: 'Stock Type Deleted',
-        buttons: [{
-            text: 'OK',
-            role: 'cancel',
-            handler:() =>{
-              this.reloadPage();
-            }
-        }],
-      });
-      await alert.present();
-    }
-  
-    async DeleteStockTypeErrorAlert() {
-      const alert = await this.alertController.create({
-        header: 'We are sorry!',
-        subHeader: 'Stock Type was not deleted',
-        message: 'Please try again',
-        buttons: [{
-            text: 'OK',
-            role: 'cancel',
-            handler:() =>{
-              this.reloadPage();
-            }
-        }],
-      });
-      await alert.present();
-    }
-  
-    async AddStockTypeSuccessAlert() {
-      const alert = await this.alertController.create({
-        header: 'Success!',
-        subHeader: 'Stock Type added',
-        buttons: [{
-            text: 'OK',
-            role: 'cancel',
-            handler:() =>{
-              this.reloadPage();
-            }
-        }],
-      });
-      await alert.present();
-    }
-  
-    async AddStockTypeErrorAlert() {
-      const alert = await this.alertController.create({
-        header: 'We are sorry!',
-        subHeader: 'Stock Type was not added',
-        message: 'Please try again',
-        buttons: [{
-            text: 'OK',
-            role: 'cancel',
-            handler:() =>{
-              this.reloadPage();
-            }
-        }],
-      });
-      await alert.present();
-    }
-  
-    reloadPage(){
-      window.location.reload()
-    }
+ 
 }

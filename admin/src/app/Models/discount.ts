@@ -1,5 +1,5 @@
 export class Discount{
-    discount_ID!: string
+    discount_ID!: number
     discount_Name!: String
     discount_Amount!: Number
     effective_From_Date!: Date

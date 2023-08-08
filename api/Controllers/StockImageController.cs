@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System;
 using IPKP___API.Controllers.Models.Entities;
+using System.Linq;
+using System.IO;
 
 namespace IPKP___API.Controllers
 {
@@ -31,7 +33,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -42,48 +44,72 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetStockImageByID(stock_Image_ID);
-                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item Image" + stock_Image_ID });
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item Image" + stock_Image_ID });
+                }
 
                 return Ok(results);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
         [HttpPost]
         [Route("AddStockImage")]
-        public async Task<IActionResult> AddStockImageAsync(Stock_Image si)
+        public async Task<IActionResult> AddStockImageAsync([FromForm] IFormCollection formData)
         {
-
-            var image = new Stock_Image
-            {
-                Stock_Image_ID = new Guid(),
-                Stock_Image_File = si.Stock_Image_File,
-            };
-
             try
             {
-                _IPKPRepository.Add(image);
-                await _IPKPRepository.SaveChangesAsync();
+                var formCollection = await Request.ReadFormAsync();
+                var file = formCollection.Files.First();
+                if (file.Length > 0)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        file.CopyTo(ms);
+                        var fileBytes = ms.ToArray();
+                        string base64 = Convert.ToBase64String(fileBytes);
+
+                        var image = new Stock_Image
+                        {
+                            Stock_Image_ID = new Guid(),
+                            Stock_Image_File = base64,
+                            Stock_Image_Name = formData["name"]
+                        };
+
+                        _IPKPRepository.Add(image);
+                        await _IPKPRepository.SaveChangesAsync();
+                    }
+                    return Ok(new Response { Status = "Success", Message = "Stock Image Added To Database." });
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "No image found." });
+                }
+
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok(new Response { Status = "Success", Message = "Stock Image Added To Database." });
+            //return Ok(new Response { Status = "Success", Message = "Stock Image Added To Database." });
         }
 
         [HttpPut]
         [Route("UpdateStockImage/{stock_Image_ID}")]
-        public async Task<IActionResult> UpdateStockImageAsync(Guid stock_Image_ID, StockImageVM si)
+        public async Task<IActionResult> UpdateStockImageAsync(Guid stock_Image_ID, Stock_Image si)
         {
             try
             {
                 var existingStockImage = await _IPKPRepository.GetStockImageByID(stock_Image_ID);
 
-                if (existingStockImage == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Image" + stock_Image_ID });
+                if (existingStockImage == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Image" + stock_Image_ID });
+                }
 
                 existingStockImage.Stock_Image_File = si.Stock_Image_File;
 
@@ -94,7 +120,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Stock Image Saved To Database." });
         }
@@ -108,7 +134,11 @@ namespace IPKP___API.Controllers
             {
                 var existingStockItemColour = await _IPKPRepository.GetStockImageByID(stock_Image_ID);
 
-                if (existingStockItemColour == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Image" + stock_Image_ID });
+                if (existingStockItemColour == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Image" + stock_Image_ID });
+
+                }
 
                 _IPKPRepository.Delete(existingStockItemColour);
 
@@ -119,7 +149,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Stock Image Removed From Database." });
         }

@@ -19,14 +19,16 @@ namespace IPKP___API.Controllers.Models.ViewModels
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
-        public Guid Customer_ID { get; set; }
         [StringLength(255)]
         public string FirstName { get; set; }
+
         [StringLength(255)]
         public string Surname { get; set; }
+
         [StringLength(13)]
         public string Cell_Number { get; set; }
-        
+
         //public int User_Id { get; set; }
+        //public Guid Customer_ID { get; set; }
     }
 }

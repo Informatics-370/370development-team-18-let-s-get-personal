@@ -36,7 +36,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -55,7 +55,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -63,22 +63,23 @@ namespace IPKP___API.Controllers
         [Route("AddDiscount")]
         public async Task<IActionResult> AddDiscount(Discount dm)
         {
-            var discount = new Discount
-            {
-                Discount_ID = dm.Discount_ID,
-                Discount_Name = dm.Discount_Name,
-                Discount_Amount = dm.Discount_Amount,
-                Effective_From_Date = dm.Effective_From_Date,
-                Effective_To_Date = dm.Effective_To_Date
-            };
             try
             {
+
+                var discount = new Discount
+                {
+                    Discount_ID = dm.Discount_ID,
+                    Discount_Name = dm.Discount_Name,
+                    Discount_Amount = dm.Discount_Amount,
+                    Effective_From_Date = dm.Effective_From_Date,
+                    Effective_To_Date = dm.Effective_To_Date
+                };
                 _IPKPRepository.Add(discount);
                 await _IPKPRepository.SaveChangesAsync();
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Discount Added Successfully" });
         }
@@ -107,7 +108,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Error", Message = "Discount Saved To Database." });
         }
@@ -134,7 +135,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Discount Removed Successfully" });
         }

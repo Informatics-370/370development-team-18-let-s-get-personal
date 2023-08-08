@@ -2,7 +2,7 @@ import { Order_Request } from "./orderrequest";
 import { Invoice_Discount } from "./invoicediscount";
 
 export class Invoice{
-    invoice_ID!: string   
+    invoice_ID!: number   
     delivery_Price!: Number
     invoice_Total_exclVAT!: Number
     invoice_Total_VAT!: Number

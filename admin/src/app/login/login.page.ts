@@ -4,7 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/Services/authentication.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -12,7 +12,7 @@ import { AlertController } from '@ionic/angular';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, HttpClientModule]
+  imports: [IonicModule, CommonModule, FormsModule, HttpClientModule, RouterModule]
 })
 export class LoginPage implements OnInit {
 
@@ -32,30 +32,28 @@ export class LoginPage implements OnInit {
 
   login(form: NgForm) {
     this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
+
       let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
       console.log(roles);
-      if(res.status == "Success"){
-        if(roles.includes('user')) {
-          this.ErrorAlert();
-          this.logout();
-        } 
-        else{
-          this.router.navigateByUrl('/tabs/menu', {replaceUrl: true});
-          localStorage.setItem('username', form.value.username,);
-        }
+      if(roles.includes('User')){
+        this.ErrorAlert();
+        //this.logout();
       }
-      else if(res.status == "Error"){
-        this.errorMsg = res.Message;
+      else if(roles.includes('Admin')){
+        this.router.navigateByUrl('/tabs/orders', {replaceUrl: true});
+        localStorage.setItem('username', form.value.username,);
+      }
+      else{
         this.LoginFailErrorAlert()
       }
-      
+        
     });
   }
 
   async LoginFailErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: this.errorMsg,
+      //subHeader: this.errorMsg,
       message: 'Please try again',
       buttons: ['OK'],
     });
@@ -66,7 +64,6 @@ export class LoginPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
       subHeader: 'Customers cannot access this site',
-      message: 'Please try again',
       buttons: ['OK'],
     });
     await alert.present();

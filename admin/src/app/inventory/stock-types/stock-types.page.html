@@ -10,25 +10,28 @@
       <ion-title size="large">Stock Types</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-button id="addmodal">Add Stock Type</ion-button>
-  <ion-grid>
-    <ion-row>
-      <ion-col style="font-weight: bold;">Stock Type Name</ion-col>
-      <ion-col></ion-col>
-      <ion-col></ion-col>
-    </ion-row>
-    <!--<ion-button router---(UC 2.7)??">Select Best Sellers</ion-button>   -->
-    <!-- <ion-searchbar [(ngModel)]="filterTerm"  (ionInput)="updateSearchResults()"></ion-searchbar> -->
-    <ion-row *ngFor="let item of stocktypes">
-      <ion-col> {{item.stock_Type_Name}}</ion-col>
-      <ion-col><ion-button (click)="getstocktype(item.stock_Type_ID)">Edit</ion-button></ion-col>
-      <ion-col><ion-button (click)="deleteStockTypes(item.stock_Type_ID)">Delete</ion-button> </ion-col>          
-    </ion-row>
-  </ion-grid>
+  <ion-content id="content">
+    <ion-button id="addTypemodal">Add Stock Type</ion-button>
+    <ion-grid>
+      <ion-row>
+        <ion-col style="font-weight: bold;">Stock Type Name</ion-col>
+        <ion-col></ion-col>
+        <ion-col></ion-col>
+      </ion-row>
+      <!--<ion-button router---(UC 2.7)??">Select Best Sellers</ion-button>   -->
+      <!-- <ion-searchbar [(ngModel)]="filterTerm"  (ionInput)="updateSearchResults()"></ion-searchbar> -->
+      <ion-row *ngFor="let item of stocktypes">
+        <ion-col> {{item.stock_Type_Name}}</ion-col>
+        <ion-col><ion-button (click)="getstocktype(item.stock_Type_ID)">Edit</ion-button></ion-col>
+        <ion-col><ion-button (click)="deleteStockTypes(item.stock_Type_ID)">Delete</ion-button> </ion-col>          
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+  
 </ion-content>
 
 <ion-footer> 
-  <ion-modal trigger="addmodal" (willDismiss)="onWillDismiss($event)">
+  <ion-modal trigger="addTypemodal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
         <ion-toolbar>

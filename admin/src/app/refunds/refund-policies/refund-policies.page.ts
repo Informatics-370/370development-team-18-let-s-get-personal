@@ -32,8 +32,13 @@ export class RefundPoliciesPage implements OnInit {
     private alertController:AlertController, private modalCtrl: ModalController ) { }
 
   ngOnInit(): void {
-    this.getAllRefundPolicies()
+    this.getAllRefundPolicies();
+
+    if(this.filterTerm==""){
+      this.filteredpolicies = this.refundPolicies;
+    }
   }
+
   AddForm: FormGroup = new FormGroup({
     date: new FormControl('',[Validators.required]),
     version: new FormControl('',[Validators.required]),
@@ -50,13 +55,15 @@ export class RefundPoliciesPage implements OnInit {
       searchitem.refund_Policy_Description.toLocaleLowerCase().includes(this.filterTerm.toLocaleLowerCase())||
       searchitem.refund_Policy_Version == Number(this.filterTerm)
     );
-   }
+  }
+
   getAllRefundPolicies(){
     this.service.GetAllRefundPolicies().subscribe(result =>{
       this.refundPolicies = result as Refund_Policy[];
       console.log(this.refundPolicies);
     })
   }
+
   AddRefundPolicy(){
     let addRefund = new Refund_Policy();
 
@@ -73,7 +80,8 @@ export class RefundPoliciesPage implements OnInit {
       }
     })
   }
-  DeleteRefundPolicy(refund_Policy_ID: string){
+
+  DeleteRefundPolicy(refund_Policy_ID: number){
     this.service.DeleteRefundPolicy(refund_Policy_ID).subscribe(result => {
       console.log(result);   
       if(result.status == "Success"){
@@ -112,9 +120,7 @@ export class RefundPoliciesPage implements OnInit {
           handler:() =>{
             this.reloadPage();
           }
-        }
-    ],
-      
+      }],      
     });
     await alert.present();    
   }
@@ -134,6 +140,7 @@ export class RefundPoliciesPage implements OnInit {
     });
     await alert.present();
   }
+
   async DeletePolicySuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',

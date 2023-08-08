@@ -37,7 +37,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -54,31 +54,30 @@ namespace IPKP___API.Controllers
             catch (Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
         [HttpPost]
         [Route("AddDelivery")]
         public async Task<IActionResult> AddDeliveryAsync(Delivery dvm)
-        {
-            var delivery = new Delivery
-            {
-                Delivery_Price = dvm.Delivery_Price,
-                //Delivery_Company = dvm.Delivery_Company_ID,
-                Delivery_ID = dvm.Delivery_ID,
-                Tracking_Number = dvm.Tracking_Number,
-            };
-
-
+        {            
             try
             {
+                var delivery = new Delivery
+                {
+                    Delivery_Price = dvm.Delivery_Price,
+                    //Delivery_Company = dvm.Delivery_Company_ID,
+                    Delivery_ID = dvm.Delivery_ID,
+                    Tracking_Number = dvm.Tracking_Number,
+                };
+
                 _IPKPRepository.Add(delivery);
                 await _IPKPRepository.SaveChangesAsync();
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
 
             return Ok(new Response { Status = "Success", Message = "Delivery Added To Database." });
@@ -103,14 +102,14 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Delivery Removed From Database." });
         }
 
         [HttpPut]
         [Route("UpdateDelivery")]
-        public async Task<IActionResult> UpdateDeliveryAsync(Guid delivery_ID, DeliveryViewModel dvm)
+        public async Task<IActionResult> UpdateDeliveryAsync(Guid delivery_ID, Delivery dvm)
         {
             try
             {
@@ -118,21 +117,21 @@ namespace IPKP___API.Controllers
 
                 if (existingDelivery == null) return NotFound("Could Not Find Delivery" + delivery_ID);
 
-                existingDelivery.Delivery_Company = dvm.Delivery_Company_ID;
+                existingDelivery.Delivery_Company_ID = dvm.Delivery_Company_ID;
                 existingDelivery.Delivery_Address = dvm.Delivery_Address;
                 existingDelivery.Delivery_Price = dvm.Delivery_Price;
                 existingDelivery.Tracking_Number = dvm.Tracking_Number;
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {
-                    return Ok("Delivery Updated Successfully");
+                    return Ok(new Response { Status = "Success", Message = "Delivery Updated Successfully" });
                 }
             }
             catch (Exception)
             {
-                return BadRequest("Invalid Transaction");
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Delivery Saved To Database.");
+            return Ok(new Response { Status = "Success", Message = "Delivery Saved To Database." });
         }
 
 
@@ -153,7 +152,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -172,7 +171,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
 
         }
@@ -181,19 +180,19 @@ namespace IPKP___API.Controllers
         [Route("AddDeliveryCompany")]
         public async Task<IActionResult> AddDeliveryCompanyAsync(DeliveryCompanyViewModel dcvm)
         {
-            var deliveryCompany = new Delivery_Company
-            {
-                Delivery_Company_ID = dcvm.Delivery_Company_ID,
-                Delivery_Company_Name = dcvm.Delivery_Company_Name
-            };
             try
             {
+                var deliveryCompany = new Delivery_Company
+                {
+                    Delivery_Company_ID = dcvm.Delivery_Company_ID,
+                    Delivery_Company_Name = dcvm.Delivery_Company_Name
+                };
                 _IPKPRepository.Add(deliveryCompany);
                 await _IPKPRepository.SaveChangesAsync();
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Delivery Company Added To Database." });
         }
@@ -218,7 +217,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Delivery Company Saved To Database." });
         }
@@ -242,7 +241,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Delivery Company Removed From Database." });
         }

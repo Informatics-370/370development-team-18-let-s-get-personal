@@ -7,9 +7,13 @@ import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
 import { BasketService } from 'src/app/Services/basket.service';
-import { Inventory } from '../Models/inventory';
-import { Inventory_Line_Item } from '../Models/inventorylineitem';
 import { InventoryDataService } from '../Services/inventory.service';
+import { StockTypes } from 'src/app/Models/stocktypes';
+import { StockTypeDataService } from 'src/app/Services/stocktype.service';
+import { StockItemColours } from 'src/app/Models/stockitemcolour';
+import { StockItemColourDataService } from 'src/app/Services/stockitemcolours.service';
+import { Stock_Image } from 'src/app/Models/stockimage';
+import { StockImageDataService } from 'src/app/Services/stockimage.service';
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.page.html',
@@ -18,16 +22,18 @@ import { InventoryDataService } from '../Services/inventory.service';
   imports: [IonicModule, CommonModule, FormsModule, RouterModule]
 })
 export class InventoryPage implements OnInit {
-  inventory: Inventory[] =[];
+
   Products!: Stock_Item[];
   quantities: Array<any> = [];
   //productForm!: FormGroup;
   basketList: Array<Stock_Item> = [];
   productIds: Array<any> = [];
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
-    public stockitemservice: StockItemDataService, public bestsellerservice:BestsellersService, 
-    private alertController:AlertController, private basketService : BasketService,
-    private inventoryservice: InventoryDataService) { }
+    public bestsellerservice:BestsellersService, private alertController:AlertController, 
+    private basketService : BasketService, private inventoryservice: InventoryDataService,
+    //dataservices
+    public stockitemservice: StockItemDataService, private typeservice:StockTypeDataService,
+    private imageservice:StockImageDataService, private colourservice:StockItemColourDataService) { }
 
   ngOnInit() {
   }
@@ -40,7 +46,15 @@ export class InventoryPage implements OnInit {
   {
     this.router.navigate(['./tabs/stock-item-colours']);
   }
-
+  stockimagesnav()
+  {
+    this.router.navigate(['./tabs/stock-image']);
+  }
+  stocktakenav()
+  {
+    this.router.navigate(['./tabs/stock-take']);
+  }
+  
   
   addToBestSellers(bestseller: Stock_Item[]){
     this.bestsellerservice.SaveBestSellersList(bestseller).subscribe((response:any) => {
@@ -51,12 +65,6 @@ export class InventoryPage implements OnInit {
       else{
         this.addToBestSellersSuccessAlert();
       }
-    })
-  }
-  
-  GetAllStockItems(){
-    this.stockitemservice.GetStockItems().subscribe(result =>{
-      this.Products = result as Stock_Item[];
     })
   }
 

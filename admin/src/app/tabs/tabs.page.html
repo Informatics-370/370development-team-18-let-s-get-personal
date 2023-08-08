@@ -1,9 +1,6 @@
 <ion-tabs >
   <!-- *ngIf="islogged" -->
   <ion-tab-bar slot="top" *ngIf="islogged"> 
-    <ion-tab-button tab="menu">
-      <ion-label>Menu</ion-label>
-    </ion-tab-button>
 
     <ion-tab-button tab="orders">
       <ion-label>Orders</ion-label>
@@ -29,13 +26,12 @@
       <ion-label>View Users</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="view-employees">
+    <!-- <ion-tab-button tab="view-employees">
       <ion-label>View Employees</ion-label>
-    </ion-tab-button>
+    </ion-tab-button> -->
 
     <ion-tab-button tab="admin-profile">
-      <ion-label onclick="Logout()">Log out</ion-label>
-      <!-- <ion-icon name="person-outline"></ion-icon> -->
+      <ion-label> Log out</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

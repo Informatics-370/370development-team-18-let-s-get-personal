@@ -78,35 +78,37 @@ namespace IPKP___API.Controllers
                 }
                 catch
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
+                    return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
 
                 }
             }
             else
             {
-                return NotFound("Account does not exist");
+                return BadRequest(new Response { Status = "Error", Message = "User details wer not found. Please check your login details" });
+                //return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "User details wer not found. Please check your login details"  });
             }
         }
 
 
         [HttpPost]
-        [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+        [Route("RegisterCustomer")]
+        public async Task<IActionResult> RegisterCustomer([FromBody] RegisterViewModel model)
         {
 
             var userExists = await _userManager.FindByNameAsync(model.Username);
             if (userExists != null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
 
+            //create and save new identity user
             IdentityUser user = new()
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
             };
-
             var result = await _userManager.CreateAsync(user, model.Password);
 
+            //create and save new customer
             var customer = new Customer
             {
                 Customer_ID = new Guid(),
@@ -134,8 +136,60 @@ namespace IPKP___API.Controllers
         }
 
         [HttpPost]
-        [Route("register-admin")]
+        [Route("RegisterAdmin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterViewModel model)
+        {
+            var userExists = await _userManager.FindByNameAsync(model.Username);
+            if (userExists != null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+            }
+            else
+            {
+                //create and save new identity user
+                IdentityUser user = new()
+                {
+                    Email = model.Email,
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    UserName = model.Username
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                //create and save new admin user
+                var admin = new Admin
+                {
+                    Admin_ID = new Guid(),
+                    FirstName = model.FirstName,
+                    Surname = model.Surname,
+                    Email = model.Email,
+                    Username = model.Username,
+                    Cell_Number = model.Cell_Number,
+                    User_ID = new Guid(),
+                };
+
+                _IPKPRepository.Add(admin);
+                await _IPKPRepository.SaveChangesAsync();
+
+                if (result.Errors.Count() > 0)//(!result.Succeeded)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+
+                }
+                if (!await _roleManager.RoleExistsAsync(User_Role.admin))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(User_Role.admin));
+                }
+                if (await _roleManager.RoleExistsAsync(User_Role.admin))
+                {
+                    await _userManager.AddToRoleAsync(user, User_Role.admin);
+                }
+                return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            }
+        }
+
+        [HttpPost]
+        [Route("RegisterEmployee")]
+        public async Task<IActionResult> RegisterEmployee([FromBody] RegisterViewModel model)
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
             if (userExists != null)
@@ -153,30 +207,41 @@ namespace IPKP___API.Controllers
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
 
+                //create and save new admin user
+                var employee = new Employee
+                {
+                    Employee_ID = new Guid(),
+                    FirstName = model.FirstName,
+                    Surname = model.Surname,
+                    Email = model.Email,
+                    Username = model.Username,
+                    Cell_Number = model.Cell_Number,
+                    User_ID = new Guid(),
+                };
+
+                _IPKPRepository.Add(employee);
+                await _IPKPRepository.SaveChangesAsync();
+
+
                 if (result.Errors.Count() > 0)//(!result.Succeeded)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
                 }
-                if (!await _roleManager.RoleExistsAsync(User_Role.admin))
+                //give user employee role
+                if (!await _roleManager.RoleExistsAsync(User_Role.employee))
                 {
-                    await _roleManager.CreateAsync(new IdentityRole(User_Role.admin));
+                    await _roleManager.CreateAsync(new IdentityRole(User_Role.employee));
                 }
-                if (await _roleManager.RoleExistsAsync(User_Role.admin))
+                if (await _roleManager.RoleExistsAsync(User_Role.employee))
                 {
-                    await _userManager.AddToRoleAsync(user, User_Role.admin);
+                    await _userManager.AddToRoleAsync(user, User_Role.employee);
                 }
 
-                //if (!await _roleManager.RoleExistsAsync(User_Role.User))
-                //    await _roleManager.CreateAsync(new IdentityRole(User_Role.User));
-
-                //if (await _roleManager.RoleExistsAsync(User_Role.Admin))
-                //{
-                //    await _userManager.AddToRoleAsync(user, User_Role.User);
-                //}
                 return Ok(new Response { Status = "Success", Message = "User created successfully!" });
             }
         }
+
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
