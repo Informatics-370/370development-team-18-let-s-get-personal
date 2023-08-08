@@ -45,7 +45,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -61,7 +61,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -84,7 +84,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok("Delivery Removed From Database.");
         }      
@@ -125,7 +125,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Refund has been accepted" });
         }
@@ -165,7 +165,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -187,7 +187,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Refund Policy Added Successfully" });
         }
@@ -214,7 +214,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Refund Policy Removed Successfully" });
         }

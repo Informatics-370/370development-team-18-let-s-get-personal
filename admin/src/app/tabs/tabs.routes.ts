@@ -97,10 +97,6 @@ export const routes: Routes = [
         loadComponent: () => import('../refunds/refund-policies/refund-policies.page').then( m => m.RefundPoliciesPage)
       },
       {
-        path: 'add-stock',
-        loadComponent: () => import('../inventory/add-stock/add-stock.page').then( m => m.AddStockPage)
-      },
-      {
         path: 'stock-image',
         loadComponent: () => import('../inventory/stock-image/stock-image.page').then( m => m.StockImagePage)
       },

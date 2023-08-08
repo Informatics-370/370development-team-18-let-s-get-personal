@@ -32,7 +32,13 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(255)]
         public string Stock_Item_Size { get; set; }
 
-        
+        public DateTime Inventory_Date { get; set; }
+
+        [StringLength(255)]
+        public string Inventory_Comments { get; set; }
+
+        public int Stock_Item_Quantity { get; set; }
+
         public Stock_Type Stock_Type { get; set; }
 
         public Stock_Image Stock_Image { get; set; }
@@ -45,7 +51,6 @@ namespace IPKP___API.Controllers.Models.Entities
         
         public virtual ICollection<Product_Rating> Product_Rating { get; set; }
 
-        public virtual ICollection<Inventory_Line_Item> Inventory_Line_Item { get; set; }
         public virtual ICollection<Stock_Price_History> Stock_Price_History { get; set; }
 
     }

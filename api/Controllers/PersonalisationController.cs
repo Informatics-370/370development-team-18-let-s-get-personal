@@ -33,7 +33,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -55,7 +55,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
 
             return Ok(new Response { Status = "Success", Message = "Personalisation Design Added To Database." });
@@ -83,7 +83,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Personalisation Design Saved To Database." });
         }
@@ -107,7 +107,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Stock Item Removed From Database." });
         }

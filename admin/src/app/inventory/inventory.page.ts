@@ -7,8 +7,6 @@ import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
 import { BasketService } from 'src/app/Services/basket.service';
-import { Inventory } from '../Models/inventory';
-import { Inventory_Line_Item } from '../Models/inventorylineitem';
 import { InventoryDataService } from '../Services/inventory.service';
 import { StockTypes } from 'src/app/Models/stocktypes';
 import { StockTypeDataService } from 'src/app/Services/stocktype.service';
@@ -24,7 +22,7 @@ import { StockImageDataService } from 'src/app/Services/stockimage.service';
   imports: [IonicModule, CommonModule, FormsModule, RouterModule]
 })
 export class InventoryPage implements OnInit {
-  inventory: Inventory[] =[];
+
   Products!: Stock_Item[];
   quantities: Array<any> = [];
   //productForm!: FormGroup;
@@ -52,10 +50,6 @@ export class InventoryPage implements OnInit {
   {
     this.router.navigate(['./tabs/stock-image']);
   }
-  stockitemav()
-  {
-    this.router.navigate(['./tabs/add-stock']);
-  }
   stocktakenav()
   {
     this.router.navigate(['./tabs/stock-take']);
@@ -73,8 +67,6 @@ export class InventoryPage implements OnInit {
       }
     })
   }
-  
- 
 
   async addToBestSellersSuccessAlert() {
     const alert = await this.alertController.create({

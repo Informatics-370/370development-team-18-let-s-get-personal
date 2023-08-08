@@ -34,7 +34,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             //return Ok("Basket Gotten To Database.");
         }
@@ -43,21 +43,23 @@ namespace IPKP___API.Controllers
         [Route("AddBasketInfo")]
         public async Task<IActionResult> AddBasketInfo(Basket bask)
         {
-            var basketItems = new Basket
-            {
-                Basket_ID = new Guid(),
-                Basket_Quantity = bask.Basket_Quantity,
-                Stock_Item = bask.Stock_Item,
-                Customer = bask.Customer
-            };
+           
             try
             {
+                var basketItems = new Basket
+                {
+                    Basket_ID = new Guid(),
+                    Basket_Quantity = bask.Basket_Quantity,
+                    Stock_Item = bask.Stock_Item,
+                    Customer = bask.Customer
+                };
+
                 _IPKPRepository.Add(basketItems);
                 await _IPKPRepository.SaveChangesAsync();               
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Basket Added To Database." });
 

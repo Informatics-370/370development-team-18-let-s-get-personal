@@ -32,7 +32,7 @@ namespace IPKP___API.Controllers
 
                 if(stockitems == null)
                 {
-                    return Ok(new Response { Status = "Success", Message = "No Stock Items were found." });
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
                 }
                 else
                 {
@@ -41,14 +41,15 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
+
         [HttpPost]
         [Route("AddStockItem")]
-        public async Task<IActionResult> AddStockItemAsync(StockItemViewModel sivm) //[FromForm] IFormCollection formData
-        {           
+        public async Task<IActionResult> AddStockItemAsync(Stock_Item sivm) //[FromForm] IFormCollection formData
+        {
             try
             {
                 var stockItem = new Stock_Item
@@ -57,37 +58,47 @@ namespace IPKP___API.Controllers
                     Stock_Item_Name = sivm.Stock_Item_Name,
                     Stock_Item_Price = sivm.Stock_Item_Price,
                     Stock_Item_Size = sivm.Stock_Item_Size,
+                    Inventory_Date = new DateTime(),
+                    Inventory_Comments = sivm.Inventory_Comments,
+                    Stock_Item_Quantity = sivm.Stock_Item_Quantity,
                     Stock_Type_ID = sivm.Stock_Type_ID,
                     Stock_Image_ID = sivm.Stock_Image_ID,
                     Stock_Item_Colour_ID = sivm.Stock_Item_Colour_ID,
                 };
-
-
                 _IPKPRepository.Add(stockItem);
                 await _IPKPRepository.SaveChangesAsync();
+
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest( new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Stock Item Added To Database." });
         }
 
-
         [HttpGet]
         [Route("GetStockItem/{stock_Item_ID}")]
-        public async Task<IActionResult> GetStockItemDetailsAsync(Guid stock_Item_ID)
+        public async Task<IActionResult> GetStockItemDetailsAsync(Guid stock_Item_ID) //public async Task<IActionResult>
         {
             try
             {
                 var results = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
-                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
+                //var results = _IPKPRepository.GetStockItemByID(stock_Item_ID);
 
-                return Ok(results);
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
+
+                }
+                else
+                {
+                    return Ok(results);
+                }
+
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -113,7 +124,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Stock Item Saved To Database." });
         }
@@ -137,7 +148,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Stock Item  Removed From Database." });
         }

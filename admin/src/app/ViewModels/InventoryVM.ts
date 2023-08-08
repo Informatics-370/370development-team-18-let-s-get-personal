@@ -1,12 +1,16 @@
-export class StockItemViewModel{
+export class InventoryViewModel{
+    inventory_Line_Item_ID!: number    
+    inventory_Line_Quantity!: Number
+
+    inventory_ID!: number
+    inventory_Date!: Date
+    inventory_Comments!: String
+    
     stock_Item_ID!: number
     stock_Item_Name!: string
     stock_Item_Price!: number
     stock_Item_Size!: string
-    inventory_Date!: Date
-    inventory_Comments!: String 
-    stock_Item_Quantity!: number
-    
+
     stock_Item_Colour_ID!: number
     stockColourName!: string
 

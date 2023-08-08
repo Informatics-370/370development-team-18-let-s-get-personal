@@ -4,8 +4,7 @@
       <ion-button (click)="stocktypes()">Stock Types</ion-button>
       <ion-button (click)="stockcoloursnav()">Stock Colours</ion-button>
       <ion-button (click)="stockimagesnav()">Stock Images</ion-button>
-      <ion-button (click)="stockitemav()">Add Stock Item</ion-button>
-      
+      <ion-button (click)="stocktakenav()">Preform Stock Take</ion-button>
   </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -16,17 +15,17 @@
       <ion-title size="large">inventory</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content id="content">
-    <h2>Inventory</h2>
-    <ion-button (click)="stocktakenav()">Preform Stock Take</ion-button><br>
+  <h2>Inventory</h2>
+  <ion-content id="content">    
     <ion-grid>
       <ion-row>
-        <ion-col style="font-weight: bold;">Image</ion-col>
+        
         <ion-col style="font-weight: bold;">Product</ion-col>
         <ion-col style="font-weight: bold;">Stock Type</ion-col>
         <ion-col style="font-weight: bold;">Colours</ion-col>
+        <ion-col style="font-weight: bold;">Image</ion-col>
         <ion-col style="font-weight: bold;">Quantity</ion-col>
-        <ion-col style="font-weight: bold;"></ion-col>  
+        <ion-col style="font-weight: bold;">Price</ion-col>  
       </ion-row><br>
       <!-- <ion-row *ngFor="let item of Products">      
         <ion-col>{{item.stock_Item_Name}}</ion-col>

@@ -131,19 +131,6 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Inventories",
-                columns: table => new
-                {
-                    Inventory_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Inventory_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Inventory_Comments = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Inventories", x => x.Inventory_ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Order_Statuses",
                 columns: table => new
                 {
@@ -449,26 +436,6 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Write_Offs",
-                columns: table => new
-                {
-                    Write_Off_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Write_Off_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Inventory_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Inventory_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Write_Offs", x => x.Write_Off_ID);
-                    table.ForeignKey(
-                        name: "FK_Write_Offs_Inventories_Inventory_ID1",
-                        column: x => x.Inventory_ID1,
-                        principalTable: "Inventories",
-                        principalColumn: "Inventory_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Stock_Items",
                 columns: table => new
                 {
@@ -479,6 +446,9 @@ namespace IPKP___API.Migrations
                     Stock_Item_Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Stock_Item_Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Stock_Item_Size = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Inventory_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Inventory_Comments = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Stock_Item_Quantity = table.Column<int>(type: "int", nullable: false),
                     Stock_Type_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Stock_Image_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Stock_Item_Colour_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -631,34 +601,6 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Inventory_Line_Items",
-                columns: table => new
-                {
-                    Inventory_Line_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Inventory_Line_Quantity = table.Column<int>(type: "int", nullable: false),
-                    Inventory_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Inventory_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Inventory_Line_Items", x => x.Inventory_Line_Item_ID);
-                    table.ForeignKey(
-                        name: "FK_Inventory_Line_Items_Inventories_Inventory_ID1",
-                        column: x => x.Inventory_ID1,
-                        principalTable: "Inventories",
-                        principalColumn: "Inventory_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Inventory_Line_Items_Stock_Items_Stock_Item_ID1",
-                        column: x => x.Stock_Item_ID1,
-                        principalTable: "Stock_Items",
-                        principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Stock_Price_Histories",
                 columns: table => new
                 {
@@ -681,29 +623,22 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Write_Off_Line_Items",
+                name: "Write_Offs",
                 columns: table => new
                 {
-                    Write_Off_Line_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Write_Off_Quantity = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Write_Off_Reason = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Write_Off_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Write_Off_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Write_Off_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Write_Off_Line_Items", x => x.Write_Off_Line_Item_ID);
+                    table.PrimaryKey("PK_Write_Offs", x => x.Write_Off_ID);
                     table.ForeignKey(
-                        name: "FK_Write_Off_Line_Items_Stock_Items_Stock_Item_ID",
-                        column: x => x.Stock_Item_ID,
+                        name: "FK_Write_Offs_Stock_Items_Stock_Item_ID1",
+                        column: x => x.Stock_Item_ID1,
                         principalTable: "Stock_Items",
                         principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Write_Off_Line_Items_Write_Offs_Write_Off_ID",
-                        column: x => x.Write_Off_ID,
-                        principalTable: "Write_Offs",
-                        principalColumn: "Write_Off_ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -795,6 +730,33 @@ namespace IPKP___API.Migrations
                         column: x => x.Invoice_ID,
                         principalTable: "Invoices",
                         principalColumn: "Invoice_ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Write_Off_Line_Items",
+                columns: table => new
+                {
+                    Write_Off_Line_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Write_Off_Quantity = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Write_Off_Reason = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Write_Off_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Write_Off_Line_Items", x => x.Write_Off_Line_Item_ID);
+                    table.ForeignKey(
+                        name: "FK_Write_Off_Line_Items_Stock_Items_Stock_Item_ID",
+                        column: x => x.Stock_Item_ID,
+                        principalTable: "Stock_Items",
+                        principalColumn: "Stock_Item_ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Write_Off_Line_Items_Write_Offs_Write_Off_ID",
+                        column: x => x.Write_Off_ID,
+                        principalTable: "Write_Offs",
+                        principalColumn: "Write_Off_ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1078,16 +1040,6 @@ namespace IPKP___API.Migrations
                 column: "Customer_ID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inventory_Line_Items_Inventory_ID1",
-                table: "Inventory_Line_Items",
-                column: "Inventory_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Inventory_Line_Items_Stock_Item_ID1",
-                table: "Inventory_Line_Items",
-                column: "Stock_Item_ID1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Invoice_Discount_Discount_ID",
                 table: "Invoice_Discount",
                 column: "Discount_ID");
@@ -1203,9 +1155,9 @@ namespace IPKP___API.Migrations
                 column: "Write_Off_ID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Write_Offs_Inventory_ID1",
+                name: "IX_Write_Offs_Stock_Item_ID1",
                 table: "Write_Offs",
-                column: "Inventory_ID1");
+                column: "Stock_Item_ID1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -1245,9 +1197,6 @@ namespace IPKP___API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Images");
-
-            migrationBuilder.DropTable(
-                name: "Inventory_Line_Items");
 
             migrationBuilder.DropTable(
                 name: "Orders");
@@ -1313,9 +1262,6 @@ namespace IPKP___API.Migrations
                 name: "Permissions");
 
             migrationBuilder.DropTable(
-                name: "Stock_Items");
-
-            migrationBuilder.DropTable(
                 name: "Write_Offs");
 
             migrationBuilder.DropTable(
@@ -1331,6 +1277,15 @@ namespace IPKP___API.Migrations
                 name: "Customers");
 
             migrationBuilder.DropTable(
+                name: "Stock_Items");
+
+            migrationBuilder.DropTable(
+                name: "Invoice_Discount");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "Stock_Images");
 
             migrationBuilder.DropTable(
@@ -1338,15 +1293,6 @@ namespace IPKP___API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Stock_Types");
-
-            migrationBuilder.DropTable(
-                name: "Inventories");
-
-            migrationBuilder.DropTable(
-                name: "Invoice_Discount");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Discounts");

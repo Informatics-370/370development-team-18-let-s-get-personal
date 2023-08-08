@@ -78,7 +78,7 @@ namespace IPKP___API.Controllers
                 }
                 catch
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                    return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
 
                 }
             }

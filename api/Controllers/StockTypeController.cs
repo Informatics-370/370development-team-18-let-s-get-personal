@@ -33,7 +33,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
@@ -56,27 +56,27 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
 
         [HttpPost]
         [Route("AddStockType")]
         public async Task<IActionResult> AddStockTypeAsync(Stock_Type stvm)
-        {
-            var stock_Type = new Stock_Type
-            {
-                Stock_Type_ID = new Guid(),
-                Stock_Type_Name = stvm.Stock_Type_Name
-            };
+        {            
             try
             {
+                var stock_Type = new Stock_Type
+                {
+                    Stock_Type_ID = new Guid(),
+                    Stock_Type_Name = stvm.Stock_Type_Name
+                };
                 _IPKPRepository.Add(stock_Type);
                 await _IPKPRepository.SaveChangesAsync();
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Stock Type Added To Database." });
         }
@@ -100,7 +100,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Stock Type Saved To Database." });
         }
@@ -129,7 +129,7 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Stock Type Removed From Database." });
         }

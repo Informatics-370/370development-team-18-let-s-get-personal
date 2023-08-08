@@ -11,6 +11,7 @@ namespace IPKP___API.Controllers.Models.Repository
         void Add<T>(T entity) where T : class;
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
+        void Update<T>(T entity) where T : class;
         Task<Employee> GetEmployeeDetailsAsync(Guid employee_ID);
         Task<Employee[]> GetAllEmployeesAsync();
         Task<Customer> GetCustomerDetailsAsync(Guid customer_ID);
@@ -55,9 +56,9 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Discount> GetDiscountAsync(Guid discount_Id);
         Task<Refund[]> GetAllPreviousRefunds();
         Task<Refund> GetPreviousRefund(Guid refund_Id);
-        Task<Inventory_Line_Item[]> GetAllInventoryAsync();
         Task<User> GetUser(string username);
         object GetStockNames();
+        object GetStockItemByID(Guid StockItemID);
 
   }
 }
