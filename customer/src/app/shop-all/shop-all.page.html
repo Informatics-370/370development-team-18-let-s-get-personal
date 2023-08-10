@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-title > Shop All </ion-title>
+      <ion-title> Shop All </ion-title>
       <ion-button (click)="clothing()"> Let's Get Dressed </ion-button>
       <ion-button (click)="drinking()"> Let's Get Drinking </ion-button>
       <ion-button (click)="stationary()"> Let's Get Working </ion-button>
@@ -15,19 +15,38 @@
       <ion-title size="large">Shop</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-card *ngFor="let item of Products " > <!-- if items < 3 -->
-    <ion-card-title>{{item.stock_Item_Name}}</ion-card-title>
-    <ion-card-content>
-      <img src='data:image/png;base64,{{item.stockImageFile}}'>
-      <p>{{item.stockColourName}}</p>
-      <p>{{item.stock_Item_Size}}</p>
-      <p>R: {{item.stock_Item_Price}}</p>
-    </ion-card-content>
-    <ion-button (click)="addToBasket(item.stock_Item_ID)">Add To Basket</ion-button>
-  </ion-card>
- 
-  <ion-grid ><!-- id="grid" -->
+  <ion-grid id="grid">
+  
+    <!--dummy data-->
+    <!--<ion-row>
+      <ion-col *ngFor="let item of dummy_data">
+        <ion-card>
+          <ion-card-title>{{item.title}}</ion-card-title>
+          <ion-card-content>
+            <ion-img src={{item.image_url}}></ion-img>
+            <p>{{item.colour}}</p>
+            <p>R: {{item.price}}</p>
+          </ion-card-content> <ion-button (click)="addToBasket(item)">Add To Basket</ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>-->
+    
+  <!--Database (API)-->
 
+    <ion-row>
+      <ion-col *ngFor="let item of stockItems">
+        <ion-card>
+          <ion-card-title>{{item.stock_Item_Name}}</ion-card-title>
+          <ion-card-content>
+            <ion-img src={{item.stock_Images.stock_Image_File}}></ion-img>
+            <p>{{item.stock_Item_Colour.stock_Item_Colour_Name}}</p>
+            <p>R: {{item.stock_Item_Price}}</p>
+          </ion-card-content> <ion-button (click)="addToBasket(item)">Add To Basket</ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  
   </ion-grid>
-  <ion-button (click)="Basket()" color="success" style="position: relative;">Basket<ion-icon slot="end" name="star"></ion-icon></ion-button>
+  <ion-button (click)="Basket()" color="success" style="position: relative;">Basket<ion-icon slot="end"
+      name="star"></ion-icon></ion-button>
 </ion-content>

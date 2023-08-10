@@ -22,8 +22,18 @@ import { OverlayEventDetail } from '@ionic/core/components';
 export class DiscountsPage implements OnInit {
 
   filterTerm: string = "";
-  filtereddiscounts:Discount[] = [];
-  discounts: Discount[] =[]
+  //===================
+  discounts:any=Discount;
+  filteredDiscount:Discount[]=[];
+
+  updateSearchResults() {
+    this.filteredDiscount = this.discounts.filter((discount: { discount_Name: string; }) =>
+     this.discounts.discount_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
+  }
+
+  //======================
+  //filtereddiscounts:  Discount[] = [];
+  //discounts: Discount[] =[]
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DiscountService, private thisroute: Router, public modalCtrl: ModalController,
     private alertController:AlertController ) { }
@@ -36,13 +46,13 @@ export class DiscountsPage implements OnInit {
   })
 
   ngOnInit(): void {
-    this.getDiscounts();
+   /* this.getDiscounts();
     if(this.filterTerm==""){
       this.filtereddiscounts = this.discounts;
-    }
+    }*/
   }
 
- search(){
+ /* search(){
     //empty array
     this.filtereddiscounts = [];
 
@@ -53,7 +63,7 @@ export class DiscountsPage implements OnInit {
       searchitem.discount_Name.toLocaleLowerCase().includes(this.filterTerm.toLocaleLowerCase())||
       searchitem.discount_Amount == Number(this.filterTerm)
     );
-   }
+   }*/
 
   getDiscounts(){
     this.service.GetAllDiscounts().subscribe(result =>{
@@ -81,7 +91,7 @@ export class DiscountsPage implements OnInit {
     })
   }
 
-  EditDiscount(discount_ID:number)
+  EditDiscount(discount_ID:Number)
   {
     this.thisroute.navigate(['/edit-discounts', discount_ID ]);
   }
