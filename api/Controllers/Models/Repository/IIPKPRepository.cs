@@ -6,8 +6,8 @@ using IPKP___API.Controllers.Models.Entities;
 
 namespace IPKP___API.Controllers.Models.Repository
 {
-  public interface IIPKPRepository
-  {
+    public interface IIPKPRepository
+    {
         void Add<T>(T entity) where T : class;
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
@@ -45,8 +45,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Order> GetOrderDetailsAsync(Guid order_ID);
         Task<Order_Request> GetOrderRequestAsync(Guid order_Request_ID);
         Task<Order_Request[]> GetAllOrderRequestsAsync();
-        Task<Order_Status[]> GetAllOrderStatusesAsync();
-        Task<Order_Status> GetOrderStatusByNameAsync(string orderStatus);
+
         Task<Experience_Rating[]> GetAllExperienceRatings();
         Task<Experience_Rating> GetExperienceRatingAsync(Guid Experience_Rating_ID);
         Task<Refund_Policy> GetPolicyAsync(Guid Refund_Policy_Id);
@@ -58,7 +57,12 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Refund> GetPreviousRefund(Guid refund_Id);
         Task<User> GetUser(string username);
         object GetStockNames();
-        object GetStockItemByID(Guid StockItemID);
+        //object GetStockItemByID(Guid StockItemID);
+        Task<Image_Price> GetImagePriceByID(Guid image_Price_ID);
+        Task<Image_Price[]> GetAllImagePrices();
+        Task<Text_Price> GetTextPriceByID(Guid text_Price_ID);
+        Task<Text_Price[]> GetAllTextPrices();
 
-  }
+
+    }
 }

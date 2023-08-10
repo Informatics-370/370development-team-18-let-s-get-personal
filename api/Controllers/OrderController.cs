@@ -50,24 +50,24 @@ namespace IPKP___API.Controllers
               }
         }
 
-        [HttpGet]
-        [Route("GetAllOrderStatuses")]
-        public async Task<IActionResult> GetAllOrderStatusesAsync()
-        {
-              try
-              {
-                var results = await _IPKPRepository.GetAllOrderStatusesAsync();
-                if (results == null)
-                {
-                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Order" });
-                }
-                return Ok(results);
-              }
-              catch (Exception)
-              {
-                    return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-              }
-        }
+        //[HttpGet]
+        //[Route("GetAllOrderStatuses")]
+        //public async Task<IActionResult> GetAllOrderStatusesAsync()
+        //{
+        //      try
+        //      {
+        //        var results = await _IPKPRepository.GetAllOrderStatusesAsync();
+        //        if (results == null)
+        //        {
+        //            return NotFound(new Response { Status = "Error", Message = "Could Not Find Order" });
+        //        }
+        //        return Ok(results);
+        //      }
+        //      catch (Exception)
+        //      {
+        //            return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+        //      }
+        //}
 
         [HttpPatch]
         [Route("ProcessOrder/{order_ID}")]
@@ -75,13 +75,13 @@ namespace IPKP___API.Controllers
         {
               try
               {
-                var status = await _IPKPRepository.GetOrderStatusByNameAsync("In Progress");
+                //var status = await _IPKPRepository.GetOrderStatusByNameAsync("In Progress");
                 var existingOrder = await _IPKPRepository.GetOrderDetailsAsync(order_ID);
                 if (existingOrder == null)
                 {
                     return NotFound(new Response { Status = "Error", Message = "Could Not Find Order" });
                 }
-                existingOrder.Order_Status = status;
+                //existingOrder.Order_Status = status;
                 return Ok(new Response { Status = "Success", Message = "Order processing..." });
               }
               catch (Exception)
@@ -96,12 +96,12 @@ namespace IPKP___API.Controllers
         {
           try
           {
-                var status = await _IPKPRepository.GetOrderStatusByNameAsync("Complete");
+                //var status = await _IPKPRepository.GetOrderStatusByNameAsync("Complete");
                 var existingOrder = await _IPKPRepository.GetOrderDetailsAsync(order_ID);
 
                 if (existingOrder == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Order" });
 
-                existingOrder.Order_Status = status;
+                //existingOrder.Order_Status = status;
                 return Ok(new Response { Status = "Success", Message = "Order complete..." });
           }
           catch (Exception)

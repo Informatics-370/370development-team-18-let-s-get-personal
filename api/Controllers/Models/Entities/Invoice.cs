@@ -7,17 +7,29 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class Invoice
-  {
+    public class Invoice
+    {
         [Key]
         public Guid Invoice_ID { get; set; }
+
+        //foreign keys
+        [ForeignKey(nameof(Order_ID))]
+        public Guid Order_ID { get; set; }
+        public Order Order { get; set; }
+
+        [ForeignKey(nameof(Payment_ID))]
+        public Guid Payment_ID { get; set; }
+        public Payment Payment { get; set; }
+
+        [ForeignKey(nameof(Invoice_Discount_ID))]
+        public Guid Invoice_Discount_ID { get; set; }
         public virtual Invoice_Discount Invoice_Discount { get; set; }
+
         public double Delivery_Price { get; set; }
         public double Invoice_Total_exclVAT { get; set; }
         public double Invoice_Total_VAT { get; set; }
         public double Invoice_Total_inclVAT { get; set; }
 
-        [InverseProperty("Invoice")]
-        public virtual ICollection<Order_Request> Order_Request { get; set; }
+        //public virtual ICollection<Invoice> Invoice { get; set; }
     }
 }

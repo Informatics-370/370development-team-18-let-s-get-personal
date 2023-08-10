@@ -16,5 +16,7 @@ namespace IPKP___API.Controllers.Models.Entities
         public double Discount_Amount { get; set; }
         public DateTime Effective_From_Date { get; set; }
         public DateTime Effective_To_Date { get; set; }
-  }
+
+        public virtual ICollection<Invoice_Discount> Invoice_Discount { get; set; }
+    }
 }

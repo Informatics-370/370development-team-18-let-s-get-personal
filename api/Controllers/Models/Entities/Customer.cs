@@ -32,16 +32,9 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public User User { get; set; }
 
-        //public virtual ICollection<User> User { get; set; }
-
-        //FK basket
-        //public Guid Basket_ID { get; set; }
-        //public Basket Basket { get; set; }
         public virtual ICollection<Basket> Basket { get; set; }
 
-        //FK Order request
-        //public Guid Order_Request_ID { get; set; }
-        //public Order_Request Order_Request { get; set; }
+
         public virtual ICollection<Order_Request> Order_Request { get; set; }
         
     }
@@ -52,12 +45,20 @@ namespace IPKP___API.Controllers.Models.Entities
 //    Order_Request = new HashSet<Order_Request>();
 //}
 
+//public virtual ICollection<User> User { get; set; }
+
+//FK basket
+//public Guid Basket_ID { get; set; }
+//public Basket Basket { get; set; }
+
 //foreign key Title
 
 //public Guid? Title_ID { get; set; }        
 //public virtual Title Title { get; set; }
 
-
+//FK Order request
+//public Guid Order_Request_ID { get; set; }
+//public Order_Request Order_Request { get; set; }
 
 //inverse properties
 

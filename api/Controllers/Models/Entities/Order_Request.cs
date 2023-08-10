@@ -16,15 +16,21 @@ namespace IPKP___API.Controllers.Models.Entities
         public bool IsAccepted { get; set; }
 
         //cutsomer fk
+        [ForeignKey(nameof(Customer_ID))]
         public Guid? Customer_ID { get; set; }
+
+        [ForeignKey(nameof(Delivery_Address_ID))]
+        public Guid Delivery_Address_ID { get; set; }
+
+
+        //fk entities
         public virtual Customer Customer { get; set; }
-
-        //invoice fk
-        public Guid? Invoice_ID { get; set; }
-        public virtual Invoice Invoice { get; set; }
-
-        //invoice fk
-        public Guid? Delivery_Address_ID { get; set; }
         public virtual Delivery_Address Delivery_Address { get; set; }
+
+        public virtual ICollection<Order_Line_Item> Order_Line_Item { get; set; }
     }
 }
+
+//invoice fk
+//public Guid? Invoice_ID { get; set; }
+//public virtual Invoice Invoice { get; set; }

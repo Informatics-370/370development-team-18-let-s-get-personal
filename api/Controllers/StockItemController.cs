@@ -82,9 +82,9 @@ namespace IPKP___API.Controllers
         {
             try
             {
+                
                 var results = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
-                //var results = _IPKPRepository.GetStockItemByID(stock_Item_ID);
-
+               
                 if (results == null)
                 {
                     return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });

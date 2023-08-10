@@ -16,42 +16,28 @@ namespace IPKP___API.Controllers
   {
 
         private readonly IIPKPRepository _IPKPRepository;
-        public Basket_Order_Request newRequestDetails = new Basket_Order_Request();
         public OrderRequestController(IIPKPRepository iPKPRepository)
         {
           _IPKPRepository = iPKPRepository;
         }
-        public class Basket_Order_Request
-        {
-          public string StockItemName { get; set; }
-          public string StockItemType { get; set; }
-          public string StockItemColour { get; set; }
-          public string StockItemSize { get; set; }
-          public Personalisation_Design PersonalisationDesign { get; set; }
-          public int StockItemQuantity {get; set;}
-        }
 
         [HttpPost]
         [Route("AddOrderRequest")]
-        public async Task<IActionResult> AddOrderRequestAsync(Basket_Order_Request orderRequest)
+        public async Task<IActionResult> AddOrderRequestAsync(OrderRequestVM orderRequest)
         {
-                //Customer currentUser;
-              var newOrderRequest = new Order_Request
-              {
-                //Customer = currentUser,
-                Order_Request_Date = DateTime.Today,
-                IsAccepted = false
-              };
-
-              newRequestDetails.StockItemName = orderRequest.StockItemName;
-              newRequestDetails.StockItemType = orderRequest.StockItemType;
-              newRequestDetails.StockItemColour = orderRequest.StockItemColour;
-              newRequestDetails.StockItemSize = orderRequest.StockItemSize;
-              newRequestDetails.PersonalisationDesign = orderRequest.PersonalisationDesign;
-              newRequestDetails.StockItemQuantity = orderRequest.StockItemQuantity;
-
             try
             {
+                //Customer currentUser;
+                var newOrderRequest = new Order_Request
+                {
+                    //new guid
+                    //Customer id = currentUser,
+                    //StockItemName = orderRequest.StockItemName,
+                    //StockItemType = orderRequest.StockItemType,
+                    Order_Request_Date = DateTime.Today,
+                    IsAccepted = false
+                };
+           
                 _IPKPRepository.Add(newOrderRequest);
                 await _IPKPRepository.SaveChangesAsync();
             }
@@ -108,13 +94,13 @@ namespace IPKP___API.Controllers
                 if (existingOrderRequest == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Order Request" + order_Request_ID });
 
                 existingOrderRequest.IsAccepted = true;
-                var results = await _IPKPRepository.GetStockItemByName(newRequestDetails.StockItemName);
+                //var results = await _IPKPRepository.GetStockItemByName(newRequestDetails.StockItemName);
                 var newOrderLineItem = new Order_Line_Item
                 {
                   Order_Request = existingOrderRequest,
-                  Stock_Item = results,
-                  Personalisation_Design = newRequestDetails.PersonalisationDesign,
-                  Order_Line_Item_Quantity = newRequestDetails.StockItemQuantity
+                  //Stock_Item = results,
+                  //Personalisation_Design = newRequestDetails.PersonalisationDesign,
+                  //Order_Line_Item_Quantity = newRequestDetails.StockItemQuantity
                 };
                 _IPKPRepository.Delete(existingOrderRequest);
 

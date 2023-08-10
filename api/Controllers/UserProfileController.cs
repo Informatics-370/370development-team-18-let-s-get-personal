@@ -62,6 +62,21 @@ namespace IPKP___API.Controllers
 
         //*************** Customers ***************\\
         [HttpGet]
+        [Route("GetAllUsers")]
+        public async Task<IActionResult> GetAllCustomersAsync()
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetAllCustomersAsync();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+            }
+        }
+
+        [HttpGet]
         [Route("GetCustomerUserProfile")]
         public async Task<IActionResult> GetCustomerUserProfileDetailsAsync(Guid customer_ID)
         {

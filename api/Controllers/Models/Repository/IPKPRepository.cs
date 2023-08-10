@@ -126,11 +126,11 @@ namespace IPKP___API.Controllers.Models.Repository
           return await query.ToArrayAsync();
         }
 
-        public async Task<Order_Status[]> GetAllOrderStatusesAsync()
-        {
-          IQueryable<Order_Status> query = _appDbContext.Order_Statuses;
-          return await query.ToArrayAsync();
-        }
+        //public async Task<Order_Status[]> GetAllOrderStatusesAsync()
+        //{
+        //  IQueryable<Order_Status> query = _appDbContext.Order_Statuses;
+        //  return await query.ToArrayAsync();
+        //}
         public async Task<Order> GetOrderDetailsAsync(Guid order_ID)
         {
             IQueryable<Order> query = _appDbContext.Orders
@@ -144,12 +144,12 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Order_Status> GetOrderStatusByNameAsync(string orderStatus)
-        {
-            IQueryable<Order_Status> query = _appDbContext.Order_Statuses
-              .Where(u => u.Order_Status_Description == orderStatus);
-            return await query.FirstOrDefaultAsync();
-        }
+        //public async Task<Order_Status> GetOrderStatusByNameAsync(string orderStatus)
+        //{
+        //    IQueryable<Order_Status> query = _appDbContext.Order_Statuses
+        //      .Where(u => u.Order_Status_Description == orderStatus);
+        //    return await query.FirstOrDefaultAsync();
+        //}
 
         //personalisation
         public async Task<Personalisation_Design> GetPersonalisationAsync(Guid personalisation_ID)
@@ -310,11 +310,35 @@ namespace IPKP___API.Controllers.Models.Repository
                 .FirstOrDefaultAsync(x => x.Username == username);
         }
 
-        //public async Task<Stock_Item[]> GetAllStockItemsToList()
-        //{
-        //    IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
-        //    return await query.ToListAsync();
-        //}
+        //image price
+        public async Task<Image_Price> GetImagePriceByID(Guid image_Price_ID)
+        {
+            IQueryable<Image_Price> query = _appDbContext.Image_Price
+                    .Where(u => u.Image_Price_ID == image_Price_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Image_Price[]> GetAllImagePrices()
+        {
+            IQueryable<Image_Price> query = _appDbContext.Image_Price;
+            return await query.ToArrayAsync();
+        }
+
+        //image price
+
+        public async Task<Text_Price> GetTextPriceByID(Guid text_Price_ID)
+        {
+            IQueryable<Text_Price> query = _appDbContext.Text_Price
+                    .Where(u => u.Text_Price_ID == text_Price_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Text_Price[]> GetAllTextPrices()
+        {
+            IQueryable<Text_Price> query = _appDbContext.Text_Price;
+            return await query.ToArrayAsync();
+        }
+
 
         public object GetStockNames()
         {
@@ -348,42 +372,16 @@ namespace IPKP___API.Controllers.Models.Repository
             return stockitems;
         }
 
-        public object GetStockItemByID(Guid StockItemID)
-        {
-            //var stockitem = _appDbContext.Stock_Items.Where(x => x.Stock_Item_ID == StockItemID).FirstOrDefault();
+        //public object GetStockItemByID(Guid stock_Item_ID)
+        //{
+        //    //var stockitem = _appDbContext.Stock_Items.Where(x => x.Stock_Item_ID == StockItemID).FirstOrDefault();
+        //    //var results = _IPKPRepository.GetStockItemByID(stock_Item_ID);
+        //    //List<Stock_Item> list = new List<Stock_Item>();
+        //    //List<StockItemViewModel> vmlist = list
+        //    //    .Where(x => x.Stock_Item_ID == stock_Item_ID)
+        //}
+ 
 
-            List<StockItemViewModel> stockitems = (
-                from s in _appDbContext.Stock_Items.ToList()
-                join c in _appDbContext.Stock_Item_Colours.ToList()
-                on s.Stock_Item_Colour_ID equals c.Stock_Item_Colour_ID
-                join t in _appDbContext.Stock_Types.ToList()
-                on s.Stock_Type_ID equals t.Stock_Type_ID
-                join i in _appDbContext.Stock_Images.ToList()
-                on s.Stock_Image_ID equals i.Stock_Image_ID
-
-                select new StockItemViewModel
-                {
-                    Stock_Item_ID = s.Stock_Item_ID,
-                    Stock_Item_Name = s.Stock_Item_Name,
-                    Stock_Item_Price = s.Stock_Item_Price,
-                    Stock_Item_Size = s.Stock_Item_Size,
-                    Inventory_Comments = s.Inventory_Comments,
-                    Inventory_Date = s.Inventory_Date,
-                    Stock_Item_Quantity = s.Stock_Item_Quantity,
-
-                    Stock_Item_Colour_ID = c.Stock_Item_Colour_ID,
-                    StockColourName = c.Stock_Item_Colour_Name,
-
-                    Stock_Type_ID = t.Stock_Type_ID,
-                    StockTypeName = t.Stock_Type_Name,
-
-                    Stock_Image_ID = i.Stock_Image_ID,
-                    StockImageName = i.Stock_Image_Name,
-                    StockImageFile = i.Stock_Image_File,
-                }
-                ).ToList();
-            return stockitems;
-        }
 
     }
 }
