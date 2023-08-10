@@ -27,7 +27,7 @@ export class ShopAllPage implements OnInit {
      private service:StockItemDataService) { }
 
      //Data for testing
-      dummy_data = [{
+     /* dummy_data = [{
       id: 0, title: "Plain T-shirt", colour: "White",
       image_url: "https://supremetextiles.co.za/761-large_default/adult-plain-round-neck-t-shirt-white.jpg", price: 90,
       quantity: 0
@@ -47,7 +47,7 @@ export class ShopAllPage implements OnInit {
       image_url: "https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/Search/676/K62163.jpg", price: 350,
       quantity: 0
     }
-    ];
+    ];*/
 
   ngOnInit() {
     this.GetStockItems();
@@ -74,7 +74,7 @@ export class ShopAllPage implements OnInit {
     this._router.navigate(["/tabs/basket"])
   }
 
-  addToBasket(dummy_data:any):void{
+  /*addToBasket(dummy_data:any):void{
 
     let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
     let existingItem = cartItems.find((cartItem:any) => cartItem.id === dummy_data.id);
@@ -87,9 +87,9 @@ export class ShopAllPage implements OnInit {
     }
     localStorage.setItem('cart',JSON.stringify(cartItems));
     this.addToBasketSuccessAlert();
-  }
+  }*/
 
-  /*addToBasket(stockItems:any):void{
+  addToBasket(stockItems:any):void{
 
     let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
     let existingItem = cartItems.find((cartItem:any) => cartItem.id === stockItems.stock_Item_ID);
@@ -102,7 +102,7 @@ export class ShopAllPage implements OnInit {
     }
     localStorage.setItem('cart',JSON.stringify(cartItems));
     this.addToBasketSuccessAlert();
-  }*/
+  }
 
   reloadPage(){
     window.location.reload()

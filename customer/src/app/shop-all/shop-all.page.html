@@ -18,7 +18,7 @@
   <ion-grid id="grid">
   
     <!--dummy data-->
-    <ion-row>
+    <!--<ion-row>
       <ion-col *ngFor="let item of dummy_data">
         <ion-card>
           <ion-card-title>{{item.title}}</ion-card-title>
@@ -29,10 +29,10 @@
           </ion-card-content> <ion-button (click)="addToBasket(item)">Add To Basket</ion-button>
         </ion-card>
       </ion-col>
-    </ion-row>
+    </ion-row>-->
     
   <!--Database (API)-->
-<!--
+
     <ion-row>
       <ion-col *ngFor="let item of stockItems">
         <ion-card>
@@ -45,7 +45,7 @@
         </ion-card>
       </ion-col>
     </ion-row>
-  -->
+  
   </ion-grid>
   <ion-button (click)="Basket()" color="success" style="position: relative;">Basket<ion-icon slot="end"
       name="star"></ion-icon></ion-button>
