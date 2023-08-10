@@ -2,7 +2,7 @@ import { Customer } from "./customer";
 import { Invoice } from "./invoice";
 import { DeliveryAddress } from "./deliveryaddress";
 export class Order_Request{
-    order_Request_ID!: string
+    order_Request_ID!: number
     order_Request_Date!: Date
     order_Request_Total_Price!: Number
     isAccepted!: Boolean

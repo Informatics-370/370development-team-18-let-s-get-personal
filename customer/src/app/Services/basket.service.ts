@@ -25,7 +25,7 @@ export class BasketService {
   constructor(private httpClient: HttpClient) {
     this.basketItemList = JSON.parse(localStorage.getItem('basket')!);
   }
-  public GetBasketFromAPI(Customer_ID:string){ 
+  public GetBasketFromAPI(Customer_ID:number){ 
     return this.httpClient.get<Response>(`${this.apiUrl}Basket/GetBasketInfo/${Customer_ID}`)
     .pipe(map(result => result))    
   }  
@@ -45,12 +45,6 @@ export class BasketService {
   public getCurrentBasket() {    
       return this.cartitems;    
   }
-
-  public GetBasket(Customer_ID:Number){ 
-    return this.httpClient.get(`${this.apiUrl}Basket/GetBasketInfo/${Customer_ID}`)
-    .pipe(map(result => result))    
-  }
-  
 
   public addProductToBasket(stockItem: Stock_Item, newQuantity: number) {
     const basketItem = new BasketItems();

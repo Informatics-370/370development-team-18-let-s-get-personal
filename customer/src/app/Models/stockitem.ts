@@ -4,12 +4,15 @@ import { Stock_Image } from "./stockimage"
 import { StockTypes } from "./stocktypes"
 import { Best_Sellers } from "./bestsellers"
 import { BasketItems } from "./basket"
-import { Inventory_Line_Item } from "./inventorylineitem"
 import { StockPriceHistory } from "./stockpricehistory"
 export class  Stock_Item{
-    stock_Item_ID!: string
+    stock_Item_ID!: number
     stock_Item_Name!: String 
     stock_Item_Price!: Number
+    stock_Item_Size!: string
+    inventory_Date!: Date
+    inventory_Comments!: String 
+    stock_Item_Quantity!: number
 
     stock_Type_ID!: string
     stock_Types!: StockTypes
@@ -24,6 +27,5 @@ export class  Stock_Item{
     BestSellers!:Best_Sellers
     Basket!:BasketItems
     productrating!: ProductRating
-    Inventory_Line_Item!:Inventory_Line_Item
     Stock_Price_History!:StockPriceHistory
 }

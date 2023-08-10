@@ -8,7 +8,9 @@ import { BasketItems } from '../Models/basket';
 import { Subject } from 'rxjs';
 import { BasketService } from '../Services/basket.service';
 import { StockItemDataService } from '../Services/stockitem.service';
+import { BestsellersService } from 'src/app/Services/bestsellers.service';
 
+import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 @Component({
   selector: 'app-shop-all',
   templateUrl: './shop-all.page.html',

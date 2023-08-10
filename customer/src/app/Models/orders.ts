@@ -3,7 +3,7 @@ import { Order_Status } from "./orderstatus"
 
 export class Order{
 
-    orderId!: string
+    orderId!: number
 
     order_Request!: Order_Request
     order_Status!: Order_Status

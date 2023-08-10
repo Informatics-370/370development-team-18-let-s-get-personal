@@ -58,7 +58,7 @@ namespace IPKP___API.Controllers
                     Stock_Item_Name = sivm.Stock_Item_Name,
                     Stock_Item_Price = sivm.Stock_Item_Price,
                     Stock_Item_Size = sivm.Stock_Item_Size,
-                    Inventory_Date = new DateTime(),
+                    Inventory_Date = DateTime.Today,
                     Inventory_Comments = sivm.Inventory_Comments,
                     Stock_Item_Quantity = sivm.Stock_Item_Quantity,
                     Stock_Type_ID = sivm.Stock_Type_ID,

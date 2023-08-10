@@ -32,16 +32,16 @@ export class DeliveryDataService {
     .pipe(map(result => result))
   }
   
-  public GetDelivery(deliveryId:string){ 
+  public GetDelivery(deliveryId:number){ 
     return this.httpClient.get(`${this.apiUrl}Deliveries/GetDelivery/${deliveryId}`)
     .pipe(map(result => result))
   }
     
-  public UpdateDelivery(deliveryId:string, delivery:Delivery){
+  public UpdateDelivery(deliveryId:number, delivery:Delivery){
     return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/UpdateDelivery/${deliveryId}`, delivery)
   }
   
-  public ReceiveDelivery(deliveryId:string){
+  public ReceiveDelivery(deliveryId:number){
     return this.httpClient.delete<Response>(`${this.apiUrl}Deliveries/ReceiveDelivery/${deliveryId}`)
   }
 
@@ -56,16 +56,16 @@ export class DeliveryDataService {
     .pipe(map(result => result))
   }
   
-  public GetDeliveryCompany(deliveryCompanyId:string){ 
+  public GetDeliveryCompany(deliveryCompanyId:number){ 
     return this.httpClient.get(`${this.apiUrl}Deliveries/GetDeliveryCompany/${deliveryCompanyId}`)
     .pipe(map(result => result))
   }
   
-  public UpdateDeliveryCompany(deliveryCompanyId:string, deliveryCompany:Delivery_Company){
+  public UpdateDeliveryCompany(deliveryCompanyId:number, deliveryCompany:Delivery_Company){
     return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/UpdateDeliveryCompany/${deliveryCompanyId}`, deliveryCompany)
   }
 
-  public DeleteDeliveryCompany(deliveryCompanyId:string){
+  public DeleteDeliveryCompany(deliveryCompanyId:number){
     return this.httpClient.delete<Response>(`${this.apiUrl}Deliveries/DeleteDeliveryCompany/${deliveryCompanyId}`)
   }
   

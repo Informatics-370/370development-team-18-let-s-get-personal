@@ -6,6 +6,7 @@ import jwt_decode from 'jwt-decode';
 import { Response } from '../Models/response';
 import { Customer } from '../Models/customer';
 import { ForgotPasswordViewModel } from '../ViewModels/forgotPasswordVM';
+import { RegisterVM } from '../ViewModels/registerVM';
 @Injectable({
   providedIn: 'root'
 })
@@ -39,8 +40,8 @@ export class AuthenticationService {
     };
     return this.httpClient.post<Response>(`${this.apiUrl}Authenticate/login`, loginCredentials)
     .pipe(tap(res => {
-      res.status == "Success";
       this.islogged = true;
+      console.log(this.islogged);
       let token = this.getDecodedAccessToken(JSON.stringify(res));
       let roleLongName = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';  // TODO: Change to 'role' when using Azure AD 
       let nameLongName = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
@@ -58,7 +59,7 @@ export class AuthenticationService {
     return this.currentUser.asObservable();
   }
 
-  async Logout() {
+  public Logout() {
     localStorage.removeItem('token');
     this.currentUser.next(false);
     this.router.navigateByUrl('/login', {replaceUrl: true});
@@ -78,8 +79,17 @@ export class AuthenticationService {
     return false;
   }
 
-  public CreateProfile(customer: Customer){
-    return this.httpClient.post(`${this.apiUrl}Authenticate/register`, customer, this.httpOptions)
+  //*** Registering ***//
+  public RegisterCustomer(customer: RegisterVM){
+    return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterCustomer`, customer, this.httpOptions)
+  }
+
+  public RegisterAdmin(admin: RegisterVM){
+    return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterAdmin`, admin, this.httpOptions)
+  }
+
+  public RegisterEmployee(employee: RegisterVM){
+    return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterEmployee`, employee, this.httpOptions)
   }
 
   public ForgotPassword(forgotpassword: ForgotPasswordViewModel){
