@@ -78,7 +78,7 @@ namespace IPKP___API.Controllers
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok(new Response { Status = "Success", Message = "Stock Type Added To Database." });
+            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid.." });
         }
 
         [HttpPut]
@@ -95,14 +95,14 @@ namespace IPKP___API.Controllers
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {
-                    return Ok(new Response { Status = "Success", Message = "Stock Type Updated Successfully" });
+                    return Ok(existingStockType);
                 }
             }
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok(new Response { Status = "Success", Message = "Stock Type Saved To Database." });
+            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid.." });
         }
 
         [HttpDelete]
@@ -133,5 +133,7 @@ namespace IPKP___API.Controllers
             }
             return Ok(new Response { Status = "Success", Message = "Stock Type Removed From Database." });
         }
+
+
     }
 }

@@ -21,6 +21,7 @@ namespace IPKP___API.Controllers.Models.Entities
         [InverseProperty("Stock_Type")]
         public virtual ICollection<Stock_Item> Stock_Item { get; set; }
 
-        //public virtual ICollection<Inventory> Inventory { get; set; }
+        //public virtual ICollection<Text_Price> Text_Price { get; set; }
+        //public virtual ICollection<Image_Price> Image_Price { get; set; }
     }
 }

@@ -59,6 +59,9 @@ namespace IPKP___API.Controllers.Models.Repository
         public DbSet<Basket> Basket { get; set; }
         public DbSet<Image_Price> Image_Price { get; set; }
         public DbSet<Text_Price> Text_Price {get; set;}
-        
+        public DbSet<Design_Image_Line_Item> Design_Image_Line_Items { get; set; }
+        public DbSet<Delivery_Address> Delivery_Address { get; set; }
+
+        public DbSet<Order_Line_Item> Order_Line_Item { get; set; }
     }
 }

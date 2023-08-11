@@ -84,6 +84,8 @@ export class StockTypesPage implements OnInit {
     });
   }
 
+  
+
   canceladdmodal() {
     this.modal.dismiss(null, 'cancel');
   }

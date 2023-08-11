@@ -22,20 +22,20 @@ namespace IPKP___API.Controllers
             _IPKPRepository = iPKPRepository;
         }
         //*************** Users ***************\\
-        [HttpGet]
-        [Route("GetAllUsers")]
-        public async Task<IActionResult> GetAllUsersAsync()
-        {
-            try
-            {
-                var results = await _IPKPRepository.GetAllUsersAsync();
-                return Ok(results);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-            }
-        }
+        //[HttpGet]
+        //[Route("GetAllUsers")]
+        //public async Task<IActionResult> GetAllUsersAsync()
+        //{
+        //    try
+        //    {
+        //        var results = await _IPKPRepository.GetAllUsersAsync();
+        //        return Ok(results);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+        //    }
+        //}
         [HttpDelete]
         [Route("DeleteUser")]
         public async Task<IActionResult> DeleteUserAsync(Guid user_ID)
@@ -62,7 +62,7 @@ namespace IPKP___API.Controllers
 
         //*************** Customers ***************\\
         [HttpGet]
-        [Route("GetAllUsers")]
+        [Route("GetAllCustomers")]
         public async Task<IActionResult> GetAllCustomersAsync()
         {
             try

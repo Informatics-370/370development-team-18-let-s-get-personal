@@ -22,6 +22,7 @@ namespace IPKP___API.Controllers.Models.Entities
         //[ForeignKey(nameof(Delivery_Address_ID))]
         //public Guid Delivery_Address_ID { get; set; }
 
+        public string Order_Status { get; set; }
 
         public double Order_Line_Item_Price { get; set; }
         public int Order_Line_Item_Quantity { get; set; }

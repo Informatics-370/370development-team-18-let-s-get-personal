@@ -21,9 +21,6 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(255)]
         public string Order_Notes { get; set; }
 
-        public bool Order_Status { get; set; }
-
-
         public virtual ICollection<Invoice> Invoice { get; set; }
     }
 }

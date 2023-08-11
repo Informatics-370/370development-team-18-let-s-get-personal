@@ -56,13 +56,20 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Refund[]> GetAllPreviousRefunds();
         Task<Refund> GetPreviousRefund(Guid refund_Id);
         Task<User> GetUser(string username);
-        object GetStockNames();
-        //object GetStockItemByID(Guid StockItemID);
+        
         Task<Image_Price> GetImagePriceByID(Guid image_Price_ID);
         Task<Image_Price[]> GetAllImagePrices();
         Task<Text_Price> GetTextPriceByID(Guid text_Price_ID);
         Task<Text_Price[]> GetAllTextPrices();
 
-
+        object GetStockNames();
+        object GetStockItemNamesbyID(Guid stockitemID);
+        object GetAllDeliveries();
+        object GetDeliveryBySatus(string status);
+        object GetAllPersonalisedObjects();
+        object GetOrderRequestbyCustomer(Guid customerID);
+        //object GetOrderLineItemByID(Guid orderlineitemID);
+        Task<Order_Line_Item> GetOrderLineItemByID(Guid orderlineitemID);
+        object GetOrderLineItembyStatus(string orderlinestatus);
     }
 }

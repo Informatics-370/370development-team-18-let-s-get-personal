@@ -1,3 +1,4 @@
+using IPKP___API.Controllers.Models.Entities;
 using IPKP___API.Controllers.Models.Repository;
 using IPKP___API.Controllers.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -10,106 +11,184 @@ using System.Threading.Tasks;
 
 namespace IPKP___API.Controllers
 {
-  [Route("api/[controller]")]
-  [ApiController]
-  public class OrderController : ControllerBase
-  {
+    [Route("api/[controller]")]
+    [ApiController]
+
+    public class OrderController : ControllerBase
+    {
         private readonly IIPKPRepository _IPKPRepository;
         public OrderController(IIPKPRepository iPKPRepository)
         {
           _IPKPRepository = iPKPRepository;
         }
-
-        [HttpGet]
-        [Route("GetAllOrders")]
-        public async Task<IActionResult> GetAllOrdersAsync()
+  
+        //add to order line item 
+        [HttpPost]
+        [Route("AddOrderLineItem")]
+        public async Task<IActionResult> AddOrderLineItemAsync(Order_Line_Item oli)
         {
-          try
-          {
-            var results = await _IPKPRepository.GetAllOrdersAsync();
-                return Ok(results);
-          }
-          catch (Exception)
-          {
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-          }
-        }
-
-        [HttpGet]
-        [Route("GetOrder/{order_ID}")]
-        public async Task<IActionResult> GetOrderDetailsAsync(Guid order_ID)
-        {
-              try
-              {
-                    var results = await _IPKPRepository.GetOrderDetailsAsync(order_ID);
-                    return Ok(results);
-              }
-              catch (Exception)
-              {
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-              }
-        }
-
-        //[HttpGet]
-        //[Route("GetAllOrderStatuses")]
-        //public async Task<IActionResult> GetAllOrderStatusesAsync()
-        //{
-        //      try
-        //      {
-        //        var results = await _IPKPRepository.GetAllOrderStatusesAsync();
-        //        if (results == null)
-        //        {
-        //            return NotFound(new Response { Status = "Error", Message = "Could Not Find Order" });
-        //        }
-        //        return Ok(results);
-        //      }
-        //      catch (Exception)
-        //      {
-        //            return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-        //      }
-        //}
-
-        [HttpPatch]
-        [Route("ProcessOrder/{order_ID}")]
-        public async Task<IActionResult> ProcessOrderAsync(Guid order_ID)
-        {
-              try
-              {
-                //var status = await _IPKPRepository.GetOrderStatusByNameAsync("In Progress");
-                var existingOrder = await _IPKPRepository.GetOrderDetailsAsync(order_ID);
-                if (existingOrder == null)
+            try
+            {
+                var orderlineitem = new Order_Line_Item
                 {
-                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Order" });
-                }
-                //existingOrder.Order_Status = status;
-                return Ok(new Response { Status = "Success", Message = "Order processing..." });
-              }
-              catch (Exception)
-              {
+                    Order_Line_Item_ID = new Guid(),
+                    Order_Request_ID = oli.Order_Request_ID,
+                    Personalisation_ID = oli.Personalisation_ID,
+                    Order_Line_Item_Price = oli.Order_Line_Item_Price,
+                    Order_Line_Item_Quantity = oli.Order_Line_Item_Quantity,
+                    Order_Line_Item_Total_Price = oli.Order_Line_Item_Total_Price,
+                    Order_Status = "Requested",
+                };
+
+                _IPKPRepository.Add(orderlineitem);
+                await _IPKPRepository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-              }
+            }
+            return Ok(new Response { Status = "Success", Message = "Order Request Added To Database." });
         }
 
-        [HttpPatch]
-        [Route("CompleteOrder/{order_ID}")]
-        public async Task<IActionResult> CompleteOrderAsync(Guid order_ID)
+
+        //get requested orders 
+        [HttpGet]
+        [Route("GetRequestedOrders")]
+        public object GetRequestedOrders()
+        {           
+            try
+            {
+                string orderStatus = "Requested";
+                var requests = _IPKPRepository.GetOrderLineItembyStatus(orderStatus);
+
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    return Ok(requests);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
+        //get orders in progress
+        [HttpGet]
+        [Route("GetOrdersInProgress")]
+        public object GetOrdersInProgress()
+        {            
+            try
+            {
+                string orderStatus = "Accepted";
+                var requests = _IPKPRepository.GetOrderLineItembyStatus(orderStatus);
+
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    return Ok(requests);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
+        //accept order
+        [HttpPut]
+        [Route("AcceptOrder/{order_Line_Item_ID}")]
+        public async Task<ActionResult<Order_Line_Item>> AcceptOrder(Guid order_Line_Item_ID, OrderLineItemVM orli)
         {
-          try
-          {
-                //var status = await _IPKPRepository.GetOrderStatusByNameAsync("Complete");
-                var existingOrder = await _IPKPRepository.GetOrderDetailsAsync(order_ID);
+            try
+            {
+                var requests = await _IPKPRepository.GetOrderLineItemByID(order_Line_Item_ID);
 
-                if (existingOrder == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Order" });
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    requests.Order_Status = "Accepted";
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(requests);
+                    }
+                    //return Ok(requests);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
 
-                //existingOrder.Order_Status = status;
-                return Ok(new Response { Status = "Success", Message = "Order complete..." });
-          }
-          catch (Exception)
-          {
-            return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-          }
+            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
         }
 
 
-  }
+        //send order to delivery
+        //1. change order line status
+        //2. add new order item 
+        [HttpPut]
+        [Route("ProcessOrder/{order_Line_Item_ID}")]
+        public async Task<ActionResult<Order_Line_Item>> ProcessOrder(Guid order_Line_Item_ID, OrderLineItemVM orli)
+        {
+            try
+            {
+                var requests = await _IPKPRepository.GetOrderLineItemByID(order_Line_Item_ID);
+
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    requests.Order_Status = "Completed";
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(requests);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+
+            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
+        }
+
+        [HttpPost]
+        [Route("AddOrder")]
+        public async Task<IActionResult> AddOrder(Order o)
+        {
+            try
+            {
+                var order = new Order
+                {
+                    Order_ID = new Guid(),
+                    Order_Notes = o.Order_Notes,
+                    Order_Line_Item_ID = o.Order_Line_Item_ID,
+                };
+
+                _IPKPRepository.Add(order);
+                await _IPKPRepository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Order Request Added To Database." });
+        }
+
+
+
+    }
 }

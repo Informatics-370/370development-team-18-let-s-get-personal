@@ -12,22 +12,21 @@
   </ion-header>
   <ion-content id="content">
     <ion-button id="addTypemodal">Add Stock Type</ion-button>
+    
     <ion-grid>
       <ion-row>
         <ion-col style="font-weight: bold;">Stock Type Name</ion-col>
         <ion-col></ion-col>
         <ion-col></ion-col>
       </ion-row>
-      <!--<ion-button router---(UC 2.7)??">Select Best Sellers</ion-button>   -->
-      <!-- <ion-searchbar [(ngModel)]="filterTerm"  (ionInput)="updateSearchResults()"></ion-searchbar> -->
       <ion-row *ngFor="let item of stocktypes">
         <ion-col> {{item.stock_Type_Name}}</ion-col>
         <ion-col><ion-button (click)="getstocktype(item.stock_Type_ID)">Edit</ion-button></ion-col>
         <ion-col><ion-button (click)="deleteStockTypes(item.stock_Type_ID)">Delete</ion-button> </ion-col>          
       </ion-row>
     </ion-grid>
-  </ion-content>
-  
+
+  </ion-content>  
 </ion-content>
 
 <ion-footer> 
@@ -57,4 +56,5 @@
       </ion-content>
     </ng-template>
   </ion-modal>
+
 </ion-footer>

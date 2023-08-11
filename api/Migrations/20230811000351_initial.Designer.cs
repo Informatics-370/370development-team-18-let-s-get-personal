@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPKP___API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230809213023_initial")]
+    [Migration("20230811000351_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -180,8 +180,9 @@ namespace IPKP___API.Migrations
                     b.Property<Guid?>("Delivery_Company_ID1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Delivery_Price")
-                        .HasColumnType("float");
+                    b.Property<string>("Delivery_Status")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("Tracking_Number")
                         .HasColumnType("int");
@@ -210,7 +211,7 @@ namespace IPKP___API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("Country")
+                    b.Property<string>("Dwelling_Type")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -222,9 +223,11 @@ namespace IPKP___API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("StreetNumber")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<int>("StreetNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Unit_Number")
+                        .HasColumnType("int");
 
                     b.HasKey("Delivery_Address_ID");
 
@@ -241,6 +244,9 @@ namespace IPKP___API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<double>("Delivery_Price")
+                        .HasColumnType("float");
+
                     b.HasKey("Delivery_Company_ID");
 
                     b.ToTable("Delivery_Companies");
@@ -251,9 +257,6 @@ namespace IPKP___API.Migrations
                     b.Property<Guid>("Design_Image_ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Design_Image_Size")
-                        .HasColumnType("int");
 
                     b.Property<string>("Image_File")
                         .HasColumnType("nvarchar(max)");
@@ -287,7 +290,7 @@ namespace IPKP___API.Migrations
 
                     b.HasIndex("Image_Price_ID1");
 
-                    b.ToTable("Design_Image_Line_Item");
+                    b.ToTable("Design_Image_Line_Items");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Design_Text", b =>
@@ -299,9 +302,6 @@ namespace IPKP___API.Migrations
                     b.Property<string>("Design_Text_Description")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("Design_Text_Size")
-                        .HasColumnType("int");
 
                     b.Property<Guid>("Text_Price_ID")
                         .HasColumnType("uniqueidentifier");
@@ -408,12 +408,8 @@ namespace IPKP___API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Image_Price_Amount")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("Image_Price_Amount");
-
-                    b.Property<int>("Image_Price_Size")
-                        .HasColumnType("int");
+                    b.Property<double>("Image_Price_Amount")
+                        .HasColumnType("float");
 
                     b.HasKey("Image_Price_ID");
 
@@ -506,9 +502,6 @@ namespace IPKP___API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<bool>("Order_Status")
-                        .HasColumnType("bit");
-
                     b.HasKey("Order_ID");
 
                     b.HasIndex("Order_Line_Item_ID1");
@@ -537,6 +530,9 @@ namespace IPKP___API.Migrations
                     b.Property<Guid?>("Order_Request_ID1")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Order_Status")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("Personalisation_Design_ID")
                         .HasColumnType("uniqueidentifier");
 
@@ -564,17 +560,17 @@ namespace IPKP___API.Migrations
                     b.Property<Guid?>("Customer_ID1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Delivery_Address_ID")
+                    b.Property<Guid>("Delivery_ID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Delivery_Address_ID1")
+                    b.Property<Guid?>("Delivery_ID1")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsAccepted")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("Order_Request_Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("Order_Request_Status")
+                        .HasColumnType("bit");
 
                     b.Property<double>("Order_Request_Total_Price")
                         .HasColumnType("float");
@@ -583,7 +579,7 @@ namespace IPKP___API.Migrations
 
                     b.HasIndex("Customer_ID1");
 
-                    b.HasIndex("Delivery_Address_ID1");
+                    b.HasIndex("Delivery_ID1");
 
                     b.ToTable("Order_Requests");
                 });
@@ -926,12 +922,8 @@ namespace IPKP___API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Text_Price_Amount")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("Text_Price_Amount");
-
-                    b.Property<int>("Text_Price_Size")
-                        .HasColumnType("int");
+                    b.Property<double>("Text_Price_Amount")
+                        .HasColumnType("float");
 
                     b.HasKey("Text_Price_ID");
 
@@ -1419,13 +1411,13 @@ namespace IPKP___API.Migrations
                         .WithMany("Order_Request")
                         .HasForeignKey("Customer_ID1");
 
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Delivery_Address", "Delivery_Address")
+                    b.HasOne("IPKP___API.Controllers.Models.Entities.Delivery", "Delivery")
                         .WithMany("Order_Request")
-                        .HasForeignKey("Delivery_Address_ID1");
+                        .HasForeignKey("Delivery_ID1");
 
                     b.Navigation("Customer");
 
-                    b.Navigation("Delivery_Address");
+                    b.Navigation("Delivery");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Personalisation_Design", b =>
@@ -1619,11 +1611,14 @@ namespace IPKP___API.Migrations
                     b.Navigation("Order_Request");
                 });
 
+            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Delivery", b =>
+                {
+                    b.Navigation("Order_Request");
+                });
+
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Delivery_Address", b =>
                 {
                     b.Navigation("Delivery");
-
-                    b.Navigation("Order_Request");
                 });
 
             modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Delivery_Company", b =>

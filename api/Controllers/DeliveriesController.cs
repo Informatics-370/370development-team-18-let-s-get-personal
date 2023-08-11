@@ -16,124 +16,202 @@ namespace IPKP___API.Controllers
     [ApiController]    
     public class DeliveriesController : ControllerBase
     {
-        // METHODS: Delivery crud, delivery company crud
+        // METHODS: getting orders by status and changing status, delivery company crud
         private readonly IIPKPRepository _IPKPRepository;
         public DeliveriesController(IIPKPRepository iPKPRepository)
         {
             _IPKPRepository = iPKPRepository;
         }
 
+        //get requested deliveries
         [HttpGet]
-        [Route("GetAllDeliveries")]
-        public async Task<IActionResult> GetAllDeliveriesAsync()
+        [Route("GetRequestedDeliveries")]
+        public object GetRequestedDeliveries()
         {
-
             try
             {
-                var results = await _IPKPRepository.GetAllDeliveriesAsync();
-                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
-                return Ok(results);
+                string orderStatus = "Requested";
+                var requests = _IPKPRepository.GetDeliveryBySatus(orderStatus);
 
-            }
-            catch (Exception)
-            {
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-            }
-        }
-
-        [HttpGet]
-        [Route("GetDelivery/{delivery_ID}")]
-        public async Task<IActionResult> GetDeliveryDetailsAsync(Guid delivery_ID)
-        {
-
-            try
-            {
-                var results = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
-                return Ok(results);
-            }
-            catch (Exception)
-            {
-
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-            }
-        }
-
-        [HttpPost]
-        [Route("AddDelivery")]
-        public async Task<IActionResult> AddDeliveryAsync(Delivery dvm)
-        {            
-            try
-            {
-                var delivery = new Delivery
+                if (requests == null)
                 {
-                    Delivery_Price = dvm.Delivery_Price,
-                    //Delivery_Company = dvm.Delivery_Company_ID,
-                    Delivery_ID = dvm.Delivery_ID,
-                    Tracking_Number = dvm.Tracking_Number,
-                };
-
-                _IPKPRepository.Add(delivery);
-                await _IPKPRepository.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-            }
-
-            return Ok(new Response { Status = "Success", Message = "Delivery Added To Database." });
-        }
-
-        [HttpDelete]
-        [Route("ReceiveDelivery/{delivery_ID}")]
-        public async Task<IActionResult> ReceiveDeliveryAsync(Guid delivery_ID)
-        {
-            try
-            {
-                var existingDelivery = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
-
-                if (existingDelivery == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" + delivery_ID });
-
-                _IPKPRepository.Delete(existingDelivery);
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                    return NotFound(new Response { Status = "Success", Message = "No Deliveries were found." });
+                }
+                else
                 {
-                    return Ok(new Response { Status = "Success", Message = "Delivery Received Successfully" });
+                    return Ok(requests);
                 }
             }
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok(new Response { Status = "Success", Message = "Delivery Removed From Database." });
         }
 
+        //change status to out for delivery
         [HttpPut]
-        [Route("UpdateDelivery")]
-        public async Task<IActionResult> UpdateDeliveryAsync(Guid delivery_ID, Delivery dvm)
+        [Route("SendOutDelivery/{delivery_ID}")]
+        public async Task<ActionResult<Delivery>> SendOutDelivery(Guid delivery_ID, DeliveryVM dvm)
         {
             try
             {
-                var existingDelivery = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
+                var requests = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
 
-                if (existingDelivery == null) return NotFound("Could Not Find Delivery" + delivery_ID);
-
-                existingDelivery.Delivery_Company_ID = dvm.Delivery_Company_ID;
-                existingDelivery.Delivery_Address = dvm.Delivery_Address;
-                existingDelivery.Delivery_Price = dvm.Delivery_Price;
-                existingDelivery.Tracking_Number = dvm.Tracking_Number;
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                if (requests == null)
                 {
-                    return Ok(new Response { Status = "Success", Message = "Delivery Updated Successfully" });
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    requests.Delivery_Status = "Out";
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(requests);
+                    }
                 }
             }
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok(new Response { Status = "Success", Message = "Delivery Saved To Database." });
+
+            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
         }
 
+        //get "out" deliveries
+        [HttpGet]
+        [Route("GetOutDeliveries")]
+        public object GetOutDeliveries()
+        {
+            try
+            {
+                string orderStatus = "Out";
+                var requests = _IPKPRepository.GetDeliveryBySatus(orderStatus);
+
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    return Ok(requests);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
+        //change status to recieved 
+        [HttpPut]
+        [Route("ChangeStatusToRecieved/{delivery_ID}")]
+        public async Task<ActionResult<Delivery>> ChangeStatusToRecieved(Guid delivery_ID, DeliveryVM dvm)
+        {
+            try
+            {
+                var requests = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
+
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    requests.Delivery_Status = "Received";
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(requests);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
+        }
+
+
+
+        //change status to failed
+        [HttpPut]
+        [Route("ChangeStatusToFailed/{delivery_ID}")]
+        public async Task<ActionResult<Delivery>> ChangeStatusToFailed(Guid delivery_ID, DeliveryVM dvm)
+        {
+            try
+            {
+                var requests = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
+
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    requests.Delivery_Status = "Failed";
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(requests);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
+        }
+
+        //get previous successful deliveries
+        [HttpGet]
+        [Route("GetSuccessfulDeliveries")]
+        public object GetSuccessfulDeliveries()
+        {
+            try
+            {
+                string orderStatus = "Recieved";
+                var requests = _IPKPRepository.GetDeliveryBySatus(orderStatus);
+
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    return Ok(requests);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
+        //get previous unsuccessful deliveries
+        [HttpGet]
+        [Route("GetUnsuccessfulDeliveries")]
+        public object GetUnsuccessfulDeliveries()
+        {
+            try
+            {
+                string orderStatus = "Failed";
+                var requests = _IPKPRepository.GetDeliveryBySatus(orderStatus);
+
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    return Ok(requests);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
 
 
         //************* Delivery Companies *************\\
@@ -247,3 +325,91 @@ namespace IPKP___API.Controllers
         }
     }
 }
+//[HttpPut]
+//[Route("UpdateDelivery")]
+//public async Task<IActionResult> UpdateDeliveryAsync(Guid delivery_ID, Delivery dvm)
+//{
+//    try
+//    {
+//        var existingDelivery = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
+
+//        if (existingDelivery == null) return NotFound("Could Not Find Delivery" + delivery_ID);
+
+//        existingDelivery.Delivery_Company_ID = dvm.Delivery_Company_ID;
+//        existingDelivery.Delivery_Address = dvm.Delivery_Address;
+//        //existingDelivery.Delivery_Price = dvm.Delivery_Price;
+//        existingDelivery.Tracking_Number = dvm.Tracking_Number;
+
+//        if (await _IPKPRepository.SaveChangesAsync())
+//        {
+//            return Ok(new Response { Status = "Success", Message = "Delivery Updated Successfully" });
+//        }
+//    }
+//    catch (Exception)
+//    {
+//        return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+//    }
+//    return Ok(new Response { Status = "Success", Message = "Delivery Saved To Database." });
+//}
+
+
+
+//[HttpDelete]
+//[Route("ReceiveDelivery/{delivery_ID}")]
+//public async Task<IActionResult> ReceiveDeliveryAsync(Guid delivery_ID)
+//{
+//    try
+//    {
+//        var existingDelivery = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
+
+//        if (existingDelivery == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" + delivery_ID });
+
+//        _IPKPRepository.Delete(existingDelivery);
+
+//        if (await _IPKPRepository.SaveChangesAsync())
+//        {
+//            return Ok(new Response { Status = "Success", Message = "Delivery Received Successfully" });
+//        }
+//    }
+//    catch (Exception)
+//    {
+//        return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+//    }
+//    return Ok(new Response { Status = "Success", Message = "Delivery Removed From Database." });
+//}
+
+
+//[HttpGet]
+//[Route("GetAllDeliveries")]
+//public async Task<IActionResult> GetAllDeliveriesAsync()
+//{
+
+//    try
+//    {
+//        var results = await _IPKPRepository.GetAllDeliveriesAsync();
+//        if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
+//        return Ok(results);
+
+//    }
+//    catch (Exception)
+//    {
+//        return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+//    }
+//}
+
+//[HttpGet]
+//[Route("GetDelivery/{delivery_ID}")]
+//public async Task<IActionResult> GetDeliveryDetailsAsync(Guid delivery_ID)
+//{
+
+//    try
+//    {
+//        var results = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
+//        return Ok(results);
+//    }
+//    catch (Exception)
+//    {
+
+//        return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+//    }
+//}
