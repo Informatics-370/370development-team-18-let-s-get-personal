@@ -9,8 +9,8 @@ export class Order_Line_Item{
     order_Request!: Order_Request
     stock_Item!: Stock_Item
     personalisation_Design!: Personalisation_Design
-
-    stock_Item_Size!: string
+    order_Status!: string
+    //stock_Item_Size!: string
     order_Line_Item_Price!: Number
     order_Line_Item_Quantity!: Number
     order_Line_Item_Total_Price!: Number

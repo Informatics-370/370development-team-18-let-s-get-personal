@@ -21,44 +21,9 @@ namespace IPKP___API.Controllers
         {
             _IPKPRepository = iPKPRepository;
         }
-        //*************** Users ***************\\
-        //[HttpGet]
-        //[Route("GetAllUsers")]
-        //public async Task<IActionResult> GetAllUsersAsync()
-        //{
-        //    try
-        //    {
-        //        var results = await _IPKPRepository.GetAllUsersAsync();
-        //        return Ok(results);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-        //    }
-        //}
-        [HttpDelete]
-        [Route("DeleteUser")]
-        public async Task<IActionResult> DeleteUserAsync(Guid user_ID)
-        {
-            try
-            {
-                var existingUser = await _IPKPRepository.GetUserDetailsAsync(user_ID);
+        //*************** Admins ***************\\
+       
 
-                if (existingUser == null) return NotFound("Could Not Find User" + user_ID);
-
-                _IPKPRepository.Delete(existingUser);
-
-                if (await _IPKPRepository.SaveChangesAsync())
-                {
-                    return Ok("User Removed Successfully");
-                }
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
-            }
-            return Ok("User Removed From Database.");
-        }
 
         //*************** Customers ***************\\
         [HttpGet]
@@ -77,7 +42,7 @@ namespace IPKP___API.Controllers
         }
 
         [HttpGet]
-        [Route("GetCustomerUserProfile")]
+        [Route("GetCustomerUserProfile/{customer_ID}")]
         public async Task<IActionResult> GetCustomerUserProfileDetailsAsync(Guid customer_ID)
         {
             try
@@ -91,9 +56,8 @@ namespace IPKP___API.Controllers
             }
         }
 
-
         [HttpDelete]
-        [Route("DeleteCustomerUser")]
+        [Route("DeleteCustomerUser/{customer_ID}")]
         public async Task<IActionResult> DeleteCustomerUserProfileAsync(Guid customer_ID)
         {
             try
@@ -116,35 +80,9 @@ namespace IPKP___API.Controllers
             return Ok("Customer USer Removed From Database.");
         }
 
-
-        [HttpPost]
-        [Route("AddCustomerUserProfile")]
-        public async Task<IActionResult> AddCustomerUserProfileAsync(UserProfileViewModel upvm)
-        {
-
-            var userCustomer = new Customer
-            {
-                Customer_ID = new Guid(),
-                FirstName = upvm.FirstName,
-                Surname = upvm.Surname,
-                Cell_Number = upvm.Cell_Number,
-                Email = upvm.Email
-            };
-            try
-            {
-                _IPKPRepository.Add(userCustomer);
-                await _IPKPRepository.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                return BadRequest("Invalid Transaction");
-            }
-            return Ok("New Customer User Added To Database.");
-        }
-
         [HttpPut]
-        [Route("UpdateCustomerUserProfile")]
-        public async Task<IActionResult> UpdateCustomerUserProfileAsync(Guid customer_ID, UserProfileViewModel upvm)
+        [Route("UpdateCustomerUserProfile/{customer_ID}")]
+        public async Task<IActionResult> UpdateCustomerUserProfileAsync(Guid customer_ID, Customer upvm)
         {
             try
             {
@@ -200,32 +138,6 @@ namespace IPKP___API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
             }
-        }
-
-        [HttpPost]
-        [Route("AddEmployee")]
-        public async Task<IActionResult> AddEmployee(Employee employee)
-        {
-            var newemployee = new Employee
-            {
-                Employee_ID = new Guid(),
-                User = employee.User,
-                FirstName = employee.FirstName,
-                Surname = employee.Surname,
-                Cell_Number = employee.Cell_Number,
-                Email = employee.Email
-            };
-            try
-            {
-
-                _IPKPRepository.Add(newemployee);
-                await _IPKPRepository.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-            }
-            return Ok(new Response { Status = "Success", Message = "Employee Added To Database." });
         }
 
         [HttpPut]

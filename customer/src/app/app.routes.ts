@@ -88,5 +88,9 @@ export const routes: Routes = [
     path: 'edit-personalization',
     loadComponent: () => import('./personalisation/edit-personalization/edit-personalization.page').then( m => m.EditPersonalizationPage)
   },
+  {
+    path: 'delivery-details',
+    loadComponent: () => import('./basket/delivery-details/delivery-details.page').then( m => m.DeliveryDetailsPage)
+  },
 
 ];

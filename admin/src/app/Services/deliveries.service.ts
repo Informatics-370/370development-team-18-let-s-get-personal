@@ -4,7 +4,7 @@ import { map, Observable, Subject } from 'rxjs';
 import { Delivery } from '../Models/delivery';
 import { Response } from '../Models/response';
 import { Delivery_Company } from '../Models/deliverycompany';
-
+import { DeliveryViewModel } from '../ViewModels/deliveryVM';
 @Injectable({
     providedIn: 'root' 
   })
@@ -22,27 +22,37 @@ export class DeliveryDataService {
   constructor(private httpClient: HttpClient) { }
     
   //************* Deliveries *************\\
-  public GetAllDeliveries(): Observable<any>{ 
-    return this.httpClient.get(`${this.apiUrl}Deliveries/GetAllDeliveries`)
+  public GetRequestedDeliveries(): Observable<any>{ 
+    return this.httpClient.get(`${this.apiUrl}Deliveries/GetRequestedDeliveries`)
     .pipe(map(result => result))
   }
   
-  public AddDelivery(delivery:Delivery){
-    return this.httpClient.post<Response>(`${this.apiUrl}Deliveries/AddDelivery`, delivery)
-    .pipe(map(result => result))
+  public SendOutDelivery(delivery_Id:number, delivery:DeliveryViewModel){
+    return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/SendOutDelivery/${delivery_Id}`, delivery)
   }
   
-  public GetDelivery(deliveryId:number){ 
-    return this.httpClient.get(`${this.apiUrl}Deliveries/GetDelivery/${deliveryId}`)
+  public GetOutDeliveries(): Observable<any>{ 
+    return this.httpClient.get(`${this.apiUrl}Deliveries/GetOutDeliveries`)
     .pipe(map(result => result))
   }
-    
-  public UpdateDelivery(deliveryId:number, delivery:Delivery){
-    return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/UpdateDelivery/${deliveryId}`, delivery)
+
+  public ChangeStatusToRecieved(delivery_Id:number, delivery:DeliveryViewModel){
+    return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/ChangeStatusToRecieved/${delivery_Id}`, delivery)
   }
-  
-  public ReceiveDelivery(deliveryId:number){
-    return this.httpClient.delete<Response>(`${this.apiUrl}Deliveries/ReceiveDelivery/${deliveryId}`)
+
+  public ChangeStatusToFailed(delivery_Id:number, delivery:DeliveryViewModel){
+    return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/ChangeStatusToFailed/${delivery_Id}`, delivery) 
+    //, this.httpOptions
+  }
+
+  public GetSuccessfulDeliveries(): Observable<any>{ 
+    return this.httpClient.get(`${this.apiUrl}Deliveries/GetSuccessfulDeliveries`)
+    .pipe(map(result => result))
+  }
+
+  public GetFailedDeliveries(): Observable<any>{ 
+    return this.httpClient.get(`${this.apiUrl}Deliveries/GetUnsuccessfulDeliveries`)
+    .pipe(map(result => result))
   }
 
   //************* Delivery Companies *************\\

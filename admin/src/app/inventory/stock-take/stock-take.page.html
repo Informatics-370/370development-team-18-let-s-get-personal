@@ -12,6 +12,18 @@
   </ion-header>
   
   <ion-content>
+    <ion-grid>
+      <ion-row >
+        <ion-col *ngFor="let item of textprice">
+          Current Text Personlisation Price: {{item.text_Price_Amount}}
+          <ion-button [routerLink]="['/tabs/update-textprice', item.text_Price_ID]" >Update Text Price</ion-button>    
+        </ion-col>
+        <ion-col *ngFor="let item of imageprice">
+          Current Image Personlisation Price: {{item.image_Price_Amount}}    
+          <ion-button [routerLink]="['/tabs/update-imageprice', item.image_Price_ID]" >Update Image Price</ion-button>    
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     <ion-button id="addStockmodal">Add New Stock Item</ion-button>
     <ion-grid>
       <ion-row>
@@ -39,8 +51,12 @@
           <img src='data:image/png;base64,{{item.stockImageFile}}'>
         </ion-col>     
 
-        <ion-col>{{item.stock_Item_Quantity}}</ion-col>
-        <ion-col>{{item.inventory_Date}}</ion-col>
+        <ion-col> 
+          <ion-input value="{{item.stock_Item_Quantity}}" placeholder="{{item.stock_Item_Quantity}}"> </ion-input>          
+        </ion-col>
+        <ion-col>
+          {{item.inventory_Date}}
+        </ion-col>
         <ion-col>{{item.inventory_Comments}}</ion-col>
       </ion-row>
     </ion-grid>
@@ -116,18 +132,14 @@
           
           <ion-item>
             <ion-label position="stacked">Inventory_Comments</ion-label><br>
-            <ion-input type="text" formControlName="Inventory_Comments" placeholder="" required></ion-input>
+            <ion-input type="text" formControlName="Inventory_Comments" placeholder="" ></ion-input>
           </ion-item> 
       
           <ion-item>
             <ion-label position="stacked">Stock Item Quantity</ion-label><br>
-            <ion-input type="text" formControlName="Stock_Item_Quantity" placeholder="" required></ion-input>
+            <ion-input type="number" formControlName="Stock_Item_Quantity" required></ion-input>
           </ion-item>
-        </form>  
-        <!-- <p style="color: red; text-align: center;">
-          Due to Key restrictions please do not add stock item 
-          in the same session as selected colour, type or image upload 
-        </p>  -->
+        </form> 
       </ion-content>
     </ng-template>
   </ion-modal>

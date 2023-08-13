@@ -20,6 +20,9 @@ import { Stock_Image } from 'src/app/Models/stockimage';
 import { StockImageDataService } from 'src/app/Services/stockimage.service';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { InventoryViewModel } from 'src/app/ViewModels/InventoryVM';
+import { PersonalisationService } from 'src/app/Services/personalisation.service';
+import { Image_Price } from 'src/app/Models/imageprice';
+import { TextPrice } from 'src/app/Models/textprice';
 @Component({
   selector: 'app-stock-take',
   templateUrl: './stock-take.page.html',
@@ -38,12 +41,15 @@ export class StockTakePage implements OnInit {
   stockitemcolours: StockItemColours[] = [];
   stockimages: Stock_Image[] =[];
 
+  textprice: TextPrice[] =[]
+  imageprice: Image_Price[] =[]
+
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public bestsellerservice:BestsellersService, private alertController:AlertController,     
     //dataservices
     public stockitemservice: StockItemDataService, private typeservice:StockTypeDataService,
     private imageservice:StockImageDataService, private colourservice:StockItemColourDataService,
-    private inventoryservice: InventoryDataService,) { }
+    private inventoryservice: InventoryDataService, public pservice: PersonalisationService) { }
     
   ngOnInit() {
     this.GetAllStockItems();
@@ -62,7 +68,7 @@ export class StockTakePage implements OnInit {
     Stock_Item_Name: new FormControl('',[Validators.required]),
     Stock_Item_Price: new FormControl('',[Validators.required]),
     Stock_Item_Size: new FormControl('',[Validators.required]),
-    Inventory_Comments: new FormControl('',[Validators.required]),
+    Inventory_Comments: new FormControl(''),
     Stock_Item_Quantity: new FormControl('',[Validators.required]),
     Stock_Type_ID: new FormControl('',[Validators.required]),
     Stock_Image_ID: new FormControl('',[Validators.required]),
@@ -95,6 +101,7 @@ export class StockTakePage implements OnInit {
     }) 
   }
 
+
   GetStockTypes(){
     this.typeservice.GetStockTypes().subscribe(result =>{
       this.stocktypes = result as StockTypes[];
@@ -114,6 +121,20 @@ export class StockTakePage implements OnInit {
       this.stockitemcolours = result as StockItemColours[];
       console.log(this.stockitemcolours)      
     })   
+  }
+  
+  getImagePrice(){
+    this.pservice.GetAllImagePrices().subscribe(result => {
+      this.imageprice = result as Image_Price[];
+      console.log(this.imageprice)
+    })
+  }
+
+  getTextPrice(){
+    this.pservice.GetAllTextPrices().subscribe(result => {
+      this.textprice = result as TextPrice[];
+      console.log(this.textprice)
+    })
   }
 
   canceladdmodal() {

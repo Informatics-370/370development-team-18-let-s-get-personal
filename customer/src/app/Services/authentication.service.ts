@@ -84,13 +84,13 @@ export class AuthenticationService {
     return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterCustomer`, customer, this.httpOptions)
   }
 
-  public RegisterAdmin(admin: RegisterVM){
-    return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterAdmin`, admin, this.httpOptions)
-  }
+  // public RegisterAdmin(admin: RegisterVM){
+  //   return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterAdmin`, admin, this.httpOptions)
+  // }
 
-  public RegisterEmployee(employee: RegisterVM){
-    return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterEmployee`, employee, this.httpOptions)
-  }
+  // public RegisterEmployee(employee: RegisterVM){
+  //   return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterEmployee`, employee, this.httpOptions)
+  // }
 
   public ForgotPassword(forgotpassword: ForgotPasswordViewModel){
     return this.httpClient.post(`${this.apiUrl}Authenticate/ForgotPassword`, forgotpassword, this.httpOptions)

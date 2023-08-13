@@ -103,15 +103,15 @@ export class ProductRatingPage implements OnInit {
   }
 
   DeleteProductRating(product_Rating_ID: string) {
-    this.service.DeleteProductRating(product_Rating_ID).subscribe(result => {
-      console.log(result);
-      if (result.status == "Error") {
-        this.DeleteProdRatingErrorAlert();
-      }
-      else if (result.status == "Success") {
-        this.DeleteProdRatingSuccessAlert();
-      }
-    })
+    // this.service.DeleteProductRating(product_Rating_ID).subscribe(result => {
+    //   console.log(result);
+    //   if (result.status == "Error") {
+    //     this.DeleteProdRatingErrorAlert();
+    //   }
+    //   else if (result.status == "Success") {
+    //     this.DeleteProdRatingSuccessAlert();
+    //   }
+    // })
   }
 
 

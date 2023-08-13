@@ -132,8 +132,6 @@ namespace IPKP___API.Controllers
             return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
         }
 
-
-
         //change status to failed
         [HttpPut]
         [Route("ChangeStatusToFailed/{delivery_ID}")]
@@ -256,7 +254,7 @@ namespace IPKP___API.Controllers
         
         [HttpPost]
         [Route("AddDeliveryCompany")]
-        public async Task<IActionResult> AddDeliveryCompanyAsync(DeliveryCompanyViewModel dcvm)
+        public async Task<IActionResult> AddDeliveryCompanyAsync(Delivery_Company dcvm)
         {
             try
             {
@@ -278,7 +276,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateDeliveryCompany/{delivery_Company_ID}")]
-        public async Task<IActionResult> UpdateDeliveryCompanyAsync(Guid delivery_Company_ID, DeliveryCompanyViewModel dcvm)
+        public async Task<IActionResult> UpdateDeliveryCompanyAsync(Guid delivery_Company_ID, Delivery_Company dcvm)
         {
             try
             {

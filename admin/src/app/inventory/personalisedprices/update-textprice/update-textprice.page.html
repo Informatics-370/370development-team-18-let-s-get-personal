@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>updateTextprice</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">updateTextprice</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <form [formGroup]="TextpriceForm">          
+    <ion-item>
+      <ion-label position="stacked">Text Price</ion-label><br>
+      <ion-input type="number" formControlName="Text_Price_Amount" ></ion-input>
+    </ion-item>                    
+</form>
+</ion-content>

@@ -10,25 +10,23 @@
 		<!-- <ion-searchbar [(ngModel)]="filterTerm" (ionInput)="updateSearchResults()"></ion-searchbar>                     -->
 		<ion-grid>
 			<ion-row>
-				<ion-col style="font-weight: bold;">
-					<h2>Design Text</h2>
-				</ion-col>
-				<ion-col>
-					 Design Image
-				</ion-col>
+				<ion-col style="font-weight: bold;"> Design Text </ion-col>
+				<ion-col> Design Image </ion-col>
 				<ion-col></ion-col>
 				<ion-col></ion-col>
 			</ion-row>
 			<ion-row *ngFor="let item of personalizations">
 				<ion-col>{{item.designText}}</ion-col>
 				<ion-col>{{item.design_Image}}</ion-col>
-				<ion-col><ion-button
-						(click)="DeletePersonalisation(item.personalisation_Design_ID)">Delete</ion-button></ion-col>
-				<ion-col><ion-button
-						(click)="UpdatePersonalisation(item.personalisation_Design_ID)">Update</ion-button></ion-col>
+				<ion-col>
+					<ion-button	(click)="DeletePersonalisation(item.personalisation_Design_ID)">Delete</ion-button>
+					</ion-col>
+				<ion-col>
+					<ion-button	(click)="UpdatePersonalisation(item.personalisation_Design_ID)">Update</ion-button>
+				</ion-col>
 			</ion-row>
 		</ion-grid>
-		<ion-button (click)="makepayment()">Checkout</ion-button>
+		<ion-button (click)="checkout()">Checkout</ion-button>
 	</ion-card-content>
 </ion-content>
 
@@ -46,18 +44,24 @@
 					</ion-buttons>
 				</ion-toolbar>
 			</ion-header>
-			<ion-content class="ion-padding">
+			<ion-content class="ion-padding">				
 				<form [formGroup]="AddForm">
 					<ion-item>
-						<ion-label position="stacked">
-							<h3>Design Text</h3>
-						</ion-label><br>
+						<ion-label position="stacked">Design Text</ion-label>
 						<ion-input type="text" formControlName="designText" placeholder="" required></ion-input>
 					</ion-item>
-					<ion-item>
-						<ion-input type="file" accept="image/*" formControlName="design_Image"/>
-					</ion-item>
 				</form>
+				
+				<form [formGroup]="UploadImage">
+					<ion-item>
+						<ion-label>Image File</ion-label>
+                		<input formControlName="imagefile" type="file" id="file" #file placeholder="Choose file" 
+						(change)="uploadFile(file.files)" style="display:none;">
+						
+                		<ion-button mat-stroked-button color="primary" (click)="file.click()">Upload File</ion-button>
+                		<span *ngIf="fileNameUploaded.length > 0"> {{fileNameUploaded}}</span>
+					</ion-item>
+				</form>				
 			</ion-content>
 		</ng-template>
 	</ion-modal>

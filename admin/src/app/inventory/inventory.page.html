@@ -17,7 +17,16 @@
   </ion-header>
   
   <ion-button (click)="openPDF()" >Download Inventory PDF</ion-button>
-
+  <ion-grid>
+    <ion-row >
+      <ion-col *ngFor="let item of textprice">
+        Current Text Personlisation Price: {{item.text_Price_Amount}}
+      </ion-col>
+      <ion-col *ngFor="let item of imageprice">
+        Current Image Personlisation Price: {{item.image_Price_Amount}}        
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <div id="htmlData">
     <h2>Inventory</h2>    
     <ion-grid>

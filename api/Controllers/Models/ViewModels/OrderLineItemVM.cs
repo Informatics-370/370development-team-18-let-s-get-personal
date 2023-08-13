@@ -37,7 +37,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
         public string Stock_Colour_Name { get; set; }
         public double Personalisation_Design_Price { get; set; }
 
-        //order lline item 
+        //order line item 
         public Guid Order_Line_Item_ID { get; set; }
         public double Order_Line_Item_Price { get; set; }
         public int Order_Line_Item_Quantity { get; set; }

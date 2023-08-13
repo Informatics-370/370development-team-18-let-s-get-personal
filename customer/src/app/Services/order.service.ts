@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Response } from '../Models/response';
+import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
+import { Order } from '../Models/orders';
 @Injectable({
   providedIn: 'root'
 })
@@ -17,23 +19,33 @@ export class OrderService {
     
   constructor(private httpClient: HttpClient) { }
 
-  public GetOrders(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Order/GetAllOrders`)
+  public AddOrderLineItem(oli:OrderLineItemVM){
+    return this.httpClient.post<Response>(`${this.apiUrl}Order/AddOrderLineItem`, oli)
+    .pipe(map(result => result))
+  }
+
+  public GetRequestedOrders(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Order/GetRequestedOrders`)
     .pipe(map((result: any) => result))
   }
 
-  public GetAllOrderStatuses(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}OrderRequest/GetAllOrderStatuses`)
+  public GetOrdersInProgress(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Order/GetOrdersInProgress`)
     .pipe(map((result: any) => result))
   }
 
-  public ProcessOrder(OrderID:number): Observable<any>{
-    return this.httpClient.put<Response>(`${this.apiUrl}Order/ProcessOrder/${OrderID}`, this.httpOptions)
+  public AcceptOrder(order_Line_Item_ID:number): Observable<any>{
+    return this.httpClient.put<Response>(`${this.apiUrl}Order/AcceptOrder/${order_Line_Item_ID}`, this.httpOptions)
     .pipe(map((result: any) => result))
   }
 
-  public CompleteOrder(OrderID:number): Observable<any>{
-    return this.httpClient.put<Response>(`${this.apiUrl}Order/CompleteOrder/${OrderID}`, this.httpOptions)
+  public ProcessOrder(order_Line_Item_ID:number): Observable<any>{
+    return this.httpClient.put<Response>(`${this.apiUrl}Order/ProcessOrder/${order_Line_Item_ID}`, this.httpOptions)
     .pipe(map((result: any) => result))
+  }
+
+  public AddOrder(o:Order){
+    return this.httpClient.post<Response>(`${this.apiUrl}Order/AddOrder`, o)
+    .pipe(map(result => result))
   }
 }

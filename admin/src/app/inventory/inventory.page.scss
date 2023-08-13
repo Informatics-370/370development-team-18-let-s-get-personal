@@ -5,11 +5,16 @@
     text-align: center;
 }
 
+img{
+    width: 100px;
+    height: 100px;
+}
+
 .cell-class {
     border-left: .01em ;
     border-color: black; 
     //border-width: .01em; 
     border-style:solid; 
     margin-bottom : -1px;
-    background-color: lightgrey
+    //background-color: lightgrey
   }

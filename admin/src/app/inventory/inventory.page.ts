@@ -8,6 +8,9 @@ import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
 import { BasketService } from 'src/app/Services/basket.service';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
+import { PersonalisationService } from 'src/app/Services/personalisation.service';
+import { Image_Price } from 'src/app/Models/imageprice';
+import { TextPrice } from 'src/app/Models/textprice';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 //import { Color, Styles, UserOptions } from './config'
@@ -24,11 +27,13 @@ type Opts = { [key: string]: string | number }
 })
 export class InventoryPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
-  //readonly userStyles: Partial<Styles>
+  textprice: TextPrice[] =[]
+  imageprice: Image_Price[] =[]
   Products: StockItemViewModel[] = [];
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public bestsellerservice:BestsellersService, private alertController:AlertController, 
-    private basketService : BasketService,  public stockitemservice: StockItemDataService,) { }
+    private basketService : BasketService,  public stockitemservice: StockItemDataService,
+    public pservice: PersonalisationService) { }
 
   ngOnInit() {
     this.GetAllStockItems();
@@ -69,13 +74,25 @@ export class InventoryPage implements OnInit {
         //Add image Canvas to PDF
         let fileWidth = 208;
         let fileHeight = (canvas.height * fileWidth) / canvas.width;      
-        let position = 0;
+        let position = 10;
         PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
         
         PDF.save('IPKP-Products.pdf');
       });
     }
+    getImagePrice(){
+      this.pservice.GetAllImagePrices().subscribe(result => {
+        this.imageprice = result as Image_Price[];
+        console.log(this.imageprice)
+      })
+    }
   
+    getTextPrice(){
+      this.pservice.GetAllTextPrices().subscribe(result => {
+        this.textprice = result as TextPrice[];
+        console.log(this.textprice)
+      })
+    }
   
   addToBestSellers(bestseller: Stock_Item[]){
     this.bestsellerservice.SaveBestSellersList(bestseller).subscribe((response:any) => {

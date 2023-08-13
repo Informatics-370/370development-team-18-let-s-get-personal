@@ -16,6 +16,7 @@
 
     <ion-card *ngFor="let item of stockimages">
       <img src='data:image/png;base64,{{item.stock_Image_File}}'>
+      <p>{{item.stock_Image_Name}}</p>
       <ion-button onclick="deleteStockImage(item.stock_Image_ID)">Delete</ion-button>
     </ion-card>
   </ion-content>

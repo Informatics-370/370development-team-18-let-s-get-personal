@@ -39,10 +39,10 @@ export class DrinkingPage implements OnInit {
     }
 
     public GetStockType(stock_Type_ID: string){
-      this.service.GetStockType(stock_Type_ID).subscribe(result =>{
-        this.stockTypes = result as StockTypes[];
-        console.log(this.stockTypes)
-      })
+      // this.service.GetStockType(stock_Type_ID).subscribe(result =>{
+      //   this.stockTypes = result as StockTypes[];
+      //   console.log(this.stockTypes)
+      // })
     }
 
   public clothing(){

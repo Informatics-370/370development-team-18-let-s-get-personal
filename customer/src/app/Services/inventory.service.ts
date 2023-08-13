@@ -4,7 +4,6 @@ import { map, Observable, Subject } from 'rxjs';
 import { StockTypes } from '../Models/stocktypes';
 import { Stock_Item } from '../Models/stockitem';
 import { Response } from '../Models/response';
-import { InventoryViewModel } from 'src/app/ViewModels/InventoryVM';
 @Injectable({
     providedIn: 'root' 
   })

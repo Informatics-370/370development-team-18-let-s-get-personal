@@ -10,6 +10,7 @@ import { ModalController } from '@ionic/angular';
 import { Stock_Item } from '../Models/stockitem';
 import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
+import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
 //import { Customer } from '../Models/customer';
 
 //for modal
@@ -33,7 +34,7 @@ export class BasketPage implements OnInit,AfterViewInit {
     private service: PersonalisationService, private alertController: AlertController) { this.basketItemList = JSON.parse(localStorage.getItem('basket')!); }//,private companyservice:DeliveryCompanyDataService) { }
 
   personalizations: Personalisation_Design[] = [];
-
+  private basketItemList: BasketItems[];
   basketItems: BasketItems[] = [];
   //customers:Customer[]=[];
   cartItems: any[] = [];
@@ -45,8 +46,6 @@ export class BasketPage implements OnInit,AfterViewInit {
     // this.GetBasketFromAPI();
     this.cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
   }
-
-  private basketItemList: BasketItems[];
 
 
   public removeItemFromBasket(item: any): void {
@@ -103,18 +102,19 @@ export class BasketPage implements OnInit,AfterViewInit {
   public personalize(id:any) {
     //this.AddPersonalisation();
 
-    this._router.navigate(["/tabs/personalisation"])
+    this._router.navigate(["/tabs/personalisation"], id)
   }
 
   public makepayment() {
+    //change to checkout and go to deliveries then make payment 
     this._router.navigate(["/tabs/make-payment"])
   }
 
   AddPersonalisation() {
-    let AddPersonalisation = new Personalisation_Design();
+    let AddPersonalisation = new PersonalisationDesignVM();
 
-    AddPersonalisation.design_Text.design_Text_Description = this.AddForm.value.designText;
-    AddPersonalisation.design_Image = this.AddForm.value.design_Image;
+    // AddPersonalisation.design_Text.design_Text_Description = this.AddForm.value.designText;
+    // AddPersonalisation.design_Image = this.AddForm.value.design_Image;
 
     this.service.AddPersonalisation(AddPersonalisation).subscribe(response => {
       if (response.status == "Error") {

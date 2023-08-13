@@ -54,7 +54,7 @@ namespace IPKP___API.Controllers
 
         [HttpPost]
         [Route("AddUserRole")]
-        public async Task<IActionResult> AddUserRoleAsync(UserRoleViewModel urvm)
+        public async Task<IActionResult> AddUserRoleAsync(User_Role urvm)
         {
             var userRole = new User_Role
             {
@@ -75,7 +75,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateUserRole")]
-        public async Task<IActionResult> UpdateUserRoleAsync(int user_Role_ID, UserRoleViewModel urvm)
+        public async Task<IActionResult> UpdateUserRoleAsync(int user_Role_ID, User_Role urvm)
         {
             try
             {

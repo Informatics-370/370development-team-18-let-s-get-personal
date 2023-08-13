@@ -87,15 +87,15 @@ export class ExperienceRatingPage implements OnInit {
   }
 
   DeleteExperienceRating(experience_Rating_ID: string) {
-    this.service.DeleteExperienceRating(experience_Rating_ID).subscribe(result => {
-      console.log(result);
-      if (result.status == "Error") {
-        this.DeleteExpRatingErrorAlert();
-      }
-      else if (result.status == "Success") {
-        this.DeleteExpRatingSuccessAlert();
-      }
-    })
+    // this.service.DeleteExperienceRating(experience_Rating_ID).subscribe(result => {
+    //   console.log(result);
+    //   if (result.status == "Error") {
+    //     this.DeleteExpRatingErrorAlert();
+    //   }
+    //   else if (result.status == "Success") {
+    //     this.DeleteExpRatingSuccessAlert();
+    //   }
+    // })
   }
 
   reloadPage() {

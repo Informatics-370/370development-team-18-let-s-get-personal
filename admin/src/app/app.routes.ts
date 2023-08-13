@@ -93,6 +93,15 @@ export const routes: Routes = [
     path: 'stock-image',
     loadComponent: () => import('./inventory/stock-image/stock-image.page').then( m => m.StockImagePage)
   },
+  {
+    path: 'update-imageprice',
+    loadComponent: () => import('./inventory/personalisedprices/update-imageprice/update-imageprice.page').then( m => m.UpdateImagepricePage)
+  },
+  {
+    path: 'update-textprice',
+    loadComponent: () => import('./inventory/personalisedprices/update-textprice/update-textprice.page').then( m => m.UpdateTextpricePage)
+  },
+
 
  
 

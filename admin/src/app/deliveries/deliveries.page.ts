@@ -53,10 +53,10 @@ export class DeliveriesPage implements OnInit {
   }
 
   GetAllDeliveries(){
-    this.service.GetAllDeliveries().subscribe(result =>{
-      this.deliveries = result as Delivery[];
-      console.log(this.deliveries)
-    })
+    // this.service.GetAllDeliveries().subscribe(result =>{
+    //   this.deliveries = result as Delivery[];
+    //   console.log(this.deliveries)
+    // })
   }
 
   getDeliveryCompany(){
@@ -68,34 +68,34 @@ export class DeliveriesPage implements OnInit {
 
 
   AddDelivery(){
-    let addDelivery = new Delivery();
+    // let addDelivery = new Delivery();
 
-    addDelivery.delivery_Company = this.AddForm.value.deliverycompany;
-    addDelivery.delivery_Price = this.AddForm.value.deliveryprice;
-    addDelivery.tracking_Number = this.AddForm.value.trackingnumber;    
+    // addDelivery.delivery_Company = this.AddForm.value.deliverycompany;
+    // addDelivery.delivery_Price = this.AddForm.value.deliveryprice;
+    // addDelivery.tracking_Number = this.AddForm.value.trackingnumber;    
 
-    this.service.AddDelivery(addDelivery).subscribe(response => {
-      if(response.status == "Error")
-      {
-        this.addDeliveryErrorAlert();
-      }
-      else{
-        this.addDeliverySuccessAlert();
-      }
-    })
+    // this.service.AddDelivery(addDelivery).subscribe(response => {
+    //   if(response.status == "Error")
+    //   {
+    //     this.addDeliveryErrorAlert();
+    //   }
+    //   else{
+    //     this.addDeliverySuccessAlert();
+    //   }
+    // })
   }
 
   ReceiveDelivery(DeliveryId: number){
-    this.service.ReceiveDelivery(DeliveryId).subscribe(result => {
-      console.log(result);
-      if(result.status == "Error")
-      {
-        this.ReceiveDeliveryErrorAlert();
-      }
-      else if(result.status == "Success"){
-        this.ReceiveDeliverySuccessAlert();
-      }
-    })
+    // this.service.ReceiveDelivery(DeliveryId).subscribe(result => {
+    //   console.log(result);
+    //   if(result.status == "Error")
+    //   {
+    //     this.ReceiveDeliveryErrorAlert();
+    //   }
+    //   else if(result.status == "Success"){
+    //     this.ReceiveDeliverySuccessAlert();
+    //   }
+    // })
   }
 
   reloadPage(){

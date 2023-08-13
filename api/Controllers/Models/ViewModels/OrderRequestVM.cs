@@ -22,6 +22,6 @@ namespace IPKP___API.Controllers.Models.ViewModels
 
         public DateTime Order_Request_Date { get; set; }
         public double Order_Request_Total_Price { get; set; }
-        public bool is_Accepted { get; set; }
+        //public bool is_Accepted { get; set; }
     }
 }
