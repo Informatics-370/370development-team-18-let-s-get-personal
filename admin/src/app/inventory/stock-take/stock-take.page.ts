@@ -58,6 +58,15 @@ export class StockTakePage implements OnInit {
     this.GetStockTypes();
   }
 
+  UpdateQuantity(){
+    
+  }
+
+  Writeoff()
+  {
+    this.router.navigate(['./tabs/write-off']);
+  }
+
   GetAllStockItems(){
     this.stockitemservice.GetStockItems().subscribe(result =>{
       this.Products = result as StockItemViewModel[];

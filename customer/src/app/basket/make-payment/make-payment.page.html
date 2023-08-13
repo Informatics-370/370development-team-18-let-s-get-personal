@@ -6,14 +6,33 @@
 
 <ion-content [fullscreen]="true">
   
-  <ion-list>
-      <ion-item>
-        <ion-input label="Name" labelPlacement="floating" placeholder="Your Name and Surname"></ion-input>
-      </ion-item>
-      <ion-item>
-      <ion-input label="Address" labelPlacement="floating" placeholder="Street, Surbarb, City and ZIP Code"></ion-input>
-    </ion-item>
-    </ion-list>
-   <ion-button expand="block" >Make Payment</ion-button><!--This takes to the third party app view page. -->
+  <form [formGroup]="AddDelAddressForm"> 
+            
+    <ion-item>
+      <ion-label position="stacked">Delivery Price</ion-label><br>
+      <ion-input type="text" formControlName="orderLineItemId" placeholder="" required></ion-input>
+    </ion-item> 
+  
+    <ion-item>
+    <ion-label position="stacked">Delivery Company</ion-label><br>
+    <ion-select placeholder="Select a Delivery Company">
+      <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
+      <ion-select-option *ngFor="let company of deliverycompanies" value ="{{company.delivery_Company_ID}}">
+        {{company.delivery_Company_Name}}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>         
+
+  <ion-item>
+    <ion-label position="stacked">Tracking Number</ion-label><br>
+    <ion-input type="Number" formControlName="trackingnumber" placeholder="" required></ion-input>
+  </ion-item>   
+  
+  <ion-button onclick="AddDeliveryAddress()">Confirm Address</ion-button>
+</form>
+
+
+  
+<ion-button expand="block" >Make Payment</ion-button><!--This takes to the third party app view page. -->
     
 </ion-content>

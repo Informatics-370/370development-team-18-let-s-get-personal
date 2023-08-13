@@ -34,12 +34,12 @@
   <!--Database (API)-->
 
     <ion-row>
-      <ion-col *ngFor="let item of stockItems">
+      <ion-col *ngFor="let item of Products">
         <ion-card>
           <ion-card-title>{{item.stock_Item_Name}}</ion-card-title>
           <ion-card-content>
-            <ion-img src={{item.stock_Images.stock_Image_File}}></ion-img>
-            <p>{{item.stock_Item_Colour.stock_Item_Colour_Name}}</p>
+            <ion-img src='data:image/png;base64,{{item.stockImageFile}}'></ion-img>
+            <p>{{item.stockColourName}}</p>
             <p>R: {{item.stock_Item_Price}}</p>
           </ion-card-content> <ion-button (click)="addToBasket(item)">Add To Basket</ion-button>
         </ion-card>

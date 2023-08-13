@@ -8,6 +8,7 @@
   </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<link rel="stylesheet" href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css">   
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
@@ -27,8 +28,19 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  
   <div id="htmlData">
-    <h2>Inventory</h2>    
+    <h2>Inventory</h2>
+    <form [formGroup]="SearchStockForm">
+      <ion-label>Search by date</ion-label>
+      <ion-item>
+        <ion-input type="date" formControlName="enddate" placeholder="End date" required></ion-input>        
+      </ion-item> 
+      <ion-item>
+        <ion-input type="date" formControlName="startdate" placeholder="Start date" required></ion-input>
+      </ion-item>
+      <ion-button onclick="search()">Search</ion-button>
+    </form>
     <ion-grid>
       <ion-row>
         <ion-col style="font-weight: bold;">Product Name</ion-col>
@@ -37,24 +49,17 @@
         <ion-col style="font-weight: bold;">Product Type</ion-col>
         <ion-col style="font-weight: bold;">Product Colour</ion-col>
         <ion-col style="font-weight: bold;">Product Image</ion-col>
-        <!-- Inventory -->
         <ion-col style="font-weight: bold;">Quantity In Stock</ion-col>
         <ion-col style="font-weight: bold;">Date Added</ion-col>
         <ion-col style="font-weight: bold;">Inventory Comments</ion-col>
-        <!-- Invntory Line -->
       </ion-row>
       <ion-row *ngFor="let item of Products" class="cell-class">
         <ion-col>{{item.stock_Item_Name}}</ion-col>
         <ion-col>{{item.stock_Item_Price}}</ion-col>
         <ion-col>{{item.stock_Item_Size}}</ion-col>
-
         <ion-col>{{item.stockTypeName}}</ion-col>
         <ion-col>{{item.stockColourName}}</ion-col>
-        <ion-col>
-          <!-- <p>{{item.stockImageName}}</p> -->
-          <img src='data:image/png;base64,{{item.stockImageFile}}'>
-        </ion-col>     
-
+        <ion-col><img src='data:image/png;base64,{{item.stockImageFile}}'></ion-col>
         <ion-col>{{item.stock_Item_Quantity}}</ion-col>
         <ion-col>{{item.inventory_Date}}</ion-col>
         <ion-col>{{item.inventory_Comments}}</ion-col>

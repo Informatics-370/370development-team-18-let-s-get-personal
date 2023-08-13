@@ -17,6 +17,10 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(255)]
         public string Write_Off_Reason { get; set; }
 
+        public Guid Write_Off_ID { get; set; }
+
+        public Guid? Stock_Item_ID { get; set; }
+
         public virtual Write_Off Write_Off { get; set; }
         public virtual Stock_Item Stock_Item { get; set; }
     

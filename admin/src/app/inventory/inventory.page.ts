@@ -1,6 +1,6 @@
 import { Component, OnInit, EnvironmentInjector, ViewChild, ElementRef  } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
 import { StockItemDataService } from 'src/app/Services/stockitem.service';
@@ -23,21 +23,39 @@ type Opts = { [key: string]: string | number }
   templateUrl: './inventory.page.html',
   styleUrls: ['./inventory.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule]
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule, ReactiveFormsModule]
 })
 export class InventoryPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
   textprice: TextPrice[] =[]
   imageprice: Image_Price[] =[]
   Products: StockItemViewModel[] = [];
+  searchString: string = "";
+  searchedinventory: StockItemViewModel[] = [];
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public bestsellerservice:BestsellersService, private alertController:AlertController, 
     private basketService : BasketService,  public stockitemservice: StockItemDataService,
     public pservice: PersonalisationService) { }
 
+    SearchStockForm: FormGroup = new FormGroup({
+      startdate: new FormControl('',[Validators.required]),
+      enddate: new FormControl('',[Validators.required]),
+    })
+
   ngOnInit() {
     this.GetAllStockItems();
+    if(this.searchString == "")
+    {
+      this.searchedinventory = this.Products;
+    }
   }
+
+  search(){
+    this.searchedinventory = this.Products.filter(
+      f => new Date(f.inventory_Date) > this.SearchStockForm.value.start_Date 
+      && new Date(f.inventory_Date) < this.SearchStockForm.value.end_Date);
+  }
+
 
   stocktypes()
   {

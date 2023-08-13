@@ -20,7 +20,7 @@ import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 })
 export class ShopAllPage implements OnInit {
   menuType: string = 'overlay';
-
+  Products: StockItemViewModel[] = [];
   stockItems: Stock_Item[] = [];
 
   constructor(private _modalController: ModalController,
@@ -57,7 +57,7 @@ export class ShopAllPage implements OnInit {
 
   public GetStockItems(){
     this.service.GetStockItems().subscribe(result =>{
-      this.stockItems = result as Stock_Item[];
+      this.Products = result as StockItemViewModel[];
       console.log(this.stockItems)
     })
   }

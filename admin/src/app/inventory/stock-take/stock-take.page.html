@@ -33,31 +33,26 @@
         <ion-col style="font-weight: bold;">Product Type</ion-col>
         <ion-col style="font-weight: bold;">Product Colour</ion-col>
         <ion-col style="font-weight: bold;">Product Image</ion-col>
-        <!-- Inventory -->
-        <ion-col style="font-weight: bold;">Quantity In Stock</ion-col>
+        <ion-col style="font-weight: bold;">Old Quantity</ion-col>
         <ion-col style="font-weight: bold;">Date Added</ion-col>
         <ion-col style="font-weight: bold;">Inventory Comments</ion-col>
-        <!-- Invntory Line -->
+        <ion-col style="font-weight: bold;">Current Quantity</ion-col>
+        <ion-col></ion-col>
+        <ion-col></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of Products">
         <ion-col>{{item.stock_Item_Name}}</ion-col>
         <ion-col>{{item.stock_Item_Price}}</ion-col>
         <ion-col>{{item.stock_Item_Size}}</ion-col>
-
         <ion-col>{{item.stockTypeName}}</ion-col>
         <ion-col>{{item.stockColourName}}</ion-col>
-        <ion-col>
-          <!-- <p>{{item.stockImageName}}</p> -->
-          <img src='data:image/png;base64,{{item.stockImageFile}}'>
-        </ion-col>     
-
-        <ion-col> 
-          <ion-input value="{{item.stock_Item_Quantity}}" placeholder="{{item.stock_Item_Quantity}}"> </ion-input>          
-        </ion-col>
-        <ion-col>
-          {{item.inventory_Date}}
-        </ion-col>
-        <ion-col>{{item.inventory_Comments}}</ion-col>
+        <ion-col><img src='data:image/png;base64,{{item.stockImageFile}}'></ion-col>
+        <ion-col>{{item.stock_Item_Quantity}}</ion-col>
+        <ion-col>{{item.inventory_Date}}</ion-col>
+        <ion-col>{{item.inventory_Comments}}</ion-col>        
+        <ion-col><ion-input value="{{item.stock_Item_Quantity}}" placeholder=""> </ion-input></ion-col>
+        <ion-col> <ion-button onclick="UpdateQuantity()">Update Quantity</ion-button> </ion-col>
+        <ion-col> <ion-button onclick="Writeoff()">Write-off</ion-button> </ion-col>
       </ion-row>
     </ion-grid>
   </ion-content>

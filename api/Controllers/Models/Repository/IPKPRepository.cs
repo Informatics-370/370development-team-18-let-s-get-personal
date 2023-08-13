@@ -623,6 +623,15 @@ namespace IPKP___API.Controllers.Models.Repository
             IEnumerable<OrderLineItemVM> query = orderlineitem.Where(x => x.Order_Status == orderlinestatus);
             return query;
         }
+
+        //public object GetWriteOffItems()
+        //{ 
+        //    List<Write_Off> writeoffs = (
+                
+        //        ).ToList();
+
+        //    return writeoffs;
+        //}
     }
 }
 //public object GetOrderLineItemByID(Guid orderlineitemID)
