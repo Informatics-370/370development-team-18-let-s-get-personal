@@ -10,13 +10,21 @@ import { ModalController } from '@ionic/angular';
 import { Stock_Item } from '../Models/stockitem';
 import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
-import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
+<<<<<<< Updated upstream
 //import { Customer } from '../Models/customer';
+=======
+import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
+import { TextPrice } from '../Models/textprice';
+>>>>>>> Stashed changes
 
 //for modal
 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { Design_Image } from '../Models/designimage';
+import { Design_Text } from '../Models/designtext';
+import { Image_Price } from '../Models/imageprice';
+import { Design_Image_Line_Item } from '../Models/designimagelineitem';
 
 
 @Component({
@@ -26,44 +34,118 @@ import { OverlayEventDetail } from '@ionic/core/components';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, RouterModule, ReactiveFormsModule, RouterModule]
 })
-export class BasketPage implements OnInit,AfterViewInit {
+export class BasketPage implements OnInit {
+uploadFile(arg0: FileList|null) {
+throw new Error('Method not implemented.');
+}
+
+  imageformdata = new FormData();
+  personalizations: PersonalisationDesignVM[] = [];
+  fileNameUploaded = ''
+  formData = new FormData();
+  
+  errmsg: string = ""
+  textprice: TextPrice[] =[]
+  imageprice: any //Image_Price[] =[]
+  imagepriceID!: string
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private basketservice: BasketService, public modalCtrl: ModalController,
     private _router: Router,
-    private service: PersonalisationService, private alertController: AlertController) { this.basketItemList = JSON.parse(localStorage.getItem('basket')!); }//,private companyservice:DeliveryCompanyDataService) { }
+    private service: PersonalisationService, private alertController: AlertController) { }
 
+<<<<<<< Updated upstream
   personalizations: Personalisation_Design[] = [];
-  private basketItemList: BasketItems[];
+
   basketItems: BasketItems[] = [];
   //customers:Customer[]=[];
+=======
+  personalisation: PersonalisationDesignVM[] = [];
+>>>>>>> Stashed changes
   cartItems: any[] = [];
 
   AddForm: FormGroup = new FormGroup({
     designText: new FormControl('', [Validators.required])
   })
+  UploadImage: FormGroup = new FormGroup({
+    Image_File: new FormControl('')
+  })
+
+
+
   ngOnInit() {
-    // this.GetBasketFromAPI();
     this.cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
   }
 
+<<<<<<< Updated upstream
+  private basketItemList: BasketItems[];
 
-  public removeItemFromBasket(item: any): void {
-    this.cartItems = this.cartItems.filter((cartItem) => cartItem.id !== item.id);
+=======
+  uploadImage(){
+    let designimage = new Design_Image()
+    this.imageformdata.append('Image_File', this.UploadImage.get('Image_File')!.value);
+>>>>>>> Stashed changes
+
+    this.service.UploadDesignImage(this.imageformdata).subscribe(result => {
+      designimage = result as Design_Image;
+    })
+    localStorage.setItem('designimageID', designimage.design_Image_ID);
+  }
+
+  AddImageToImageLineItem(){
+    let addtoline = new Design_Image_Line_Item();
+    addtoline.image_Price_ID = this.imagepriceID
+    //addtoline.design_Image_ID = get from local storage 
+
+    this.service.AddToDesignImageLineItem(addtoline).subscribe(res =>{
+
+    })
+  }
+
+  uploadDesignText(){
+    let addDesignText = new Design_Text();
+    addDesignText.design_Text_Description = this.AddForm.value.designText
+    //text price 
+
+    let newdesigntext = new Design_Text();
+    this.service.UploadDesignText(addDesignText).subscribe(res =>{
+      newdesigntext = res as Design_Text;
+      localStorage.setItem('designtextID', newdesigntext.design_Text_ID);
+    })
+  }
+
+  getTextPrice(){
+    this.service.GetAllTextPrices().subscribe(result => {
+      this.textprice = result as TextPrice[];
+      console.log(this.textprice)
+    })
+  }
+
+  getImagePrice(){
+    this.service.GetAllImagePrices().subscribe(result => {
+      this.imageprice = result as Image_Price[];
+      console.log(this.imageprice)
+    })
+  }
+
+  
+
+  public removeItemFromBasket(id: any):void {
+    this.cartItems = this.cartItems.filter((cartItem) => cartItem.stock_Item.stock_Item_ID !== id);
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
 
   public async incrementQuantity(item: any){
     
-    if (item.quantity < 10) {
-      item.quantity++;
+    if (item.basket_Quantity< 10) {
+      item.basket_Quantity++;
       localStorage.setItem('cart', JSON.stringify(this.cartItems));
     }
     else{
       console.log("Maximum item reached!")
       const alert = await this.alertController.create({
         header: 'Alert!',
-        subHeader: 'No more than 10 items.',
+        subHeader: 'No more than 10 items. Send an email to request for large orders.',
         buttons: [{
           text: 'OK',
           role: 'cancel',
@@ -77,8 +159,8 @@ export class BasketPage implements OnInit,AfterViewInit {
   }
 
   public decrementQuantity(item: any): void {
-    if (item.quantity > 1) {
-      item.quantity--;
+    if (item.basket_Quantity > 1) {
+      item.basket_Quantity--;
     }
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
@@ -86,35 +168,55 @@ export class BasketPage implements OnInit,AfterViewInit {
   public calculateTotalPrice(): any {
     let totalPrice = 0;
     for (const item of this.cartItems) {
-      totalPrice += item.price * item.quantity;
+      totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;
     }
     return totalPrice;
   }
 
   public clearBasket() {
-    localStorage.removeItem(BasketItems.name);
-    // this.notifyOnNewItemInCart();
+    this.cartItems = this.cartItems.filter((cartItem) => cartItem.stock_Item_ID);
+    localStorage.removeItem('cart');
   }
 
   public shopall() {
     this._router.navigate(["/tabs/shop-all"])
   }
   public personalize(id:any) {
+    localStorage.setItem("stockId",id);
     //this.AddPersonalisation();
+<<<<<<< Updated upstream
 
-    this._router.navigate(["/tabs/personalisation"], id)
+    this._router.navigate(["/tabs/personalisation"])
+=======
+    //this._router.navigate(["/tabs/personalisation"], id)
+>>>>>>> Stashed changes
   }
 
+
+
   public makepayment() {
-    //change to checkout and go to deliveries then make payment 
+<<<<<<< Updated upstream
     this._router.navigate(["/tabs/make-payment"])
   }
 
   AddPersonalisation() {
+    let AddPersonalisation = new Personalisation_Design();
+
+    AddPersonalisation.design_Text.design_Text_Description = this.AddForm.value.designText;
+    AddPersonalisation.design_Image = this.AddForm.value.design_Image;
+=======
+    //change to checkout and go to deliveries then make payment 
+    this.AddImageToImageLineItem()
+   // this.AddPersonalisation()
+    this._router.navigate(["/tabs/make-payment"])
+  }
+
+  /*AddPersonalisation() {
     let AddPersonalisation = new PersonalisationDesignVM();
 
-    // AddPersonalisation.design_Text.design_Text_Description = this.AddForm.value.designText;
-    // AddPersonalisation.design_Image = this.AddForm.value.design_Image;
+     AddPersonalisation.design_Text = this.AddForm.value.designText;
+     AddPersonalisation.image_File = this.AddForm.value.imageFile;
+>>>>>>> Stashed changes
 
     this.service.AddPersonalisation(AddPersonalisation).subscribe(response => {
       if (response.status == "Error") {
@@ -124,8 +226,24 @@ export class BasketPage implements OnInit,AfterViewInit {
         this.addPersonalizationSuccessAlert();
       }
     })
-  }
+  }*/
 
+
+  AddPersonalisation() {
+    let AddPersonalisation = new PersonalisationDesignVM();
+//let token = JSON.parse(JSON.stringify(localStorage.getItem('token')));
+     AddPersonalisation.design_Text = this.AddForm.value.designText;
+     AddPersonalisation.image_File = this.UploadImage.value.imageFile;
+    this.service.AddPersonalisation(AddPersonalisation).subscribe(response => {
+      if (response.status == "Error") {
+        this.addPersonalizationErrorAlert();
+      }
+      else {
+        this.addPersonalizationSuccessAlert();
+        
+      }
+    })
+  }
 
   async addPersonalizationSuccessAlert() {
     const alert = await this.alertController.create({
@@ -164,15 +282,46 @@ export class BasketPage implements OnInit,AfterViewInit {
   }
 
   confirmaddmodal() {
-    this.AddPersonalisation();
+    let stockId=localStorage.getItem("stockId");
+
+   let items = JSON.parse(localStorage.getItem('cart') as string) || [];
+   let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
+  
+  let design_Text = this.AddForm.value.designText;
+  let image_File = this.UploadImage.value.imageFile;
+
+  if(existingItem){
+    //items.push({ ...existingItem, personalization. : 1 });
+    existingItem.personalization.personalizationText=design_Text;
+    existingItem.personalization.img=image_File;
+    localStorage.removeItem("stockId");
+  }
+  localStorage.setItem('cart',JSON.stringify(items));
+  this._router.navigate(["/tabs/personalisation"])
   }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
-  /*==============================================================================================*/
+  async UploadErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: '',
+      message: this.errmsg,
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
+    });
+    await alert.present();
+  }
 
+  /*==============================================================================================*/
+/*
   @ViewChild('canvas') canvas: any;
   context!: CanvasRenderingContext2D;
   customText: string = '';
@@ -437,6 +586,6 @@ drawCustomImage() {
     this.customImageContext.drawImage(this.customImage, -this.customImageWidth / 2, -this.customImageHeight / 2, this.customImageWidth, this.customImageHeight);
     this.customImageContext.restore();
   }
-}
+}*/
 
 }

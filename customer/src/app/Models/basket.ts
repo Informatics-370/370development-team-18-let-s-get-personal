@@ -1,13 +1,27 @@
 import { Stock_Item } from 'src/app/Models/stockitem';
 import { Customer } from './customer';
+import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
 
 export class BasketItems {
     basket_ID! : number
     basket_Quantity!: number
-    
+     personalization:Personalization = new Personalization();
     stock_Item_ID!: number
     stock_Item!: Stock_Item
 
     customer!: Customer
     customer_ID!: number;
 }
+
+export class Personalization{
+    personalizationText!:string;
+    img!:string;
+}
+
+
+/*export class BasketItems{
+    stock_Item!: Stock_Item;
+    basket_Quantity!: Number;
+   
+}*/
+
