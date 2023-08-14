@@ -44,6 +44,8 @@ export class InventoryPage implements OnInit {
 
   ngOnInit() {
     this.GetAllStockItems();
+    this.getImagePrice()
+    this.getTextPrice()
     if(this.searchString == "")
     {
       this.searchedinventory = this.Products;
@@ -82,35 +84,36 @@ export class InventoryPage implements OnInit {
 
   @ViewChild('htmlData') htmlData!: ElementRef;
   
-    openPDF(): void {
-      let DATA: any = document.getElementById('htmlData');
-      html2canvas(DATA).then((canvas) => {       
-        //Initialize JSPDF
-        let PDF = new jsPDF('p', 'mm', 'a4');
-        //Converting canvas to Image
-        const FILEURI = canvas.toDataURL('image/png');
-        //Add image Canvas to PDF
-        let fileWidth = 208;
-        let fileHeight = (canvas.height * fileWidth) / canvas.width;      
-        let position = 10;
-        PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
-        
-        PDF.save('IPKP-Products.pdf');
-      });
-    }
-    getImagePrice(){
-      this.pservice.GetAllImagePrices().subscribe(result => {
-        this.imageprice = result as Image_Price[];
-        console.log(this.imageprice)
-      })
-    }
+  openPDF(): void {
+    let DATA: any = document.getElementById('htmlData');
+    html2canvas(DATA).then((canvas) => {       
+      //Initialize JSPDF
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      //Converting canvas to Image
+      const FILEURI = canvas.toDataURL('image/png');
+      //Add image Canvas to PDF
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;      
+      let position = 10;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
+          
+      PDF.save('IPKP-Products.pdf');
+    });
+  }
+
+  getImagePrice(){
+    this.pservice.GetAllImagePrices().subscribe(result => {
+      this.imageprice = result as Image_Price[];
+      console.log(this.imageprice)
+    })
+  }
   
-    getTextPrice(){
-      this.pservice.GetAllTextPrices().subscribe(result => {
-        this.textprice = result as TextPrice[];
-        console.log(this.textprice)
-      })
-    }
+  getTextPrice(){
+    this.pservice.GetAllTextPrices().subscribe(result => {
+      this.textprice = result as TextPrice[];
+      console.log(this.textprice)
+    })
+  }
   
   addToBestSellers(bestseller: Stock_Item[]){
     this.bestsellerservice.SaveBestSellersList(bestseller).subscribe((response:any) => {

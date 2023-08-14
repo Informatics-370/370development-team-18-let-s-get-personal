@@ -37,6 +37,19 @@ namespace IPKP___API.Controllers.Models.Repository
             _appDbContext.Update(entity);
         }
 
+        //admins
+        public async Task<Admin[]> GetAllAdminssAsync()
+        {
+            IQueryable<Admin> query = _appDbContext.Admin;
+            return await query.ToArrayAsync();
+        }
+        public async Task<Admin> GetAdminDetailsAsync(Guid admin_ID)
+        {
+            IQueryable<Admin> query = _appDbContext.Admin
+                      .Where(u => u.Admin_ID == admin_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+
         //Customers
         public async Task<Customer[]> GetAllCustomersAsync()
         {

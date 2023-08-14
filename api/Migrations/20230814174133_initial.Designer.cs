@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPKP___API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230811000351_initial")]
+    [Migration("20230814174133_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,9 @@ namespace IPKP___API.Migrations
                     b.Property<string>("Cell_Number")
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");
+
+                    b.Property<DateTime>("Date_Registered")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(255)
@@ -132,6 +135,9 @@ namespace IPKP___API.Migrations
                     b.Property<string>("Cell_Number")
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");
+
+                    b.Property<DateTime>("Date_Registered")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(255)
@@ -349,6 +355,9 @@ namespace IPKP___API.Migrations
                     b.Property<string>("Cell_Number")
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");
+
+                    b.Property<DateTime>("Date_Registered")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(255)
@@ -1030,7 +1039,13 @@ namespace IPKP___API.Migrations
                     b.Property<Guid?>("Stock_Item_ID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Write_Off_ID")
+                    b.Property<Guid?>("Stock_Item_ID1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Write_Off_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("Write_Off_ID1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Write_Off_Quantity")
@@ -1043,9 +1058,9 @@ namespace IPKP___API.Migrations
 
                     b.HasKey("Write_Off_Line_Item_ID");
 
-                    b.HasIndex("Stock_Item_ID");
+                    b.HasIndex("Stock_Item_ID1");
 
-                    b.HasIndex("Write_Off_ID");
+                    b.HasIndex("Write_Off_ID1");
 
                     b.ToTable("Write_Off_Line_Items");
                 });
@@ -1542,11 +1557,11 @@ namespace IPKP___API.Migrations
                 {
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Stock_Item")
                         .WithMany()
-                        .HasForeignKey("Stock_Item_ID");
+                        .HasForeignKey("Stock_Item_ID1");
 
                     b.HasOne("IPKP___API.Controllers.Models.Entities.Write_Off", "Write_Off")
                         .WithMany()
-                        .HasForeignKey("Write_Off_ID");
+                        .HasForeignKey("Write_Off_ID1");
 
                     b.Navigation("Stock_Item");
 

@@ -7,7 +7,7 @@ export class Admin{
     cell_Number!: Number
     email!: String  
     username!: string
-
+    date_Registered!: Date
     user!: User  
     user_ID!: number
 }

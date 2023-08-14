@@ -23,6 +23,8 @@ namespace IPKP___API.Controllers.Models.Entities
 
         [StringLength(255)]
         public string Username { get; set; }
+
+        public DateTime Date_Registered { get; set; }
         
         //foreign key user        
         public Guid User_ID { get; set; }

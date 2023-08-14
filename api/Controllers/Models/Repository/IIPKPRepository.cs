@@ -12,6 +12,9 @@ namespace IPKP___API.Controllers.Models.Repository
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
         void Update<T>(T entity) where T : class;
+
+        Task<Admin[]> GetAllAdminssAsync();
+        Task<Admin> GetAdminDetailsAsync(Guid admin_ID);
         Task<Employee> GetEmployeeDetailsAsync(Guid employee_ID);
         Task<Employee[]> GetAllEmployeesAsync();
         Task<Customer> GetCustomerDetailsAsync(Guid customer_ID);

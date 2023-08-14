@@ -18,7 +18,7 @@
   </ion-header>
   
   <ion-button (click)="openPDF()" >Download Inventory PDF</ion-button>
-  <ion-grid>
+  <!-- <ion-grid>
     <ion-row >
       <ion-col *ngFor="let item of textprice">
         Current Text Personlisation Price: {{item.text_Price_Amount}}
@@ -27,20 +27,19 @@
         Current Image Personlisation Price: {{item.image_Price_Amount}}        
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
   
   <div id="htmlData">
     <h2>Inventory</h2>
-    <form [formGroup]="SearchStockForm">
-      <ion-label>Search by date</ion-label>
+    <!-- <form [formGroup]="SearchStockForm">      
       <ion-item>
-        <ion-input type="date" formControlName="enddate" placeholder="End date" required></ion-input>        
-      </ion-item> 
-      <ion-item>
+        <ion-label>Search by date</ion-label>
+        <ion-input type="date" formControlName="enddate" placeholder="End date" required></ion-input> 
         <ion-input type="date" formControlName="startdate" placeholder="Start date" required></ion-input>
-      </ion-item>
-      <ion-button onclick="search()">Search</ion-button>
-    </form>
+        <ion-button onclick="search()">Search</ion-button>
+      </ion-item> 
+    </form> -->
+
     <ion-grid>
       <ion-row>
         <ion-col style="font-weight: bold;">Product Name</ion-col>

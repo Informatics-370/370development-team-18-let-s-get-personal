@@ -81,15 +81,15 @@ export class AuthenticationService {
 
   //*** Registering ***//
   public RegisterCustomer(customer: RegisterVM){
-    return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterCustomer`, customer, this.httpOptions)
+    return this.httpClient.post<Response>(`${this.apiUrl}Authenticate/RegisterCustomer`, customer, this.httpOptions)
   }
 
   public RegisterAdmin(admin: RegisterVM){
-    return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterAdmin`, admin, this.httpOptions)
+    return this.httpClient.post<Response>(`${this.apiUrl}Authenticate/RegisterAdmin`, admin, this.httpOptions)
   }
 
   public RegisterEmployee(employee: RegisterVM){
-    return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterEmployee`, employee, this.httpOptions)
+    return this.httpClient.post<Response>(`${this.apiUrl}Authenticate/RegisterEmployee`, employee, this.httpOptions)
   }
 
   public ForgotPassword(forgotpassword: ForgotPasswordViewModel){

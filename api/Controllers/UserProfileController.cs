@@ -22,7 +22,20 @@ namespace IPKP___API.Controllers
             _IPKPRepository = iPKPRepository;
         }
         //*************** Admins ***************\\
-       
+        [HttpGet]
+        [Route("GetAllAdmins")]
+        public async Task<IActionResult> GetAllAdminssAsync()
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetAllAdminssAsync();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+            }
+        }
 
 
         //*************** Customers ***************\\

@@ -20,8 +20,12 @@ import { Employee } from '../Models/employee';
   
     constructor(private httpClient: HttpClient) { 
     }
+    public GetAllAdmins(): Observable<any>{ 
+      return this.httpClient.get(`${this.apiUrl}UserProfile/GetAllAdmins`)
+      .pipe(map(result => result))
+    }
   
-    public GetCustomers(): Observable<any>{ 
+    public GetAllCustomers(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}UserProfile/GetAllCustomers`)
       .pipe(map(result => result))
     }
@@ -60,11 +64,11 @@ import { Employee } from '../Models/employee';
         .pipe(map(result => result))
       }
 
-  //add
-    public AddEmployee(employee:Employee){
-        return this.httpClient.post<Response>(`${this.apiUrl}UserProfile/AddEmployee`, employee)
-        .pipe(map(result => result))
-    } 
+  // //add
+  //   public AddEmployee(employee:Employee){
+  //       return this.httpClient.post<Response>(`${this.apiUrl}UserProfile/AddEmployee`, employee)
+  //       .pipe(map(result => result))
+  //   } 
 
  //edit
     public UpdateEmployee(Employee_ID:number, employee:Employee){

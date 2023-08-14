@@ -10,46 +10,66 @@
       <ion-title size="large">profiles</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-button (click)="openPDF()">Dowload Users List</ion-button>
+  <ion-button onclick="routeEmployees()">Manage Employees</ion-button>
 
-  <ion-content id="content">
-    <ion-button>Manage Employees</ion-button>
+  <div id="userData">    
     <ion-grid>
       <ion-col>
-        <ion-row> Admins </ion-row>
+        <ion-row><h2>Admins</h2></ion-row>
         <ion-row>
           <ion-col style="font-weight: bold;">Name</ion-col>
           <ion-col style="font-weight: bold;">Email</ion-col>
           <ion-col style="font-weight: bold;">Username</ion-col>
           <ion-col style="font-weight: bold;">Cell Number</ion-col>
+          <ion-col style="font-weight: bold;">Date Registered</ion-col>
         </ion-row>
-          <!-- <ion-row>
-          <ion-col>Name</ion-col>
-          <ion-col>Email</ion-col>
-          <ion-col>Username</ion-col>
-          <ion-col>Cell Number</ion-col>
-        </ion-row> -->
-      </ion-col>
-      <ion-col>
-        <ion-row> Employees </ion-row>
-        <ion-row>
-          <ion-col style="font-weight: bold;">Name</ion-col>
-          <ion-col style="font-weight: bold;">Email</ion-col>
-          <ion-col style="font-weight: bold;">Username</ion-col>
-          <ion-col style="font-weight: bold;">Cell Number</ion-col>
+        <ion-row *ngFor="let a of admin">
+          <ion-col>{{a.firstName}} {{a.surname}}</ion-col>
+          <ion-col>{{a.email}}</ion-col>
+          <ion-col>{{a.username}}</ion-col>
+          <ion-col>{{a.cell_Number}}</ion-col>
+          <ion-col>{{a.date_Registered}}</ion-col>
         </ion-row>
       </ion-col>
 
       <ion-col>
-        <ion-row> Customers </ion-row>
+        <ion-row><h2>Employees</h2>  </ion-row>
         <ion-row>
           <ion-col style="font-weight: bold;">Name</ion-col>
           <ion-col style="font-weight: bold;">Email</ion-col>
           <ion-col style="font-weight: bold;">Username</ion-col>
           <ion-col style="font-weight: bold;">Cell Number</ion-col>
+          <ion-col style="font-weight: bold;">Date Registered</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let e of employees">
+          <ion-col>{{e.firstName}} {{e.surname}}</ion-col>
+          <ion-col>{{e.email}}</ion-col>
+          <ion-col>{{e.username}}</ion-col>
+          <ion-col>{{e.cell_Number}}</ion-col>
+          <ion-col>{{e.date_Registered}}</ion-col>
+        </ion-row>
+      </ion-col>
+      
+      <ion-col>
+        <ion-row><h2>Customers</h2></ion-row>
+        <ion-row>
+          <ion-col style="font-weight: bold;">Name</ion-col>
+          <ion-col style="font-weight: bold;">Email</ion-col>
+          <ion-col style="font-weight: bold;">Username</ion-col>
+          <ion-col style="font-weight: bold;">Cell Number</ion-col>
+          <ion-col style="font-weight: bold;">Date Registered</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let c of customers">
+          <ion-col>{{c.firstName}} {{c.surname}}</ion-col>
+          <ion-col>{{c.email}}</ion-col>
+          <ion-col>{{c.username}}</ion-col>
+          <ion-col>{{c.cell_Number}}</ion-col>
+          <ion-col>{{c.date_Registered}}</ion-col>
         </ion-row>
       </ion-col>
 
     </ion-grid>
-  </ion-content>
+  </div>
   
 </ion-content>

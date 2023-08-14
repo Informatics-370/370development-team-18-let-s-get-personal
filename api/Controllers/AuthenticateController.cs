@@ -117,6 +117,7 @@ namespace IPKP___API.Controllers
                 Email = model.Email,
                 Username = model.Username,
                 Cell_Number = model.Cell_Number,
+                Date_Registered = DateTime.Now,
                 User_ID = new Guid(),
             };
 
@@ -165,6 +166,7 @@ namespace IPKP___API.Controllers
                     Username = model.Username,
                     Cell_Number = model.Cell_Number,
                     User_ID = new Guid(),
+                    Date_Registered = DateTime.Now,
                 };
 
                 _IPKPRepository.Add(admin);
@@ -217,6 +219,7 @@ namespace IPKP___API.Controllers
                     Username = model.Username,
                     Cell_Number = model.Cell_Number,
                     User_ID = new Guid(),
+                    Date_Registered = DateTime.Now,
                 };
 
                 _IPKPRepository.Add(employee);
