@@ -22,6 +22,17 @@ import { OverlayEventDetail } from '@ionic/core/components';
   imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule,RouterModule]
 })
 export class PersonalisationPage implements OnInit {
+<<<<<<< Updated upstream
+=======
+  imageformdata = new FormData();
+  personalizations: PersonalisationDesignVM[] = [];
+  fileNameUploaded = ''
+  @ViewChild(IonModal) modal!: IonModal;
+  errmsg: string = ""
+  textprice: TextPrice[] =[]
+  imageprice: any //Image_Price[] =[]
+  imagepriceID!: string
+>>>>>>> Stashed changes
 
   personalizations: Personalisation_Design[] = [];
 
@@ -41,7 +52,7 @@ export class PersonalisationPage implements OnInit {
   GetPersonalisation() {
 
     this.service.GetPersonalisation().subscribe(result => {
-      this.personalizations = result as Personalisation_Design[];
+      this.personalizations = result as PersonalisationDesignVM[];
       console.log(this.personalizations)
     })
   }
@@ -62,7 +73,7 @@ export class PersonalisationPage implements OnInit {
     })
   }
 
-  UpdatePersonalisation(personalisation_Design_ID: string) {
+  UpdatePersonalisation(personalisation_Design_ID: number) {
     this._router.navigate(['/edit-personalization', personalisation_Design_ID]);
   }
 
@@ -78,8 +89,15 @@ export class PersonalisationPage implements OnInit {
     })
   }
 
+<<<<<<< Updated upstream
   public makepayment() {
     this._router.navigate(["/tabs/make-payment"])
+=======
+  public basket() {
+    
+   // this.AddImageToImageLineItem()
+    this._router.navigate(["/tabs/basket"]) //----- change to delivery details
+>>>>>>> Stashed changes
   }
 
   reloadPage() {
