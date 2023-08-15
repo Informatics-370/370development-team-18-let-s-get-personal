@@ -1,8 +1,9 @@
 import { Stock_Item } from 'src/app/Models/stockitem';
 import { Customer } from './customer';
 import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
+import { DeliveryAddress } from './deliveryaddress';
 
-export class BasketItems {
+/*export class BasketItems {
     basket_ID! : number
     basket_Quantity!: number
      personalization:Personalization = new Personalization();
@@ -11,7 +12,7 @@ export class BasketItems {
 
     customer!: Customer
     customer_ID!: number;
-}
+}*/
 
 export class Personalization{
     personalizationText!:string;
@@ -19,9 +20,16 @@ export class Personalization{
 }
 
 
-/*export class BasketItems{
+export class BasketItems{
     stock_Item!: Stock_Item;
     basket_Quantity!: Number;
-   
-}*/
+    personalization:Personalization = new Personalization();
+}
+
+export class OrderT{
+    basketItems!: BasketItems[];
+    deliveryAddress:DeliveryAddress = new DeliveryAddress();
+    paid!:boolean;
+    price!:number;
+}
 

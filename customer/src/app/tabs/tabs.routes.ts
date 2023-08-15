@@ -95,7 +95,14 @@ export const routes: Routes = [
         path: 'edit-personalization',
         loadComponent: () => import('../personalisation/edit-personalization/edit-personalization.page').then( m => m.EditPersonalizationPage)
       },
-      
+      {
+        path: 'check-out',
+        loadComponent: () => import('../basket/make-payment/check-out/check-out.page').then( m => m.CheckOutPage)
+      },
+      {
+        path: 'successful-payment',
+        loadComponent: () => import('../basket/make-payment/check-out/successful-payment/successful-payment.page').then( m => m.SuccessfulPaymentPage)
+      },
       {
         path: '',
         redirectTo: '/tabs/home',

@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import { Response } from '../Models/response';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 import { Order } from '../Models/orders';
+import { OrderT } from '../Models/basket';
 @Injectable({
   providedIn: 'root'
 })
@@ -47,5 +48,10 @@ export class OrderService {
   public AddOrder(o:Order){
     return this.httpClient.post<Response>(`${this.apiUrl}Order/AddOrder`, o)
     .pipe(map(result => result))
+  }
+
+  public placeOrder(order:OrderT):Observable<any>{
+    console.log(order);
+    return this.httpClient.post(`${this.apiUrl}Order/PlaceOrder`,order,this.httpOptions);
   }
 }
