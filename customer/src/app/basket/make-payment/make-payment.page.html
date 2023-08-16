@@ -7,12 +7,6 @@
 <ion-content [fullscreen]="true">
   
   <form [formGroup]="AddDelAddressForm"> 
-            
-    <!--<ion-item>
-      <ion-label position="stacked">Delivery Price</ion-label><br>
-      <ion-input type="text" formControlName="orderLineItemId" placeholder="" required></ion-input>
-    </ion-item> -->
-
     <ion-item>
       <ion-label position="stacked">Street Name</ion-label><br>
       <ion-input  labelPlacement="floating" placeholder="Example: 4th Avenue Street" formControlName="streetName"></ion-input>
@@ -22,6 +16,12 @@
       <ion-label position="stacked">Street Number</ion-label><br>
       <ion-input  type="number" labelPlacement="floating" placeholder="000" formControlName="streetNumber"></ion-input>
     </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Dwelling Type</ion-label><br>
+      <ion-input type="text" labelPlacement="floating" placeholder="House/Apartment" formControlName="dwellingtype"></ion-input>
+    </ion-item>
+
     <ion-item>
       <ion-label position="stacked">Unit Number</ion-label><br>
       <ion-input  type="number" labelPlacement="floating" placeholder="000" formControlName="Unit"></ion-input>
@@ -29,22 +29,17 @@
   
     <ion-item>
       <ion-label position="stacked">City</ion-label><br>
-      <ion-input  labelPlacement="floating" placeholder="Example: Pretoria" formControlName="city"></ion-input>
+      <ion-input type="text" labelPlacement="floating" placeholder="Example: Pretoria" formControlName="city"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="stacked">Province</ion-label><br>
-      <ion-input  labelPlacement="floating" placeholder="Example: Gauteng" formControlName="province"></ion-input>
+      <ion-input type="text" labelPlacement="floating" placeholder="Example: Gauteng" formControlName="province"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="stacked">Area Code</ion-label><br>
       <ion-input  type="number" labelPlacement="floating" placeholder="0002" formControlName="areaCode"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Country</ion-label><br>
-      <ion-input  value="South Africa" formControlName="country" [readonly]="true">South Africa</ion-input>
     </ion-item>
 
     <ion-item>

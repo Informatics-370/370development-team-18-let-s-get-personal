@@ -41,6 +41,76 @@ export class PersonalisationPage implements OnInit {
     designText: new FormControl('', [Validators.required])
   })
 
+    /*uploadImage(){
+    let designimage = new Design_Image()
+    this.imageformdata.append('Image_File', this.UploadImage.get('Image_File')!.value);
+
+    this.service.UploadDesignImage(this.imageformdata).subscribe(result => {
+      designimage = result as Design_Image;
+    })
+    localStorage.setItem('designimageID', designimage.design_Image_ID);
+  }*/
+/*
+  AddImageToImageLineItem(){
+    let addtoline = new Design_Image_Line_Item();
+    addtoline.image_Price_ID = this.imagepriceID
+    //addtoline.design_Image_ID = get from local storage 
+
+    this.service.AddToDesignImageLineItem(addtoline).subscribe(res =>{
+
+    })
+  }
+
+  uploadDesignText(){
+    let addDesignText = new Design_Text();
+    addDesignText.design_Text_Description = this.AddForm.value.designText
+    //text price 
+
+    let newdesigntext = new Design_Text();
+    this.service.UploadDesignText(addDesignText).subscribe(res =>{
+      newdesigntext = res as Design_Text;
+      localStorage.setItem('designtextID', newdesigntext.design_Text_ID);
+    })
+  }
+
+  getTextPrice(){
+    this.service.GetAllTextPrices().subscribe(result => {
+      this.textprice = result as TextPrice[];
+      console.log(this.textprice)
+    })
+  }
+
+  getImagePrice(){
+    this.service.GetAllImagePrices().subscribe(result => {
+      this.imageprice = result as Image_Price[];
+      console.log(this.imageprice)
+    })
+  }*/
+
+/*this.service.AddPersonalisation(this.formData).subscribe(result => {
+      if(result.status == "Error"){        
+        this.addPersonalizationErrorAlert();
+      }
+      else if(result.status == "Success"){
+        this.addPersonalizationSuccessAlert();
+      }
+    })*/
+    
+/*async UploadErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: '',
+      message: this.errmsg,
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
+    });
+    await alert.present();
+  }*/
   ngOnInit(): void {
     this.GetPersonalisation()
   }

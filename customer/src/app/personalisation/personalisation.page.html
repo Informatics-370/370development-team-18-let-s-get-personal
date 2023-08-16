@@ -6,8 +6,6 @@
 
 <ion-content>
 	<ion-card-content>
-		<!--<ion-button id="addPersonalizationmodal">Add Personalization</ion-button>-->
-		<!-- <ion-searchbar [(ngModel)]="filterTerm" (ionInput)="updateSearchResults()"></ion-searchbar>                     -->
 		<ion-grid>
 			<ion-row>
 				<ion-col style="font-weight: bold;">
@@ -35,7 +33,7 @@
 	</ion-card-content>
 </ion-content>
 
-<!--<ion-footer>
+<ion-footer>
 	<ion-modal trigger="addPersonalizationmodal" (willDismiss)="onWillDismiss($event)">
 		<ng-template>
 			<ion-header>
@@ -52,16 +50,22 @@
 			<ion-content class="ion-padding">
 				<form [formGroup]="AddForm">
 					<ion-item>
-						<ion-label position="stacked">
-							<h3>Design Text</h3>
-						</ion-label><br>
+						<ion-label position="stacked">Design Text</ion-label>
 						<ion-input type="text" formControlName="designText" placeholder="" required></ion-input>
 					</ion-item>
-					<ion-item>
-						<ion-input type="file" accept="image/*" formControlName="design_Image"/>
-					</ion-item>
 				</form>
+	
+				<form [formGroup]="UploadImage">
+					<ion-item>
+						<ion-label>Image File</ion-label>
+						<input formControlName="imagefile" type="file" id="file" #file placeholder="Choose file" 
+						(change)="uploadFile(file.files)" style="display:none;">
+						
+						<ion-button mat-stroked-button color="primary" (click)="file.click()">Upload File</ion-button>
+						<span *ngIf="fileNameUploaded.length > 0"> {{fileNameUploaded}}</span>
+					</ion-item>
+				</form>	 
 			</ion-content>
 		</ng-template>
 	</ion-modal>
-</ion-footer>-->
+</ion-footer>

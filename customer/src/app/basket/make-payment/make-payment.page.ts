@@ -13,6 +13,7 @@ import { ModalController} from '@ionic/angular';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { OrderT } from 'src/app/Models/basket';
+import { Delivery } from 'src/app/Models/delivery';
 
 @Component({
   selector: 'app-make-payment',
@@ -24,9 +25,12 @@ import { OrderT } from 'src/app/Models/basket';
 export class MakePaymentPage implements OnInit {
   searchValue: string ='';
   deliveries:DeliveryAddress[]=[];
-  filteredDelivery:DeliveryAddress[]=[];
   deliverycompanies:Delivery_Company[]=[];
-  deliverVM: DeliveryVM[]=[];
+  //deliverVM: DeliveryVM[]=[];
+
+  addedaddres!: DeliveryAddress ;
+  addeddeliveryrequest!: Delivery;
+
   ngOnInit() {
     //this.GetAllDeliveries();
     this.getDeliveryCompany();
@@ -42,28 +46,31 @@ export class MakePaymentPage implements OnInit {
     province: new FormControl('',[Validators.required]),
     city: new FormControl('',[Validators.required]),
     areaCode: new FormControl('',[Validators.required]),
-    country: new FormControl('',[Validators.required]),
+    dwellingtype: new FormControl('',[Validators.required]),
+    delivery_Company_ID: new FormControl('',[Validators.required]),
   })
   
   order = new OrderT();
 
   checkOut(){
-
+    //change to delivery request 
     let streetName =this.AddDelAddressForm.get("streetName")?.value
     let streetNumber =this.AddDelAddressForm.get("streetNumber")?.value
     let city =this.AddDelAddressForm.get("city")?.value
     let province =this.AddDelAddressForm.get("province")?.value
     let areaCode =this.AddDelAddressForm.get("areaCode")?.value;
-    let country =this.AddDelAddressForm.get("country")?.value;
+    let dwellingtype =this.AddDelAddressForm.get("dwellingtype")?.value;
+    //let delivery_Company_ID =this.AddDelAddressForm.get("delivery_Company_ID")?.value;
 
     this.order = JSON.parse(localStorage.getItem('order') as string);
-   this.order.deliveryAddress.streetName=streetName;
-   this.order.deliveryAddress.streetNumber=streetNumber;
-   this.order.deliveryAddress.city=city;
-   this.order.deliveryAddress.province=province;
-   this.order.deliveryAddress.areaCode=areaCode;
-   this.order.deliveryAddress.country=country;
-   
+    this.order.deliveryAddress.streetName=streetName;
+    this.order.deliveryAddress.streetNumber=streetNumber;
+    this.order.deliveryAddress.city=city;
+    this.order.deliveryAddress.province=province;
+    this.order.deliveryAddress.areaCode=areaCode;
+    this.order.deliveryAddress.dwelling_Type=dwellingtype;
+    //this.order.deliveryAddress.delivery_Company_ID = delivery_Company_ID;
+
     localStorage.setItem("order",JSON.stringify(this.order));
 
     this.router.navigate(["/tabs/check-out"])
@@ -81,18 +88,39 @@ export class MakePaymentPage implements OnInit {
     let addDelivery = new DeliveryAddress();
     addDelivery.city = this.AddDelAddressForm.value.city;
     addDelivery.areaCode = this.AddDelAddressForm.value.areaCode;
-    addDelivery.country = this.AddDelAddressForm.value.country; 
+    addDelivery.dwelling_Type = this.AddDelAddressForm.value.dwellingtype; 
     addDelivery.streetNumber = this.AddDelAddressForm.value.streetNumber;
     addDelivery.streetName = this.AddDelAddressForm.value.streetName;
     addDelivery.province = this.AddDelAddressForm.value.province;    
 
     this.service.AddDeliveryAdress(addDelivery).subscribe(response => {
-      if(response.status == "Error")
+      this.addedaddres = response as DeliveryAddress;
+      try
       {
-        this.addDeliveryErrorAlert();
+        this.AddDeliveryRequest()
       }
-      else{
-        this.addDeliverySuccessAlert();
+      catch
+      {
+        this.addDeliveryErrorAlert()
+      }
+    })
+  }
+
+  AddDeliveryRequest(){
+    let addDeliveryRequest = new Delivery();
+    addDeliveryRequest.delivery_Address_ID = this.addedaddres.delivery_Address_ID
+    addDeliveryRequest.delivery_Company_ID = this.AddDelAddressForm.value.delivery_Company_ID
+
+    this.service.AddDeliveryRequest(addDeliveryRequest).subscribe(res =>{
+      let added = res as Delivery;
+      try
+      {
+        let deliveryID = added.delivery_ID
+        localStorage.setItem('deliveryID', JSON.stringify(deliveryID));
+      }
+      catch
+      {
+        this.addDeliveryErrorAlert()
       }
     })
   }
