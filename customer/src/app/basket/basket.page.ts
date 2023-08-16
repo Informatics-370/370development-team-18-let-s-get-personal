@@ -12,12 +12,8 @@ import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
 import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
 //import { Customer } from '../Models/customer';
-
-//for modal
-
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-
 
 @Component({
   selector: 'app-basket',
@@ -36,7 +32,6 @@ export class BasketPage implements OnInit,AfterViewInit {
   personalizations: Personalisation_Design[] = [];
   private basketItemList: BasketItems[];
   basketItems: BasketItems[] = [];
-  //customers:Customer[]=[];
   cartItems: any[] = [];
 
   AddForm: FormGroup = new FormGroup({
@@ -99,9 +94,9 @@ export class BasketPage implements OnInit,AfterViewInit {
   public shopall() {
     this._router.navigate(["/tabs/shop-all"])
   }
+
   public personalize(id:any) {
     //this.AddPersonalisation();
-
     this._router.navigate(["/tabs/personalisation"], id)
   }
 
