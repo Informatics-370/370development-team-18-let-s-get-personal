@@ -49,13 +49,21 @@ export class MakePaymentPage implements OnInit {
 
   checkOut(){
 
-    let streetName =this.AddDelAddressForm.get("streetName")?.value;
-/* add for delivery inputs>>>
->>*/
+    let streetName =this.AddDelAddressForm.get("streetName")?.value
+    let streetNumber =this.AddDelAddressForm.get("streetNumber")?.value
+    let city =this.AddDelAddressForm.get("city")?.value
+    let province =this.AddDelAddressForm.get("province")?.value
+    let areaCode =this.AddDelAddressForm.get("areaCode")?.value;
+    let country =this.AddDelAddressForm.get("country")?.value;
+
     this.order = JSON.parse(localStorage.getItem('order') as string);
    this.order.deliveryAddress.streetName=streetName;
-/*add them to them (delivery stuff) order>>>
->>>>*/
+   this.order.deliveryAddress.streetNumber=streetNumber;
+   this.order.deliveryAddress.city=city;
+   this.order.deliveryAddress.province=province;
+   this.order.deliveryAddress.areaCode=areaCode;
+   this.order.deliveryAddress.country=country;
+   
     localStorage.setItem("order",JSON.stringify(this.order));
 
     this.router.navigate(["/tabs/check-out"])
