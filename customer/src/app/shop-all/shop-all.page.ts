@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController,AlertController } from '@ionic/angular';
+import { IonicModule, ModalController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Stock_Item } from '../Models/stockitem';
 import { BasketItems } from '../Models/basket';
@@ -25,18 +25,39 @@ export class ShopAllPage implements OnInit {
   //stock:StockItemViewModel[]=[];
 
   constructor(private _modalController: ModalController,
-     private _router: Router, private alertController:AlertController,
-     private basketservice:BasketService,
-     private service:StockItemDataService) { }
+    private _router: Router, private alertController: AlertController,
+    private basketservice: BasketService,
+    private service: StockItemDataService) { }
 
-    
+  //Data for testing
+  /* dummy_data = [{
+   id: 0, title: "Plain T-shirt", colour: "White",
+   image_url: "https://supremetextiles.co.za/761-large_default/adult-plain-round-neck-t-shirt-white.jpg", price: 90,
+   quantity: 0
+ },
+ {
+   id: 1, title: "Photo Mug", colour: "White",
+   image_url: "https://smash-images.photobox.com/optimised/f10581d7b173933f6b5670a7191ef11caad09a4e_file_image_Simple-mug-lifestyle-5760x4512.jpg", price: 160,
+   quantity: 0
+ },
+ {
+   id: 2, title: "Diary", colour: "Brown",
+   image_url: "https://cdn.igp.com/f_auto,q_auto,t_pnopt6prodlp/products/p-stationery-addict-personalized-stationery-kit-122187-m.jpg", price: 120,
+   quantity: 0
+ },
+ {
+   id: 3, title: "Twin Babies", colour: "Dusty White",
+   image_url: "https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/Search/676/K62163.jpg", price: 350,
+   quantity: 0
+ }
+ ];*/
 
   ngOnInit() {
     this.GetStockItems();
   }
 
-  public GetStockItems(){
-    this.service.GetStockItems().subscribe(result =>{
+  public GetStockItems() {
+    this.service.GetStockItems().subscribe(result => {
       this.Products = result as StockItemViewModel[];
       console.log(this.stockItems)
     })
@@ -86,38 +107,51 @@ export class ShopAllPage implements OnInit {
     this.addToBasketSuccessAlert();
   }*/
 
-  public addToBasket(stock:any):void{
-    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
-    let existingItem = cartItems.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stock.stock_Item_ID);
+  public addToBasket(stock: any): void {
 
-    let basket = new BasketItems();
-    if (!existingItem) {
-      basket.stock_Item=stock;
-      basket.basket_Quantity=1;
-      cartItems.push(basket);
+    try {
+      let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+      let existingItem = cartItems.find((cartItem: any) => cartItem.stock_Item.stock_Item_ID === stock.stock_Item_ID);
+      //const counter = document.querySelector("#counter");
 
-    } else {
-      existingItem.basket_Quantity += 1;
+      let basket = new BasketItems();
+      if (!existingItem) {
+        basket.stock_Item = stock;
+        basket.basket_Quantity = 1;
+        cartItems.push(basket);
+
+      } else {
+        existingItem.basket_Quantity += 1;
+        
+      }
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+      this.addToBasketSuccessAlert();
+
+      /*if (counter) {
+        counter.innerHTML = existingItem.basket_Quantity;
+      }*/
+
+    } catch {
+      this.addToBasketErrorAlert();
     }
-    localStorage.setItem('cart',JSON.stringify(cartItems));
-    this.addToBasketSuccessAlert();
+
   }
 
-  reloadPage(){
+  reloadPage() {
     window.location.reload()
   }
 
-  
+
   async addToBasketSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
       subHeader: 'Added to basket.',
       buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler:() =>{
-            this.reloadPage();
-          }
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
       }],
     });
     await alert.present();
@@ -130,33 +164,11 @@ export class ShopAllPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler:() =>{
+        handler: () => {
           this.reloadPage();
         }
-    }],
+      }],
     });
     await alert.present();
-  } 
+  }
 }
- //Data for testing
-     /* dummy_data = [{
-      id: 0, title: "Plain T-shirt", colour: "White",
-      image_url: "https://supremetextiles.co.za/761-large_default/adult-plain-round-neck-t-shirt-white.jpg", price: 90,
-      quantity: 0
-    },
-    {
-      id: 1, title: "Photo Mug", colour: "White",
-      image_url: "https://smash-images.photobox.com/optimised/f10581d7b173933f6b5670a7191ef11caad09a4e_file_image_Simple-mug-lifestyle-5760x4512.jpg", price: 160,
-      quantity: 0
-    },
-    {
-      id: 2, title: "Diary", colour: "Brown",
-      image_url: "https://cdn.igp.com/f_auto,q_auto,t_pnopt6prodlp/products/p-stationery-addict-personalized-stationery-kit-122187-m.jpg", price: 120,
-      quantity: 0
-    },
-    {
-      id: 3, title: "Twin Babies", colour: "Dusty White",
-      image_url: "https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/Search/676/K62163.jpg", price: 350,
-      quantity: 0
-    }
-    ];*/

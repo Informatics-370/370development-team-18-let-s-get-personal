@@ -1,0 +1,39 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Checkout
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <!-- Order Items -->
+    <ion-item-divider>
+      Order Items
+    </ion-item-divider>
+    <ion-item *ngFor="let item of basketItems">
+    {{item.stock_Item.stock_Item_Name}}  - R{{item.stock_Item.stock_Item_Price}}
+    </ion-item>
+    
+    <!-- Address Form -->
+    <ion-item-divider>
+      Address Information
+    </ion-item-divider>
+    
+    <ion-item>
+      <ion-label position="floating">Street</ion-label>
+      <ion-input [(ngModel)]="order.deliveryAddress.streetName" required></ion-input>
+    </ion-item>
+   <!-- <ion-item>
+      <ion-label position="floating">City</ion-label>
+      <ion-input [(ngModel)]="address.city" required></ion-input>
+    </ion-item>
+     Add more address fields as needed -->
+  </ion-list>
+
+  <!-- Checkout Button -->
+  <ion-button expand="full" (click)="proceedToPayFast()">Checkout</ion-button>
+</ion-content>
+

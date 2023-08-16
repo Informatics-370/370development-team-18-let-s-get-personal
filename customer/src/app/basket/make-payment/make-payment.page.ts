@@ -12,6 +12,7 @@ import { DeliveryVM } from 'src/app/ViewModels/deliveryVM';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { OrderT } from 'src/app/Models/basket';
 
 @Component({
   selector: 'app-make-payment',
@@ -43,7 +44,31 @@ export class MakePaymentPage implements OnInit {
     areaCode: new FormControl('',[Validators.required]),
     country: new FormControl('',[Validators.required]),
   })
+  
+  order = new OrderT();
 
+  checkOut(){
+
+    let streetName =this.AddDelAddressForm.get("streetName")?.value
+    let streetNumber =this.AddDelAddressForm.get("streetNumber")?.value
+    let city =this.AddDelAddressForm.get("city")?.value
+    let province =this.AddDelAddressForm.get("province")?.value
+    let areaCode =this.AddDelAddressForm.get("areaCode")?.value;
+    let country =this.AddDelAddressForm.get("country")?.value;
+
+    this.order = JSON.parse(localStorage.getItem('order') as string);
+   this.order.deliveryAddress.streetName=streetName;
+   this.order.deliveryAddress.streetNumber=streetNumber;
+   this.order.deliveryAddress.city=city;
+   this.order.deliveryAddress.province=province;
+   this.order.deliveryAddress.areaCode=areaCode;
+   this.order.deliveryAddress.country=country;
+   
+    localStorage.setItem("order",JSON.stringify(this.order));
+
+    this.router.navigate(["/tabs/check-out"])
+   
+  }
   
   getDeliveryCompany(){
     this.delservice.GetDeliveryCompanies().subscribe(result =>{
@@ -81,7 +106,7 @@ export class MakePaymentPage implements OnInit {
   }
 
   confirmaddmodal() {
-    //this.AddDeliveryAddress();    
+    this.AddDeliveryAddress();    
   }
 
   onWillDismiss(event: Event) {
