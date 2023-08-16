@@ -7,9 +7,9 @@ import { FormBuilder, } from '@angular/forms';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
-
+import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
+import { TextPrice } from '../Models/textprice';
 //for modal
-
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
@@ -22,8 +22,6 @@ import { OverlayEventDetail } from '@ionic/core/components';
   imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule,RouterModule]
 })
 export class PersonalisationPage implements OnInit {
-<<<<<<< Updated upstream
-=======
   imageformdata = new FormData();
   personalizations: PersonalisationDesignVM[] = [];
   fileNameUploaded = ''
@@ -32,11 +30,9 @@ export class PersonalisationPage implements OnInit {
   textprice: TextPrice[] =[]
   imageprice: any //Image_Price[] =[]
   imagepriceID!: string
->>>>>>> Stashed changes
 
-  personalizations: Personalisation_Design[] = [];
-
-  @ViewChild(IonModal) modal!: IonModal;
+  //personalizations: Personalisation_Design[] = [];
+  //@ViewChild(IonModal) modal!: IonModal;
 
   constructor(private _router: Router, private service: PersonalisationService, private fb: FormBuilder
     , private alertController: AlertController, private _modalController: ModalController) { }
@@ -58,10 +54,10 @@ export class PersonalisationPage implements OnInit {
   }
 
   AddPersonalisation() {
-    let AddPersonalisation = new Personalisation_Design();
+    let AddPersonalisation = new PersonalisationDesignVM();
 
-    AddPersonalisation.design_Text.design_Text_Description = this.AddForm.value.designText;
-    AddPersonalisation.design_Image=this.AddForm.value.design_Image;
+    // AddPersonalisation.design_Text.design_Text_Description = this.AddForm.value.designText;
+    // AddPersonalisation.design_Image=this.AddForm.value.design_Image;
 
     this.service.AddPersonalisation(AddPersonalisation).subscribe(response => {
       if (response.status == "Error") {
@@ -89,15 +85,10 @@ export class PersonalisationPage implements OnInit {
     })
   }
 
-<<<<<<< Updated upstream
-  public makepayment() {
-    this._router.navigate(["/tabs/make-payment"])
-=======
   public basket() {
     
    // this.AddImageToImageLineItem()
     this._router.navigate(["/tabs/basket"]) //----- change to delivery details
->>>>>>> Stashed changes
   }
 
   reloadPage() {

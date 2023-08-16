@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-
+import { AuthGuard } from './Guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
@@ -43,7 +43,7 @@ export const routes: Routes = [
   },
   {
     path: 'view-profile',
-    loadComponent: () => import('./view-profile/view-profile.page').then( m => m.ViewProfilePage)
+    loadComponent: () => import('./view-profile/view-profile.page').then( m => m.ViewProfilePage)    
   },
   {
     path: 'make-payment',

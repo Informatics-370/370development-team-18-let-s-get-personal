@@ -8,7 +8,7 @@ import { AlertController, IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { OrderRequestService } from 'src/app/Services/orderrequest.service';
-//for modal
+import { DeliveryVM } from 'src/app/ViewModels/deliveryVM';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -25,7 +25,7 @@ export class MakePaymentPage implements OnInit {
   deliveries:DeliveryAddress[]=[];
   filteredDelivery:DeliveryAddress[]=[];
   deliverycompanies:Delivery_Company[]=[];
-
+  deliverVM: DeliveryVM[]=[];
   ngOnInit() {
     //this.GetAllDeliveries();
     this.getDeliveryCompany();

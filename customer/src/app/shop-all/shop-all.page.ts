@@ -29,28 +29,7 @@ export class ShopAllPage implements OnInit {
      private basketservice:BasketService,
      private service:StockItemDataService) { }
 
-     //Data for testing
-     /* dummy_data = [{
-      id: 0, title: "Plain T-shirt", colour: "White",
-      image_url: "https://supremetextiles.co.za/761-large_default/adult-plain-round-neck-t-shirt-white.jpg", price: 90,
-      quantity: 0
-    },
-    {
-      id: 1, title: "Photo Mug", colour: "White",
-      image_url: "https://smash-images.photobox.com/optimised/f10581d7b173933f6b5670a7191ef11caad09a4e_file_image_Simple-mug-lifestyle-5760x4512.jpg", price: 160,
-      quantity: 0
-    },
-    {
-      id: 2, title: "Diary", colour: "Brown",
-      image_url: "https://cdn.igp.com/f_auto,q_auto,t_pnopt6prodlp/products/p-stationery-addict-personalized-stationery-kit-122187-m.jpg", price: 120,
-      quantity: 0
-    },
-    {
-      id: 3, title: "Twin Babies", colour: "Dusty White",
-      image_url: "https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/Search/676/K62163.jpg", price: 350,
-      quantity: 0
-    }
-    ];*/
+    
 
   ngOnInit() {
     this.GetStockItems();
@@ -159,3 +138,25 @@ export class ShopAllPage implements OnInit {
     await alert.present();
   } 
 }
+ //Data for testing
+     /* dummy_data = [{
+      id: 0, title: "Plain T-shirt", colour: "White",
+      image_url: "https://supremetextiles.co.za/761-large_default/adult-plain-round-neck-t-shirt-white.jpg", price: 90,
+      quantity: 0
+    },
+    {
+      id: 1, title: "Photo Mug", colour: "White",
+      image_url: "https://smash-images.photobox.com/optimised/f10581d7b173933f6b5670a7191ef11caad09a4e_file_image_Simple-mug-lifestyle-5760x4512.jpg", price: 160,
+      quantity: 0
+    },
+    {
+      id: 2, title: "Diary", colour: "Brown",
+      image_url: "https://cdn.igp.com/f_auto,q_auto,t_pnopt6prodlp/products/p-stationery-addict-personalized-stationery-kit-122187-m.jpg", price: 120,
+      quantity: 0
+    },
+    {
+      id: 3, title: "Twin Babies", colour: "Dusty White",
+      image_url: "https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/Search/676/K62163.jpg", price: 350,
+      quantity: 0
+    }
+    ];*/
