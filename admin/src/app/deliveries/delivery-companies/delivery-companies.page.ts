@@ -35,7 +35,8 @@ export class DeliveryCompaniesPage implements OnInit {
     private alertController:AlertController ) { }
 
   AddForm: FormGroup = new FormGroup({
-    deliverycompanyname: new FormControl('',[Validators.required])
+    deliverycompanyname: new FormControl('',[Validators.required]),
+    Delivery_Price: new FormControl('',[Validators.required])
   })
 
   ngOnInit(): void {
@@ -52,7 +53,7 @@ export class DeliveryCompaniesPage implements OnInit {
 
   AddDeliveryCompany(){
     let AddDeliveryCompany = new Delivery_Company();
-
+    AddDeliveryCompany.delivery_Price = this.AddForm.value.Delivery_Price;
     AddDeliveryCompany.delivery_Company_Name = this.AddForm.value.deliverycompanyname;
 
     this.service.AddDeliveryCompany(AddDeliveryCompany).subscribe(response => {

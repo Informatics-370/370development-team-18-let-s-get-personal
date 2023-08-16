@@ -22,6 +22,7 @@
       </ion-row>
       <ion-row *ngFor="let item of deliverycompanies">
         <ion-col>{{item.delivery_Company_Name}}</ion-col>
+        <ion-col>{{item.delivery_Price}}</ion-col>
         <ion-col><ion-button (click)="DeleteDeliveryCompany(item.delivery_Company_ID)">Delete</ion-button></ion-col>
         <ion-col><ion-button (click)="EditDeliveryCompany(item.delivery_Company_ID)" >Update</ion-button></ion-col>      
       </ion-row>
@@ -49,7 +50,11 @@
             <ion-item>
               <ion-label position="stacked"><h3>Company Name</h3> </ion-label><br>
               <ion-input type="text" formControlName="deliverycompanyname" placeholder="" required></ion-input>
-            </ion-item>                   
+            </ion-item>     
+            <ion-item>
+              <ion-label position="stacked"><h3>Company Delivery Price</h3> </ion-label><br>
+              <ion-input type="number" formControlName="Delivery_Price" placeholder="" required></ion-input>
+            </ion-item>                
         </form>
       </ion-content>
     </ng-template>

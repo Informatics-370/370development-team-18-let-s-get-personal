@@ -10,21 +10,21 @@
       <ion-title size="large">view-employees</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-button (click)="backButton()"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
   <ion-button id="addEmployeemodal">Add Employee</ion-button>
   <ion-content id="content">
     <ion-grid>
       <ion-row>
-        <ion-col>Employee Id</ion-col>
-        <ion-col>Employee Name</ion-col>
-        <ion-col>Email Address</ion-col>
-        <ion-col>Phone Number</ion-col>
-        <ion-col>Address</ion-col>
+        <ion-col style="font-weight: bold;">Employee Id</ion-col>
+        <ion-col style="font-weight: bold;">Employee Name</ion-col>
+        <ion-col style="font-weight: bold;">Phone Number</ion-col>
+        <ion-col style="font-weight: bold;">Address</ion-col>
         <ion-col></ion-col>
         <ion-col></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of employees">
         <ion-col>{{item.employee_ID}}</ion-col>
-        <ion-col> {{item.firstName}} + ' ' + {{item.surname}}</ion-col>
+        <ion-col> {{item.firstName}}  {{item.surname}}</ion-col>
         <ion-col>{{item.email}}</ion-col>
         <ion-col>{{item.cell_Number}}</ion-col>
         <ion-col><ion-button onclick="DeleteEmployee(Employee_ID)">Delete Employee</ion-button></ion-col>
