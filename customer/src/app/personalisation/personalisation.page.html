@@ -11,26 +11,23 @@
 		<ion-grid>
 			<ion-row>
 				<ion-col style="font-weight: bold;">
-					<h2>Product Name</h2>
+					<h2>Design Text</h2>
 				</ion-col>
 				<ion-col>
-					 Design Textx
+					 Design Image
 				</ion-col>
-				<ion-col>Design Image</ion-col>
-				<ion-col>Personaliisation Price</ion-col>
 				<ion-col></ion-col>
 				<ion-col></ion-col>
 			</ion-row>
 			<ion-row *ngFor="let item of personalizations">
-				<ion-col>{{item.stock_Item.stock_Item_Name}}</ion-col>
-				<ion-col>{{item.designText}}</ion-col>
-				<ion-col>{{item.design_Image}}</ion-col>
-				<ion-col>R 200</ion-col>
+				<ion-col>{{item.stock_Item_Name}}</ion-col>
+				<ion-col>{{item.design_Text}}</ion-col>
+				<ion-col>{{item.image_File}}</ion-col>
 				<ion-col>
-					<ion-button	(click)="DeletePersonalisation(item.personalisation_Design_ID)">Delete</ion-button>
+					<!--<ion-button	(click)="DeletePersonalisation(item.design_Image_Line_Item_ID)">Delete</ion-button>-->
 					</ion-col>
 				<ion-col>
-					<ion-button	(click)="UpdatePersonalisation(item.personalisation_Design_ID)">Update</ion-button>
+					<ion-button	(click)="UpdatePersonalisation(item.design_Image_Line_Item_ID)">Update</ion-button>
 				</ion-col>
 			</ion-row>
 		</ion-grid>

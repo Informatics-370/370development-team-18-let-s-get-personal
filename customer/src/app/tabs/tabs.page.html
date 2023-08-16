@@ -21,10 +21,13 @@
       <!--<ion-badge id="counter">0</ion-badge>-->
     </ion-tab-button>
 
-    <ion-tab-button tab="login"> 
-      <!-- nav view profile if logged in -->
+    <ion-tab-button tab="login" > <!--*ngIf="!islogged"-->
       <ion-icon name="person-outline"></ion-icon>
     </ion-tab-button>
+
+    <!-- <ion-tab-button tab="view-profile" > 
+      <ion-icon name="person-outline"></ion-icon>
+    </ion-tab-button> -->
 
   </ion-tab-bar>
 </ion-tabs>

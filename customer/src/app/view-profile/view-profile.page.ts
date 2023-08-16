@@ -14,10 +14,17 @@ import { Router } from '@angular/router';
 export class ViewProfilePage implements OnInit {
 
   constructor(private _modalController: ModalController, private _router: Router, private alertController:AlertController) { }
-
+  public username: string = ""
 
   ngOnInit() {
+    this.getUser()
   }
+
+  getUser()
+  {
+    this.username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
+  }
+
   public updateProfile() {
     this._router.navigate(["/tabs/update-profile"])
   }

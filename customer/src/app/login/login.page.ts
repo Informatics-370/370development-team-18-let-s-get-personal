@@ -14,25 +14,39 @@ import { Router, RouterModule } from '@angular/router';
   imports: [IonicModule, CommonModule, FormsModule, HttpClientModule, RouterModule]
 })
 export class LoginPage implements OnInit {
-
+  user: string = ""
   data = {username: '', password: '', token: []};
-  constructor(
-    private authService: AuthenticationService,
-    private router: Router) { }
+
+  constructor( private authService: AuthenticationService, private router: Router) { }
 
   ngOnInit(): void {
+    this.CheckUser()
   }
 
   login(form: NgForm) {
     this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
       let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
       console.log(roles);
-      if(roles.includes('Admin')) {
+      if(roles.includes('Admin')) 
+      {
         this.router.navigateByUrl('/home', {replaceUrl: true});
-      } else if(roles.includes('User')) {
-        this.router.navigateByUrl('/shop', {replaceUrl: true});
+      } 
+      else if(roles.includes('User')) 
+      {        
+        localStorage.setItem('username', form.value.username,);
+        this.router.navigateByUrl('tabs/basket', {replaceUrl: true});
       }
     });
+  }
+
+  CheckUser(){
+    this.user = JSON.parse(JSON.stringify(localStorage.getItem('username')));
+    if (this.user = ""){
+
+    }
+    else{
+      this.router.navigate(['./tabs/view-profile']);
+    }
   }
 
   CreateProfileNav()

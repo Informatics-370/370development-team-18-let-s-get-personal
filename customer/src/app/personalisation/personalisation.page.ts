@@ -9,9 +9,7 @@ import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
 import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
 import { TextPrice } from '../Models/textprice';
-
 //for modal
-
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
@@ -25,7 +23,7 @@ import { OverlayEventDetail } from '@ionic/core/components';
 })
 export class PersonalisationPage implements OnInit {
   imageformdata = new FormData();
-  //personalizations: PersonalisationDesignVM[] = [];
+  personalizations: PersonalisationDesignVM[] = [];
   fileNameUploaded = ''
   @ViewChild(IonModal) modal!: IonModal;
   errmsg: string = ""
@@ -33,7 +31,8 @@ export class PersonalisationPage implements OnInit {
   imageprice: any //Image_Price[] =[]
   imagepriceID!: string
 
-  personalizations: Personalisation_Design[] = [];
+  //personalizations: Personalisation_Design[] = [];
+  //@ViewChild(IonModal) modal!: IonModal;
 
   constructor(private _router: Router, private service: PersonalisationService, private fb: FormBuilder
     , private alertController: AlertController, private _modalController: ModalController) { }
@@ -43,22 +42,22 @@ export class PersonalisationPage implements OnInit {
   })
 
   ngOnInit(): void {
-   this.GetPersonalisation()
+    this.GetPersonalisation()
   }
 
   GetPersonalisation() {
 
     this.service.GetPersonalisation().subscribe(result => {
-      this.personalizations = result as Personalisation_Design[];
+      this.personalizations = result as PersonalisationDesignVM[];
       console.log(this.personalizations)
     })
   }
 
-  /*8AddPersonalisation() {
-    let AddPersonalisation = new Personalisation_Design()
+  AddPersonalisation() {
+    let AddPersonalisation = new PersonalisationDesignVM();
 
-    AddPersonalisation.designText = this.AddForm.value.designText;
-    AddPersonalisation.design_Image=this.AddForm.value.design_Image;
+    // AddPersonalisation.design_Text.design_Text_Description = this.AddForm.value.designText;
+    // AddPersonalisation.design_Image=this.AddForm.value.design_Image;
 
     this.service.AddPersonalisation(AddPersonalisation).subscribe(response => {
       if (response.status == "Error") {
@@ -68,9 +67,9 @@ export class PersonalisationPage implements OnInit {
         this.addPersonalizationSuccessAlert();
       }
     })
-  }*/
+  }
 
-  UpdatePersonalisation(personalisation_Design_ID: string) {
+  UpdatePersonalisation(personalisation_Design_ID: number) {
     this._router.navigate(['/edit-personalization', personalisation_Design_ID]);
   }
 
@@ -96,7 +95,7 @@ export class PersonalisationPage implements OnInit {
     window.location.reload()
   }
 
-  /*canceladdmodal() {
+  canceladdmodal() {
     this.modal.dismiss(null, 'cancel');
   }
 
@@ -136,7 +135,7 @@ export class PersonalisationPage implements OnInit {
       }],
     });
     await alert.present();
-  }*/
+  }
 
 
 
