@@ -22,6 +22,7 @@ export class ShopAllPage implements OnInit {
   menuType: string = 'overlay';
   Products: StockItemViewModel[] = [];
   stockItems: Stock_Item[] = [];
+  //stock:StockItemViewModel[]=[];
 
   constructor(private _modalController: ModalController,
      private _router: Router, private alertController:AlertController,
@@ -91,15 +92,32 @@ export class ShopAllPage implements OnInit {
     this.addToBasketSuccessAlert();
   }*/
 
-  addToBasket(stockItems:any):void{
+  /*addToBasket(Products:any):void{
 
     let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
-    let existingItem = cartItems.find((cartItem:any) => cartItem.id === stockItems.stock_Item_ID);
+    let existingItem = cartItems.find((cartItem:any) => cartItem.stock_Item_ID === Products.stock_Item_ID);
 
     if (!existingItem) {
-      cartItems.push({ ...stockItems, basket_Quantity: 1 });
+      cartItems.push({ ...Products, stock_Item_Quantity: 1 });
     } else {
       
+      existingItem.stock_Item_Quantity += 1;
+    }
+    localStorage.setItem('cart',JSON.stringify(cartItems));
+    this.addToBasketSuccessAlert();
+  }*/
+
+  public addToBasket(stock:any):void{
+    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+    let existingItem = cartItems.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stock.stock_Item_ID);
+
+    let basket = new BasketItems();
+    if (!existingItem) {
+      basket.stock_Item=stock;
+      basket.basket_Quantity=1;
+      cartItems.push(basket);
+
+    } else {
       existingItem.basket_Quantity += 1;
     }
     localStorage.setItem('cart',JSON.stringify(cartItems));
@@ -140,9 +158,4 @@ export class ShopAllPage implements OnInit {
     });
     await alert.present();
   } 
-  
-  /* addToBasket(stockItem: Stock_Item, newQuantity: number){
-    this.basketservice.addProductToBasket(stockItem,newQuantity);
-    this.addToBasketSuccessAlert();
-  }*/
 }

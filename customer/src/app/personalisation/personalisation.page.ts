@@ -7,12 +7,7 @@ import { FormBuilder, } from '@angular/forms';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
-import { Design_Image } from '../Models/designimage';
-import { Design_Image_Line_Item } from '../Models/designimagelineitem';
-import { Design_Text } from '../Models/designtext';
-import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
-import { TextPrice } from '../Models/textprice';
-import { Image_Price } from '../Models/imageprice'; 
+
 //for modal
 
 import { IonModal } from '@ionic/angular';
@@ -27,93 +22,46 @@ import { OverlayEventDetail } from '@ionic/core/components';
   imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule,RouterModule]
 })
 export class PersonalisationPage implements OnInit {
+<<<<<<< Updated upstream
+=======
   imageformdata = new FormData();
-  personalizations: Personalisation_Design[] = [];
+  personalizations: PersonalisationDesignVM[] = [];
   fileNameUploaded = ''
   @ViewChild(IonModal) modal!: IonModal;
   errmsg: string = ""
   textprice: TextPrice[] =[]
   imageprice: any //Image_Price[] =[]
   imagepriceID!: string
+>>>>>>> Stashed changes
 
-  constructor(private _router: Router, private service: PersonalisationService, private fb: FormBuilder,
-    private alertController: AlertController, private _modalController: ModalController) { }
+  personalizations: Personalisation_Design[] = [];
+
+  @ViewChild(IonModal) modal!: IonModal;
+
+  constructor(private _router: Router, private service: PersonalisationService, private fb: FormBuilder
+    , private alertController: AlertController, private _modalController: ModalController) { }
 
   AddForm: FormGroup = new FormGroup({
     designText: new FormControl('', [Validators.required])
-  })
-
-  UploadImage: FormGroup = new FormGroup({
-    Image_File: new FormControl('')
   })
 
   ngOnInit(): void {
     this.GetPersonalisation()
   }
 
-
   GetPersonalisation() {
+
     this.service.GetPersonalisation().subscribe(result => {
-      this.personalizations = result as Personalisation_Design[];
+      this.personalizations = result as PersonalisationDesignVM[];
       console.log(this.personalizations)
     })
   }
 
-  uploadFile = (files: any) => {
-    let fileToUpload = <File>files[0];
-    this.imageformdata.append('file', fileToUpload , fileToUpload.name); //
-    this.fileNameUploaded = fileToUpload.name
-  }
-
-  uploadImage(){
-    let designimage = new Design_Image()
-    this.imageformdata.append('Image_File', this.UploadImage.get('Image_File')!.value);
-
-    this.service.UploadDesignImage(this.imageformdata).subscribe(result => {
-      designimage = result as Design_Image;
-    })
-    localStorage.setItem('designimageID', designimage.design_Image_ID);
-  }
-
-  AddImageToImageLineItem(){
-    let addtoline = new Design_Image_Line_Item();
-    addtoline.image_Price_ID = this.imagepriceID
-    //addtoline.design_Image_ID = get from local storage 
-
-    this.service.AddToDesignImageLineItem(addtoline).subscribe(res =>{
-
-    })
-  }
-
-  uploadDesignText(){
-    let addDesignText = new Design_Text();
-    addDesignText.design_Text_Description = this.AddForm.value.designText
-    //text price 
-
-    let newdesigntext = new Design_Text();
-    this.service.UploadDesignText(addDesignText).subscribe(res =>{
-      newdesigntext = res as Design_Text;
-      localStorage.setItem('designtextID', newdesigntext.design_Text_ID);
-    })
-  }
-
-  getTextPrice(){
-    this.service.GetAllTextPrices().subscribe(result => {
-      this.textprice = result as TextPrice[];
-      console.log(this.textprice)
-    })
-  }
-
-  getImagePrice(){
-    this.service.GetAllImagePrices().subscribe(result => {
-      this.imageprice = result as Image_Price[];
-      console.log(this.imageprice)
-    })
-  }
-
   AddPersonalisation() {
-    let AddPersonalisation = new PersonalisationDesignVM();
-//let token = JSON.parse(JSON.stringify(localStorage.getItem('token')));
+    let AddPersonalisation = new Personalisation_Design();
+
+    AddPersonalisation.design_Text.design_Text_Description = this.AddForm.value.designText;
+    AddPersonalisation.design_Image=this.AddForm.value.design_Image;
 
     this.service.AddPersonalisation(AddPersonalisation).subscribe(response => {
       if (response.status == "Error") {
@@ -125,7 +73,7 @@ export class PersonalisationPage implements OnInit {
     })
   }
 
-  UpdatePersonalisation(personalisation_Design_ID: string) {
+  UpdatePersonalisation(personalisation_Design_ID: number) {
     this._router.navigate(['/edit-personalization', personalisation_Design_ID]);
   }
 
@@ -141,11 +89,15 @@ export class PersonalisationPage implements OnInit {
     })
   }
 
-  public checkout() {
+<<<<<<< Updated upstream
+  public makepayment() {
+    this._router.navigate(["/tabs/make-payment"])
+=======
+  public basket() {
     
-    this.AddImageToImageLineItem()
-    this.AddPersonalisation()
-    //this._router.navigate(["/tabs/make-payment"]) //----- change to delivery details
+   // this.AddImageToImageLineItem()
+    this._router.navigate(["/tabs/basket"]) //----- change to delivery details
+>>>>>>> Stashed changes
   }
 
   reloadPage() {
@@ -157,9 +109,7 @@ export class PersonalisationPage implements OnInit {
   }
 
   confirmaddmodal() {
-    this.uploadImage()
-    this.uploadDesignText()
-    //this.AddPersonalisation();
+    this.AddPersonalisation();
   }
 
   onWillDismiss(event: Event) {
@@ -229,21 +179,5 @@ export class PersonalisationPage implements OnInit {
     await alert.present();
   }
 
-  async UploadErrorAlert() {
-    const alert = await this.alertController.create({
-      header: 'We are sorry!',
-      subHeader: '',
-      message: this.errmsg,
-      buttons: [{
-        text: 'OK',
-        role: 'cancel',
-        handler: () => {
-          this.reloadPage();
-        }
-      }],
-    });
-    await alert.present();
-  }
-  
 
 }
