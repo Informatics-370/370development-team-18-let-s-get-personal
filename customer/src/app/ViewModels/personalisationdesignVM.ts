@@ -1,6 +1,7 @@
 import { Stock_Item } from "../Models/stockitem"
 
 export class PersonalisationDesignVM{
+    personalization_Id!:string
     image_File!: string
     //image_Price_amount!: number
     stock_Item!:Stock_Item;

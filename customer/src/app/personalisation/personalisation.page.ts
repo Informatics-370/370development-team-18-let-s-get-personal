@@ -43,16 +43,28 @@ export class PersonalisationPage implements OnInit {
   })
 
   ngOnInit(): void {
+<<<<<<< Updated upstream
    this.GetPersonalisation()
+=======
+   // this.GetPersonalisation()
+>>>>>>> Stashed changes
   }
 
-  GetPersonalisation() {
+  // GetPersonalisation() {
 
+<<<<<<< Updated upstream
     this.service.GetPersonalisation().subscribe(result => {
       this.personalizations = result as Personalisation_Design[];
       console.log(this.personalizations)
     })
   }
+=======
+  //   this.service.GetPersonalisation().subscribe(result => {
+  //     this.personalizations = result as PersonalisationDesignVM[];
+  //     console.log(this.personalizations)
+  //   })
+  // }
+>>>>>>> Stashed changes
 
   /*8AddPersonalisation() {
     let AddPersonalisation = new Personalisation_Design()

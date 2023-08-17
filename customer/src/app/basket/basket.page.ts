@@ -238,7 +238,7 @@ throw new Error('Method not implemented.');
   }
 
   confirmaddmodal() {
-
+ 
     let stockId=localStorage.getItem("stockId");
 
     let items = JSON.parse(localStorage.getItem('cart') as string) || [];
@@ -255,12 +255,13 @@ throw new Error('Method not implemented.');
   }
   localStorage.setItem('cart',JSON.stringify(items));
 
-   /* try{
+   try{
     this.addPersonalization(); 
     this._router.navigate(["/tabs/personalisation"])  
-    }catch{
+    }
+    catch{
       this.addPersonalizationErrorAlert();
-    }*/
+    }
      
   }
 
