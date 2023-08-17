@@ -49,6 +49,7 @@ export class MakePaymentPage implements OnInit {
 
   checkOut(){
 
+    try{
     let streetName =this.AddDelAddressForm.get("streetName")?.value
     let streetNumber =this.AddDelAddressForm.get("streetNumber")?.value
     let city =this.AddDelAddressForm.get("city")?.value
@@ -67,6 +68,9 @@ export class MakePaymentPage implements OnInit {
     localStorage.setItem("order",JSON.stringify(this.order));
 
     this.router.navigate(["/tabs/check-out"])
+    }catch{
+      this.confirmErrorAlert()
+    }
    
   }
   
@@ -144,4 +148,19 @@ export class MakePaymentPage implements OnInit {
     await alert.present();
   }
 
+  async confirmErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'There is an issue with confirming your order!',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
 }

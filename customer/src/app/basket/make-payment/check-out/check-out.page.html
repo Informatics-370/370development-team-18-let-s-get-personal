@@ -26,11 +26,31 @@
       <ion-label position="floating">Street</ion-label>
       <ion-input [(ngModel)]="order.deliveryAddress.streetName" required></ion-input>
     </ion-item>
-   <!-- <ion-item>
-      <ion-label position="floating">City</ion-label>
-      <ion-input [(ngModel)]="address.city" required></ion-input>
+   <ion-item>
+      <ion-label position="floating">Street Number</ion-label>
+      <ion-input [(ngModel)]="order.deliveryAddress.streetNumber" required></ion-input>
     </ion-item>
-     Add more address fields as needed -->
+
+    <ion-item>
+      <ion-label position="floating">City</ion-label>
+      <ion-input [(ngModel)]="order.deliveryAddress.city" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Area Code</ion-label>
+      <ion-input [(ngModel)]="order.deliveryAddress.areaCode" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Province</ion-label>
+      <ion-input [(ngModel)]="order.deliveryAddress.province" required></ion-input>
+    </ion-item>
+   
+    <ion-item>
+      <ion-label position="floating">Country</ion-label>
+      <ion-input [(ngModel)]="order.deliveryAddress.country" required></ion-input>
+    </ion-item>
+
   </ion-list>
 
   <!-- Checkout Button -->
