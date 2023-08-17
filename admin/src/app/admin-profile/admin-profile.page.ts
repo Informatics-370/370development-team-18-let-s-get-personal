@@ -22,9 +22,6 @@ export class AdminProfilePage implements OnInit {
  
   getUser(){
     this.username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
-    // let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
-    // localStorage.setItem('username', form.value.username,);
-    //this.AuthService.getUser();
   }
 
 

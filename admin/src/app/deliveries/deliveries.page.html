@@ -50,26 +50,19 @@
       </ion-header>
       <ion-content class="ion-padding">
         <form [formGroup]="AddForm"> 
-            
-              <ion-item>
-                <ion-label position="stacked">Delivery Price</ion-label><br>
-                <ion-input type="text" formControlName="orderLineItemId" placeholder="" required></ion-input>
-              </ion-item> 
-            
-              <ion-item>
-              <ion-label position="stacked">Delivery Company</ion-label><br>
-              <ion-select placeholder="Select a Delivery Company">
-                <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
-                <ion-select-option *ngFor="let company of deliverycompanies" value ="{{company.delivery_Company_ID}}">
-                  {{company.delivery_Company_Name}}
-                </ion-select-option>
-              </ion-select>
-            </ion-item>         
-
-            <ion-item>
-              <ion-label position="stacked">Tracking Number</ion-label><br>
-              <ion-input type="Number" formControlName="trackingnumber" placeholder="" required></ion-input>
-            </ion-item>         
+          <ion-item>
+            <ion-label position="stacked">Delivery Company</ion-label><br>
+            <ion-select placeholder="Select a Delivery Company">
+              <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
+              <ion-select-option *ngFor="let company of deliverycompanies" value ="{{company.delivery_Company_ID}}">
+                {{company.delivery_Company_Name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item> 
+          <ion-item>
+            <ion-label position="stacked">Tracking Number</ion-label><br>
+            <ion-input type="Number" formControlName="trackingnumber" placeholder="" required></ion-input>
+          </ion-item>
         </form>
       </ion-content>
     </ng-template>

@@ -21,17 +21,17 @@ export class OrderRequestService {
   constructor(private httpClient: HttpClient) { }
 
   public AddDeliveryAdress(da:DeliveryAddress){
-    return this.httpClient.post<Response>(`${this.apiUrl}OrderRequest/AddDeliveryAdress`, da)
+    return this.httpClient.post(`${this.apiUrl}OrderRequest/AddDeliveryAdress`, da)
     .pipe(map(result => result))
   }
 
   public AddDeliveryRequest(d:Delivery){
-    return this.httpClient.post<Response>(`${this.apiUrl}OrderRequest/AddDeliveryRequest`, d)
+    return this.httpClient.post(`${this.apiUrl}OrderRequest/AddDeliveryRequest`, d)
     .pipe(map(result => result))
   }
 
   public AddOrderRequest(or:Order_Request){
-    return this.httpClient.post<Response>(`${this.apiUrl}OrderRequest/AddOrderRequest`, or)
+    return this.httpClient.post(`${this.apiUrl}OrderRequest/AddOrderRequest`, or)
     .pipe(map(result => result))
   }
 }

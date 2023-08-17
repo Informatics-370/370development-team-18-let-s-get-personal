@@ -261,7 +261,8 @@ namespace IPKP___API.Controllers
                 var deliveryCompany = new Delivery_Company
                 {
                     Delivery_Company_ID = dcvm.Delivery_Company_ID,
-                    Delivery_Company_Name = dcvm.Delivery_Company_Name
+                    Delivery_Company_Name = dcvm.Delivery_Company_Name,
+                    Delivery_Price = dcvm.Delivery_Price,
                 };
                 _IPKPRepository.Add(deliveryCompany);
                 await _IPKPRepository.SaveChangesAsync();

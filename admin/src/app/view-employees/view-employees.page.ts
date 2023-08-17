@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-//import { ProfileService } from 'src/app/Services/profile.service';
+import { RouterModule, Router } from '@angular/router';
 import { IonicModule, AlertController, ModalController, IonModal } from '@ionic/angular';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { User } from 'src/app/Models/user';
@@ -26,12 +26,16 @@ export class ViewEmployeesPage implements OnInit {
   
   constructor( private alertController:AlertController, 
     private empservice: UserProfileDataService, public modalCtrl: ModalController,
-    public authservice: AuthenticationService) { } //private service:ProfileService,
+    public authservice: AuthenticationService, public router: Router) { } //private service:ProfileService,
 
   ngOnInit() {
   //  this.getProfle()
     this.GetAllEmployees()
   } 
+
+  backButton(){
+    this.router.navigate(['./tabs/profiles']);
+  }
 
   AddEmployeeForm: FormGroup = new FormGroup({
     FirstName: new FormControl('',[Validators.required]),
@@ -62,7 +66,7 @@ export class ViewEmployeesPage implements OnInit {
     addemployee.email = this.AddEmployeeForm.value.Email
     addemployee.cell_Number = this.AddEmployeeForm.value.Cell_Number
     addemployee.username = this.AddEmployeeForm.value.Username
-    addemployee.surname = this.AddEmployeeForm.value.Password
+    addemployee.password = this.AddEmployeeForm.value.Password
 
     this.authservice.RegisterEmployee(addemployee).subscribe(result => {
       if(result.status == "Error")
