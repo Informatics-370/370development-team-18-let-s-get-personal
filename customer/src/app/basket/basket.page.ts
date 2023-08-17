@@ -11,13 +11,13 @@ import { Stock_Item } from '../Models/stockitem';
 import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
 import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
-import { TextPrice } from '../Models/textprice';
+
+
+//for modal
+
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-//import { Design_Image } from '../Models/designimage';
-//import { Design_Text } from '../Models/designtext';
-import { Image_Price } from '../Models/imageprice';
-//import { Design_Image_Line_Item } from '../Models/designimagelineitem';
+
 
 
 @Component({
@@ -194,7 +194,7 @@ throw new Error('Method not implemented.');
   }
 
   confirmaddmodal() {
-
+ 
     let stockId=localStorage.getItem("stockId");
 
     let items = JSON.parse(localStorage.getItem('cart') as string) || [];
@@ -212,12 +212,13 @@ throw new Error('Method not implemented.');
 
     localStorage.setItem('cart',JSON.stringify(items));
 
-   /* try{
+   try{
     this.addPersonalization(); 
     this._router.navigate(["/tabs/personalisation"])  
-    }catch{
+    }
+    catch{
       this.addPersonalizationErrorAlert();
-    }*/
+    }
      
   }
 

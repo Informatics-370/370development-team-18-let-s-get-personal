@@ -112,16 +112,18 @@ export class PersonalisationPage implements OnInit {
     await alert.present();
   }*/
   ngOnInit(): void {
-    this.GetPersonalisation()
+
+   // this.GetPersonalisation()
+
   }
 
-  GetPersonalisation() {
+  // GetPersonalisation() {
 
-    this.service.GetPersonalisation().subscribe(result => {
-      this.personalizations = result as PersonalisationDesignVM[];
-      console.log(this.personalizations)
-    })
-  }
+  //   this.service.GetPersonalisation().subscribe(result => {
+  //     this.personalizations = result as PersonalisationDesignVM[];
+  //     console.log(this.personalizations)
+  //   })
+  // }
 
   AddPersonalisation() {
     let AddPersonalisation = new PersonalisationDesignVM();
