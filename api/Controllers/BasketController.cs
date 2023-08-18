@@ -23,47 +23,47 @@ namespace IPKP___API.Controllers
             _IPKPRepository = iPKPRepository;
         }
 
-        [HttpGet]
-        [Route("GetBasketInfo/{customer_id}")]
-        public async Task<IActionResult> GetBasketInfo(Guid customer_ID)
-        {
-            try
-            {
-                var results = await _IPKPRepository.GetBasketAsync(customer_ID);
-                return Ok(results);
-            }
-            catch (Exception)
-            {
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-            }
-            //return Ok("Basket Gotten To Database.");
-        }
+        //[HttpGet]
+        //[Route("GetBasketInfo/{customer_id}")]
+        //public async Task<IActionResult> GetBasketInfo(Guid customer_ID)
+        //{
+        //    try
+        //    {
+        //        var results = await _IPKPRepository.GetBasketAsync(customer_ID);
+        //        return Ok(results);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+        //    }
+        //    //return Ok("Basket Gotten To Database.");
+        //}
 
-        [HttpPost]
-        [Route("AddBasketInfo")]
-        public async Task<IActionResult> AddBasketInfo(Basket bask)
-        {
+        //[HttpPost]
+        //[Route("AddBasketInfo")]
+        //public async Task<IActionResult> AddBasketInfo(Basket bask)
+        //{
            
-            try
-            {
-                var basketItems = new Basket
-                {
-                    Basket_ID = new Guid(),
-                    Basket_Quantity = bask.Basket_Quantity,
-                    Stock_Item = bask.Stock_Item,
-                    Customer = bask.Customer
-                };
+        //    try
+        //    {
+        //        var basketItems = new Basket
+        //        {
+        //            Basket_ID = new Guid(),
+        //            Basket_Quantity = bask.Basket_Quantity,
+        //            Stock_Item = bask.Stock_Item,
+        //            Customer = bask.Customer
+        //        };
 
-                _IPKPRepository.Add(basketItems);
-                await _IPKPRepository.SaveChangesAsync();               
-            }
-            catch (Exception)
-            {
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-            }
-            return Ok(new Response { Status = "Success", Message = "Basket Added To Database." });
+        //        _IPKPRepository.Add(basketItems);
+        //        await _IPKPRepository.SaveChangesAsync();               
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+        //    }
+        //    return Ok(new Response { Status = "Success", Message = "Basket Added To Database." });
 
-        }
+        //}
 
     }
 }

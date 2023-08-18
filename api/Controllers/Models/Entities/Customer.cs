@@ -34,10 +34,10 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public User User { get; set; }
 
-        public virtual ICollection<Basket> Basket { get; set; }
+        //public virtual ICollection<Basket> Basket { get; set; }
 
 
-        public virtual ICollection<Order_Request> Order_Request { get; set; }
+        //public virtual ICollection<Order_Request> Order_Request { get; set; }
         
     }
 }

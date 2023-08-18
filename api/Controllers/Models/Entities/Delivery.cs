@@ -19,12 +19,12 @@ namespace IPKP___API.Controllers.Models.Entities
 
         //Address Foreign key
         public Guid? Delivery_Address_ID { get; set; }
-        public virtual Delivery_Address Delivery_Address { get; set; }
+        //public virtual Delivery_Address Delivery_Address { get; set; }
 
         //Company Foreign key
         public Guid? Delivery_Company_ID { get; set; }
-        public virtual Delivery_Company Delivery_Company { get; set; }
+        //public virtual Delivery_Company Delivery_Company { get; set; }
 
-        public virtual ICollection<Order_Request> Order_Request { get; set; }
+        //public virtual ICollection<Order_Request> Order_Request { get; set; }
     }
 }

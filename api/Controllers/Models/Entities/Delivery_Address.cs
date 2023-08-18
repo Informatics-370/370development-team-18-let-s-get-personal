@@ -34,7 +34,7 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(255)]
         public string AreaCode { get; set; }        
 
-        public virtual ICollection<Delivery> Delivery { get; set; }
+        //public virtual ICollection<Delivery> Delivery { get; set; }
 
         //public virtual ICollection<Order_Request> Order_Request { get; set; }
     }

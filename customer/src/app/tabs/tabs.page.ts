@@ -14,6 +14,8 @@ export class TabsPage {
   //islogged: boolean = true 
   
   constructor() {}
-
+  reloadPage() {
+    window.location.reload()
+  }
   
 }

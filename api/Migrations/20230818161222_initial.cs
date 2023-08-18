@@ -59,6 +59,21 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Deliveries",
+                columns: table => new
+                {
+                    Delivery_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Tracking_Number = table.Column<int>(type: "int", nullable: false),
+                    Delivery_Status = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Delivery_Address_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Delivery_Company_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deliveries", x => x.Delivery_ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Delivery_Address",
                 columns: table => new
                 {
@@ -102,6 +117,18 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Design_Texts",
+                columns: table => new
+                {
+                    Design_Text_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Design_Text_Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Design_Texts", x => x.Design_Text_ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Discounts",
                 columns: table => new
                 {
@@ -117,15 +144,16 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Image_Price",
+                name: "Orders",
                 columns: table => new
                 {
-                    Image_Price_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Image_Price_Amount = table.Column<double>(type: "float", nullable: false)
+                    Order_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Order_Line_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Order_Notes = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Image_Price", x => x.Image_Price_ID);
+                    table.PrimaryKey("PK_Orders", x => x.Order_ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -216,6 +244,27 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Stock_Items",
+                columns: table => new
+                {
+                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Image_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Type_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Item_Colour_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Product_Rating_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Item_Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Stock_Item_Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Stock_Item_Size = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Inventory_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Inventory_Comments = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Stock_Item_Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stock_Items", x => x.Stock_Item_ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Stock_Types",
                 columns: table => new
                 {
@@ -225,18 +274,6 @@ namespace IPKP___API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Stock_Types", x => x.Stock_Type_ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Text_Price",
-                columns: table => new
-                {
-                    Text_Price_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text_Price_Amount = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Text_Price", x => x.Text_Price_ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -359,35 +396,6 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Deliveries",
-                columns: table => new
-                {
-                    Delivery_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Tracking_Number = table.Column<int>(type: "int", nullable: false),
-                    Delivery_Status = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Delivery_Address_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Delivery_Address_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Delivery_Company_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Delivery_Company_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Deliveries", x => x.Delivery_ID);
-                    table.ForeignKey(
-                        name: "FK_Deliveries_Delivery_Address_Delivery_Address_ID1",
-                        column: x => x.Delivery_Address_ID1,
-                        principalTable: "Delivery_Address",
-                        principalColumn: "Delivery_Address_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Deliveries_Delivery_Companies_Delivery_Company_ID1",
-                        column: x => x.Delivery_Company_ID1,
-                        principalTable: "Delivery_Companies",
-                        principalColumn: "Delivery_Company_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Invoice_Discount",
                 columns: table => new
                 {
@@ -408,49 +416,79 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Design_Image_Line_Items",
+                name: "Personalisation_Designs",
                 columns: table => new
                 {
-                    Design_Image_Line_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Personalisation_Design_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Design_Image_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Design_Image_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Image_Price_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Image_Price_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Design_Text_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Design_Text_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Design_Image_Line_Items", x => x.Design_Image_Line_Item_ID);
+                    table.PrimaryKey("PK_Personalisation_Designs", x => x.Personalisation_Design_ID);
                     table.ForeignKey(
-                        name: "FK_Design_Image_Line_Items_Design_Images_Design_Image_ID1",
+                        name: "FK_Personalisation_Designs_Design_Images_Design_Image_ID1",
                         column: x => x.Design_Image_ID1,
                         principalTable: "Design_Images",
                         principalColumn: "Design_Image_ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Design_Image_Line_Items_Image_Price_Image_Price_ID1",
-                        column: x => x.Image_Price_ID1,
-                        principalTable: "Image_Price",
-                        principalColumn: "Image_Price_ID",
+                        name: "FK_Personalisation_Designs_Design_Texts_Design_Text_ID1",
+                        column: x => x.Design_Text_ID1,
+                        principalTable: "Design_Texts",
+                        principalColumn: "Design_Text_ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Personalisation_Designs_Stock_Items_Stock_Item_ID1",
+                        column: x => x.Stock_Item_ID1,
+                        principalTable: "Stock_Items",
+                        principalColumn: "Stock_Item_ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Design_Texts",
+                name: "Stock_Price_Histories",
                 columns: table => new
                 {
-                    Design_Text_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text_Price_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text_Price_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Design_Text_Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    Stock_Price_History_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Price_Amount = table.Column<double>(type: "float", nullable: false),
+                    Effective_From_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Effective_To_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Design_Texts", x => x.Design_Text_ID);
+                    table.PrimaryKey("PK_Stock_Price_Histories", x => x.Stock_Price_History_ID);
                     table.ForeignKey(
-                        name: "FK_Design_Texts_Text_Price_Text_Price_ID1",
-                        column: x => x.Text_Price_ID1,
-                        principalTable: "Text_Price",
-                        principalColumn: "Text_Price_ID",
+                        name: "FK_Stock_Price_Histories_Stock_Items_Stock_Item_ID1",
+                        column: x => x.Stock_Item_ID1,
+                        principalTable: "Stock_Items",
+                        principalColumn: "Stock_Item_ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Write_Offs",
+                columns: table => new
+                {
+                    Write_Off_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Write_Off_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Write_Offs", x => x.Write_Off_ID);
+                    table.ForeignKey(
+                        name: "FK_Write_Offs_Stock_Items_Stock_Item_ID1",
+                        column: x => x.Stock_Item_ID1,
+                        principalTable: "Stock_Items",
+                        principalColumn: "Stock_Item_ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -499,6 +537,74 @@ namespace IPKP___API.Migrations
                         column: x => x.User_Role_ID1,
                         principalTable: "User_Roles",
                         principalColumn: "User_Role_ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invoices",
+                columns: table => new
+                {
+                    Invoice_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Order_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Order_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Payment_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Payment_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Invoice_Discount_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Invoice_Discount_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Delivery_Price = table.Column<double>(type: "float", nullable: false),
+                    Invoice_Total_exclVAT = table.Column<double>(type: "float", nullable: false),
+                    Invoice_Total_VAT = table.Column<double>(type: "float", nullable: false),
+                    Invoice_Total_inclVAT = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invoices", x => x.Invoice_ID);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Invoice_Discount_Invoice_Discount_ID1",
+                        column: x => x.Invoice_Discount_ID1,
+                        principalTable: "Invoice_Discount",
+                        principalColumn: "Invoice_Discount_ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Orders_Order_ID1",
+                        column: x => x.Order_ID1,
+                        principalTable: "Orders",
+                        principalColumn: "Order_ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Payments_Payment_ID1",
+                        column: x => x.Payment_ID1,
+                        principalTable: "Payments",
+                        principalColumn: "Payment_ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Write_Off_Line_Items",
+                columns: table => new
+                {
+                    Write_Off_Line_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Write_Off_Quantity = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Write_Off_Reason = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Write_Off_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Write_Off_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Write_Off_Line_Items", x => x.Write_Off_Line_Item_ID);
+                    table.ForeignKey(
+                        name: "FK_Write_Off_Line_Items_Stock_Items_Stock_Item_ID1",
+                        column: x => x.Stock_Item_ID1,
+                        principalTable: "Stock_Items",
+                        principalColumn: "Stock_Item_ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Write_Off_Line_Items_Write_Offs_Write_Off_ID1",
+                        column: x => x.Write_Off_ID1,
+                        principalTable: "Write_Offs",
+                        principalColumn: "Write_Off_ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -676,196 +782,6 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stock_Items",
-                columns: table => new
-                {
-                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Image_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Type_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Item_Colour_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Product_Rating_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Item_Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Stock_Item_Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Stock_Item_Size = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Inventory_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Inventory_Comments = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Stock_Item_Quantity = table.Column<int>(type: "int", nullable: false),
-                    Stock_Type_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Image_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Item_Colour_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Product_Rating_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stock_Items", x => x.Stock_Item_ID);
-                    table.ForeignKey(
-                        name: "FK_Stock_Items_Product_Ratings_Product_Rating_ID1",
-                        column: x => x.Product_Rating_ID1,
-                        principalTable: "Product_Ratings",
-                        principalColumn: "Product_Rating_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Stock_Items_Stock_Images_Stock_Image_ID1",
-                        column: x => x.Stock_Image_ID1,
-                        principalTable: "Stock_Images",
-                        principalColumn: "Stock_Image_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Stock_Items_Stock_Item_Colours_Stock_Item_Colour_ID1",
-                        column: x => x.Stock_Item_Colour_ID1,
-                        principalTable: "Stock_Item_Colours",
-                        principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Stock_Items_Stock_Types_Stock_Type_ID1",
-                        column: x => x.Stock_Type_ID1,
-                        principalTable: "Stock_Types",
-                        principalColumn: "Stock_Type_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Basket",
-                columns: table => new
-                {
-                    Basket_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Basket_Quantity = table.Column<int>(type: "int", nullable: false),
-                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Customer_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Customer_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Basket", x => x.Basket_ID);
-                    table.ForeignKey(
-                        name: "FK_Basket_Customers_Customer_ID1",
-                        column: x => x.Customer_ID1,
-                        principalTable: "Customers",
-                        principalColumn: "Customer_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Basket_Stock_Items_Stock_Item_ID1",
-                        column: x => x.Stock_Item_ID1,
-                        principalTable: "Stock_Items",
-                        principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BestSellersStock_Item",
-                columns: table => new
-                {
-                    BestSellersBestSeller_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BestSellersStock_Item", x => new { x.BestSellersBestSeller_ID, x.Stock_Item_ID });
-                    table.ForeignKey(
-                        name: "FK_BestSellersStock_Item_BestSellers_BestSellersBestSeller_ID",
-                        column: x => x.BestSellersBestSeller_ID,
-                        principalTable: "BestSellers",
-                        principalColumn: "BestSeller_ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BestSellersStock_Item_Stock_Items_Stock_Item_ID",
-                        column: x => x.Stock_Item_ID,
-                        principalTable: "Stock_Items",
-                        principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Personalisation_Designs",
-                columns: table => new
-                {
-                    Personalisation_Design_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Design_Image_Line_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Design_Image_Line_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Design_Text_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Design_Text_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ItemColour = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DesignText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TextPosition = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TextColour = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Personalisation_Design_Price = table.Column<double>(type: "float", nullable: false),
-                    Design_Image_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Personalisation_Designs", x => x.Personalisation_Design_ID);
-                    table.ForeignKey(
-                        name: "FK_Personalisation_Designs_Design_Image_Line_Items_Design_Image_Line_Item_ID1",
-                        column: x => x.Design_Image_Line_Item_ID1,
-                        principalTable: "Design_Image_Line_Items",
-                        principalColumn: "Design_Image_Line_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Personalisation_Designs_Design_Images_Design_Image_ID",
-                        column: x => x.Design_Image_ID,
-                        principalTable: "Design_Images",
-                        principalColumn: "Design_Image_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Personalisation_Designs_Design_Texts_Design_Text_ID1",
-                        column: x => x.Design_Text_ID1,
-                        principalTable: "Design_Texts",
-                        principalColumn: "Design_Text_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Personalisation_Designs_Stock_Items_Stock_Item_ID1",
-                        column: x => x.Stock_Item_ID1,
-                        principalTable: "Stock_Items",
-                        principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Stock_Price_Histories",
-                columns: table => new
-                {
-                    Stock_Price_History_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Price_Amount = table.Column<double>(type: "float", nullable: false),
-                    Effective_From_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Effective_To_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stock_Price_Histories", x => x.Stock_Price_History_ID);
-                    table.ForeignKey(
-                        name: "FK_Stock_Price_Histories_Stock_Items_Stock_Item_ID1",
-                        column: x => x.Stock_Item_ID1,
-                        principalTable: "Stock_Items",
-                        principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Write_Offs",
-                columns: table => new
-                {
-                    Write_Off_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Write_Off_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Write_Offs", x => x.Write_Off_ID);
-                    table.ForeignKey(
-                        name: "FK_Write_Offs_Stock_Items_Stock_Item_ID1",
-                        column: x => x.Stock_Item_ID1,
-                        principalTable: "Stock_Items",
-                        principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Order_Line_Item",
                 columns: table => new
                 {
@@ -873,7 +789,6 @@ namespace IPKP___API.Migrations
                     Order_Request_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Personalisation_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Order_Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Order_Line_Item_Price = table.Column<double>(type: "float", nullable: false),
                     Order_Line_Item_Quantity = table.Column<int>(type: "int", nullable: false),
                     Order_Line_Item_Total_Price = table.Column<double>(type: "float", nullable: false),
                     Order_Request_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -893,94 +808,6 @@ namespace IPKP___API.Migrations
                         column: x => x.Personalisation_Design_ID,
                         principalTable: "Personalisation_Designs",
                         principalColumn: "Personalisation_Design_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Write_Off_Line_Items",
-                columns: table => new
-                {
-                    Write_Off_Line_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Write_Off_Quantity = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Write_Off_Reason = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Write_Off_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Write_Off_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Write_Off_Line_Items", x => x.Write_Off_Line_Item_ID);
-                    table.ForeignKey(
-                        name: "FK_Write_Off_Line_Items_Stock_Items_Stock_Item_ID1",
-                        column: x => x.Stock_Item_ID1,
-                        principalTable: "Stock_Items",
-                        principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Write_Off_Line_Items_Write_Offs_Write_Off_ID1",
-                        column: x => x.Write_Off_ID1,
-                        principalTable: "Write_Offs",
-                        principalColumn: "Write_Off_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Order_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Order_Line_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Order_Line_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Order_Notes = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Order_ID);
-                    table.ForeignKey(
-                        name: "FK_Orders_Order_Line_Item_Order_Line_Item_ID1",
-                        column: x => x.Order_Line_Item_ID1,
-                        principalTable: "Order_Line_Item",
-                        principalColumn: "Order_Line_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Invoices",
-                columns: table => new
-                {
-                    Invoice_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Order_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Order_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Payment_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Payment_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Invoice_Discount_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Invoice_Discount_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Delivery_Price = table.Column<double>(type: "float", nullable: false),
-                    Invoice_Total_exclVAT = table.Column<double>(type: "float", nullable: false),
-                    Invoice_Total_VAT = table.Column<double>(type: "float", nullable: false),
-                    Invoice_Total_inclVAT = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Invoices", x => x.Invoice_ID);
-                    table.ForeignKey(
-                        name: "FK_Invoices_Invoice_Discount_Invoice_Discount_ID1",
-                        column: x => x.Invoice_Discount_ID1,
-                        principalTable: "Invoice_Discount",
-                        principalColumn: "Invoice_Discount_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Invoices_Orders_Order_ID1",
-                        column: x => x.Order_ID1,
-                        principalTable: "Orders",
-                        principalColumn: "Order_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Invoices_Payments_Payment_ID1",
-                        column: x => x.Payment_ID1,
-                        principalTable: "Payments",
-                        principalColumn: "Payment_ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1029,49 +856,9 @@ namespace IPKP___API.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Basket_Customer_ID1",
-                table: "Basket",
-                column: "Customer_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Basket_Stock_Item_ID1",
-                table: "Basket",
-                column: "Stock_Item_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BestSellersStock_Item_Stock_Item_ID",
-                table: "BestSellersStock_Item",
-                column: "Stock_Item_ID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Customers_User_ID1",
                 table: "Customers",
                 column: "User_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Deliveries_Delivery_Address_ID1",
-                table: "Deliveries",
-                column: "Delivery_Address_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Deliveries_Delivery_Company_ID1",
-                table: "Deliveries",
-                column: "Delivery_Company_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Design_Image_Line_Items_Design_Image_ID1",
-                table: "Design_Image_Line_Items",
-                column: "Design_Image_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Design_Image_Line_Items_Image_Price_ID1",
-                table: "Design_Image_Line_Items",
-                column: "Image_Price_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Design_Texts_Text_Price_ID1",
-                table: "Design_Texts",
-                column: "Text_Price_ID1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_User_ID1",
@@ -1124,19 +911,9 @@ namespace IPKP___API.Migrations
                 column: "Delivery_ID1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_Order_Line_Item_ID1",
-                table: "Orders",
-                column: "Order_Line_Item_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Personalisation_Designs_Design_Image_ID",
+                name: "IX_Personalisation_Designs_Design_Image_ID1",
                 table: "Personalisation_Designs",
-                column: "Design_Image_ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Personalisation_Designs_Design_Image_Line_Item_ID1",
-                table: "Personalisation_Designs",
-                column: "Design_Image_Line_Item_ID1");
+                column: "Design_Image_ID1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Personalisation_Designs_Design_Text_ID1",
@@ -1162,26 +939,6 @@ namespace IPKP___API.Migrations
                 name: "IX_Refunds_Refund_Policy_ID",
                 table: "Refunds",
                 column: "Refund_Policy_ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stock_Items_Product_Rating_ID1",
-                table: "Stock_Items",
-                column: "Product_Rating_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stock_Items_Stock_Image_ID1",
-                table: "Stock_Items",
-                column: "Stock_Image_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stock_Items_Stock_Item_Colour_ID1",
-                table: "Stock_Items",
-                column: "Stock_Item_Colour_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stock_Items_Stock_Type_ID1",
-                table: "Stock_Items",
-                column: "Stock_Type_ID1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Stock_Price_Histories_Stock_Item_ID1",
@@ -1240,10 +997,13 @@ namespace IPKP___API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Basket");
+                name: "BestSellers");
 
             migrationBuilder.DropTable(
-                name: "BestSellersStock_Item");
+                name: "Delivery_Address");
+
+            migrationBuilder.DropTable(
+                name: "Delivery_Companies");
 
             migrationBuilder.DropTable(
                 name: "Employees");
@@ -1255,7 +1015,13 @@ namespace IPKP___API.Migrations
                 name: "Invoices");
 
             migrationBuilder.DropTable(
+                name: "Order_Line_Item");
+
+            migrationBuilder.DropTable(
                 name: "Payment_Types");
+
+            migrationBuilder.DropTable(
+                name: "Product_Ratings");
 
             migrationBuilder.DropTable(
                 name: "Refund_Reasons");
@@ -1264,7 +1030,16 @@ namespace IPKP___API.Migrations
                 name: "Refunds");
 
             migrationBuilder.DropTable(
+                name: "Stock_Images");
+
+            migrationBuilder.DropTable(
+                name: "Stock_Item_Colours");
+
+            migrationBuilder.DropTable(
                 name: "Stock_Price_Histories");
+
+            migrationBuilder.DropTable(
+                name: "Stock_Types");
 
             migrationBuilder.DropTable(
                 name: "User_Role_Permissions");
@@ -1279,9 +1054,6 @@ namespace IPKP___API.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "BestSellers");
-
-            migrationBuilder.DropTable(
                 name: "Invoice_Discount");
 
             migrationBuilder.DropTable(
@@ -1289,6 +1061,12 @@ namespace IPKP___API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "Order_Requests");
+
+            migrationBuilder.DropTable(
+                name: "Personalisation_Designs");
 
             migrationBuilder.DropTable(
                 name: "Refund_Policies");
@@ -1303,55 +1081,19 @@ namespace IPKP___API.Migrations
                 name: "Discounts");
 
             migrationBuilder.DropTable(
-                name: "Order_Line_Item");
-
-            migrationBuilder.DropTable(
-                name: "Order_Requests");
-
-            migrationBuilder.DropTable(
-                name: "Personalisation_Designs");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Deliveries");
 
             migrationBuilder.DropTable(
-                name: "Design_Image_Line_Items");
+                name: "Design_Images");
 
             migrationBuilder.DropTable(
                 name: "Design_Texts");
 
             migrationBuilder.DropTable(
                 name: "Stock_Items");
-
-            migrationBuilder.DropTable(
-                name: "Delivery_Address");
-
-            migrationBuilder.DropTable(
-                name: "Delivery_Companies");
-
-            migrationBuilder.DropTable(
-                name: "Design_Images");
-
-            migrationBuilder.DropTable(
-                name: "Image_Price");
-
-            migrationBuilder.DropTable(
-                name: "Text_Price");
-
-            migrationBuilder.DropTable(
-                name: "Product_Ratings");
-
-            migrationBuilder.DropTable(
-                name: "Stock_Images");
-
-            migrationBuilder.DropTable(
-                name: "Stock_Item_Colours");
-
-            migrationBuilder.DropTable(
-                name: "Stock_Types");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Users");

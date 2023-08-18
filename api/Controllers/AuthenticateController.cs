@@ -245,6 +245,21 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetCustomerID/{username}")]
+        public async Task<IActionResult> GetCustomerID(string username)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetUser(username);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Customer" });
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {

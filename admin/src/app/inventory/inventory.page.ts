@@ -6,18 +6,17 @@ import { RouterModule, Router } from '@angular/router';
 import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
-import { BasketService } from 'src/app/Services/basket.service';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { PersonalisationService } from 'src/app/Services/personalisation.service';
 import { Image_Price } from 'src/app/Models/imageprice';
 import { TextPrice } from 'src/app/Models/textprice';
+import { LoadingController } from '@ionic/angular';
+
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-//import { Color, Styles, UserOptions } from './config'
-// import { File } from '@ionic-native/file';
-// import { FileOpener } from '@ionic-native/file-opener';
 export type jsPDFDocument = any;
 type Opts = { [key: string]: string | number }
+
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.page.html',
@@ -33,24 +32,35 @@ export class InventoryPage implements OnInit {
   searchString: string = "";
   searchedinventory: StockItemViewModel[] = [];
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
-    public bestsellerservice:BestsellersService, private alertController:AlertController, 
-    private basketService : BasketService,  public stockitemservice: StockItemDataService,
-    public pservice: PersonalisationService) { }
+    public bestsellerservice:BestsellersService, private alertController:AlertController,  
+    public stockitemservice: StockItemDataService, public pservice: PersonalisationService, 
+    public loadingController: LoadingController) { }
 
-    SearchStockForm: FormGroup = new FormGroup({
-      startdate: new FormControl('',[Validators.required]),
-      enddate: new FormControl('',[Validators.required]),
-    })
+  SearchStockForm: FormGroup = new FormGroup({
+    startdate: new FormControl('',[Validators.required]),
+    enddate: new FormControl('',[Validators.required]),
+  })
 
   ngOnInit() {
     this.GetAllStockItems();
-    this.getImagePrice()
-    this.getTextPrice()
     if(this.searchString == "")
     {
       this.searchedinventory = this.Products;
     }
   }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Please wait...',
+      duration: 2000,
+    });
+    
+    await loading.present();
+  
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
+  }  
 
   search(){
     this.searchedinventory = this.Products.filter(
@@ -100,20 +110,6 @@ export class InventoryPage implements OnInit {
       PDF.save('IPKP-Products.pdf');
     });
   }
-
-  getImagePrice(){
-    this.pservice.GetAllImagePrices().subscribe(result => {
-      this.imageprice = result as Image_Price[];
-      console.log(this.imageprice)
-    })
-  }
-  
-  getTextPrice(){
-    this.pservice.GetAllTextPrices().subscribe(result => {
-      this.textprice = result as TextPrice[];
-      console.log(this.textprice)
-    })
-  }
   
   addToBestSellers(bestseller: Stock_Item[]){
     this.bestsellerservice.SaveBestSellersList(bestseller).subscribe((response:any) => {
@@ -146,3 +142,16 @@ export class InventoryPage implements OnInit {
     await alert.present();
   }
 }
+// getImagePrice(){
+  //   this.pservice.GetAllImagePrices().subscribe(result => {
+  //     this.imageprice = result as Image_Price[];
+  //     console.log(this.imageprice)
+  //   })
+  // }
+  
+  // getTextPrice(){
+  //   this.pservice.GetAllTextPrices().subscribe(result => {
+  //     this.textprice = result as TextPrice[];
+  //     console.log(this.textprice)
+  //   })
+  // }

@@ -43,6 +43,10 @@ export class LoginPage implements OnInit {
         this.router.navigateByUrl('/tabs/orders', {replaceUrl: true});
         localStorage.setItem('username', form.value.username,);
       }
+      else if (roles.includes('Employee')){
+        this.router.navigateByUrl('/tabs/orders', {replaceUrl: true});
+        localStorage.setItem('username', form.value.username,);
+      }
       else{
         this.LoginFailErrorAlert()
       }

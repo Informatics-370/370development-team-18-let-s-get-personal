@@ -16,8 +16,8 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(255)]
         public string Stock_Item_Colour_Name { get; set; }
 
-        [InverseProperty("Stock_Item_Colour")]
-        public virtual ICollection<Stock_Item> Stock_Item { get; set; }
+        //[InverseProperty("Stock_Item_Colour")]
+        //public virtual ICollection<Stock_Item> Stock_Item { get; set; }
 
         //public virtual ICollection<Inventory> Inventory { get; set; }
 

@@ -132,19 +132,19 @@ export class StockTakePage implements OnInit {
     })   
   }
   
-  getImagePrice(){
-    this.pservice.GetAllImagePrices().subscribe(result => {
-      this.imageprice = result as Image_Price[];
-      console.log(this.imageprice)
-    })
-  }
+  // getImagePrice(){
+  //   this.pservice.GetAllImagePrices().subscribe(result => {
+  //     this.imageprice = result as Image_Price[];
+  //     console.log(this.imageprice)
+  //   })
+  // }
 
-  getTextPrice(){
-    this.pservice.GetAllTextPrices().subscribe(result => {
-      this.textprice = result as TextPrice[];
-      console.log(this.textprice)
-    })
-  }
+  // getTextPrice(){
+  //   this.pservice.GetAllTextPrices().subscribe(result => {
+  //     this.textprice = result as TextPrice[];
+  //     console.log(this.textprice)
+  //   })
+  // }
 
   canceladdmodal() {
     this.modal.dismiss(null, 'cancel');

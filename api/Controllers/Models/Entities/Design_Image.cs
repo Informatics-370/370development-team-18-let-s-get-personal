@@ -18,9 +18,7 @@ namespace IPKP___API.Controllers.Models.Entities
         public string Image_File { get; set; }
 
 
-        public virtual ICollection<Personalisation_Design> Personalisation_Design { get; set; }
-
-        public virtual ICollection<Design_Image_Line_Item> Design_Image_Line_Item { get; set; }
+        //public virtual ICollection<Personalisation_Design> Personalisation_Design { get; set; }
     }
 }
 

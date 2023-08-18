@@ -17,7 +17,9 @@ import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-
+import { Design_Image } from '../Models/designimage';
+import { Design_Text } from '../Models/designtext';
+import { Design_Image_Line_Item } from '../Models/designimagelineitem';
 
 
 @Component({
@@ -33,29 +35,13 @@ export class BasketPage implements OnInit {
 throw new Error('Method not implemented.');
 }*/
   user: string = ""
-  formData = new FormData();
   @ViewChild(IonModal) modal!: IonModal
-  personalizations: Personalisation_Design[] = [];
-  fileNameUploaded = ''
-  order = new OrderT();
+  order = new OrderT(); 
   
-  /*errmsg: string = ""
-  textprice: TextPrice[] =[]
-  imageprice: any //Image_Price[] =[]
-  imagepriceID!: string*/
-
-  
-  constructor(private basketservice: BasketService, public modalCtrl: ModalController,
-    private _router: Router,
+  constructor( public modalCtrl: ModalController, private _router: Router,
     private service: PersonalisationService, private alertController: AlertController) { }
 
-  cartItems: any[] = [];
-
-  AddForm: FormGroup = new FormGroup({
-    designText: new FormControl(''),
-    Image_File: new FormControl('')
-  });
-  
+  cartItems: any[] = [];  
 
   ngOnInit() {
     this.cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
@@ -142,21 +128,37 @@ throw new Error('Method not implemented.');
   } 
 
   CheckUser(){
-    this.user = JSON.parse(JSON.stringify(localStorage.getItem('username')));
-    if (this.user = ""){
+    this.user = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
+    if (this.user = "User"){
       this._router.navigate(['./tabs/make-payment']);
     }
-    else{
+    else{      
       this._router.navigate(['./tabs/login']);
     }
   }
-
+//localStorage.setItem('roles', token[roleLongName]);
  /*==============PERSONALIZATION===========================================*/
-  
+ AddTextForm: FormGroup = new FormGroup({
+    designText: new FormControl('',[Validators.required])
+  });
+
+  UploadImageForm: FormGroup = new FormGroup({
+    designImage: new FormControl('',[Validators.required])
+  });
+
+  personalizations!: Personalisation_Design
+  fileNameUploaded = ''
+  errmsg: string = ""
+  textprice: TextPrice[] =[]
+  imageprice: any //Image_Price[] =[]
+  imagepriceID!: string
+  formData = new FormData();
+
+  uploadedImage!: Design_Image;
+  uploadedText!: Design_Text;
+
  public personalize(id:any) {
     localStorage.setItem("stockId",id);
-    //this.AddPersonalisation();
-    //this._router.navigate(["/tabs/personalisation"], id)
   }
 
   uploadFile = (files: any) => {
@@ -165,52 +167,81 @@ throw new Error('Method not implemented.');
     this.fileNameUploaded = fileToUpload.name
   }
 
-  addPersonalization(){
-    let stockId=localStorage.getItem("stockId");
-
-    let items = JSON.parse(localStorage.getItem('cart') as string) || [];
-    let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
-   
-   //let design_Text = this.AddForm.value.designText;
-   //let image_File = this.UploadImage.value.imageFile;
- 
-   if(existingItem){
-     //items.push({ ...existingItem, personalization. : 1 });
-     //existingItem.personalization.personalizationText=design_Text;
-     //existingItem.personalization.img=image_File;
-     localStorage.removeItem("stockId");
-   }
-   //localStorage.setItem('cart',JSON.stringify(items));
-
-
-    this.formData.append('designText', this.AddForm.get('designText')!.value);
-    this.formData.append('designImage', this.AddForm.get('designImage')!.value);    
+  uploadImage(){     
+    this.service.UploadDesignImage(this.formData).subscribe(result =>{
+      this.uploadedImage = result as Design_Image
+    })
+      
+    try
+    {
+      console.log(this.uploadedImage)
+      this.uploadText()
+    }
+    catch{
+      this.addImageErrorAlert()
+    }    
   }
 
+  uploadText(){  
+    let addedtext = new Design_Text()
+    addedtext.design_Text_Description = this.AddTextForm.value.designText
+    this.service.UploadDesignText(addedtext).subscribe(res => {
+      this.uploadedText = res as Design_Text
+    })
+    try{
+      console.log(this.uploadedText)
+      this.UploadPersonalisation()
+    }
+    catch{
+
+    }  
+  }
+
+  UploadPersonalisation(){
+    let personalisation = new PersonalisationDesignVM()
+      //let stockId=localStorage.getItem("stockId");
+      personalisation.design_Text_ID = this.uploadedText.design_Text_ID
+      personalisation.design_Image_ID = this.uploadedImage.design_Image_ID
+      personalisation.stock_Item_ID = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));      
+      console.log(personalisation)     
+    try
+    {
+      this.service.AddPersonalisation(personalisation).subscribe(res =>{
+        this.personalizations = res as Personalisation_Design
+        let personalisedID = this.personalizations.personalisation_Design_ID
+        localStorage.setItem('personalisedID', JSON.stringify(personalisedID));
+        this.addPersonalizationSuccessAlert()
+      })
+    }
+    catch
+    {
+      this.addPersonalizationErrorAlert()
+    }
+  }
 
   canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
-    
+    this.modal.dismiss(null, 'cancel');    
   }
 
   confirmaddmodal() {
+    
+    this.uploadImage()   
+
+
+    // let items = JSON.parse(localStorage.getItem('cart') as string) || [];
+    // let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
+
+    // let design_Text = this.AddForm.value.designText;
+    // let image_File = "Kamo";
  
-    let stockId=localStorage.getItem("stockId");
+    // if(existingItem){
+    //   //items.push({ ...existingItem, personalization. : 1 });
+    //   existingItem.personalization.personalizationText=design_Text;
+    //   existingItem.personalization.img=image_File;
+    //   localStorage.removeItem("stockId");
+    // }
 
-    let items = JSON.parse(localStorage.getItem('cart') as string) || [];
-    let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
-
-    let design_Text = this.AddForm.value.designText;
-    let image_File = "Kamo";
- 
-    if(existingItem){
-      //items.push({ ...existingItem, personalization. : 1 });
-      existingItem.personalization.personalizationText=design_Text;
-      existingItem.personalization.img=image_File;
-      localStorage.removeItem("stockId");
-    }
-
-    localStorage.setItem('cart',JSON.stringify(items));
+    // localStorage.setItem('cart',JSON.stringify(items));
 
    try{
     this.addPersonalization(); 
@@ -260,7 +291,60 @@ throw new Error('Method not implemented.');
     });
     await alert.present();
   }
-  
+
+  async addTextErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Your personalization Text was not captured.',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
+    });
+    await alert.present();
+  }
+
+  async addImageErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Your personalization Image was not captured.',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
+    });
+    await alert.present();
+  }
+   // addPersonalization(){
+  //   let stockId=localStorage.getItem("stockId");
+
+  //   let items = JSON.parse(localStorage.getItem('cart') as string) || [];
+  //   let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
+   
+  //   // this.formData.append('designText', this.AddForm.get('designText')!.value);
+  //   // this.formData.append('designImage', this.AddForm.get('designImage')!.value); 
+
+  //  //let design_Text = this.AddForm.value.designText;
+  //  //let image_File = this.UploadImage.value.imageFile;
+ 
+  //  if(existingItem)
+  //  {
+  //    //items.push({ ...existingItem, personalization. : 1 });
+  //    //existingItem.personalization.personalizationText=design_Text;
+  //    //existingItem.personalization.img=image_File;
+  //    localStorage.removeItem("stockId");
+  //   }
+
+  //  //localStorage.setItem('cart',JSON.stringify(items));      
+  // }
 
   /*
   confirmaddmodal() {

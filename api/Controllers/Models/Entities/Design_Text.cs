@@ -13,10 +13,10 @@ namespace IPKP___API.Controllers.Models.Entities
         public Guid Design_Text_ID { get; set; }
 
         //FK
-        [ForeignKey(nameof(Text_Price_ID))]
-        public Guid Text_Price_ID { get; set; }
+        //[ForeignKey(nameof(Text_Price_ID))]
+        //public Guid Text_Price_ID { get; set; }
 
-        public Text_Price Text_Price { get; set; }
+        //public Text_Price Text_Price { get; set; }
 
         [StringLength(255)]
         public string Design_Text_Description { get; set; }
@@ -24,7 +24,7 @@ namespace IPKP___API.Controllers.Models.Entities
         //public int Design_Text_Size { get; set; } 
 
 
-        public virtual ICollection<Personalisation_Design> Personalisation_Design { get; set; }
+        //public virtual ICollection<Personalisation_Design> Personalisation_Design { get; set; }
         //public virtual ICollection<Design_Text> Design_Text { get; set; }
     }
 }

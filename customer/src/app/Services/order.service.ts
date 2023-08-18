@@ -5,6 +5,7 @@ import { Response } from '../Models/response';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 import { Order } from '../Models/orders';
 import { OrderT } from '../Models/basket';
+import { Order_Line_Item } from '../Models/orderlineitem';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,30 +21,12 @@ export class OrderService {
     
   constructor(private httpClient: HttpClient) { }
 
-  public AddOrderLineItem(oli:OrderLineItemVM){
+  public AddOrderLineItem(oli:Order_Line_Item){
     return this.httpClient.post<Response>(`${this.apiUrl}Order/AddOrderLineItem`, oli)
     .pipe(map(result => result))
   }
 
-  public GetRequestedOrders(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Order/GetRequestedOrders`)
-    .pipe(map((result: any) => result))
-  }
-
-  public GetOrdersInProgress(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Order/GetOrdersInProgress`)
-    .pipe(map((result: any) => result))
-  }
-
-  public AcceptOrder(order_Line_Item_ID:number): Observable<any>{
-    return this.httpClient.put<Response>(`${this.apiUrl}Order/AcceptOrder/${order_Line_Item_ID}`, this.httpOptions)
-    .pipe(map((result: any) => result))
-  }
-
-  public ProcessOrder(order_Line_Item_ID:number): Observable<any>{
-    return this.httpClient.put<Response>(`${this.apiUrl}Order/ProcessOrder/${order_Line_Item_ID}`, this.httpOptions)
-    .pipe(map((result: any) => result))
-  }
+  
 
   public AddOrder(o:Order){
     return this.httpClient.post<Response>(`${this.apiUrl}Order/AddOrder`, o)

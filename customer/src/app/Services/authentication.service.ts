@@ -79,6 +79,11 @@ export class AuthenticationService {
     return false;
   }
 
+  public GetCustomerID(username:string){ 
+    return this.httpClient.get(`${this.apiUrl}Authenticate/GetCustomerID`+ "/" + username)
+    .pipe(map(result => result))
+  }
+
   //*** Registering ***//
   public RegisterCustomer(customer: RegisterVM){
     return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterCustomer`, customer, this.httpOptions)
