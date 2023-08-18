@@ -5,6 +5,7 @@ import { Response } from '../Models/response';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 import { Order } from '../Models/orders';
 import { OrderT } from '../Models/basket';
+import { Order_Line_Item } from '../Models/orderlineitem';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +21,7 @@ export class OrderService {
     
   constructor(private httpClient: HttpClient) { }
 
-  public AddOrderLineItem(oli:OrderLineItemVM){
+  public AddOrderLineItem(oli:Order_Line_Item){
     return this.httpClient.post<Response>(`${this.apiUrl}Order/AddOrderLineItem`, oli)
     .pipe(map(result => result))
   }

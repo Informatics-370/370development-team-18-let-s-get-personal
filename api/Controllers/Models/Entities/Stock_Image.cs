@@ -20,8 +20,8 @@ namespace IPKP___API.Controllers.Models.Entities
         //[Column("Stock_Item_Id")]
         //public Guid? Stock_Item_Id { get; set; }
 
-        [InverseProperty("Stock_Image")]
-        public virtual ICollection<Stock_Item> Stock_Item { get; set; }
+        //[InverseProperty("Stock_Image")]
+        //public virtual ICollection<Stock_Item> Stock_Item { get; set; }
 
         //public virtual ICollection<Inventory> Inventory { get; set; }
 

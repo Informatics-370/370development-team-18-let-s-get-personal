@@ -34,7 +34,6 @@ namespace IPKP___API.Controllers
                     Order_Line_Item_ID = new Guid(),
                     Order_Request_ID = oli.Order_Request_ID,
                     Personalisation_ID = oli.Personalisation_ID,
-                    Order_Line_Item_Price = oli.Order_Line_Item_Price,
                     Order_Line_Item_Quantity = oli.Order_Line_Item_Quantity,
                     Order_Line_Item_Total_Price = oli.Order_Line_Item_Total_Price,
                     Order_Status = "Requested",

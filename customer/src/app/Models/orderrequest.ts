@@ -1,6 +1,4 @@
-import { Customer } from "./customer";
-import { Invoice } from "./invoice";
-import { DeliveryAddress } from "./deliveryaddress";
+
 export class Order_Request{
     order_Request_ID!: number
     order_Request_Date!: Date
@@ -8,11 +6,5 @@ export class Order_Request{
     //Order_S!: Boolean
 
     customer_ID!: number
-    customer!: Customer
-    
-    invoice_ID!: string
-    invoice!: Invoice
-
-    delivery_Address_ID!: string
-    delivery_Address!: DeliveryAddress
+    delivery_ID!: string
 }

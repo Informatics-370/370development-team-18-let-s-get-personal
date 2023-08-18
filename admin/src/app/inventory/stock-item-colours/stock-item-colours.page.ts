@@ -57,7 +57,7 @@ export class StockItemColoursPage implements OnInit {
   }
   
   getstockcolour(stock_Item_Colour_ID:string){
-    this.router.navigate(['./editstockitemcolours',stock_Item_Colour_ID]);
+    this.router.navigate(['tabs/edit-stock-item-colours']),stock_Item_Colour_ID;
   }
 
   addcolour(){
@@ -74,7 +74,7 @@ export class StockItemColoursPage implements OnInit {
     })
   }
 
-  deletecolour(stock_Item_Colour_ID:number){
+  deletecolour(stock_Item_Colour_ID:string){
     this.service.DeleteStockItemColour(stock_Item_Colour_ID).subscribe(result =>{
       if(result.status == "Error")
       {

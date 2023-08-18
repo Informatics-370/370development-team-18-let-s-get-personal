@@ -5,7 +5,7 @@ import { IonicModule, ModalController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Stock_Item } from '../Models/stockitem';
 import { BasketItems } from '../Models/basket';
-import { Subject } from 'rxjs';
+import { LoadingController } from '@ionic/angular';
 import { BasketService } from '../Services/basket.service';
 import { StockItemDataService } from '../Services/stockitem.service';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
@@ -23,13 +23,26 @@ export class ShopAllPage implements OnInit {
   Products: StockItemViewModel[] = [];
   stockItems: Stock_Item[] = [];
 
-  constructor(private _modalController: ModalController,
+  constructor(private _modalController: ModalController, public loadingController: LoadingController,
     private _router: Router, private alertController: AlertController,
     private basketservice: BasketService, private service: StockItemDataService) { }
 
 
   ngOnInit() {
     this.GetStockItems();
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Please wait...',
+      duration: 2000,
+    });
+    
+    await loading.present();
+  
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
   }
 
   public GetStockItems() {
@@ -94,9 +107,9 @@ export class ShopAllPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        // handler: () => {
-        //   this.reloadPage();
-        // }
+        handler: () => {
+          this.reloadPage();
+        }
       }],
     });
     await alert.present();
@@ -109,9 +122,9 @@ export class ShopAllPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        // handler: () => {
-        //   this.reloadPage();
-        // }
+        handler: () => {
+          this.reloadPage();
+        }
       }],
     });
     await alert.present();

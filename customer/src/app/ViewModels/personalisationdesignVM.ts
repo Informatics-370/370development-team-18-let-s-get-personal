@@ -3,9 +3,9 @@ import { Stock_Item } from "../Models/stockitem"
 export class PersonalisationDesignVM{
     image_File!: string
     //image_Price_amount!: number
-    stock_Item!:Stock_Item;
+
     design_Text!: string
-   /* text_Price_Amount!: number
+    // text_Price_Amount!: number
 
     stock_Item_Name!: string
     stock_Item_Price!: number
@@ -13,7 +13,7 @@ export class PersonalisationDesignVM{
     stock_Colour_Name!: string
     personalisation_Design_Price!: number
 
-    design_Image_Line_Item_ID!: number
-    design_Text_ID!: number
-    stock_Item_ID!: number*/
+    design_Text_ID!: string
+    design_Image_ID!: string
+    stock_Item_ID!: string 
 }

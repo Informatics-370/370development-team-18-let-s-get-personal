@@ -15,25 +15,39 @@
     </ion-item-divider>
     <ion-item *ngFor="let item of basketItems">
     {{item.stock_Item.stock_Item_Name}}  - R{{item.stock_Item.stock_Item_Price}}
+    </ion-item>    
+  </ion-list>
+
+  <ion-list>
+    <ion-item-divider>Delivery Address</ion-item-divider>
+    <ion-item *ngFor="let d of deliveryvm">
+      <p>Delivery Price  - R{{d.delivery_Price}} <br>
+      Address: {{d.streetNumber}} {{d.streetName}}</p>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item-divider>Total Price</ion-item-divider>
+    <ion-item>
+      <p>{{totalprice}}</p>
     </ion-item>
     
-    <!-- Address Form -->
-    <ion-item-divider>
+  </ion-list>
+  <!-- Checkout Button -->
+  <ion-button expand="full" (click)="AddOrderRequest()">Checkout</ion-button>
+</ion-content>
+
+<!-- Address Form -->
+    <!-- <ion-item-divider>
       Address Information
     </ion-item-divider>
     
     <ion-item>
       <ion-label position="floating">Street</ion-label>
       <ion-input [(ngModel)]="order.deliveryAddress.streetName" required></ion-input>
-    </ion-item>
+    </ion-item> -->
    <!-- <ion-item>
       <ion-label position="floating">City</ion-label>
       <ion-input [(ngModel)]="address.city" required></ion-input>
     </ion-item>
      Add more address fields as needed -->
-  </ion-list>
-
-  <!-- Checkout Button -->
-  <ion-button expand="full" (click)="proceedToPayFast()">Checkout</ion-button>
-</ion-content>
-

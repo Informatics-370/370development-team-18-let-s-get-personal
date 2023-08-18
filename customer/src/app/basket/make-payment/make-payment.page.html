@@ -5,58 +5,63 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">login</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div>
+    
+    <form [formGroup]="AddDelAddressForm"> 
+      <ion-item>
+        <ion-label position="stacked">Delivery Company</ion-label><br>
+        <ion-select placeholder="Select a Delivery Company" formControlName="deliveryCompanyID">
+          <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
+          <ion-select-option *ngFor="let company of deliverycompanies" value ="{{company.delivery_Company_ID}}">
+            {{company.delivery_Company_Name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
   
-  <form [formGroup]="AddDelAddressForm"> 
-    <ion-item>
-      <ion-label position="stacked">Street Name</ion-label><br>
-      <ion-input  labelPlacement="floating" placeholder="Example: 4th Avenue Street" formControlName="streetName"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Street Number</ion-label><br>
-      <ion-input  type="number" labelPlacement="floating" placeholder="000" formControlName="streetNumber"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Dwelling Type</ion-label><br>
-      <ion-input type="text" labelPlacement="floating" placeholder="House/Apartment" formControlName="dwellingtype"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Unit Number</ion-label><br>
-      <ion-input  type="number" labelPlacement="floating" placeholder="000" formControlName="Unit"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Street Name</ion-label><br>
+        <ion-input  labelPlacement="floating" placeholder="Example: Avenue Street" formControlName="streetName"></ion-input>
+      </ion-item>
   
-    <ion-item>
-      <ion-label position="stacked">City</ion-label><br>
-      <ion-input type="text" labelPlacement="floating" placeholder="Example: Pretoria" formControlName="city"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Province</ion-label><br>
-      <ion-input type="text" labelPlacement="floating" placeholder="Example: Gauteng" formControlName="province"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Area Code</ion-label><br>
-      <ion-input  type="number" labelPlacement="floating" placeholder="0002" formControlName="areaCode"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Delivery Company</ion-label><br>
-      <ion-select placeholder="Select a Delivery Company">
-        <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
-        <ion-select-option *ngFor="let company of deliverycompanies" value ="{{company.delivery_Company_ID}}">
-          {{company.delivery_Company_Name}}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
-
-
-  <ion-button (click)="checkOut()">Confirm Address</ion-button>
-</form>
-
-
+      <ion-item>
+        <ion-label position="stacked">Street Number</ion-label><br>
+        <ion-input  type="number" labelPlacement="floating" placeholder="000" formControlName="streetNumber"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="stacked">Dwelling Type</ion-label><br>
+        <ion-input type="text" labelPlacement="floating" placeholder="House/Apartment" formControlName="dwellingtype"></ion-input>
+      </ion-item>
+  
+      <!-- <ion-item>
+        <ion-label position="stacked">Unit Number</ion-label><br>
+        <ion-input  type="number" labelPlacement="floating" placeholder="000" formControlName="Unit"></ion-input>
+      </ion-item> -->
+    
+      <ion-item>
+        <ion-label position="stacked">City</ion-label><br>
+        <ion-input type="text" labelPlacement="floating" placeholder="Example: Pretoria" formControlName="city"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="stacked">Province</ion-label><br>
+        <ion-input type="text" labelPlacement="floating" placeholder="Example: Gauteng" formControlName="province"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="stacked">Area Code</ion-label><br>
+        <ion-input  type="text" labelPlacement="floating" placeholder="0002" formControlName="areaCode"></ion-input>
+      </ion-item>
+      <ion-button (click)="AddDeliveryAddress()">Confirm Address</ion-button>
+     <!--checkOut()-->
+  </form>
+  
+  </div>
   
 <!--This takes to the third party app view page. -->
     

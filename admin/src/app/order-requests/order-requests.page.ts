@@ -2,24 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-orders',
-  templateUrl: './orders.page.html',
-  styleUrls: ['./orders.page.scss'],
+  selector: 'app-order-requests',
+  templateUrl: './order-requests.page.html',
+  styleUrls: ['./order-requests.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class OrdersPage implements OnInit {
+export class OrderRequestsPage implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor() { }
 
   ngOnInit() {
   }
-  
-  prevOrders()
-  {
-    this.router.navigate(['./tabs/sales']);
-  }
+
 }

@@ -112,16 +112,16 @@ export class PersonalisationPage implements OnInit {
     await alert.present();
   }*/
   ngOnInit(): void {
-    this.GetPersonalisation()
+    // this.GetPersonalisation()
   }
 
-  GetPersonalisation() {
+  // GetPersonalisation() {
 
-    this.service.GetPersonalisation().subscribe(result => {
-      this.personalizations = result as PersonalisationDesignVM[];
-      console.log(this.personalizations)
-    })
-  }
+  //   this.service.GetPersonalisation().subscribe(result => {
+  //     this.personalizations = result as PersonalisationDesignVM[];
+  //     console.log(this.personalizations)
+  //   })
+  // }
 
   AddPersonalisation() {
     let AddPersonalisation = new PersonalisationDesignVM();
@@ -143,17 +143,17 @@ export class PersonalisationPage implements OnInit {
     this._router.navigate(['/edit-personalization', personalisation_Design_ID]);
   }
 
-  DeletePersonalisation(personalisation_Design_ID: string) {
-    this.service.DeletePersonalisation(personalisation_Design_ID).subscribe(result => {
-      console.log(result);
-      if (result.status == "Error") {
-        this.DeletePersonalizationErrorAlert();
-      }
-      else if (result.status == "Success") {
-        this.DeletePersonalizationSuccessAlert();
-      }
-    })
-  }
+  // DeletePersonalisation(personalisation_Design_ID: string) {
+  //   this.service.DeletePersonalisation(personalisation_Design_ID).subscribe(result => {
+  //     console.log(result);
+  //     if (result.status == "Error") {
+  //       this.DeletePersonalizationErrorAlert();
+  //     }
+  //     else if (result.status == "Success") {
+  //       this.DeletePersonalizationSuccessAlert();
+  //     }
+  //   })
+  // }
 
   public basket() {
     
