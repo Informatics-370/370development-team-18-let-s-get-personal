@@ -6,7 +6,6 @@ import { RouterModule, Router } from '@angular/router';
 import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
-import { BasketService } from 'src/app/Services/basket.service';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { PersonalisationService } from 'src/app/Services/personalisation.service';
 import { Image_Price } from 'src/app/Models/imageprice';

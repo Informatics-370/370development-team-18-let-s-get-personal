@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EnvironmentInjector, ViewChild, ElementRef  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { OrderService } from '../Services/order.service';
+import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+export type jsPDFDocument = any;
+type Opts = { [key: string]: string | number }
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,10 +18,17 @@ import { Router } from '@angular/router';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class OrdersPage implements OnInit {
-
-  constructor(private router: Router) { }
+  orderRequests: OrderLineItemVM[] =[]
+  constructor(private router: Router, public service: OrderService) { }
 
   ngOnInit() {
+    this.GetOrdersInProgress()
+  }
+
+  GetOrdersInProgress(){
+    this.service.GetOrdersInProgress().subscribe(result =>{
+      this.orderRequests = result as OrderLineItemVM[]
+    })
   }
   
   prevOrders()

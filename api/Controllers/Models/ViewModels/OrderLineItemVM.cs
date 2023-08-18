@@ -26,20 +26,15 @@ namespace IPKP___API.Controllers.Models.ViewModels
 
         //Personalisation design 
         public string Image_File { get; set; }
-        public double Image_Price_Amount { get; set; }
-
         public string Design_Text { get; set; }
-        public double Text_Price_Amount { get; set; }
 
         public string Stock_Item_Name { get; set; }
-        public decimal Stock_Item_Price { get; set; }
         public string Stock_Item_Size { get; set; }
         public string Stock_Colour_Name { get; set; }
-        public double Personalisation_Design_Price { get; set; }
 
         //order line item 
         public Guid Order_Line_Item_ID { get; set; }
-        public double Order_Line_Item_Price { get; set; }
+        //public double Order_Line_Item_Price { get; set; }
         public int Order_Line_Item_Quantity { get; set; }
         public double Order_Line_Item_Total_Price { get; set; }
     }

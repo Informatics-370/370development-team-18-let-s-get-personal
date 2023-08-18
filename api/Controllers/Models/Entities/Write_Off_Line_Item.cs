@@ -21,8 +21,8 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public Guid? Stock_Item_ID { get; set; }
 
-        public virtual Write_Off Write_Off { get; set; }
-        public virtual Stock_Item Stock_Item { get; set; }
+        //public virtual Write_Off Write_Off { get; set; }
+        //public virtual Stock_Item Stock_Item { get; set; }
     
   }
 }

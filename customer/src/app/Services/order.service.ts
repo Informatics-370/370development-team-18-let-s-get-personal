@@ -26,25 +26,7 @@ export class OrderService {
     .pipe(map(result => result))
   }
 
-  public GetRequestedOrders(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Order/GetRequestedOrders`)
-    .pipe(map((result: any) => result))
-  }
-
-  public GetOrdersInProgress(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Order/GetOrdersInProgress`)
-    .pipe(map((result: any) => result))
-  }
-
-  public AcceptOrder(order_Line_Item_ID:number): Observable<any>{
-    return this.httpClient.put<Response>(`${this.apiUrl}Order/AcceptOrder/${order_Line_Item_ID}`, this.httpOptions)
-    .pipe(map((result: any) => result))
-  }
-
-  public ProcessOrder(order_Line_Item_ID:number): Observable<any>{
-    return this.httpClient.put<Response>(`${this.apiUrl}Order/ProcessOrder/${order_Line_Item_ID}`, this.httpOptions)
-    .pipe(map((result: any) => result))
-  }
+  
 
   public AddOrder(o:Order){
     return this.httpClient.post<Response>(`${this.apiUrl}Order/AddOrder`, o)
