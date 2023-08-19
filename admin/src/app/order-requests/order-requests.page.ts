@@ -28,6 +28,7 @@ export class OrderRequestsPage implements OnInit {
   GetOrderRequests(){
     this.service.GetRequestedOrders().subscribe(result =>{
       this.orderRequests = result as OrderLineItemVM[]
+      console.log(this.orderRequests)
     })
   }
 

@@ -33,7 +33,6 @@ namespace IPKP___API.Controllers.Models.Repository
         //Stock items
         Task<Stock_Item> GetStockItemDetailsAsync(Guid stock_Item_ID);
         Task<Stock_Item> GetStockItemByName(string stock_Item_Name);
-        //Task<Stock_Item[]> GetAllStockItemsAsync();
 
         Task<Stock_Type> GetStockTypeDetailsAsync(Guid stock_Type_ID);
         Task<Stock_Type[]> GetAllStockTypesAsync();
@@ -59,16 +58,12 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Refund> GetPreviousRefund(Guid refund_Id);
         Task<Customer> GetUser(string username);
 
-        object GetOrderRequests();
         object GetDeliveryByID(Guid deliveryID);
         object GetStockNames();
-        object GetStockItemNamesbyID(Guid stockitemID);
         object GetAllDeliveries();
         object GetDeliveryBySatus(string status);
-        object GetAllPersonalisedObjects();
-        object GetOrderRequestbyCustomer(Guid customerID);
-        //object GetOrderLineItemByID(Guid orderlineitemID);
         Task<Order_Line_Item> GetOrderLineItemByID(Guid orderlineitemID);
         object GetOrderLineItembyStatus(string orderlinestatus);
+        object GetSalesReport();
     }
 }

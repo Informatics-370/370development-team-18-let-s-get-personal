@@ -33,16 +33,20 @@ export class OrderService {
     .pipe(map((result: any) => result))
   }
 
+  public SendOutDelivery(order_Line_Item_ID:string): Observable<any>{
+    return this.httpClient.put<Response>(`${this.apiUrl}Order/SendOutDelivery/${order_Line_Item_ID}`, this.httpOptions)
+    .pipe(map((result: any) => result))
+  }
+
   public ProcessOrder(order_Line_Item_ID:string): Observable<any>{
     return this.httpClient.put<Response>(`${this.apiUrl}Order/ProcessOrder/${order_Line_Item_ID}`, this.httpOptions)
     .pipe(map((result: any) => result))
   }
 
-
-  // public GetOrders(): Observable<any>{
-  //   return this.httpClient.get(`${this.apiUrl}Order/GetAllOrders`)
-  //   .pipe(map((result: any) => result))
-  // }
+  public GetSales(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Order/GetSales`)
+    .pipe(map((result: any) => result))
+  }
 
   // public GetAllOrderStatuses(): Observable<any>{
   //   return this.httpClient.get(`${this.apiUrl}OrderRequest/GetAllOrderStatuses`)

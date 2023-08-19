@@ -26,7 +26,7 @@
         <ion-col></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of orderRequests">
-        <ion-col> {{item.customer_Username}} </ion-col>
+        <ion-col> {{item.customer_UserName}} </ion-col>
         <ion-col> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
         <ion-col> {{item.delivery_Company_Name}} </ion-col>
         <ion-col> {{item.stock_Item_Name}} </ion-col>
@@ -35,7 +35,7 @@
         <ion-col> <img src='data:image/png;base64,{{item.image_File}}'> </ion-col>
         <ion-col> {{item.design_Text}} </ion-col>
         <ion-col> {{item.order_Request_Date}} </ion-col>
-        <ion-col><ion-button (click)="OutForDelivery(item.order_Line_Item_ID)" >Accept</ion-button></ion-col>
+        <ion-col><ion-button (click)="OutForDelivery(item.order_Line_Item_ID)">Out For Delivery</ion-button></ion-col>
       </ion-row>
     </ion-grid>
   </div>

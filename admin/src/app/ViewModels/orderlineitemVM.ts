@@ -9,9 +9,10 @@ export class OrderLineItemVM{
     city!: string
     province!: string
     areaCode!: string
+    delivery_ID!: string
    
     customer_ID!: number
-    customer_Username!: string
+    customer_UserName!: string
 
     order_Request_Date!: Date
     order_Request_Total_Price!: number

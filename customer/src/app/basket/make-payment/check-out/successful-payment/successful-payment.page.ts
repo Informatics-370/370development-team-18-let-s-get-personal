@@ -33,7 +33,7 @@ export class SuccessfulPaymentPage implements OnInit {
       let addedOrder = new Order_Line_Item
       let orderRequestID = JSON.parse(localStorage.getItem('orderRequestID') as string)
       let personalisedID = JSON.parse(localStorage.getItem('personalisedID') as string)
-      let quantity = this.cartitems.quantity
+      let quantity = this.cartitems.basket_Quantity
       let price = JSON.parse(localStorage.getItem('totalprice') as string)
 
       addedOrder.order_Line_Item_Price = price

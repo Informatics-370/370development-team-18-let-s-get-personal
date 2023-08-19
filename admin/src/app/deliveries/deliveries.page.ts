@@ -10,7 +10,8 @@ import { DeliveryViewModel } from '../ViewModels/deliveryVM';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-
+import { OrderService } from '../Services/order.service';
+import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 export type jsPDFDocument = any;
@@ -26,7 +27,7 @@ type Opts = { [key: string]: string | number }
 export class DeliveriesPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
   searchValue: string ='';
-  deliveries:DeliveryViewModel[]=[];
+  deliveries:OrderLineItemVM[]=[];
   filteredDelivery:DeliveryViewModel[]=[];
   deliverycompanies:Delivery_Company[]=[];
 
@@ -42,7 +43,8 @@ export class DeliveriesPage implements OnInit {
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DeliveryDataService, private router: Router, public modalCtrl: ModalController,
-    private alertController:AlertController, public environmentInjector: EnvironmentInjector) { }
+    private alertController:AlertController, public environmentInjector: EnvironmentInjector, 
+    public orderservice: OrderService,) { }
   
   Routedeliverycompanies()
   {
@@ -51,7 +53,7 @@ export class DeliveriesPage implements OnInit {
 
   GetRequestedDeliveries(){
     this.service.GetOutDeliveries().subscribe(res => {
-      this.deliveries = res as DeliveryViewModel[]
+      this.deliveries = res as OrderLineItemVM[]
       console.log(this.deliveries)
     })
   }
@@ -64,17 +66,25 @@ export class DeliveriesPage implements OnInit {
   }
 
 
-  ReceiveDelivery(DeliveryId: number){
-    // this.service.ReceiveDelivery(DeliveryId).subscribe(result => {
-    //   console.log(result);
-    //   if(result.status == "Error")
-    //   {
-    //     this.ReceiveDeliveryErrorAlert();
-    //   }
-    //   else if(result.status == "Success"){
-    //     this.ReceiveDeliverySuccessAlert();
-    //   }
-    // })
+  ReceiveDelivery(DeliveryId: string, order_Line_Item_ID:string){
+    try
+    {
+      this.service.ChangeStatusToRecieved(DeliveryId).subscribe(result =>{
+                      
+      })
+
+      this.orderservice.ProcessOrder(order_Line_Item_ID).subscribe(result =>{
+                     
+      })
+      this.ReceiveDeliverySuccessAlert 
+    }
+    catch{
+      this.ReceiveDeliveryErrorAlert
+    }
+  }
+
+  addToOrder(){
+
   }
 
   reloadPage(){
@@ -96,7 +106,7 @@ export class DeliveriesPage implements OnInit {
       let position = 10;
       PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
           
-      PDF.save('IPKP-Products.pdf');
+      PDF.save('IPKP-DeliveriesInProgress.pdf');
     });
   }
 

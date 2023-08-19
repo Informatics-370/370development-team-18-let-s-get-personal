@@ -16,6 +16,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
         public string City { get; set; }
         public string Province { get; set; }
         public string AreaCode { get; set; }
+        public Guid Delivery_ID { get; set; }
 
         //orderrequest
         public Guid Customer_ID { get; set; }
