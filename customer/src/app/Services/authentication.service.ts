@@ -86,7 +86,7 @@ export class AuthenticationService {
 
   //*** Registering ***//
   public RegisterCustomer(customer: RegisterVM){
-    return this.httpClient.post(`${this.apiUrl}Authenticate/RegisterCustomer`, customer, this.httpOptions)
+    return this.httpClient.post<Response>(`${this.apiUrl}Authenticate/RegisterCustomer`, customer, this.httpOptions)
   }
 
   public ForgotPassword(forgotpassword: ForgotPasswordViewModel){

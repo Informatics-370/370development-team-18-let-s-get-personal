@@ -40,9 +40,10 @@ export class LoginPage implements OnInit {
       {        
         localStorage.setItem('username', form.value.username,);
         this.router.navigateByUrl('tabs/basket', {replaceUrl: true});
+        this.FindID()
       }
     });
-    this.FindID()
+    
   }
 
   FindID(){

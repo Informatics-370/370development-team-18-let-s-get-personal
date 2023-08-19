@@ -25,13 +25,13 @@ namespace IPKP___API.Controllers
 
         //get requested deliveries
         [HttpGet]
-        [Route("GetRequestedDeliveries")]
-        public object GetRequestedDeliveries()
+        [Route("GetOutDeliveries")]
+        public object GetOutDeliveries()
         {
             try
             {
-                string orderStatus = "Requested";
-                var requests = _IPKPRepository.GetDeliveryBySatus(orderStatus);
+                string orderStatus = "Out";
+                var requests = _IPKPRepository.GetOrderLineItembyStatus(orderStatus);
 
                 if (requests == null)
                 {
@@ -48,62 +48,6 @@ namespace IPKP___API.Controllers
             }
         }
 
-        //change status to out for delivery
-        [HttpPut]
-        [Route("SendOutDelivery/{delivery_ID}")]
-        public async Task<ActionResult<Delivery>> SendOutDelivery(Guid delivery_ID, DeliveryVM dvm)
-        {
-            try
-            {
-                var requests = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
-
-                if (requests == null)
-                {
-                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
-                }
-                else
-                {
-                    requests.Delivery_Status = "Out";
-                    if (await _IPKPRepository.SaveChangesAsync())
-                    {
-                        return Ok(requests);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-            }
-
-            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
-        }
-
-        //get "out" deliveries
-        [HttpGet]
-        [Route("GetOutDeliveries")]
-        public object GetOutDeliveries()
-        {
-            try
-            {
-                string orderStatus = "Out";
-                var requests = _IPKPRepository.GetDeliveryBySatus(orderStatus);
-
-                if (requests == null)
-                {
-                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
-                }
-                else
-                {
-                    return Ok(requests);
-                }
-            }
-            catch (Exception)
-            {
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-            }
-        }
-
-        //change status to recieved 
         [HttpPut]
         [Route("ChangeStatusToRecieved/{delivery_ID}")]
         public async Task<ActionResult<Delivery>> ChangeStatusToRecieved(Guid delivery_ID, DeliveryVM dvm)
@@ -324,6 +268,63 @@ namespace IPKP___API.Controllers
         }
     }
 }
+
+//change status to out for delivery
+//[HttpPut]
+//[Route("SendOutDelivery/{delivery_ID}")]
+//public async Task<ActionResult<Delivery>> SendOutDelivery(Guid delivery_ID, DeliveryVM dvm)
+//{
+//    try
+//    {
+//        var requests = await _IPKPRepository.GetDeliveryDetailsAsync(delivery_ID);
+
+//        if (requests == null)
+//        {
+//            return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+//        }
+//        else
+//        {
+//            requests.Delivery_Status = "Out";
+//            if (await _IPKPRepository.SaveChangesAsync())
+//            {
+//                return Ok(requests);
+//            }
+//        }
+//    }
+//    catch (Exception)
+//    {
+//        return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+//    }
+
+//    return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
+//}
+
+//get "out" deliveries
+//[HttpGet]
+//[Route("GetOutDeliveries")]
+//public object GetOutDeliveries()
+//{
+//    try
+//    {
+//        string orderStatus = "Out";
+//        var requests = _IPKPRepository.GetDeliveryBySatus(orderStatus);
+
+//        if (requests == null)
+//        {
+//            return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+//        }
+//        else
+//        {
+//            return Ok(requests);
+//        }
+//    }
+//    catch (Exception)
+//    {
+//        return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+//    }
+//}
+
+//change status to recieved 
 //[HttpPut]
 //[Route("UpdateDelivery")]
 //public async Task<IActionResult> UpdateDeliveryAsync(Guid delivery_ID, Delivery dvm)
