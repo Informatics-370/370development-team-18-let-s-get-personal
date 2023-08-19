@@ -26,7 +26,7 @@ export class SalesPage implements OnInit {
       let salesList = result;
       console.log(salesList)
       this.data = result.$values;
-      console.log(this.data)
+      
       this.populateChartData(this.data);
       console.log('data', salesList)
       return salesList
@@ -34,7 +34,7 @@ export class SalesPage implements OnInit {
   }
 
   populateChartData(data: SalesVM[]) {
-    
+    console.log(this.data)
     let labelsData: string [] = [];
     let labelsAmount: number [] = [];
     
