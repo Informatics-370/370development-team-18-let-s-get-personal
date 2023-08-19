@@ -10,49 +10,35 @@
       <ion-title size="large">create-profile</ion-title>
     </ion-toolbar>
   </ion-header>
-  <form #f="ngForm" (ngSubmit)="AddProfile(f)">
-    <div class="form-container">
-      <ion-list>
-        <ion-item>
-          <ion-label position="stacked">First Name</ion-label>
-          <ion-input [(ngModel)]="data.Firstname" name="Firstname"></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position="stacked">Last Name</ion-label>
-          <ion-input [(ngModel)]="data.Firstname" name="Lastname"></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position="stacked">Cell Phone Number</ion-label>
-          <ion-input [(ngModel)]="data.Firstname" name="cellnumber"></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position="stacked">Email adress</ion-label>
-          <ion-input name="email"></ion-input>
-        </ion-item>    
-    
-        <ion-item>
-          <ion-label position="stacked">Username</ion-label>
-          <ion-input name="username" required></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position="stacked">Password</ion-label>
-          <ion-input name="password" required></ion-input>
-        </ion-item>
-    
-        <ion-item>
-          <ion-label position="stacked">Confirm Password</ion-label>
-          <ion-input name="confirmpassword" required></ion-input>
-        </ion-item>
-        
+  <form [formGroup]="AddCustomerForm">      
+    <ion-item>
+      <ion-label position="stacked">First Name</ion-label><br>
+      <ion-input type="text" formControlName="FirstName" placeholder="" required></ion-input>
+    </ion-item> 
+    <ion-item>
+      <ion-label position="stacked">Last Name</ion-label><br>
+      <ion-input type="text" formControlName="Surname" placeholder="" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Email Address</ion-label><br>
+      <ion-input type="text" formControlName="Email" placeholder="" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Cellphone number</ion-label><br>
+      <ion-input type="text" formControlName="Cell_Number" placeholder="" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Username</ion-label><br>
+      <ion-input type="text" formControlName="Username" placeholder="" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Password</ion-label><br>
+      <ion-input type="text" formControlName="Password" placeholder="" required></ion-input>
+    </ion-item>        
         <p style="color: red;">
           Please note password needs ATLEAST 1 Upper case letter, 1 special character and 1 number
         </p>
-        <ion-button onclick="AddProfile()">Create Profile</ion-button>
-      </ion-list>
-    </div></form>
+        <ion-button (click)="AddProfile()">Create Profile</ion-button>
+  </form>
   
 </ion-content>

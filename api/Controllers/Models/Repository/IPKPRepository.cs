@@ -628,8 +628,8 @@ namespace IPKP___API.Controllers.Models.Repository
                 join orli in _appDbContext.Order_Line_Item.ToList()
                 on or.Order_Request_ID equals orli.Order_Request_ID
                 //order request
-                //join cust in _appDbContext.Customers.ToList()
-                //on or.Customer_ID equals cust.Customer_ID
+                join cust in _appDbContext.Customers.ToList()
+                on or.Customer_ID equals cust.Customer_ID
                 join d in _appDbContext.Deliveries.ToList()
                 on or.Delivery_ID equals d.Delivery_ID
                 join com in _appDbContext.Delivery_Companies.ToList()
@@ -650,8 +650,8 @@ namespace IPKP___API.Controllers.Models.Repository
 
                 select new OrderLineItemVM
                 {
-                    //Customer_UserName = cust.Username,
-                    //Customer_ID = cust.Customer_ID,
+                    Customer_UserName = cust.Username,
+                    Customer_ID = cust.Customer_ID,
 
                     Delivery_Price = com.Delivery_Price,
                     Delivery_Status = d.Delivery_Status,

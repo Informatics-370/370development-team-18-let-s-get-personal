@@ -28,12 +28,12 @@ export class OrderService {
     .pipe(map((result: any) => result))
   }
 
-  public AcceptOrder(order_Line_Item_ID:number): Observable<any>{
+  public AcceptOrder(order_Line_Item_ID:string): Observable<any>{
     return this.httpClient.put<Response>(`${this.apiUrl}Order/AcceptOrder/${order_Line_Item_ID}`, this.httpOptions)
     .pipe(map((result: any) => result))
   }
 
-  public ProcessOrder(order_Line_Item_ID:number): Observable<any>{
+  public ProcessOrder(order_Line_Item_ID:string): Observable<any>{
     return this.httpClient.put<Response>(`${this.apiUrl}Order/ProcessOrder/${order_Line_Item_ID}`, this.httpOptions)
     .pipe(map((result: any) => result))
   }

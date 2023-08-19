@@ -1,7 +1,7 @@
 import { Component, OnInit, EnvironmentInjector, ViewChild, ElementRef  } from '@angular/core';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
 import { OrderService } from '../Services/order.service';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 import jsPDF from 'jspdf';
@@ -18,7 +18,8 @@ type Opts = { [key: string]: string | number }
 export class OrderRequestsPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
   orderRequests: OrderLineItemVM[] =[]
-  constructor(public service: OrderService) { }
+  constructor(public service: OrderService, public environmentInjector: EnvironmentInjector,
+     private alertController:AlertController ) { }
 
   ngOnInit() {
     this.GetOrderRequests()
@@ -28,6 +29,25 @@ export class OrderRequestsPage implements OnInit {
     this.service.GetRequestedOrders().subscribe(result =>{
       this.orderRequests = result as OrderLineItemVM[]
     })
+  }
+
+  AcceptOrder(order_Line_Item_ID: string){
+    try
+    {
+      this.service.AcceptOrder(order_Line_Item_ID).subscribe(res =>{
+        
+      })
+      this.AcceptSuccessAlert()
+    }
+    catch
+    {
+      this.AcceptErrorAlert()
+    }
+    
+  }
+
+  DeclineOrder(order_Line_Item_ID: string){
+
   }
 
   @ViewChild('htmlData') htmlData!: ElementRef;
@@ -47,6 +67,25 @@ export class OrderRequestsPage implements OnInit {
           
       PDF.save('IPKP-OrderRequests.pdf');
     });
+  }
+
+  async AcceptSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      // subHeader: 'Item Added To Best Seller List',
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+
+  async AcceptErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      // subHeader: 'Item Was Not Added',
+      message: 'Please try again',
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
 }

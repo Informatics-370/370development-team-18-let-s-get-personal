@@ -25,7 +25,7 @@ export class OrderLineItemVM{
     stock_Colour_Name!: string
     personalisation_Design_Price!: number
 
-    order_Line_Item_ID!: number
+    order_Line_Item_ID!: string
     order_Line_Item_Price!: number
     order_Line_Item_Quantity!: number
     order_Line_Item_Total_Price!: number

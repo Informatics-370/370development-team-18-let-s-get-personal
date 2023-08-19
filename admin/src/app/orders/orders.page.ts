@@ -31,6 +31,10 @@ export class OrdersPage implements OnInit {
     })
   }
   
+  OutForDelivery(order_Line_Item_ID: string){
+
+  }
+
   prevOrders()
   {
     this.router.navigate(['./tabs/sales']);
