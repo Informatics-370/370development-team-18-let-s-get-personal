@@ -33,7 +33,6 @@ namespace IPKP___API.Controllers.Models.Repository
         //Stock items
         Task<Stock_Item> GetStockItemDetailsAsync(Guid stock_Item_ID);
         Task<Stock_Item> GetStockItemByName(string stock_Item_Name);
-        Task<Stock_Item[]> GetAllStockItemsAsync();
 
         Task<Stock_Type> GetStockTypeDetailsAsync(Guid stock_Type_ID);
         Task<Stock_Type[]> GetAllStockTypesAsync();
@@ -53,26 +52,18 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Experience_Rating> GetExperienceRatingAsync(Guid Experience_Rating_ID);
         Task<Refund_Policy> GetPolicyAsync(Guid Refund_Policy_Id);
         Task<Refund_Policy[]> GetAllPoliciesAsync();
-        Task<Basket> GetBasketAsync(Guid Basket_Id);
         Task<Discount[]> GetAllDiscountsAsync();
         Task<Discount> GetDiscountAsync(Guid discount_Id);
         Task<Refund[]> GetAllPreviousRefunds();
         Task<Refund> GetPreviousRefund(Guid refund_Id);
-        Task<User> GetUser(string username);
-        
-        Task<Image_Price> GetImagePriceByID(Guid image_Price_ID);
-        Task<Image_Price[]> GetAllImagePrices();
-        Task<Text_Price> GetTextPriceByID(Guid text_Price_ID);
-        Task<Text_Price[]> GetAllTextPrices();
+        Task<Customer> GetUser(string username);
 
+        object GetDeliveryByID(Guid deliveryID);
         object GetStockNames();
-        object GetStockItemNamesbyID(Guid stockitemID);
         object GetAllDeliveries();
         object GetDeliveryBySatus(string status);
-        object GetAllPersonalisedObjects();
-        object GetOrderRequestbyCustomer(Guid customerID);
-        //object GetOrderLineItemByID(Guid orderlineitemID);
         Task<Order_Line_Item> GetOrderLineItemByID(Guid orderlineitemID);
         object GetOrderLineItembyStatus(string orderlinestatus);
+        object GetSalesReport();
     }
 }

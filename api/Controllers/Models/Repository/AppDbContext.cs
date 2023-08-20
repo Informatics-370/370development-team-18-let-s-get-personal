@@ -31,10 +31,8 @@ namespace IPKP___API.Controllers.Models.Repository
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Experience_Rating> Experience_Ratings { get; set; }
-        //public DbSet<Image> Images { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Order> Orders { get; set; }
-        //public DbSet<Order_Status> Order_Statuses { get; set; }
         public DbSet<Order_Request> Order_Requests { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Payment_Type> Payment_Types { get; set; }
@@ -55,13 +53,8 @@ namespace IPKP___API.Controllers.Models.Repository
         public DbSet<Write_Off> Write_Offs { get; set; }
         public DbSet<Write_Off_Line_Item> Write_Off_Line_Items { get; set; }
         public DbSet<BestSellers> BestSellers { get; set; }
-        public DbSet<Experience_Rating> Experience_Rating { get; set; }
-        public DbSet<Basket> Basket { get; set; }
-        public DbSet<Image_Price> Image_Price { get; set; }
-        public DbSet<Text_Price> Text_Price {get; set;}
-        public DbSet<Design_Image_Line_Item> Design_Image_Line_Items { get; set; }
+        public DbSet<Experience_Rating> Experience_Rating { get; set; }       
         public DbSet<Delivery_Address> Delivery_Address { get; set; }
-
         public DbSet<Order_Line_Item> Order_Line_Item { get; set; }
     }
 }

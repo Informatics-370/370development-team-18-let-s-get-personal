@@ -1,17 +1,22 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, EnvironmentInjector, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Delivery } from '../Models/delivery';
 import { Delivery_Company } from '../Models/deliverycompany';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { DeliveryDataService } from '../Services/deliveries.service';
-//for modal
+import { DeliveryViewModel } from '../ViewModels/deliveryVM';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-//Contains: 
+import { OrderService } from '../Services/order.service';
+import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+export type jsPDFDocument = any;
+type Opts = { [key: string]: string | number }
+
 @Component({
   selector: 'app-deliveries',
   templateUrl: './deliveries.page.html',
@@ -20,10 +25,10 @@ import { OverlayEventDetail } from '@ionic/core/components';
   imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule,RouterModule]
 })
 export class DeliveriesPage implements OnInit {
-
+  private readonly jsPDFDocument: jsPDFDocument
   searchValue: string ='';
-  deliveries:Delivery[]=[];
-  filteredDelivery:Delivery[]=[];
+  deliveries:OrderLineItemVM[]=[];
+  filteredDelivery:DeliveryViewModel[]=[];
   deliverycompanies:Delivery_Company[]=[];
 
   updateSearchResults() {
@@ -32,30 +37,25 @@ export class DeliveriesPage implements OnInit {
   }
 
   ngOnInit() {
-    this.GetAllDeliveries();
+    this.GetRequestedDeliveries();
     this.getDeliveryCompany();
   }
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DeliveryDataService, private router: Router, public modalCtrl: ModalController,
-    private alertController:AlertController) { }
-
-  AddForm: FormGroup = new FormGroup({
-    orderLineItemId: new FormControl('',[Validators.required]),
-    deliverycompany: new FormControl('',[Validators.required]),
-    trackingnumber: new FormControl('',[Validators.required]),
-  })
+    private alertController:AlertController, public environmentInjector: EnvironmentInjector, 
+    public orderservice: OrderService,) { }
   
   Routedeliverycompanies()
   {
     this.router.navigate(['./tabs/delivery-companies']);
   }
 
-  GetAllDeliveries(){
-    // this.service.GetAllDeliveries().subscribe(result =>{
-    //   this.deliveries = result as Delivery[];
-    //   console.log(this.deliveries)
-    // })
+  GetRequestedDeliveries(){
+    this.service.GetOutDeliveries().subscribe(res => {
+      this.deliveries = res as OrderLineItemVM[]
+      console.log(this.deliveries)
+    })
   }
 
   getDeliveryCompany(){
@@ -66,82 +66,48 @@ export class DeliveriesPage implements OnInit {
   }
 
 
-  AddDelivery(){
-    // let addDelivery = new Delivery();
+  ReceiveDelivery(DeliveryId: string, order_Line_Item_ID:string){
+    try
+    {
+      this.service.ChangeStatusToRecieved(DeliveryId).subscribe(result =>{
+                      
+      })
 
-    // addDelivery.delivery_Company = this.AddForm.value.deliverycompany;
-    // addDelivery.delivery_Price = this.AddForm.value.deliveryprice;
-    // addDelivery.tracking_Number = this.AddForm.value.trackingnumber;    
-
-    // this.service.AddDelivery(addDelivery).subscribe(response => {
-    //   if(response.status == "Error")
-    //   {
-    //     this.addDeliveryErrorAlert();
-    //   }
-    //   else{
-    //     this.addDeliverySuccessAlert();
-    //   }
-    // })
+      this.orderservice.ProcessOrder(order_Line_Item_ID).subscribe(result =>{
+                     
+      })
+      this.ReceiveDeliverySuccessAlert 
+    }
+    catch{
+      this.ReceiveDeliveryErrorAlert
+    }
   }
 
-  ReceiveDelivery(DeliveryId: number){
-    // this.service.ReceiveDelivery(DeliveryId).subscribe(result => {
-    //   console.log(result);
-    //   if(result.status == "Error")
-    //   {
-    //     this.ReceiveDeliveryErrorAlert();
-    //   }
-    //   else if(result.status == "Success"){
-    //     this.ReceiveDeliverySuccessAlert();
-    //   }
-    // })
+  addToOrder(){
+
   }
 
   reloadPage(){
     window.location.reload()
   }
   
-  canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  confirmaddmodal() {
-    this.AddDelivery();    
-  }
-
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-  }
-
-  async addDeliverySuccessAlert() {
-    const alert = await this.alertController.create({
-      header: 'Success!',
-      subHeader: 'Delivery Added!',
-      buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler:() =>{
-            this.reloadPage();
-          }
-      }],
+  @ViewChild('htmlData') htmlData!: ElementRef;
+  
+  openPDF(): void {
+    let DATA: any = document.getElementById('htmlData');
+    html2canvas(DATA).then((canvas) => {       
+      //Initialize JSPDF
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      //Converting canvas to Image
+      const FILEURI = canvas.toDataURL('image/png');
+      //Add image Canvas to PDF
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;      
+      let position = 10;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
+          
+      PDF.save('IPKP-DeliveriesInProgress.pdf');
     });
-    await alert.present();
-  }
-
-  async addDeliveryErrorAlert() {
-    const alert = await this.alertController.create({
-      header: 'We are sorry!',
-      subHeader: 'Delivery Was Not Added',
-      message: 'Please try again',
-      buttons: [{
-        text: 'OK',
-        role: 'cancel',
-        handler:() =>{
-          this.reloadPage();
-        }
-    }],
-    });
-    await alert.present();
   }
 
   async ReceiveDeliverySuccessAlert() {

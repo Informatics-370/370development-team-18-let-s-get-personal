@@ -25,15 +25,15 @@ export class BasketService {
   constructor(private httpClient: HttpClient) {
     this.basketItemList = JSON.parse(localStorage.getItem('basket')!);
   }
-  public GetBasketFromAPI(Customer_ID:number){ 
-    return this.httpClient.get<Response>(`${this.apiUrl}Basket/GetBasketInfo/${Customer_ID}`)
-    .pipe(map(result => result))    
-  }  
+  // public GetBasketFromAPI(Customer_ID:number){ 
+  //   return this.httpClient.get<Response>(`${this.apiUrl}Basket/GetBasketInfo/${Customer_ID}`)
+  //   .pipe(map(result => result))    
+  // }  
 
-  public addProductToAPI(basket: BasketItems){
-    return this.httpClient.post<Response>(`${this.apiUrl}Basket/AddBasketInfo`, basket)
-      .pipe(map(result => result))
-  }
+  // public addProductToAPI(basket: BasketItems){
+  //   return this.httpClient.post<Response>(`${this.apiUrl}Basket/AddBasketInfo`, basket)
+  //     .pipe(map(result => result))
+  // }
 
   checkcartitems(){
     //checking if no cartitems exists

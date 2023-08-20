@@ -1,7 +1,10 @@
-﻿namespace IPKP___API.Controllers.Models.ViewModels
+﻿using System;
+
+namespace IPKP___API.Controllers.Models.ViewModels
 {
     public class DeliveryVM
     {
+        public Guid Delivery_ID { get; set; }
         public double Delivery_Price { get; set; }
         public string Delivery_Company_Name { get; set; }
         public string Delivery_Status { get; set; }

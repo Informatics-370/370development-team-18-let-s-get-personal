@@ -7,7 +7,6 @@ import { Design_Image_Line_Item } from '../Models/designimagelineitem';
 import { Design_Text } from '../Models/designtext';
 import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
 import { TextPrice } from '../Models/textprice';
-import { Image_Price } from '../Models/imageprice'; 
 @Injectable({
   providedIn: 'root'
 })
@@ -22,18 +21,13 @@ export class PersonalisationService {
 
   constructor(private httpClient: HttpClient) { 
   }
-  public GetPersonalisation(): Observable<any>{
-      return this.httpClient.get(`${this.apiUrl}Personalisation/GetPersonalisation`)
-      .pipe(map(result => result))
-  }
+  // public GetPersonalisation(): Observable<any>{
+  //     return this.httpClient.get(`${this.apiUrl}Personalisation/GetPersonalisation`)
+  //     .pipe(map(result => result))
+  // }
 
   public UploadDesignImage(designimage:FormData){
     return this.httpClient.post(`${this.apiUrl}Personalisation/UploadDesignImage`, designimage)
-    .pipe(map(result => result))
-  }
-
-  public AddToDesignImageLineItem(designimagelineitem:Design_Image_Line_Item){
-    return this.httpClient.post(`${this.apiUrl}Personalisation/AddToDesignImageLineItem`, designimagelineitem)
     .pipe(map(result => result))
   }
 
@@ -47,15 +41,20 @@ export class PersonalisationService {
     .pipe(map(result => result))
   }
 
-  public DeletePersonalisation(personalisationId:string): Observable<any>{
-    return this.httpClient.delete<Response>(`${this.apiUrl}Personalisation/DeletePersonalisation/${personalisationId}`)
-    .pipe(map(result => result))
-  }
+  // public AddToDesignImageLineItem(designimagelineitem:Design_Image_Line_Item){
+  //   return this.httpClient.post(`${this.apiUrl}Personalisation/AddToDesignImageLineItem`, designimagelineitem)
+  //   .pipe(map(result => result))
+  // }
 
-  public GetAllTextPrices(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Personalisation/GetAllTextPrices`)
-    .pipe(map(result => result))
-  }
+  // public DeletePersonalisation(personalisationId:string): Observable<any>{
+  //   return this.httpClient.delete<Response>(`${this.apiUrl}Personalisation/DeletePersonalisation/${personalisationId}`)
+  //   .pipe(map(result => result))
+  // }
+
+  // public GetAllTextPrices(): Observable<any>{
+  //   return this.httpClient.get(`${this.apiUrl}Personalisation/GetAllTextPrices`)
+  //   .pipe(map(result => result))
+  // }
  
   // public AddTextPrice(textprice:TextPrice){
   //   return this.httpClient.post<Response>(`${this.apiUrl}Personalisation/AddTextPrice`, textprice)
@@ -66,10 +65,10 @@ export class PersonalisationService {
   //   return this.httpClient.put<Response>(`${this.apiUrl}Personalisation/UpdateTextPrice/${text_Price_ID}`, textprice)
   // }
 
-  public GetAllImagePrices(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Personalisation/GetAllImagePrices`)
-    .pipe(map(result => result))
-  }
+  // public GetAllImagePrices(): Observable<any>{
+  //   return this.httpClient.get(`${this.apiUrl}Personalisation/GetAllImagePrices`)
+  //   .pipe(map(result => result))
+  // }
 
   // public AddImagePrice(imageprice:Image_Price){
   //   return this.httpClient.post<Response>(`${this.apiUrl}Personalisation/AddImagePrice`, imageprice)

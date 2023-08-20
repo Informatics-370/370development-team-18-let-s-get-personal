@@ -19,8 +19,8 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public int Product_Star_Rating { get; set; }        
 
-        [InverseProperty("Product_Rating")]
-        public virtual ICollection<Stock_Item> Stock_Item { get; set; }
+        //[InverseProperty("Product_Rating")]
+        //public virtual ICollection<Stock_Item> Stock_Item { get; set; }
 
     }
 }

@@ -41,13 +41,18 @@ namespace IPKP___API.Controllers
                 };
 
                 _IPKPRepository.Add(deladdress);
-                await _IPKPRepository.SaveChangesAsync();
+                //await _IPKPRepository.SaveChangesAsync();
+
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(deladdress);
+                }                
             }
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok(new Response { Status = "Success", Message = "Order Request Added To Database." });
+            return Ok(new Response { Status = "Success", Message = "Delivery Address Added To Database." });
         }
 
         //add delivery request
@@ -67,15 +72,44 @@ namespace IPKP___API.Controllers
                 };
 
                 _IPKPRepository.Add(deliveryrequest);
-                await _IPKPRepository.SaveChangesAsync();
+                //await _IPKPRepository.SaveChangesAsync();
+                if(await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(deliveryrequest);
+                }
             }
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok(new Response { Status = "Success", Message = "Order Request Added To Database." });
+            return Ok(new Response { Status = "Success", Message = "Delivery Request Added To Database." });
         }
 
+        [HttpGet]
+        [Route("GetDeliveryByID/{deliveryID}")]
+        public object GetDeliveryByID(Guid deliveryID)
+        {
+            try
+            {
+                var delivery = _IPKPRepository.GetDeliveryByID(deliveryID);
+                if (delivery == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    return Ok(delivery);
+                }
+            }
+            catch
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+
+            return Ok(new Response { Status = "Success", Message = "Delivery Request Added To Database." });
+        }
+
+        
 
         //add order request
         [HttpPost]
@@ -95,7 +129,11 @@ namespace IPKP___API.Controllers
                 };
            
                 _IPKPRepository.Add(newOrderRequest);
-                await _IPKPRepository.SaveChangesAsync();
+                //await _IPKPRepository.SaveChangesAsync();
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(newOrderRequest);
+                }
             }
             catch (Exception)
             {

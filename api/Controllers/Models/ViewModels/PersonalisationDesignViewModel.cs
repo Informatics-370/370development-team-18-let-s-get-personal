@@ -22,7 +22,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
         public string Stock_Colour_Name { get; set; }
         public double Personalisation_Design_Price { get; set; }
 
-        public Guid Design_Image_Line_Item_ID { get; set; }
+        public Guid Design_Image_ID { get; set; }
 
         public Guid Design_Text_ID { get; set; }
 

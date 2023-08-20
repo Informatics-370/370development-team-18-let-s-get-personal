@@ -100,7 +100,15 @@ export const routes: Routes = [
   {
     path: 'update-textprice',
     loadComponent: () => import('./inventory/personalisedprices/update-textprice/update-textprice.page').then( m => m.UpdateTextpricePage)
+  },  {
+    path: 'order-requests',
+    loadComponent: () => import('./order-requests/order-requests.page').then( m => m.OrderRequestsPage)
   },
+  {
+    path: 'sales',
+    loadComponent: () => import('./sales/sales.page').then( m => m.SalesPage)
+  },
+
 
 
  

@@ -27,8 +27,8 @@ export class DeliveryDataService {
     .pipe(map(result => result))
   }
   
-  public SendOutDelivery(delivery_Id:number, delivery:DeliveryViewModel){
-    return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/SendOutDelivery/${delivery_Id}`, delivery)
+  public SendOutDelivery(delivery_Id:string){
+    return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/SendOutDelivery/${delivery_Id}`, this.httpOptions)
   }
   
   public GetOutDeliveries(): Observable<any>{ 
@@ -36,12 +36,12 @@ export class DeliveryDataService {
     .pipe(map(result => result))
   }
 
-  public ChangeStatusToRecieved(delivery_Id:number, delivery:DeliveryViewModel){
-    return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/ChangeStatusToRecieved/${delivery_Id}`, delivery)
+  public ChangeStatusToRecieved(delivery_Id:string){
+    return this.httpClient.put(`${this.apiUrl}Deliveries/ChangeStatusToRecieved/${delivery_Id}`, this.httpOptions)
   }
 
-  public ChangeStatusToFailed(delivery_Id:number, delivery:DeliveryViewModel){
-    return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/ChangeStatusToFailed/${delivery_Id}`, delivery) 
+  public ChangeStatusToFailed(delivery_Id:string){
+    return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/ChangeStatusToFailed/${delivery_Id}`, this.httpOptions) 
     //, this.httpOptions
   }
 
@@ -66,16 +66,16 @@ export class DeliveryDataService {
     .pipe(map(result => result))
   }
   
-  public GetDeliveryCompany(deliveryCompanyId:number){ 
+  public GetDeliveryCompany(deliveryCompanyId:string){ 
     return this.httpClient.get(`${this.apiUrl}Deliveries/GetDeliveryCompany/${deliveryCompanyId}`)
     .pipe(map(result => result))
   }
   
-  public UpdateDeliveryCompany(deliveryCompanyId:number, deliveryCompany:Delivery_Company){
+  public UpdateDeliveryCompany(deliveryCompanyId:string, deliveryCompany:Delivery_Company){
     return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/UpdateDeliveryCompany/${deliveryCompanyId}`, deliveryCompany)
   }
 
-  public DeleteDeliveryCompany(deliveryCompanyId:number){
+  public DeleteDeliveryCompany(deliveryCompanyId:string){
     return this.httpClient.delete<Response>(`${this.apiUrl}Deliveries/DeleteDeliveryCompany/${deliveryCompanyId}`)
   }
   

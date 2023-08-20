@@ -18,9 +18,9 @@ namespace IPKP___API.Controllers.Models.Entities
         [Column("Stock_Item_ID")]
         public Guid Stock_Item_ID { get; set; }
 
-        //[ForeignKey(nameof(Stock_Item_ID))]
-        [InverseProperty("BestSellers")]
-        public virtual ICollection<Stock_Item> Stock_Item { get; set; }
+        ////[ForeignKey(nameof(Stock_Item_ID))]
+        //[InverseProperty("BestSellers")]
+        //public virtual ICollection<Stock_Item> Stock_Item { get; set; }
 
 
 

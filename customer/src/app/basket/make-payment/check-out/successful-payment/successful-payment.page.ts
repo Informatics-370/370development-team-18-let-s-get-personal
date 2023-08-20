@@ -20,7 +20,6 @@ export class SuccessfulPaymentPage implements OnInit {
   order = new OrderT();
   cartitems: any 
   basket = new BasketItems();
-
   constructor(private router:Router,private orderService:OrderService) { }
 
   ngOnInit() {
@@ -42,7 +41,7 @@ export class SuccessfulPaymentPage implements OnInit {
       let addedOrder = new Order_Line_Item
       let orderRequestID = JSON.parse(localStorage.getItem('orderRequestID') as string)
       let personalisedID = JSON.parse(localStorage.getItem('personalisedID') as string)
-      let quantity = this.basket.basket_Quantity
+      let quantity = JSON.parse(localStorage.getItem('quantity') as string) //this.basket.basket_Quantity
       let price = JSON.parse(localStorage.getItem('totalprice') as string)
 
       addedOrder.order_Line_Item_Price = price

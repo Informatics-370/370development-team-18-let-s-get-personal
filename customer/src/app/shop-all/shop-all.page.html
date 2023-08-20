@@ -40,6 +40,7 @@
           <ion-card-content>
             <ion-img src='data:image/png;base64,{{item.stockImageFile}}'></ion-img>
             <p>{{item.stockColourName}}</p>
+            <p>{{item.stock_Item_Size}}</p>
             <p>R: {{item.stock_Item_Price}}</p>
           </ion-card-content> <ion-button (click)="addToBasket(item)">Add To Basket</ion-button>
         </ion-card>

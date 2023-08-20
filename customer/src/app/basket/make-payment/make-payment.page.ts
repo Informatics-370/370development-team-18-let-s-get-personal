@@ -26,13 +26,11 @@ export class MakePaymentPage implements OnInit {
   searchValue: string ='';
   deliveries:DeliveryAddress[]=[];
   deliverycompanies:Delivery_Company[]=[];
-  //deliverVM: DeliveryVM[]=[];
 
-  addedaddres!: DeliveryAddress ;
+  addedaddres!: DeliveryAddress;
   addeddeliveryrequest!: Delivery;
 
   ngOnInit() {
-    //this.GetAllDeliveries();
     this.getDeliveryCompany();
   }
 
@@ -47,38 +45,10 @@ export class MakePaymentPage implements OnInit {
     city: new FormControl('',[Validators.required]),
     areaCode: new FormControl('',[Validators.required]),
     dwellingtype: new FormControl('',[Validators.required]),
-    delivery_Company_ID: new FormControl('',[Validators.required]),
+    deliveryCompanyID: new FormControl('',[Validators.required]),
   })
   
-  order = new OrderT();
-
-  checkOut(){
-    //change to delivery request 
-    let streetName =this.AddDelAddressForm.get("streetName")?.value
-    let streetNumber =this.AddDelAddressForm.get("streetNumber")?.value
-    let city =this.AddDelAddressForm.get("city")?.value
-    let province =this.AddDelAddressForm.get("province")?.value
-    let areaCode =this.AddDelAddressForm.get("areaCode")?.value;
-    let dwellingtype =this.AddDelAddressForm.get("dwellingtype")?.value;
-    //let delivery_Company_ID =this.AddDelAddressForm.get("delivery_Company_ID")?.value;
-
-    this.order = JSON.parse(localStorage.getItem('order') as string);
-    this.order.deliveryAddress.streetName=streetName;
-    this.order.deliveryAddress.streetNumber=streetNumber;
-    this.order.deliveryAddress.city=city;
-    this.order.deliveryAddress.province=province;
-    this.order.deliveryAddress.areaCode=areaCode;
-    this.order.deliveryAddress.dwelling_Type=dwellingtype;
-    //this.order.deliveryAddress.delivery_Company_ID = delivery_Company_ID;
-
-    localStorage.setItem("order",JSON.stringify(this.order));
-
-    this.router.navigate(["/tabs/check-out"])
-    
-      //this.confirmErrorAlert()
-    
-   
-  }
+  //order = new OrderT();
   
   getDeliveryCompany(){
     this.delservice.GetDeliveryCompanies().subscribe(result =>{
@@ -100,6 +70,9 @@ export class MakePaymentPage implements OnInit {
       this.addedaddres = response as DeliveryAddress;
       try
       {
+        console.log(this.addedaddres)
+        //let addressID = this.addedaddres.delivery_Address_ID
+        //localStorage.setItem('addressID', JSON.stringify(addressID));
         this.AddDeliveryRequest()
       }
       catch
@@ -110,22 +83,24 @@ export class MakePaymentPage implements OnInit {
   }
 
   AddDeliveryRequest(){
-    let addDeliveryRequest = new Delivery();
-    addDeliveryRequest.delivery_Address_ID = this.addedaddres.delivery_Address_ID
-    addDeliveryRequest.delivery_Company_ID = this.AddDelAddressForm.value.delivery_Company_ID
+    //let addressID = JSON.parse(JSON.stringify(localStorage.getItem('addressID')));    
+    try
+    {
+      let addDeliveryRequest = new Delivery();
+      addDeliveryRequest.delivery_Address_ID = this.addedaddres.delivery_Address_ID //this.addedaddres.delivery_Address_ID addressID
+      addDeliveryRequest.delivery_Company_ID = this.AddDelAddressForm.value.deliveryCompanyID
 
-    this.service.AddDeliveryRequest(addDeliveryRequest).subscribe(res =>{
-      let added = res as Delivery;
-      try
-      {
+      this.service.AddDeliveryRequest(addDeliveryRequest).subscribe(res =>{
+        let added = res as Delivery;
         let deliveryID = added.delivery_ID
         localStorage.setItem('deliveryID', JSON.stringify(deliveryID));
-      }
-      catch
-      {
-        this.addDeliveryErrorAlert()
-      }
-    })
+        this.router.navigate(["/tabs/check-out"])
+      })
+    }
+    catch
+    {
+      this.addDeliveryErrorAlert()
+    }    
   }
 
   reloadPage(){
@@ -191,3 +166,28 @@ export class MakePaymentPage implements OnInit {
     await alert.present();
   }
 }
+
+//checkOut(){
+  //   //change to delivery request 
+  //   let streetName =this.AddDelAddressForm.get("streetName")?.value
+  //   let streetNumber =this.AddDelAddressForm.get("streetNumber")?.value
+  //   let city =this.AddDelAddressForm.get("city")?.value
+  //   let province =this.AddDelAddressForm.get("province")?.value
+  //   let areaCode =this.AddDelAddressForm.get("areaCode")?.value;
+  //   let dwellingtype =this.AddDelAddressForm.get("dwellingtype")?.value;
+  //   //let delivery_Company_ID =this.AddDelAddressForm.get("delivery_Company_ID")?.value;
+
+  //   this.order = JSON.parse(localStorage.getItem('order') as string);
+  //   this.order.deliveryAddress.streetName=streetName;
+  //   this.order.deliveryAddress.streetNumber=streetNumber;
+  //   this.order.deliveryAddress.city=city;
+  //   this.order.deliveryAddress.province=province;
+  //   this.order.deliveryAddress.areaCode=areaCode;
+  //   this.order.deliveryAddress.dwelling_Type=dwellingtype;
+  //   //this.order.deliveryAddress.delivery_Company_ID = delivery_Company_ID;
+
+  //   localStorage.setItem("order",JSON.stringify(this.order));
+
+  //   this.router.navigate(["/tabs/check-out"])
+   
+  // }

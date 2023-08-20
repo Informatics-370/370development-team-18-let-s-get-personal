@@ -28,12 +28,12 @@ export class UpdateTextpricePage implements OnInit {
 
   ngOnInit() : void {
     this.id = this.route.snapshot.paramMap.get('text_Price_ID')
-    this.service.GetTextPrice(this.id).subscribe(result => {
-      this.textprice = result
-      this.TextpriceForm.patchValue({
-        Text_Price_Amount: this.textprice.text_Price_Amount
-      });
-    })
+    // this.service.GetTextPrice(this.id).subscribe(result => {
+    //   this.textprice = result
+    //   this.TextpriceForm.patchValue({
+    //     Text_Price_Amount: this.textprice.text_Price_Amount
+    //   });
+   // })
   }
 
   onSubmit(){

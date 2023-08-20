@@ -30,8 +30,20 @@ export class OrderRequestService {
     .pipe(map(result => result))
   }
 
+  public GetDeliveryByID(delivery_ID: string){
+    return this.httpClient.get(`${this.apiUrl}OrderRequest/GetDeliveryByID/${delivery_ID}`)
+    .pipe(map(result => result))
+  }
+
   public AddOrderRequest(or:Order_Request){
     return this.httpClient.post(`${this.apiUrl}OrderRequest/AddOrderRequest`, or)
     .pipe(map(result => result))
   }
 }
+
+  
+
+  // public GetDiscount(discount_ID:number){ 
+  //   return this.httpClient.get(`${this.apiUrl}Discount/GetDiscount/${discount_ID}`)
+  //   .pipe(map(result => result))
+  // }

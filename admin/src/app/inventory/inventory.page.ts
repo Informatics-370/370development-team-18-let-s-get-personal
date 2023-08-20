@@ -6,18 +6,16 @@ import { RouterModule, Router } from '@angular/router';
 import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
-import { BasketService } from 'src/app/Services/basket.service';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { PersonalisationService } from 'src/app/Services/personalisation.service';
-import { Image_Price } from 'src/app/Models/imageprice';
-import { TextPrice } from 'src/app/Models/textprice';
+
+import { LoadingController } from '@ionic/angular';
+
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-//import { Color, Styles, UserOptions } from './config'
-// import { File } from '@ionic-native/file';
-// import { FileOpener } from '@ionic-native/file-opener';
 export type jsPDFDocument = any;
 type Opts = { [key: string]: string | number }
+
 @Component({
   selector: 'app-inventory',
   templateUrl: './inventory.page.html',
@@ -27,16 +25,14 @@ type Opts = { [key: string]: string | number }
 })
 export class InventoryPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
-  textprice: TextPrice[] =[]
-  imageprice: Image_Price[] =[]
-  Products: StockItemViewModel[]=[];
+  Products: StockItemViewModel[] = [];
   searchString: string = "";
   searchedinventory: StockItemViewModel[] = [];
   loadingController: any;
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
-    public bestsellerservice:BestsellersService, private alertController:AlertController, 
-    private basketService : BasketService,  public stockitemservice: StockItemDataService,
-    public pservice: PersonalisationService) { }
+    public bestsellerservice:BestsellersService, private alertController:AlertController,  
+    public stockitemservice: StockItemDataService, public pservice: PersonalisationService, 
+    public loadingController: LoadingController) { }
 
   SearchStockForm: FormGroup = new FormGroup({
     /*startdate: new FormControl('',[Validators.required]),
@@ -64,7 +60,6 @@ export class InventoryPage implements OnInit {
     const { role, data } = await loading.onDidDismiss();
     console.log('Loading dismissed!');
   }  
-
 
   search(){
 
@@ -126,20 +121,6 @@ export class InventoryPage implements OnInit {
       PDF.save('IPKP-Products.pdf');
     });
   }
-
-  getImagePrice(){
-    this.pservice.GetAllImagePrices().subscribe(result => {
-      this.imageprice = result as Image_Price[];
-      console.log(this.imageprice)
-    })
-  }
-  
-  getTextPrice(){
-    this.pservice.GetAllTextPrices().subscribe(result => {
-      this.textprice = result as TextPrice[];
-      console.log(this.textprice)
-    })
-  }
   
   addToBestSellers(bestseller: Stock_Item[]){
     this.bestsellerservice.SaveBestSellersList(bestseller).subscribe((response:any) => {
@@ -172,3 +153,16 @@ export class InventoryPage implements OnInit {
     await alert.present();
   }
 }
+// getImagePrice(){
+  //   this.pservice.GetAllImagePrices().subscribe(result => {
+  //     this.imageprice = result as Image_Price[];
+  //     console.log(this.imageprice)
+  //   })
+  // }
+  
+  // getTextPrice(){
+  //   this.pservice.GetAllTextPrices().subscribe(result => {
+  //     this.textprice = result as TextPrice[];
+  //     console.log(this.textprice)
+  //   })
+  // }

@@ -17,7 +17,7 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public double Delivery_Price { get; set; }
 
-        public virtual ICollection<Delivery> Delivery { get; set; }
+        //public virtual ICollection<Delivery> Delivery { get; set; }
     }
 }
 //public Delivery_Company() 

@@ -36,7 +36,7 @@
         <ion-col style="font-weight: bold;">Old Quantity</ion-col>
         <ion-col style="font-weight: bold;">Date Added</ion-col>
         <ion-col style="font-weight: bold;">Inventory Comments</ion-col>
-        <ion-col style="font-weight: bold;">Current Quantity</ion-col>
+        <ion-col style="font-weight: bold;">Enter Current Quantity</ion-col>
         <ion-col></ion-col>
         <ion-col></ion-col>
       </ion-row>
@@ -51,7 +51,7 @@
         <ion-col>{{item.inventory_Date}}</ion-col>
         <ion-col>{{item.inventory_Comments}}</ion-col>        
         <ion-col><ion-input value="{{item.stock_Item_Quantity}}" placeholder=""> </ion-input></ion-col>
-        <ion-col> <ion-button onclick="UpdateQuantity()">Update Quantity</ion-button> </ion-col>
+        <ion-col> <ion-button onclick="UpdateQuantity()">Update</ion-button> </ion-col>
         <ion-col> <ion-button onclick="Writeoff()">Write-off</ion-button> </ion-col>
       </ion-row>
     </ion-grid>
