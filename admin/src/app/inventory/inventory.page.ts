@@ -29,33 +29,58 @@ export class InventoryPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
   textprice: TextPrice[] =[]
   imageprice: Image_Price[] =[]
-  Products: StockItemViewModel[] = [];
+  Products: StockItemViewModel[]=[];
   searchString: string = "";
   searchedinventory: StockItemViewModel[] = [];
+  loadingController: any;
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public bestsellerservice:BestsellersService, private alertController:AlertController, 
     private basketService : BasketService,  public stockitemservice: StockItemDataService,
     public pservice: PersonalisationService) { }
 
-    SearchStockForm: FormGroup = new FormGroup({
-      startdate: new FormControl('',[Validators.required]),
-      enddate: new FormControl('',[Validators.required]),
-    })
+  SearchStockForm: FormGroup = new FormGroup({
+    /*startdate: new FormControl('',[Validators.required]),
+    enddate: new FormControl('',[Validators.required]),*/
+    name:new FormControl('',[Validators.required])
+  })
 
   ngOnInit() {
     this.GetAllStockItems();
-    this.getImagePrice()
-    this.getTextPrice()
-    if(this.searchString == "")
+    if(this.searchString === "")
     {
       this.searchedinventory = this.Products;
     }
   }
 
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Please wait...',
+      duration: 2000,
+    });
+    
+    await loading.present();
+  
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
+  }  
+
+
   search(){
+
+    
+    console.log("Kamo "+this.SearchStockForm.get('name')?.value);
+    this.searchString=this.SearchStockForm.get('name')?.value;
+
+   /*console.log(this.Products);
+   this.Products.forEach(e=>{
+    if(e.inventory_Date==this.SearchStockForm.get('startdate')?.value)
+     if(new Date(e.inventory_Date)===new Date(this.SearchStockForm.get('startdate')?.value))
+      console.log("Hallo world");
+   })*/
+
     this.searchedinventory = this.Products.filter(
-      f => new Date(f.inventory_Date) > this.SearchStockForm.value.start_Date 
-      && new Date(f.inventory_Date) < this.SearchStockForm.value.end_Date);
+      f => f.stock_Item_Name.toLowerCase().includes(this.searchString.toLowerCase()));
   }
 
 
@@ -79,6 +104,7 @@ export class InventoryPage implements OnInit {
   GetAllStockItems(){
     this.stockitemservice.GetStockItems().subscribe(result =>{
       this.Products = result as StockItemViewModel[];
+      this.searchedinventory=this.Products;
     })    
   }
 
