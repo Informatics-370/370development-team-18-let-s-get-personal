@@ -11,6 +11,7 @@ import { Stock_Item } from '../Models/stockitem';
 import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
 import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
+import { TextPrice } from '../Models/textprice';
 
 
 //for modal
@@ -239,19 +240,19 @@ throw new Error('Method not implemented.');
     //   existingItem.personalization.personalizationText=design_Text;
     //   existingItem.personalization.img=image_File;
     //   localStorage.removeItem("stockId");
-    // }
+     }
 
     // localStorage.setItem('cart',JSON.stringify(items));
 
-   try{
-    this.addPersonalization(); 
-    this._router.navigate(["/tabs/personalisation"])  
+   //try{
+    //this.personalize(); 
+    /*this._router.navigate(["/tabs/personalisation"])  
     }
     catch{
       this.addPersonalizationErrorAlert();
     }
      
-  }
+  }*/
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;

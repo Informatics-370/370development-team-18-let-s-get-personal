@@ -290,6 +290,21 @@ namespace IPKP___API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Write_Off_Line_Items",
+                columns: table => new
+                {
+                    Write_Off_Line_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Write_Off_Quantity = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Write_Off_Reason = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Write_Off_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Write_Off_Line_Items", x => x.Write_Off_Line_Item_ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -576,35 +591,6 @@ namespace IPKP___API.Migrations
                         column: x => x.Payment_ID1,
                         principalTable: "Payments",
                         principalColumn: "Payment_ID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Write_Off_Line_Items",
-                columns: table => new
-                {
-                    Write_Off_Line_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Write_Off_Quantity = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Write_Off_Reason = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Write_Off_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Stock_Item_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Write_Off_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Stock_Item_ID1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Write_Off_Line_Items", x => x.Write_Off_Line_Item_ID);
-                    table.ForeignKey(
-                        name: "FK_Write_Off_Line_Items_Stock_Items_Stock_Item_ID1",
-                        column: x => x.Stock_Item_ID1,
-                        principalTable: "Stock_Items",
-                        principalColumn: "Stock_Item_ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Write_Off_Line_Items_Write_Offs_Write_Off_ID1",
-                        column: x => x.Write_Off_ID1,
-                        principalTable: "Write_Offs",
-                        principalColumn: "Write_Off_ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -961,16 +947,6 @@ namespace IPKP___API.Migrations
                 column: "User_Role_ID1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Write_Off_Line_Items_Stock_Item_ID1",
-                table: "Write_Off_Line_Items",
-                column: "Stock_Item_ID1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Write_Off_Line_Items_Write_Off_ID1",
-                table: "Write_Off_Line_Items",
-                column: "Write_Off_ID1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Write_Offs_Stock_Item_ID1",
                 table: "Write_Offs",
                 column: "Stock_Item_ID1");
@@ -1048,6 +1024,9 @@ namespace IPKP___API.Migrations
                 name: "Write_Off_Line_Items");
 
             migrationBuilder.DropTable(
+                name: "Write_Offs");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -1073,9 +1052,6 @@ namespace IPKP___API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Permissions");
-
-            migrationBuilder.DropTable(
-                name: "Write_Offs");
 
             migrationBuilder.DropTable(
                 name: "Discounts");
