@@ -8,8 +8,7 @@ import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { PersonalisationService } from 'src/app/Services/personalisation.service';
-import { Image_Price } from 'src/app/Models/imageprice';
-import { TextPrice } from 'src/app/Models/textprice';
+
 import { LoadingController } from '@ionic/angular';
 
 import jsPDF from 'jspdf';
@@ -26,8 +25,6 @@ type Opts = { [key: string]: string | number }
 })
 export class InventoryPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
-  textprice: TextPrice[] =[]
-  imageprice: Image_Price[] =[]
   Products: StockItemViewModel[] = [];
   searchString: string = "";
   searchedinventory: StockItemViewModel[] = [];
@@ -43,17 +40,25 @@ export class InventoryPage implements OnInit {
 
   ngOnInit() {
     this.GetAllStockItems();
-    if(this.searchString == "")
-    {
-      this.searchedinventory = this.Products;
-    }
+    // if(this.searchString == "")
+    // {
+    //   this.searchedinventory = this.Products;
+    // }
+  }
+
+  GetAllStockItems(){
+    this.presentLoading()
+    this.stockitemservice.GetStockItems().subscribe(result =>{
+      this.Products = result as StockItemViewModel[];
+    })    
   }
 
   async presentLoading() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
-      message: 'Please wait...',
+      message: 'Click the backdrop to dismiss early...',
       duration: 2000,
+      backdropDismiss: true,
     });
     
     await loading.present();
@@ -64,8 +69,12 @@ export class InventoryPage implements OnInit {
 
   search(){
     this.searchedinventory = this.Products.filter(
-      f => new Date(f.inventory_Date) > this.SearchStockForm.value.start_Date 
-      && new Date(f.inventory_Date) < this.SearchStockForm.value.end_Date);
+        (stockitem) => new Date(stockitem.inventory_Date) >= this.SearchStockForm.value.start_Date 
+        && new Date(stockitem.inventory_Date) <= this.SearchStockForm.value.end_Date
+        // (stockitem) => stockitem.inventory_Date.toDateString().includes(this.searchString.toLocaleLowerCase())
+
+      );
+      console.log(this.searchedinventory)
   }
 
 
@@ -86,11 +95,7 @@ export class InventoryPage implements OnInit {
     this.router.navigate(['./tabs/stock-take']);
   }
 
-  GetAllStockItems(){
-    this.stockitemservice.GetStockItems().subscribe(result =>{
-      this.Products = result as StockItemViewModel[];
-    })    
-  }
+  
 
   @ViewChild('htmlData') htmlData!: ElementRef;
   

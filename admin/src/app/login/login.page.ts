@@ -40,7 +40,7 @@ export class LoginPage implements OnInit {
         //this.logout();
       }
       else if(roles.includes('Admin')){
-        this.router.navigateByUrl('/tabs/orders', {replaceUrl: true});
+        this.router.navigateByUrl('/tabs/order-requests', {replaceUrl: true});
         localStorage.setItem('username', form.value.username,);
       }
       else if (roles.includes('Employee')){

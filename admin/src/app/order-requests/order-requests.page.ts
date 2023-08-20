@@ -6,6 +6,7 @@ import { OrderService } from '../Services/order.service';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { LoadingController } from '@ionic/angular';
 export type jsPDFDocument = any;
 type Opts = { [key: string]: string | number }
 @Component({
@@ -19,18 +20,32 @@ export class OrderRequestsPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
   orderRequests: OrderLineItemVM[] =[]
   constructor(public service: OrderService, public environmentInjector: EnvironmentInjector,
-     private alertController:AlertController ) { }
+     private alertController:AlertController, public loadingController: LoadingController ) { }
 
   ngOnInit() {
     this.GetOrderRequests()
   }
 
   GetOrderRequests(){
+    this.presentLoading()
     this.service.GetRequestedOrders().subscribe(result =>{
       this.orderRequests = result as OrderLineItemVM[]
       console.log(this.orderRequests)
     })
   }
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Click the backdrop to dismiss early...',
+      duration: 2000,
+      backdropDismiss: true,
+    });
+    
+    await loading.present();
+  
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
+  } 
 
   AcceptOrder(order_Line_Item_ID: string){
     try
@@ -51,10 +66,10 @@ export class OrderRequestsPage implements OnInit {
 
   }
 
-  @ViewChild('htmlData') htmlData!: ElementRef;
+  @ViewChild('htmlOrderRequestData') htmlOrderRequestData!: ElementRef;
   
   openPDF(): void {
-    let DATA: any = document.getElementById('htmlData');
+    let DATA: any = document.getElementById('htmlOrderRequestData');
     html2canvas(DATA).then((canvas) => {       
       //Initialize JSPDF
       let PDF = new jsPDF('p', 'mm', 'a4');
