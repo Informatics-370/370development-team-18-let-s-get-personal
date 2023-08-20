@@ -68,12 +68,12 @@ export class DeliveryCompaniesPage implements OnInit {
 
   }
 
-  EditDeliveryCompany(delivery_Company_ID:number)
+  EditDeliveryCompany(delivery_Company_ID:string)
   {
     this.thisroute.navigate(['/edit-company', delivery_Company_ID]);
   }
 
-  DeleteDeliveryCompany(delivery_Company_ID: number){
+  DeleteDeliveryCompany(delivery_Company_ID: string){
     this.service.DeleteDeliveryCompany(delivery_Company_ID).subscribe(result => {
       console.log(result);
       if(result.status == "Error")

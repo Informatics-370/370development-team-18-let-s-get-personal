@@ -132,6 +132,35 @@ namespace IPKP___API.Controllers
 
 
         //send order to delivery
+        [HttpPut]
+        [Route("SendOutDelivery/{delivery_ID}")]
+        public async Task<ActionResult<Order_Line_Item>> SendOutDelivery(Guid order_Line_Item_ID, Order_Line_Item dvm)
+        {
+            try
+            {
+                var requests = await _IPKPRepository.GetOrderLineItemByID(order_Line_Item_ID);
+
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    requests.Order_Status = "Out";
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(requests);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+
+            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
+        }
+
         //1. change order line status
         //2. add new order item 
         [HttpPut]
@@ -186,6 +215,29 @@ namespace IPKP___API.Controllers
             return Ok(new Response { Status = "Success", Message = "Order Request Added To Database." });
         }
 
+        [HttpGet]
+        [Route("GetSales")]
+        public async Task<IActionResult> GetSales()
+        {
+            try
+            {
+                //string orderStatus = "Completed";
+                var requests =  _IPKPRepository.GetSalesReport();
+
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    return Ok(requests);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
 
 
     }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { OrderT } from 'src/app/Models/basket';
+import { BasketItems, OrderT } from 'src/app/Models/basket';
 import { OrderService } from 'src/app/Services/order.service';
 import { Order_Line_Item } from 'src/app/Models/orderlineitem';
 
@@ -18,6 +18,7 @@ export class SuccessfulPaymentPage implements OnInit {
   showAnimation = false;
   order = new OrderT();
   cartitems: any 
+  basket = new BasketItems();
   constructor(private router:Router,private orderService:OrderService) { }
 
   ngOnInit() {
@@ -27,13 +28,18 @@ export class SuccessfulPaymentPage implements OnInit {
     this.AddOrderLineItem()
   }
 
+  // public removeItemFromBasket(id: any):void {
+  //   this.cartItems = this.cartItems.filter((cartItem) => cartItem.stock_Item.stock_Item_ID !== id);
+  //   localStorage.setItem('cart', JSON.stringify(this.cartItems));
+  // }
+
   AddOrderLineItem(){
     try
     {
       let addedOrder = new Order_Line_Item
       let orderRequestID = JSON.parse(localStorage.getItem('orderRequestID') as string)
       let personalisedID = JSON.parse(localStorage.getItem('personalisedID') as string)
-      let quantity = this.cartitems.quantity
+      let quantity = this.basket.basket_Quantity
       let price = JSON.parse(localStorage.getItem('totalprice') as string)
 
       addedOrder.order_Line_Item_Price = price
