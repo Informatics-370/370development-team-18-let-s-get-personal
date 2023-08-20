@@ -17,24 +17,56 @@ type Opts = { [key: string]: string | number }
   templateUrl: './profiles.page.html',
   styleUrls: ['./profiles.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule]
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule,ReactiveFormsModule]
 })
 export class ProfilesPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
   Profile: User[] = []
   admin: Admin [] = []
+  searchedAdmin: Admin [] = []
   customers: Customer[] = []
+  searchedCustomer: Customer[] = []
   employees: Employee[] = []
+  searchedEmployee: Employee[] = []
   employee: any
+  searchString: string = "";
   @ViewChild(IonModal) modal!: IonModal
 
   constructor( private alertController:AlertController, private service: UserProfileDataService, 
     public modalCtrl: ModalController, public router: Router) { } 
 
+    SearchForm: FormGroup = new FormGroup({
+      name:new FormControl('',[Validators.required])
+    })
+
+    searchAdmin(){
+      this.searchString=this.SearchForm.get('name')?.value;
+      this.searchedAdmin = this.admin.filter(
+        f => f.firstName.toLowerCase().includes(this.searchString.toLowerCase()));
+    }
+
+    searchEmployee(){
+      this.searchString=this.SearchForm.get('name')?.value;
+      this.searchedEmployee = this.employees.filter(
+        f => f.firstName.toLowerCase().includes(this.searchString.toLowerCase()));
+    }
+
+    searchCustomer(){
+      this.searchString=this.SearchForm.get('name')?.value;
+      this.searchedCustomer = this.customers.filter(
+        f => f.firstName.toLowerCase().includes(this.searchString.toLowerCase()));
+    }
+
   ngOnInit() {
     this.GetEmployees()
     this.GetCustomers()
     this.GetAdmins()
+    if(this.searchString === "")
+    {
+      this.searchedAdmin = this.admin;
+      this.searchedEmployee = this.employees;
+      this.searchedCustomer = this.customers;
+    }
   }
 
   routeEmployees(){
@@ -44,6 +76,7 @@ export class ProfilesPage implements OnInit {
   GetAdmins(){
     this.service.GetAllAdmins().subscribe(result =>{
       this.admin = result as Admin[];
+      this.searchedAdmin=this.admin;
       console.log(this.employees);
     })
   }
@@ -51,6 +84,7 @@ export class ProfilesPage implements OnInit {
   GetEmployees(){
     this.service.GetAllEmployees().subscribe(result =>{
       this.employees = result as Employee[];
+      this.searchedEmployee=this.employees;
       console.log(this.employees);
     })
   }
@@ -58,6 +92,7 @@ export class ProfilesPage implements OnInit {
   GetCustomers(){
     this.service.GetAllCustomers().subscribe(result =>{
       this.customers = result as Customer[];
+      this.searchedCustomer=this.customers;
       console.log(this.customers);
     })
   }

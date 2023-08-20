@@ -43,7 +43,16 @@
   </ion-grid>
 </ion-content>
 
+
+<ion-content *ngIf="cartItems.length == 0">
+  <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
+    <p>Your basket is empty.</p>
+    <ion-button (click)="shopall()">Return to shop</ion-button>
+  </div>
+</ion-content>
+
 <ion-footer>
+
 	<ion-modal trigger="addPersonalizationmodal" (willDismiss)="onWillDismiss($event)">
 		<ng-template>
 			<ion-header>
@@ -58,9 +67,9 @@
 				</ion-toolbar>
 			</ion-header>
 			<ion-content class="ion-padding">
-				<!-- <p style="color: red;">[strong]="true"
+				 <p style="color: red;">[strong]="true"
 					If you would like to not add a design text or image please enter none 
-				</p> -->
+				</p> 
 				<form [formGroup]="AddTextForm">
 					<ion-item>
 						<ion-label position="stacked">

@@ -26,37 +26,31 @@ export class InventoryPage implements OnInit {
   Products: StockItemViewModel[] = [];
   searchString: string = "";
   searchedinventory: StockItemViewModel[] = [];
+  loadingController: any;
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public bestsellerservice:BestsellersService, private alertController:AlertController,  
     public stockitemservice: StockItemDataService, public pservice: PersonalisationService, 
     public loadingController: LoadingController) { }
 
   SearchStockForm: FormGroup = new FormGroup({
-    startdate: new FormControl('',[Validators.required]),
-    enddate: new FormControl('',[Validators.required]),
+    /*startdate: new FormControl('',[Validators.required]),
+    enddate: new FormControl('',[Validators.required]),*/
+    name:new FormControl('',[Validators.required])
   })
 
   ngOnInit() {
     this.GetAllStockItems();
-    // if(this.searchString == "")
-    // {
-    //   this.searchedinventory = this.Products;
-    // }
-  }
-
-  GetAllStockItems(){
-    this.presentLoading()
-    this.stockitemservice.GetStockItems().subscribe(result =>{
-      this.Products = result as StockItemViewModel[];
-    })    
+    if(this.searchString === "")
+    {
+      this.searchedinventory = this.Products;
+    }
   }
 
   async presentLoading() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
-      message: 'Click the backdrop to dismiss early...',
+      message: 'Please wait...',
       duration: 2000,
-      backdropDismiss: true,
     });
     
     await loading.present();
@@ -66,13 +60,20 @@ export class InventoryPage implements OnInit {
   }  
 
   search(){
-    this.searchedinventory = this.Products.filter(
-        (stockitem) => new Date(stockitem.inventory_Date) >= this.SearchStockForm.value.start_Date 
-        && new Date(stockitem.inventory_Date) <= this.SearchStockForm.value.end_Date
-        // (stockitem) => stockitem.inventory_Date.toDateString().includes(this.searchString.toLocaleLowerCase())
 
-      );
-      console.log(this.searchedinventory)
+    
+    console.log("Kamo "+this.SearchStockForm.get('name')?.value);
+    this.searchString=this.SearchStockForm.get('name')?.value;
+
+   /*console.log(this.Products);
+   this.Products.forEach(e=>{
+    if(e.inventory_Date==this.SearchStockForm.get('startdate')?.value)
+     if(new Date(e.inventory_Date)===new Date(this.SearchStockForm.get('startdate')?.value))
+      console.log("Hallo world");
+   })*/
+
+    this.searchedinventory = this.Products.filter(
+      f => f.stock_Item_Name.toLowerCase().includes(this.searchString.toLowerCase()));
   }
 
 
@@ -93,7 +94,12 @@ export class InventoryPage implements OnInit {
     this.router.navigate(['./tabs/stock-take']);
   }
 
-  
+  GetAllStockItems(){
+    this.stockitemservice.GetStockItems().subscribe(result =>{
+      this.Products = result as StockItemViewModel[];
+      this.searchedinventory=this.Products;
+    })    
+  }
 
   @ViewChild('htmlData') htmlData!: ElementRef;
   

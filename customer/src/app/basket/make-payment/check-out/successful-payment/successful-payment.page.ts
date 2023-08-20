@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { BasketItems, OrderT } from 'src/app/Models/basket';
+//import { OrderT } from 'src/app/Models/basket';
 import { OrderService } from 'src/app/Services/order.service';
+import { BasketItems, OrderT } from 'src/app/Models/basket';
 import { Order_Line_Item } from 'src/app/Models/orderlineitem';
 
 @Component({
@@ -23,8 +24,9 @@ export class SuccessfulPaymentPage implements OnInit {
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)
+    this.order.paid=true;
+    //this.placeOrder(this.order)
     this.cartitems = JSON.parse(localStorage.getItem('cart') as string)//localStorage.setItem('cart', JSON.stringify(this.cartItems));
-    this.order.paid=true;   
     this.AddOrderLineItem()
   }
 
