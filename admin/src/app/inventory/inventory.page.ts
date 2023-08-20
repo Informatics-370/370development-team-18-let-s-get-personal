@@ -26,7 +26,7 @@ export class InventoryPage implements OnInit {
   Products: StockItemViewModel[] = [];
   searchString: string = "";
   searchedinventory: StockItemViewModel[] = [];
-  loadingController: any;
+  //loadingController: any;
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public bestsellerservice:BestsellersService, private alertController:AlertController,  
     public stockitemservice: StockItemDataService, public pservice: PersonalisationService, 

@@ -177,11 +177,11 @@ namespace IPKP___API.Controllers.Models.Repository
         }
 
         //Stock Items
-        //public async Task<Stock_Item[]> GetAllStockItemsAsync()
-        //{
-        //    IQueryable<Stock_Item> query = _appDbContext.Stock_Items.Include(s => s.Stock_Image).Include(s => s.Stock_Item_Colour).Include(s => s.Stock_Type);
-        //    return await query.ToArrayAsync();
-        //}
+        public async Task<Stock_Item[]> GetAllStockItemsAsync()
+        {
+            IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
+            return await query.ToArrayAsync();
+        }
         public async Task<Stock_Item> GetStockItemByName(string stock_Item_Name)
         {
             IQueryable<Stock_Item> query = _appDbContext.Stock_Items

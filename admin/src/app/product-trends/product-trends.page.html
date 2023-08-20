@@ -10,8 +10,9 @@
       <ion-title size="large">ProductTrends</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-button (click)="openPDF()">Download Trend Chart</ion-button>
 
-  <div class="chart-container">
+  <div id="TrendsData" class="chart-container">
     <canvas  id="MyChart" >{{ chart }}</canvas>
   </div>
 </ion-content>

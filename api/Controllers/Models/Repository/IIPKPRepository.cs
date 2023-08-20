@@ -31,6 +31,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Stock_Image[]> GetAllStockItmagesAsync();
 
         //Stock items
+        Task<Stock_Item[]> GetAllStockItemsAsync();
         Task<Stock_Item> GetStockItemDetailsAsync(Guid stock_Item_ID);
         Task<Stock_Item> GetStockItemByName(string stock_Item_Name);
 

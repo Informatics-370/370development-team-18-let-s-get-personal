@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPKP___API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230818161222_initial")]
+    [Migration("20230820192152_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -871,13 +871,7 @@ namespace IPKP___API.Migrations
                     b.Property<Guid?>("Stock_Item_ID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("Stock_Item_ID1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("Write_Off_ID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("Write_Off_ID1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Write_Off_Quantity")
@@ -889,10 +883,6 @@ namespace IPKP___API.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Write_Off_Line_Item_ID");
-
-                    b.HasIndex("Stock_Item_ID1");
-
-                    b.HasIndex("Write_Off_ID1");
 
                     b.ToTable("Write_Off_Line_Items");
                 });
@@ -1270,21 +1260,6 @@ namespace IPKP___API.Migrations
                         .HasForeignKey("Stock_Item_ID1");
 
                     b.Navigation("Stock_Item");
-                });
-
-            modelBuilder.Entity("IPKP___API.Controllers.Models.Entities.Write_Off_Line_Item", b =>
-                {
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Stock_Item", "Stock_Item")
-                        .WithMany()
-                        .HasForeignKey("Stock_Item_ID1");
-
-                    b.HasOne("IPKP___API.Controllers.Models.Entities.Write_Off", "Write_Off")
-                        .WithMany()
-                        .HasForeignKey("Write_Off_ID1");
-
-                    b.Navigation("Stock_Item");
-
-                    b.Navigation("Write_Off");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

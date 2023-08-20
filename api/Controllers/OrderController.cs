@@ -249,7 +249,7 @@ namespace IPKP___API.Controllers
             try
             {
                 //string orderStatus = "Completed";
-                var requests = _IPKPRepository.GetSalesReport();
+                var requests = _IPKPRepository.GetAllStockItemsAsync();
 
                 if (requests == null)
                 {

@@ -9,7 +9,10 @@ import { LineController,LineElement,PointElement, LinearScale,Title,CategoryScal
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 import { SalesVM } from '../ViewModels/salesVM';
 Chart.register(LineController,LineElement,PointElement, LinearScale,Title,CategoryScale,BarController,BarElement);
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+export type jsPDFDocument = any;
+type Opts = { [key: string]: string | number }
 @Component({
   selector: 'app-product-trends',
   templateUrl: './product-trends.page.html',
@@ -18,6 +21,7 @@ Chart.register(LineController,LineElement,PointElement, LinearScale,Title,Catego
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class ProductTrendsPage implements OnInit {
+  private readonly jsPDFDocument: jsPDFDocument
   data: any;
   chart: any = []
   private labeldata: any[] = [];
@@ -26,7 +30,7 @@ export class ProductTrendsPage implements OnInit {
   constructor(private service: OrderService) { }  
   
   ngOnInit(): void {
-    this.service.GetSales().subscribe(result => {
+    this.service.GetAllOrders().subscribe(result => {
       this.chartInfo = result;
       console.log(this.chartInfo)
 
@@ -59,6 +63,25 @@ export class ProductTrendsPage implements OnInit {
       options: {
         aspectRatio: 2,
       },
+    });
+  }
+
+  @ViewChild('TrendsData') TrendsData!: ElementRef;
+  
+  openPDF(): void {
+    let DATA: any = document.getElementById('TrendsData');
+    html2canvas(DATA).then((canvas) => {       
+      //Initialize JSPDF
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      //Converting canvas to Image
+      const FILEURI = canvas.toDataURL('image/png');
+      //Add image Canvas to PDF
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;      
+      let position = 10;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
+          
+      PDF.save('IPKP-Product-Trends.pdf');
     });
   }
 
