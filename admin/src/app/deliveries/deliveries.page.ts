@@ -43,7 +43,6 @@ export class DeliveriesPage implements OnInit {
   AddForm: FormGroup = new FormGroup({
     orderLineItemId: new FormControl('',[Validators.required]),
     deliverycompany: new FormControl('',[Validators.required]),
-    deliveryprice: new FormControl('',[Validators.required]),
     trackingnumber: new FormControl('',[Validators.required]),
   })
   

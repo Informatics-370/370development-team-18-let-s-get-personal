@@ -11,10 +11,7 @@ import { Stock_Item } from '../Models/stockitem';
 import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
 import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
-
-
-//for modal
-
+import { TextPrice } from '../Models/textprice';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
@@ -32,7 +29,7 @@ export class BasketPage implements OnInit {
 /*uploadFile(arg0: FileList|null) {
 throw new Error('Method not implemented.');
 }*/
-
+  user: string = ""
   formData = new FormData();
   @ViewChild(IonModal) modal!: IonModal
   personalizations: Personalisation_Design[] = [];
@@ -52,7 +49,7 @@ throw new Error('Method not implemented.');
   cartItems: any[] = [];
 
   AddForm: FormGroup = new FormGroup({
-    designText: new FormControl('', [Validators.required]),
+    designText: new FormControl(''),
     Image_File: new FormControl('')
   });
   
@@ -122,78 +119,42 @@ throw new Error('Method not implemented.');
     this._router.navigate(["/tabs/shop-all"])
   }
 
-  public personalize(id:any) {
-    localStorage.setItem("stockId",id);
-    //this.AddPersonalisation();
-    this._router.navigate(["/tabs/personalisation"], id)
-  }
-
   public makepayment() {
-
     const existingItem = localStorage.getItem('cart');
-   let items = JSON.parse(localStorage.getItem('cart') as string)
+    let items = JSON.parse(localStorage.getItem('cart') as string)
 
-   this.order.basketItems=items;
+    this.order.basketItems=items;
   
-   this.order.paid=false;
+    this.order.paid=false;
 
-   localStorage.setItem("order",JSON.stringify(this.order));
+    localStorage.setItem("order",JSON.stringify(this.order));
 
     console.log(items);
 
     //change to checkout and go to deliveries then make payment 
     //this.AddImageToImageLineItem()
-   // this.AddPersonalisation()
-    this._router.navigate(["/tabs/make-payment"])
+    // this.AddPersonalisation()
+    //this._router.navigate(["/tabs/make-payment"])
+    this.CheckUser()
   } 
 
- /*==============PERSONALIZATION===========================================*/ 
+  CheckUser(){
+    this.user = JSON.parse(JSON.stringify(localStorage.getItem('username')));
+    if (this.user = ""){
+      this._router.navigate(['./tabs/make-payment']);
+    }
+    else{
+      this._router.navigate(['./tabs/login']);
+    }
+  }
+
+ /*==============PERSONALIZATION===========================================*/
   
-  /*uploadImage(){
-    let designimage = new Design_Image()
-    this.imageformdata.append('Image_File', this.UploadImage.get('Image_File')!.value);
-
-    this.service.UploadDesignImage(this.imageformdata).subscribe(result => {
-      designimage = result as Design_Image;
-    })
-    localStorage.setItem('designimageID', designimage.design_Image_ID);
-  }*/
-/*
-  AddImageToImageLineItem(){
-    let addtoline = new Design_Image_Line_Item();
-    addtoline.image_Price_ID = this.imagepriceID
-    //addtoline.design_Image_ID = get from local storage 
-
-    this.service.AddToDesignImageLineItem(addtoline).subscribe(res =>{
-
-    })
+ public personalize(id:any) {
+    localStorage.setItem("stockId",id);
+    //this.AddPersonalisation();
+    //this._router.navigate(["/tabs/personalisation"], id)
   }
-
-  uploadDesignText(){
-    let addDesignText = new Design_Text();
-    addDesignText.design_Text_Description = this.AddForm.value.designText
-    //text price 
-
-    let newdesigntext = new Design_Text();
-    this.service.UploadDesignText(addDesignText).subscribe(res =>{
-      newdesigntext = res as Design_Text;
-      localStorage.setItem('designtextID', newdesigntext.design_Text_ID);
-    })
-  }
-
-  getTextPrice(){
-    this.service.GetAllTextPrices().subscribe(result => {
-      this.textprice = result as TextPrice[];
-      console.log(this.textprice)
-    })
-  }
-
-  getImagePrice(){
-    this.service.GetAllImagePrices().subscribe(result => {
-      this.imageprice = result as Image_Price[];
-      console.log(this.imageprice)
-    })
-  }*/
 
   uploadFile = (files: any) => {
     let fileToUpload = <File>files[0];
@@ -220,15 +181,7 @@ throw new Error('Method not implemented.');
 
 
     this.formData.append('designText', this.AddForm.get('designText')!.value);
-    this.formData.append('designImage', this.AddForm.get('designImage')!.value);
-    /*this.service.AddPersonalisation(this.formData).subscribe(result => {
-      if(result.status == "Error"){        
-        this.addPersonalizationErrorAlert();
-      }
-      else if(result.status == "Success"){
-        this.addPersonalizationSuccessAlert();
-      }
-    })*/
+    this.formData.append('designImage', this.AddForm.get('designImage')!.value);    
   }
 
 
@@ -245,15 +198,16 @@ throw new Error('Method not implemented.');
     let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
 
     let design_Text = this.AddForm.value.designText;
-   let image_File = "Kamo";
+    let image_File = "Kamo";
  
-   if(existingItem){
-    //items.push({ ...existingItem, personalization. : 1 });
-    existingItem.personalization.personalizationText=design_Text;
-    existingItem.personalization.img=image_File;
-    localStorage.removeItem("stockId");
-  }
-  localStorage.setItem('cart',JSON.stringify(items));
+    if(existingItem){
+      //items.push({ ...existingItem, personalization. : 1 });
+      existingItem.personalization.personalizationText=design_Text;
+      existingItem.personalization.img=image_File;
+      localStorage.removeItem("stockId");
+    }
+
+    localStorage.setItem('cart',JSON.stringify(items));
 
    try{
     this.addPersonalization(); 
@@ -269,6 +223,9 @@ throw new Error('Method not implemented.');
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
+  reloadPage() {
+    window.location.reload()
+  }
 
   async addPersonalizationSuccessAlert() {
     const alert = await this.alertController.create({
@@ -283,11 +240,7 @@ throw new Error('Method not implemented.');
       }],
     });
     await alert.present();
-  }
-
-  reloadPage() {
-    window.location.reload()
-  }
+  }  
 
   async addPersonalizationErrorAlert() {
     const alert = await this.alertController.create({
@@ -328,20 +281,6 @@ throw new Error('Method not implemented.');
 
   }*/
 
-  /*async UploadErrorAlert() {
-    const alert = await this.alertController.create({
-      header: 'We are sorry!',
-      subHeader: '',
-      message: this.errmsg,
-      buttons: [{
-        text: 'OK',
-        role: 'cancel',
-        handler: () => {
-          this.reloadPage();
-        }
-      }],
-    });
-    await alert.present();
-  }*/
+  
 }
  

@@ -11,6 +11,9 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class TabsPage {
   public environmentInjector = inject(EnvironmentInjector);
-
+  //islogged: boolean = true 
+  
   constructor() {}
+
+  
 }

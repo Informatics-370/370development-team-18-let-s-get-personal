@@ -22,35 +22,11 @@ export class ShopAllPage implements OnInit {
   menuType: string = 'overlay';
   Products: StockItemViewModel[] = [];
   stockItems: Stock_Item[] = [];
-  //stock:StockItemViewModel[]=[];
 
   constructor(private _modalController: ModalController,
     private _router: Router, private alertController: AlertController,
-    private basketservice: BasketService,
-    private service: StockItemDataService) { }
+    private basketservice: BasketService, private service: StockItemDataService) { }
 
-  //Data for testing
-  /* dummy_data = [{
-   id: 0, title: "Plain T-shirt", colour: "White",
-   image_url: "https://supremetextiles.co.za/761-large_default/adult-plain-round-neck-t-shirt-white.jpg", price: 90,
-   quantity: 0
- },
- {
-   id: 1, title: "Photo Mug", colour: "White",
-   image_url: "https://smash-images.photobox.com/optimised/f10581d7b173933f6b5670a7191ef11caad09a4e_file_image_Simple-mug-lifestyle-5760x4512.jpg", price: 160,
-   quantity: 0
- },
- {
-   id: 2, title: "Diary", colour: "Brown",
-   image_url: "https://cdn.igp.com/f_auto,q_auto,t_pnopt6prodlp/products/p-stationery-addict-personalized-stationery-kit-122187-m.jpg", price: 120,
-   quantity: 0
- },
- {
-   id: 3, title: "Twin Babies", colour: "Dusty White",
-   image_url: "https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/Search/676/K62163.jpg", price: 350,
-   quantity: 0
- }
- ];*/
 
   ngOnInit() {
     this.GetStockItems();
@@ -76,36 +52,7 @@ export class ShopAllPage implements OnInit {
   public Basket() {
     this._router.navigate(["/tabs/basket"])
   }
-
-  /*addToBasket(dummy_data:any):void{
-
-    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
-    let existingItem = cartItems.find((cartItem:any) => cartItem.id === dummy_data.id);
-
-    if (!existingItem) {
-      cartItems.push({ ...dummy_data, quantity: 1 });
-    } else {
-      
-      existingItem.quantity += 1;
-    }
-    localStorage.setItem('cart',JSON.stringify(cartItems));
-    this.addToBasketSuccessAlert();
-  }*/
-
-  /*addToBasket(Products:any):void{
-
-    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
-    let existingItem = cartItems.find((cartItem:any) => cartItem.stock_Item_ID === Products.stock_Item_ID);
-
-    if (!existingItem) {
-      cartItems.push({ ...Products, stock_Item_Quantity: 1 });
-    } else {
-      
-      existingItem.stock_Item_Quantity += 1;
-    }
-    localStorage.setItem('cart',JSON.stringify(cartItems));
-    this.addToBasketSuccessAlert();
-  }*/
+  
 
   public addToBasket(stock: any): void {
 
@@ -134,13 +81,11 @@ export class ShopAllPage implements OnInit {
     } catch {
       this.addToBasketErrorAlert();
     }
-
   }
 
   reloadPage() {
     window.location.reload()
   }
-
 
   async addToBasketSuccessAlert() {
     const alert = await this.alertController.create({
@@ -149,9 +94,9 @@ export class ShopAllPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler: () => {
-          this.reloadPage();
-        }
+        // handler: () => {
+        //   this.reloadPage();
+        // }
       }],
     });
     await alert.present();
@@ -164,11 +109,64 @@ export class ShopAllPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler: () => {
-          this.reloadPage();
-        }
+        // handler: () => {
+        //   this.reloadPage();
+        // }
       }],
     });
     await alert.present();
   }
 }
+
+  //Data for testing
+  /* dummy_data = [{
+   id: 0, title: "Plain T-shirt", colour: "White",
+   image_url: "https://supremetextiles.co.za/761-large_default/adult-plain-round-neck-t-shirt-white.jpg", price: 90,
+   quantity: 0
+ },
+ {
+   id: 1, title: "Photo Mug", colour: "White",
+   image_url: "https://smash-images.photobox.com/optimised/f10581d7b173933f6b5670a7191ef11caad09a4e_file_image_Simple-mug-lifestyle-5760x4512.jpg", price: 160,
+   quantity: 0
+ },
+ {
+   id: 2, title: "Diary", colour: "Brown",
+   image_url: "https://cdn.igp.com/f_auto,q_auto,t_pnopt6prodlp/products/p-stationery-addict-personalized-stationery-kit-122187-m.jpg", price: 120,
+   quantity: 0
+ },
+ {
+   id: 3, title: "Twin Babies", colour: "Dusty White",
+   image_url: "https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/Search/676/K62163.jpg", price: 350,
+   quantity: 0
+ }
+ ];*/
+
+ /*addToBasket(dummy_data:any):void{
+
+    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+    let existingItem = cartItems.find((cartItem:any) => cartItem.id === dummy_data.id);
+
+    if (!existingItem) {
+      cartItems.push({ ...dummy_data, quantity: 1 });
+    } else {
+      
+      existingItem.quantity += 1;
+    }
+    localStorage.setItem('cart',JSON.stringify(cartItems));
+    this.addToBasketSuccessAlert();
+  }*/
+
+  /*addToBasket(Products:any):void{
+
+    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+    let existingItem = cartItems.find((cartItem:any) => cartItem.stock_Item_ID === Products.stock_Item_ID);
+
+    if (!existingItem) {
+      cartItems.push({ ...Products, stock_Item_Quantity: 1 });
+    } else {
+      
+      existingItem.stock_Item_Quantity += 1;
+    }
+    localStorage.setItem('cart',JSON.stringify(cartItems));
+    this.addToBasketSuccessAlert();
+  }*/
