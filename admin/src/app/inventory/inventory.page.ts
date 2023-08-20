@@ -8,9 +8,7 @@ import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { PersonalisationService } from 'src/app/Services/personalisation.service';
-
 import { LoadingController } from '@ionic/angular';
-
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 export type jsPDFDocument = any;

@@ -435,6 +435,7 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.FirstOrDefaultAsync();
         }
 
+
         public object GetOrderLineItembyStatus(string orderlinestatus)
         {
             List<OrderLineItemVM> orderlineitem = (
@@ -505,22 +506,106 @@ namespace IPKP___API.Controllers.Models.Repository
         public object GetSalesReport()
         {
             List<SalesVM> sales= ( 
-                from s in _appDbContext.Stock_Items.ToList()
+                from orli in _appDbContext.Order_Line_Item.ToList() 
                 join pd in _appDbContext.Personalisation_Designs.ToList()
-                on s.Stock_Item_ID equals pd.Stock_Item_ID
-                join orli in _appDbContext.Order_Line_Item.ToList()
-                on pd.Personalisation_Design_ID equals orli.Personalisation_ID
-
+                on orli.Personalisation_ID equals pd.Personalisation_Design_ID
+                join s in _appDbContext.Stock_Items.ToList()
+                on pd.Stock_Item_ID equals s.Stock_Item_ID              
+                
                 select new SalesVM
                 {
                     Stock_Item_Name = s.Stock_Item_Name,
                     Order_Line_Item_Quantity = orli.Order_Line_Item_Quantity,
-                }
+                    //Stock_Item_Quantity = s.Stock_Item_Quantity,
+                }                 
                 ).ToList();
 
             return sales;   
         }
 
+        public object GetAllOrderLineItems()
+        {
+            List<OrderLineItemVM> orderlineitem = (
+                from or in _appDbContext.Order_Requests.ToList()
+                join orli in _appDbContext.Order_Line_Item.ToList()
+                on or.Order_Request_ID equals orli.Order_Request_ID
+                //order request
+                join cust in _appDbContext.Customers.ToList()
+                on or.Customer_ID equals cust.Customer_ID
+                join d in _appDbContext.Deliveries.ToList()
+                on or.Delivery_ID equals d.Delivery_ID
+                join com in _appDbContext.Delivery_Companies.ToList()
+                on d.Delivery_Company_ID equals com.Delivery_Company_ID
+                join a in _appDbContext.Delivery_Address.ToList()
+                on d.Delivery_Address_ID equals a.Delivery_Address_ID
 
+                join pd in _appDbContext.Personalisation_Designs.ToList()
+                on orli.Personalisation_ID equals pd.Personalisation_Design_ID
+                join s in _appDbContext.Stock_Items.ToList()
+                on pd.Stock_Item_ID equals s.Stock_Item_ID
+                join c in _appDbContext.Stock_Item_Colours.ToList()
+                on s.Stock_Item_Colour_ID equals c.Stock_Item_Colour_ID
+                join di in _appDbContext.Design_Images.ToList()
+                on pd.Design_Image_ID equals di.Design_Image_ID
+                join dt in _appDbContext.Design_Texts.ToList()
+                on pd.Design_Text_ID equals dt.Design_Text_ID
+
+                select new OrderLineItemVM
+                {
+                    Customer_UserName = cust.Username,
+                    Customer_ID = cust.Customer_ID,
+                    Delivery_ID = d.Delivery_ID,
+
+                    Delivery_Price = com.Delivery_Price,
+                    Delivery_Status = d.Delivery_Status,
+
+                    Delivery_Company_Name = com.Delivery_Company_Name,
+
+                    StreetName = a.StreetName,
+                    StreetNumber = a.StreetNumber,
+                    City = a.City,
+                    Dwelling_Type = a.Dwelling_Type,
+                    Unit_Number = a.Unit_Number,
+                    Province = a.Province,
+                    AreaCode = a.AreaCode,
+
+                    Order_Status = orli.Order_Status,
+                    Order_Request_Date = or.Order_Request_Date,
+                    Order_Request_Total_Price = or.Order_Request_Total_Price,
+
+                    Image_File = di.Image_File,
+                    Design_Text = dt.Design_Text_Description,
+
+                    Stock_Item_Name = s.Stock_Item_Name,
+                    Stock_Colour_Name = c.Stock_Item_Colour_Name,
+                    Stock_Item_Size = s.Stock_Item_Size,
+
+                    Order_Line_Item_ID = orli.Order_Line_Item_ID,
+                    Order_Line_Item_Total_Price = orli.Order_Line_Item_Total_Price,
+                    Order_Line_Item_Quantity = orli.Order_Line_Item_Quantity,
+                }
+                ).ToList();
+
+            return orderlineitem;
+        }
+
+
+        public object ProductTrends()
+        {
+            var grouped =
+                from orli in _appDbContext.Order_Line_Item.ToList()
+                join pd in _appDbContext.Personalisation_Designs.ToList()
+                on orli.Personalisation_ID equals pd.Personalisation_Design_ID
+                join s in _appDbContext.Stock_Items.ToList()
+                on pd.Stock_Item_ID equals s.Stock_Item_ID
+                group new //pd by s.Stock_Item_ID
+                {   
+                    s.Stock_Item_Name,
+                    orli.Order_Line_Item_Quantity,
+                } by s.Stock_Item_ID into g
+                select g;
+                
+            return grouped;
+        }
     }
 }

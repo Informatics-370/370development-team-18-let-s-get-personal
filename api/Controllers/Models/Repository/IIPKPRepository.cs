@@ -65,5 +65,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Order_Line_Item> GetOrderLineItemByID(Guid orderlineitemID);
         object GetOrderLineItembyStatus(string orderlinestatus);
         object GetSalesReport();
+        object ProductTrends();
+        object GetAllOrderLineItems();
     }
 }
