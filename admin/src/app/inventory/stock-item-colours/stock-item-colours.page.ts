@@ -57,7 +57,7 @@ export class StockItemColoursPage implements OnInit {
   }
   
   getstockcolour(stock_Item_Colour_ID:string){
-    this.router.navigate(['tabs/edit-stock-item-colours']),stock_Item_Colour_ID;
+//    this.router.navigate(['tabs/edit-stock-item-colours']),stock_Item_Colour_ID;
   }
 
   addcolour(){
