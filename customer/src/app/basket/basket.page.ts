@@ -11,6 +11,7 @@ import { Stock_Item } from '../Models/stockitem';
 import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
 import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
+import { TextPrice } from '../Models/textprice';
 
 
 //for modal
@@ -60,7 +61,6 @@ throw new Error('Method not implemented.');
       if(counter){
         counter.innerHTML=item.basket_Quantity;
       }*/
-      
       localStorage.setItem('cart', JSON.stringify(this.cartItems));
     }
     else{
@@ -95,9 +95,7 @@ throw new Error('Method not implemented.');
     let totalPrice = 0;
     for (const item of this.cartItems) {
       totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;
-      localStorage.setItem('quantity', JSON.stringify(item.basket_Quantity));
     }
-    
     this.order.price=totalPrice;
     return totalPrice;
   }
@@ -152,9 +150,9 @@ throw new Error('Method not implemented.');
   personalizations!: Personalisation_Design
   fileNameUploaded = ''
   errmsg: string = ""
-  //textprice: TextPrice[] =[]
-  //imageprice: any //Image_Price[] =[]
-  //imagepriceID!: string
+  textprice: TextPrice[] =[]
+  imageprice: any //Image_Price[] =[]
+  imagepriceID!: string
   formData = new FormData();
 
   uploadedImage!: Design_Image;
@@ -242,19 +240,19 @@ throw new Error('Method not implemented.');
     //   existingItem.personalization.personalizationText=design_Text;
     //   existingItem.personalization.img=image_File;
     //   localStorage.removeItem("stockId");
-    // }
+     }
 
     // localStorage.setItem('cart',JSON.stringify(items));
 
-  //  try{
-  //   this.addPersonalization(); 
-  //   this._router.navigate(["/tabs/personalisation"])  
-  //   }
-  //   catch{
-  //     this.addPersonalizationErrorAlert();
-  //   }
+   //try{
+    //this.personalize(); 
+    /*this._router.navigate(["/tabs/personalisation"])  
+    }
+    catch{
+      this.addPersonalizationErrorAlert();
+    }
      
-  }
+  }*/
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
@@ -271,9 +269,9 @@ throw new Error('Method not implemented.');
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        // handler: () => {
-        //   this.reloadPage();
-        // }
+        handler: () => {
+          this.reloadPage();
+        }
       }],
     });
     await alert.present();
@@ -287,9 +285,9 @@ throw new Error('Method not implemented.');
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        // handler: () => {
-        //   this.reloadPage();
-        // }
+        handler: () => {
+          this.reloadPage();
+        }
       }],
     });
     await alert.present();

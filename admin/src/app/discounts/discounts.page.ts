@@ -23,13 +23,13 @@ export class DiscountsPage implements OnInit {
 
   filterTerm: string = "";
   //===================
-  discounts:any=Discount;
+  discounts:Discount[]=[];
   filteredDiscount:Discount[]=[];
 
-  updateSearchResults() {
-    this.filteredDiscount = this.discounts.filter((discount: { discount_Name: string; }) =>
-     this.discounts.discount_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
-  }
+  // updateSearchResults() {
+  //   this.filteredDiscount = this.discounts.filter((discount: { discount_Name: string; }) =>
+  //    this.discounts.discount_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
+  // }
 
   //======================
   //filtereddiscounts:  Discount[] = [];
@@ -46,8 +46,8 @@ export class DiscountsPage implements OnInit {
   })
 
   ngOnInit(): void {
-   /* this.getDiscounts();
-    if(this.filterTerm==""){
+   this.getDiscounts();
+    /* if(this.filterTerm==""){
       this.filtereddiscounts = this.discounts;
     }*/
   }
