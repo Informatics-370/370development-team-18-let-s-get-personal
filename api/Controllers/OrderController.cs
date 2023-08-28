@@ -87,7 +87,7 @@ namespace IPKP___API.Controllers
 
                 if (requests == null)
                 {
-                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                    return NotFound(new Response { Status = "Success", Message = "No Orders were found." });
                 }
                 else
                 {
@@ -111,7 +111,7 @@ namespace IPKP___API.Controllers
 
                 if (requests == null)
                 {
-                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                    return NotFound(new Response { Status = "Success", Message = "No Orders were found." });
                 }
                 else
                 {
@@ -244,12 +244,36 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetSales")]
-        public async Task<IActionResult> GetSales()
+        public object GetSales()
         {
             try
             {
                 //string orderStatus = "Completed";
-                var requests =  _IPKPRepository.GetSalesReport();
+                var requests = _IPKPRepository.GetAllStockItemsAsync();
+
+                if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Orders were found." });
+                }
+                else
+                {
+                    return Ok(requests);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAllOrders")]
+        public object GetAllOrders()
+        {
+            try
+            {
+                //string orderStatus = "Requested";
+                var requests = _IPKPRepository.GetAllOrderLineItems(); //GetOrderRequests();
 
                 if (requests == null)
                 {
@@ -265,7 +289,6 @@ namespace IPKP___API.Controllers
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
-
 
     }
 }

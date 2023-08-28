@@ -117,6 +117,10 @@ export const routes: Routes = [
         loadComponent: () => import('../sales/sales.page').then( m => m.SalesPage)
       },
       {
+        path: 'product-trends',
+        loadComponent: () => import('../product-trends/product-trends.page').then( m => m.ProductTrendsPage)
+      },
+      {
         path: '',
         redirectTo: '/tabs/login',
         pathMatch: 'full',

@@ -48,6 +48,11 @@ export class OrderService {
     .pipe(map((result: any) => result))
   }
 
+  public GetAllOrders(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Order/GetAllOrders`)
+    .pipe(map((result: any) => result))
+  }
+
   // public GetAllOrderStatuses(): Observable<any>{
   //   return this.httpClient.get(`${this.apiUrl}OrderRequest/GetAllOrderStatuses`)
   //   .pipe(map((result: any) => result))
