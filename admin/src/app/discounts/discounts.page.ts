@@ -23,13 +23,13 @@ export class DiscountsPage implements OnInit {
 
   filterTerm: string = "";
   //===================
-  discounts:any=Discount;
+  discounts:Discount[]=[] //any=Discount;
   filteredDiscount:Discount[]=[];
 
-  updateSearchResults() {
-    this.filteredDiscount = this.discounts.filter((discount: { discount_Name: string; }) =>
-     this.discounts.discount_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
-  }
+  // updateSearchResults() {
+  //   this.filteredDiscount = this.discounts.filter((discount: { discount_Name: string; }) =>
+  //    this.discounts.discount_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
+  // }
 
   //======================
   //filtereddiscounts:  Discount[] = [];
@@ -46,8 +46,8 @@ export class DiscountsPage implements OnInit {
   })
 
   ngOnInit(): void {
-   /* this.getDiscounts();
-    if(this.filterTerm==""){
+    this.getDiscounts();
+    /*if(this.filterTerm==""){
       this.filtereddiscounts = this.discounts;
     }*/
   }
@@ -69,6 +69,7 @@ export class DiscountsPage implements OnInit {
     this.service.GetAllDiscounts().subscribe(result =>{
       this.discounts = result;
       console.log(this.discounts)
+      
     })
   }
 
@@ -91,12 +92,83 @@ export class DiscountsPage implements OnInit {
     })
   }
 
-  EditDiscount(discount_ID:Number)
+  isModalOpen = false;
+
+  editForm: FormGroup = new FormGroup({
+    name: new FormControl('',[Validators.required]),
+    amount: new FormControl('',[Validators.required]),
+    effectiveFromdate: new FormControl('',[Validators.required]),
+    effectiveTodate: new FormControl('',[Validators.required])
+  })
+  editDiscount: Discount = new Discount();
+
+  EditDiscount(discount_ID:string, isOpen: boolean)
   {
-    this.thisroute.navigate(['/edit-discounts', discount_ID ]);
+    
+    // this.thisroute.navigate(['/edit-discounts',discount_ID]);
+    this.service.GetDiscount(discount_ID).subscribe(response => { 
+        
+      this.editDiscount = response as Discount;
+
+      this.editForm.controls['name'].setValue(this.editDiscount.discount_Name);
+      this.editForm.controls['amount'].setValue(this.editDiscount.discount_Amount);
+      this.editForm.controls['effectiveFromdate'].setValue(this.editDiscount.effective_From_Date);
+      this.editForm.controls['effectiveTodate'].setValue(this.editDiscount.effective_To_Date);
+    })
+    
+    this.isModalOpen = isOpen;
   }
 
-  DeleteDiscount(discount_ID: number){
+  confirmeditmodal(){
+    try
+    {
+      let editedDiscount = new Discount();
+      editedDiscount.discount_Name = this.editForm.value.name;
+      editedDiscount.discount_Amount = this.editForm.value.amount;
+      editedDiscount.effective_From_Date = this.editForm.value.effectiveFromdate;
+      editedDiscount.effective_To_Date = this.editForm.value.effectiveTodate;
+
+      this.service.UpdateDiscount(this.editDiscount.discount_ID, editedDiscount).subscribe(result =>{
+        this.editDiscountSuccessAlert();
+      })      
+    }
+    catch{      
+      this.editDiscountErrorAlert();
+    }    
+  }
+
+  async editDiscountSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Discount Updated',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); //routeBack
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async editDiscountErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Discount Was Not Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); //routeBack
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  DeleteDiscount(discount_ID: string){
     this.service.DeleteDiscount(discount_ID).subscribe(result => {
       console.log(result);
       if(result.status == "Error")
@@ -115,6 +187,11 @@ export class DiscountsPage implements OnInit {
   
   canceladdmodal() {
     this.modal.dismiss(null, 'cancel');
+  }
+
+  canceleditmodal() {
+    this.isModalOpen = false;
+    //this.modal.dismiss(null, 'cancel');
   }
 
   confirmaddmodal() {

@@ -12,8 +12,8 @@
   </ion-header>
   
   <ion-content id="content">
-    <ion-button onclick="routeBack()">
-      <ion-icon name="person-outline"></ion-icon>
+    <ion-button (click)="routeBack()">
+      Back
     </ion-button>
       <form [formGroup]="editForm" (ngSubmit)="onSubmit(editForm)">          
         <ion-item>

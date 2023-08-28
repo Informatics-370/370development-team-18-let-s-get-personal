@@ -34,18 +34,18 @@ import { Response } from '../Models/response';
     }
 
   //get selected one
-    public GetDiscount(discount_ID:number){ 
+    public GetDiscount(discount_ID:string){ 
         return this.httpClient.get(`${this.apiUrl}Discount/GetDiscount/${discount_ID}`)
         .pipe(map(result => result))
       }
 
   //edit
-    public UpdateDiscount(discount_ID:number, discount:Discount){
+    public UpdateDiscount(discount_ID:string, discount:Discount){
         return this.httpClient.put<Response>(`${this.apiUrl}Discount/edit-discounts/${discount_ID}`, discount)
     }
 
     //delete 
-    public DeleteDiscount(Discount_ID:number){
+    public DeleteDiscount(Discount_ID:string){
         return this.httpClient.delete<Response>(`${this.apiUrl}Discount/DeleteDiscount/${Discount_ID}`)  
     }
    

@@ -20,6 +20,8 @@
         <ion-col style="font-weight: bold;">Discount Amount</ion-col>
         <ion-col style="font-weight: bold;">Effective From Date</ion-col>
         <ion-col style="font-weight: bold;">Effective To Date</ion-col>
+        <ion-col></ion-col>
+        <ion-col></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of discounts">
         <ion-col>{{item.discount_Name}}</ion-col>
@@ -27,7 +29,7 @@
         <ion-col>{{item.effective_From_Date}}</ion-col>
         <ion-col>{{item.effective_To_Date}}</ion-col>
         <ion-col><ion-button (click)="DeleteDiscount(item.discount_ID)">Delete</ion-button></ion-col>
-        <ion-col><ion-button (click)="EditDiscount(item.discount_ID)" >Update</ion-button></ion-col>      
+        <ion-col><ion-button (click)="EditDiscount(item.discount_ID, true)" >Update</ion-button></ion-col>      
       </ion-row>
     </ion-grid>
 
@@ -67,6 +69,43 @@
               <ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input>
             </ion-item>                    
         </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Add Discount Policy Details</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="editForm" >          
+          <!-- (ngSubmit)="onSubmit(editForm)" -->
+          <ion-item>
+            <ion-label position="stacked">Discount Name</ion-label><br>
+            <ion-input type="text" formControlName="name"></ion-input> 
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Discount Amount</ion-label><br>
+            <ion-input type="text" formControlName="amount" ></ion-input> <!--placeholder="{{discountToEdit.amount}}"-->
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Effective From Date</ion-label><br>
+            <ion-input type="date" formControlName="effectiveFromdate"></ion-input>
+          </ion-item> 
+          <ion-item>
+            <ion-label position="stacked">Effective To Date</ion-label><br>
+            <ion-input type="date" formControlName="effectiveTodate"></ion-input>
+          </ion-item>                    
+      </form>
       </ion-content>
     </ng-template>
   </ion-modal>
