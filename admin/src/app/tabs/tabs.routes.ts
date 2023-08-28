@@ -21,17 +21,9 @@ export const routes: Routes = [
         loadComponent: () => import('../deliveries/delivery-companies/delivery-companies.page').then( m => m.DeliveryCompaniesPage)
       },
       {
-        path: 'edit-company',
-        loadComponent: () => import('../deliveries/delivery-companies/edit-company/edit-company.page').then( m => m.EditCompanyPage)
-      },
-      {
         path: 'discounts',
         loadComponent: () => import('../discounts/discounts.page').then( m => m.DiscountsPage)
-      },
-      {
-        path: 'edit-discounts',
-        loadComponent: () => import('../discounts/edit-discounts/edit-discounts.page').then( m => m.EditDiscountsPage)
-      },
+      },      
       {
         path: 'inventory',
         loadComponent: () => import('../inventory/inventory.page').then( m => m.InventoryPage)
@@ -75,14 +67,6 @@ export const routes: Routes = [
       {
         path: 'login',
         loadComponent: () => import('../login/login.page').then( m => m.LoginPage)
-      },
-      {
-        path: 'edit-stock-item-colours',
-        loadComponent: () => import('../inventory/stock-item-colours/edit-stock-item-colours/edit-stock-item-colours.page').then( m => m.EditStockItemColoursPage)
-      },
-      {
-        path: 'edit-stock-types',
-        loadComponent: () => import('../inventory/stock-types/edit-stock-types/edit-stock-types.page').then( m => m.EditStockTypesPage)
       },
       {
         path: 'process-refund',
