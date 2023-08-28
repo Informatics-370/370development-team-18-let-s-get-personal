@@ -503,3 +503,9 @@ api/Migrations/20230811000351_initial.cs
 api/Migrations/20230811000351_initial.Designer.cs
 api/Migrations/20230814102154_Start1.cs
 api/Migrations/20230814102154_Start1.Designer.cs
+api/appsettings.json
+api/Migrations/20230819184426_initial.cs
+api/Migrations/20230819184426_initial.Designer.cs
+*.cs
+api/Migrations/20230820192152_initial.cs
+api/Migrations/20230820192152_initial.Designer.cs
