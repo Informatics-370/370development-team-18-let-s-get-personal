@@ -31,27 +31,30 @@ export class LoginPage implements OnInit {
   }
 
   login(form: NgForm) {
-    this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
+    try{
+      this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
 
-      let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
-      console.log(roles);
-      if(roles.includes('User')){
-        this.ErrorAlert();
-        //this.logout();
-      }
-      else if(roles.includes('Admin')){
-        this.router.navigateByUrl('/tabs/order-requests', {replaceUrl: true});
-        localStorage.setItem('username', form.value.username,);
-      }
-      else if (roles.includes('Employee')){
-        this.router.navigateByUrl('/tabs/orders', {replaceUrl: true});
-        localStorage.setItem('username', form.value.username,);
-      }
-      else{
-        this.LoginFailErrorAlert()
-      }
-        
-    });
+        let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
+        console.log(roles);
+        if(roles.includes('User')){
+          this.ErrorAlert();
+        }
+        else { //if(roles.includes('Admin'))
+          this.router.navigateByUrl('/tabs/order-requests', {replaceUrl: true});
+          localStorage.setItem('username', form.value.username,);
+        }
+        // else if (roles.includes('Employee')){
+        //   this.router.navigateByUrl('/tabs/orders', {replaceUrl: true});
+        //   localStorage.setItem('username', form.value.username,);
+        // }
+        // else{
+        //   this.LoginFailErrorAlert()
+        // }          
+      });
+    }
+    catch{
+      this.LoginFailErrorAlert()
+    }
   }
 
   async LoginFailErrorAlert() {
