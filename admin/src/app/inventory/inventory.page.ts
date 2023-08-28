@@ -105,7 +105,7 @@ export class InventoryPage implements OnInit {
   
   openPDF(): void {
     let DATA: any = document.getElementById('htmlData');
-    html2canvas(DATA).then((canvas) => {       
+    html2canvas(DATA).then((canvas: { toDataURL: (arg0: string) => any; height: number; width: number; }) => {       
       //Initialize JSPDF
       let PDF = new jsPDF('p', 'mm', 'a4');
       //Converting canvas to Image
