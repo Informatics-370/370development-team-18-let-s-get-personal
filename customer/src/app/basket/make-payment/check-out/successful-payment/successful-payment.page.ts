@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { BasketItems, OrderT } from 'src/app/Models/basket';
+//import { OrderT } from 'src/app/Models/basket';
 import { OrderService } from 'src/app/Services/order.service';
+import { BasketItems, OrderT } from 'src/app/Models/basket';
 import { Order_Line_Item } from 'src/app/Models/orderlineitem';
 
 @Component({
@@ -23,8 +24,9 @@ export class SuccessfulPaymentPage implements OnInit {
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)
+    this.order.paid=true;
+    //this.placeOrder(this.order)
     this.cartitems = JSON.parse(localStorage.getItem('cart') as string)//localStorage.setItem('cart', JSON.stringify(this.cartItems));
-    this.order.paid=true;   
     this.AddOrderLineItem()
   }
 
@@ -39,7 +41,7 @@ export class SuccessfulPaymentPage implements OnInit {
       let addedOrder = new Order_Line_Item
       let orderRequestID = JSON.parse(localStorage.getItem('orderRequestID') as string)
       let personalisedID = JSON.parse(localStorage.getItem('personalisedID') as string)
-      let quantity = this.basket.basket_Quantity
+      let quantity = JSON.parse(localStorage.getItem('quantity') as string) //this.basket.basket_Quantity
       let price = JSON.parse(localStorage.getItem('totalprice') as string)
 
       addedOrder.order_Line_Item_Price = price

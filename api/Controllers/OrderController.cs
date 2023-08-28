@@ -41,6 +41,7 @@ namespace IPKP___API.Controllers
 
                 _IPKPRepository.Add(orderlineitem);
                 await _IPKPRepository.SaveChangesAsync();
+                return Ok(orderlineitem.Order_Line_Item_Quantity);
             }
             catch (Exception)
             {
@@ -133,7 +134,7 @@ namespace IPKP___API.Controllers
 
         //send order to delivery
         [HttpPut]
-        [Route("SendOutDelivery/{delivery_ID}")]
+        [Route("SendOutDelivery/{order_Line_Item_ID}")]
         public async Task<ActionResult<Order_Line_Item>> SendOutDelivery(Guid order_Line_Item_ID, Order_Line_Item dvm)
         {
             try
@@ -142,7 +143,7 @@ namespace IPKP___API.Controllers
 
                 if (requests == null)
                 {
-                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                    return NotFound(new Response { Status = "Error", Message = "No Orders were found." });
                 }
                 else
                 {
@@ -190,6 +191,32 @@ namespace IPKP___API.Controllers
             }
 
             return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
+        }
+
+        //decrease quantity
+        [HttpPut]
+        [Route("DecreaseStockItemQuantity/{stock_Item_ID}")]
+        public async Task<IActionResult> DecreaseStockItemQuantity(Guid stock_Item_ID, StockItemViewModel sivm)
+        {
+            try
+            {
+                var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
+                //var orderQuantity = AddOrderLineItemAsync();
+
+                if (existingStockItem == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
+
+                existingStockItem.Stock_Item_Quantity = sivm.Stock_Item_Quantity;
+
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(new Response { Status = "Success", Message = "Stock Item Updated Successfully" });
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Stock Item Saved To Database." });
         }
 
         [HttpPost]

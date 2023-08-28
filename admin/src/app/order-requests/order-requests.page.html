@@ -11,9 +11,10 @@
     </ion-toolbar>
   </ion-header>
   <ion-button (click)="openPDF()" >Download Order Request PDF</ion-button>
-  <div id="htmlData">
+  <div id="htmlOrderRequestData">
     <ion-grid>
       <ion-row>
+        <ion-col style="font-weight: bold;"> Order ID </ion-col>
         <ion-col style="font-weight: bold;"> Customer </ion-col>
         <ion-col style="font-weight: bold;"> Address </ion-col>
         <ion-col style="font-weight: bold;"> Delivery Company </ion-col>
@@ -27,6 +28,7 @@
         <ion-col></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of orderRequests">
+        <ion-col> {{item.order_Line_Item_ID}} </ion-col>
         <ion-col> {{item.customer_UserName}} </ion-col>
         <ion-col> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
         <ion-col> {{item.delivery_Company_Name}} </ion-col>
