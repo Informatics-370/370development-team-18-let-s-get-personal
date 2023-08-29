@@ -61,6 +61,7 @@ namespace IPKP___API.Controllers
                     {
                         new Claim(ClaimTypes.Name, user.UserName),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     };
 
                     foreach (var userRole in userRoles)
@@ -118,7 +119,7 @@ namespace IPKP___API.Controllers
                 Username = model.Username,
                 Cell_Number = model.Cell_Number,
                 Date_Registered = DateTime.Now,
-                User_ID = new Guid(),
+                User_ID = new Guid(user.Id),
             };
 
             _IPKPRepository.Add(customer);

@@ -6,7 +6,7 @@
 
 <ion-content [fullscreen]="true">
   <ion-card-content>
-		<!--<ion-button id="addProdRatingmodal">Add Product Rating</ion-button>-->
+		<ion-button id="addProdRatingmodal">Add Experience Rating</ion-button>
 		<!-- <ion-searchbar [(ngModel)]="filterTerm" (ionInput)="updateSearchResults()"></ion-searchbar>                     -->
 		<ion-grid>
 			<ion-row>
@@ -38,7 +38,7 @@
 					<ion-buttons slot="start">
 						<ion-button (click)="canceladdmodal()">Cancel</ion-button>
 					</ion-buttons>
-					<ion-title id="addmodal">Add Product rating</ion-title>
+					<ion-title id="addmodal">Add Experience rating</ion-title>
 					<ion-buttons slot="end">
 						<ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
 					</ion-buttons>
@@ -48,9 +48,9 @@
 				<form [formGroup]="AddForm">
 					<ion-item>
 						<ion-label position="stacked">
-							<h3>Rating</h3>
+							<h3>5 Star Rating</h3>
 						</ion-label><br>
-              <ion-icon name="star" *ngFor="let num of [1,2,3,4,5]" (click)="rate(num)" [ngStyle]="{'color':getColor(num)}"></ion-icon>
+              <ion-icon name="star" *ngFor="let num of [1,2,3,4,5]" (click)="rate(num)" [ngStyle]="{'color':getColor(num)}" formControlName="prodRating"></ion-icon>
 					</ion-item>
 					<ion-item>
             <ion-label position="stacked">
