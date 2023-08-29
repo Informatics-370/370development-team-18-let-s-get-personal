@@ -58,7 +58,8 @@ export class LoginPage implements OnInit {
 
   CheckUser(){
     this.user = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
-    if (this.user = "User"){
+    console.log(this.user)
+    if (this.user === "User"){
       this.router.navigate(['./tabs/view-profile']);
     }
     else{

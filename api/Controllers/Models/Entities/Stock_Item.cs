@@ -24,8 +24,9 @@ namespace IPKP___API.Controllers.Models.Entities
         [ForeignKey(nameof(Stock_Item_Colour_ID))]
         public Guid Stock_Item_Colour_ID { get; set; }
 
-        [ForeignKey(nameof(Product_Rating_ID))]
-        public Guid Product_Rating_ID { get; set; }
+        //[ForeignKey(nameof(Product_Rating_ID))]
+        //public Guid Product_Rating_ID { get; set; }
+        public List<Product_Rating> ratings { get; set; }
 
       
         //Attributes

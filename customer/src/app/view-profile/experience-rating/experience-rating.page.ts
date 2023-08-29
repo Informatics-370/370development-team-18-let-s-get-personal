@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { IonicModule, ModalController, AlertController } from '@ionic/angular';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule,ActivatedRoute } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Experience_Rating } from 'src/app/Models/experiencerating';
 import { Experience_RatingService } from 'src/app/Services/experiencerating.service';
@@ -10,6 +10,7 @@ import { Experience_RatingService } from 'src/app/Services/experiencerating.serv
 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+
 enum COLORS {
   GREY = "E0E0E0",
   GREEN = "#76FF03",
@@ -26,22 +27,36 @@ enum COLORS {
 export class ExperienceRatingPage implements OnInit {
 
   @Input() rating!: number;
-
-  @Output() ratingChange: EventEmitter<number> = new EventEmitter(); AddForm: any;;
-
-
-  @ViewChild(IonModal) modal!: IonModal;
-  constructor(private _modalController: ModalController, private _router: Router, private alertController: AlertController,
-    private service: Experience_RatingService) { }
-
+  @Output() ratingChange: EventEmitter<number> = new EventEmitter(); 
+  AddForm: any;
+  formData = new FormData();
   expRatings: Experience_Rating[] = [];
+  @ViewChild(IonModal) modal!: IonModal;
 
-  ngOnInit() {
+  constructor(private _modalController: ModalController, private _router: Router, private alertController: AlertController,
+    private service: Experience_RatingService,private route:ActivatedRoute) { }
+
+    AddExpRatingForm:FormGroup = new FormGroup({
+      ExpRating: new FormControl('',[Validators.required]),     
+      comment: new FormControl('',[Validators.required]), 
+    }); 
+
+  ngOnInit():void {
+    this.GetExpRatings();
   }
+
+  GetExpRatings(){
+this.service.GetAllExperienceRatings().subscribe(result =>{
+  this.expRatings = result as Experience_Rating[];
+  console.log(this.expRatings);
+})  
+  }
+
 
   rate(index: number) {
     this.rating = index;
     this.ratingChange.emit(this.rating);
+    console.log(this.rating);
   }
 
   getColor(index: number) {
@@ -64,26 +79,44 @@ export class ExperienceRatingPage implements OnInit {
 
   isAboveRating(index: number): boolean {
     return index > this.rating;
+    console.log(index);
   }
+
   public updateExpRating(experience_Rating_ID:string) {
     this._router.navigate(["/tabs/edit-product-rating"])
   }
 
-
+  /*AddExperienceRating() {
+    this.formData.append('rating',this.AddExpRatingForm.get('rating')!.value);
+    this.formData.append('comment',this.AddExpRatingForm.get('comment')!.value);
+    this.service.AddExperienceRating(this.formData).subscribe(result => {
+      if(result.status == "Error"){        
+        this.addExpRatingErrorAlert();
+      }
+      else if(result.status == "Success"){
+        this.addExpRatingSuccessAlert()
+      }
+    })
+  }*/
   AddExperienceRating() {
-    let AddExpRating = new Experience_Rating();
-
+    try{
+      let AddExpRating = new Experience_Rating();
     AddExpRating.experience_Star_Rating = this.AddForm.value.prodRating;
     AddExpRating.experience_Rating_Comments = this.AddForm.value.comment;
 
     this.service.AddExperienceRating(AddExpRating).subscribe(response => {
       if (response.status == "Error") {
-        this.addExpRatingErrorAlert();
+        
       }
       else {
         this.addExpRatingSuccessAlert();
       }
     })
+    }
+    catch{
+this.addExpRatingErrorAlert();
+    }
+    
   }
 
   DeleteExperienceRating(experience_Rating_ID: string) {
@@ -108,6 +141,7 @@ export class ExperienceRatingPage implements OnInit {
 
   confirmaddmodal() {
     this.AddExperienceRating();
+    console.log(this.rating);
   }
 
   onWillDismiss(event: Event) {

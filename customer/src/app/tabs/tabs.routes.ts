@@ -50,15 +50,13 @@ export const routes: Routes = [
       },
       {
         path: 'view-profile',
-        loadComponent: () => import('../view-profile/view-profile.page').then( m => m.ViewProfilePage),
-        canActivate: [AuthGuard],
-        data: {
-          role: 'User'
-        }
+        loadComponent: () => import('../view-profile/view-profile.page').then( m => m.ViewProfilePage)
+       
       },
       {
         path: 'make-payment',
-        loadComponent: () => import('../basket/make-payment/make-payment.page').then( m => m.MakePaymentPage)
+        loadComponent: () => import('../basket/make-payment/make-payment.page').then( m => m.MakePaymentPage),
+        canActivate:[AuthGuard],data:{roles:['User']}
       },
       {
         path: 'clothing',
@@ -102,7 +100,8 @@ export const routes: Routes = [
       },
       {
         path: 'check-out',
-        loadComponent: () => import('../basket/make-payment/check-out/check-out.page').then( m => m.CheckOutPage)
+        loadComponent: () => import('../basket/make-payment/check-out/check-out.page').then( m => m.CheckOutPage),
+        canActivate:[AuthGuard],data:{roles:['User']}
       },
       {
         path: 'successful-payment',

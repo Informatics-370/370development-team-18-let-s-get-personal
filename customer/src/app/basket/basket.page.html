@@ -44,13 +44,6 @@
 </ion-content>
 
 
-<ion-content *ngIf="cartItems.length == 0">
-  <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
-    <p>Your basket is empty.</p>
-    <ion-button (click)="shopall()">Return to shop</ion-button>
-  </div>
-</ion-content>
-
 <ion-footer>
 
 	<ion-modal trigger="addPersonalizationmodal" (willDismiss)="onWillDismiss($event)">

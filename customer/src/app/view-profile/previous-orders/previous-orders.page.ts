@@ -17,6 +17,11 @@ export class PreviousOrdersPage implements OnInit {
 
 
   ngOnInit() {
+
+    
+    let customerID = JSON.parse(localStorage.getItem('customerID') as string)
+
+    console.log("Customer "+customerID);
   }
   public ProductRating() {
     this._router.navigate(["/tabs/product-rating"])

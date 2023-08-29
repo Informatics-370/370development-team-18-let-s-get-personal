@@ -30,7 +30,7 @@ export class InventoryPage implements OnInit {
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public bestsellerservice:BestsellersService, private alertController:AlertController,  
     public stockitemservice: StockItemDataService, public pservice: PersonalisationService, 
-    public loadingController: LoadingController) { }
+   /* public loadingController: LoadingController*/) { }
 
   SearchStockForm: FormGroup = new FormGroup({
     /*startdate: new FormControl('',[Validators.required]),

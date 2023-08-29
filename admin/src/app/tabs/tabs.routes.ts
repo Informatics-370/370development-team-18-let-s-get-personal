@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { AuthGuard } from '../Services/authGuard';
 
 export const routes: Routes = [
   {
@@ -94,7 +95,8 @@ export const routes: Routes = [
       },
       {
         path: 'order-requests',
-        loadComponent: () => import('../order-requests/order-requests.page').then( m => m.OrderRequestsPage)
+        loadComponent: () => import('../order-requests/order-requests.page').then( m => m.OrderRequestsPage),
+        canActivate:[AuthGuard],data:{roles:['Admin']}
       },
       {
         path: 'sales',

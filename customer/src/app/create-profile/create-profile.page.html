@@ -10,35 +10,49 @@
       <ion-title size="large">create-profile</ion-title>
     </ion-toolbar>
   </ion-header>
-  <form [formGroup]="AddCustomerForm">      
+  <form [formGroup]="AddCustomerForm" (ngSubmit)="AddProfile()">
     <ion-item>
       <ion-label position="stacked">First Name</ion-label><br>
-      <ion-input type="text" formControlName="FirstName" placeholder="" required></ion-input>
-    </ion-item> 
+      <ion-input type="text" formControlName="FirstName" placeholder=""
+        [class.is-invalid]="f['FirstName'].invalid && f['FirstName'].touched" required></ion-input>
+    </ion-item>
     <ion-item>
       <ion-label position="stacked">Last Name</ion-label><br>
       <ion-input type="text" formControlName="Surname" placeholder="" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Email Address</ion-label><br>
-      <ion-input type="text" formControlName="Email" placeholder="" required></ion-input>
+      <ion-input type="Email" formControlName="Email" placeholder=""
+        [class.is-invalid]="f['Email'].invalid && f['Email'].touched" required></ion-input>
     </ion-item>
+    <div class="text-center" *ngIf="f['Email'].invalid && f['Email'].touched">
+      <p style="color: crimson;" class="small mt-1" *ngIf="f['Email'].errors?.['required']">Email is
+        required!</p>
+      <p style="color: crimson;" class="small mt-1" *ngIf="f['Email'].errors?.['pattern']">
+        Email is Invalid</p>
+    </div>
     <ion-item>
       <ion-label position="stacked">Cellphone number</ion-label><br>
-      <ion-input type="text" formControlName="Cell_Number" placeholder="" required></ion-input>
+      <ion-input type="number" formControlName="Cell_Number" placeholder="" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Username</ion-label><br>
-      <ion-input type="text" formControlName="Username" placeholder="" required></ion-input>
+      <ion-input type="Username" formControlName="Username" placeholder="" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">Password</ion-label><br>
-      <ion-input type="text" formControlName="Password" placeholder="" required></ion-input>
-    </ion-item>        
-        <p style="color: red;">
-          Please note password needs ATLEAST 1 Upper case letter, 1 special character and 1 number
-        </p>
-        <ion-button (click)="AddProfile()">Create Profile</ion-button>
+      <ion-input type="password" formControlName="Password" placeholder=""
+        [class.is-invalid]="f['Password'].invalid && f['Password'].touched" required></ion-input>
+    </ion-item>
+    <div class="text-center" *ngIf="f['Password'].invalid && f['Password'].touched">
+      <p style="color: crimson;" class="small mt-1" *ngIf="f['Password'].errors?.['required']">
+        Password is required!</p>
+      <p style="color: crimson;" class="small mt-1" *ngIf="f['Password'].errors?.['pattern']">
+        Password must contain minimum of 8 characters,at least one uppercase letter,at least one
+        lowercase letter
+        ,at least one number and at least one special character</p>
+    </div>
+    <ion-button type="submit" [disabled]="AddCustomerForm.invalid">Create Profile</ion-button>
   </form>
-  
+
 </ion-content>
