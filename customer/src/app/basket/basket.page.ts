@@ -158,7 +158,7 @@ throw new Error('Method not implemented.');
   personalizations!: Personalisation_Design
   fileNameUploaded = ''
   errmsg: string = ""
-  textprice: TextPrice[] =[]
+//  textprice: TextPrice[] =[]
   imageprice: any //Image_Price[] =[]
   imagepriceID!: string
   formData = new FormData();

@@ -14,7 +14,7 @@ import { Customer } from '../Models/customer';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class ViewProfilePage implements OnInit {
-  customer: Customer[] =[]
+  customer: Customer = new Customer()
 
   constructor(private _modalController: ModalController, private _router: Router, 
     private alertController:AlertController, private service: UserProfileDataService) { }
@@ -27,20 +27,20 @@ export class ViewProfilePage implements OnInit {
   getUser()
   {
     this.username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
+    let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')));
 
-    let customerID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')));
-
-    this.service.GetCustomer(customerID).subscribe(result => {
-      this.customer = result as Customer[];
+    this.service.GetCustomer(customer_ID).subscribe(result => {
+      this.customer = result as Customer;
+      console.log(this.customer)
     })
 
   }
 
   public updateProfile() {
-    this._router.navigate(["/tabs/update-profile"])
+    
   }
   public deleteProfile() {
-    this._router.navigate(["/tabs/"])
+    //this._router.navigate(["/tabs/"])
   }
   
   public PreviousOrders() {
@@ -48,5 +48,16 @@ export class ViewProfilePage implements OnInit {
   }
   public ExpRating() {
     this._router.navigate(["/tabs/experience-rating"])
+  }
+
+  public Logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('customerID');
+    localStorage.removeItem('username');
+    localStorage.removeItem('roles');
+    localStorage.removeItem('name');
+    this._router.navigate(["/tabs/login"])
+    // this.currentUser.next(false);
+    // this.router.navigateByUrl('/login', {replaceUrl: true});
   }
 }

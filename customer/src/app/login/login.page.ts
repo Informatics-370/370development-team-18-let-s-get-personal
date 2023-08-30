@@ -51,9 +51,10 @@ export class LoginPage implements OnInit {
     this.authService.GetCustomerID(username).subscribe(result => {
       this.customer = result as Customer
       let customerID = this.customer.customer_ID 
-      localStorage.setItem('customerID', JSON.stringify(customerID));
+      localStorage.setItem('customerID', customerID);
     })
   }
+
 
 
   CheckUser(){

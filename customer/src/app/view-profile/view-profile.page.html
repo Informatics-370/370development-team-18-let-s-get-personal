@@ -1,21 +1,45 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Profile</ion-title>
+    
+    <ion-buttons>
+      <ion-title>Profile</ion-title>
+      <ion-button (click)="updateProfile()">Update Profile</ion-button>  
+      <ion-button (click)="ExpRating()">Experience Rating</ion-button>
+      <ion-button (click)="PreviousOrders()">View Previous Orders</ion-button>
+      <ion-button slot="end" (click)="Logout()">Log out</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-button (click)="updateProfile()">Update Profile</ion-button>  
-  <ion-button (click)="ExpRating()">Experience Rating</ion-button>
-  <ion-button (click)="PreviousOrders()">View Previous Orders</ion-button>
-
+  
+  
   <p>{{username}}</p>
 
-  <ion-grid>
-    <ion-row>
-      
-    </ion-row>
-  </ion-grid>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{customer.username}} Details:</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Name</ion-label>
+          <p>{{customer.firstName}} {{customer.surname}}</p>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Cell Number</ion-label>
+          <p>{{customer.cell_Number}}</p>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Email Adress</ion-label>
+          <p>{{customer.email}}</p>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
   <ion-toolbar>
     <ion-title slot="end"><ion-button (click)="deleteProfile()">Delete Profile</ion-button></ion-title>
   </ion-toolbar>
