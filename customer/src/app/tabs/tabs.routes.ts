@@ -79,10 +79,6 @@ export const routes: Routes = [
         loadComponent: () => import('../view-profile/experience-rating/experience-rating.page').then( m => m.ExperienceRatingPage)
       },
       {
-        path: 'update-profile',
-        loadComponent: () => import('../view-profile/update-profile/update-profile.page').then( m => m.UpdateProfilePage)
-      },
-      {
         path: 'product-rating',
         loadComponent: () => import('../view-profile/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage)
       },

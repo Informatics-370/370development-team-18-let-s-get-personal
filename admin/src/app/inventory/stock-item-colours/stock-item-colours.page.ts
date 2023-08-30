@@ -55,10 +55,6 @@ export class StockItemColoursPage implements OnInit {
       console.log(this.stockitemcolours)      
     })   
   }
-  
-  getstockcolour(stock_Item_Colour_ID:string){
-//    this.router.navigate(['tabs/edit-stock-item-colours']),stock_Item_Colour_ID;
-  }
 
   addcolour(){
     let addColour = new StockItemColours();
@@ -94,8 +90,76 @@ export class StockItemColoursPage implements OnInit {
     this.addcolour();    
   }
 
+  //=============== edit ====
+  isModalOpen = false;
+  editColour: StockItemColours = new StockItemColours();
+  editForm: FormGroup = new FormGroup({
+    name: new FormControl('',[Validators.required]),
+  })
+
+  EditColour(stock_Item_Colour_ID:string, isOpen: boolean)
+  {    
+    this.service.GetStockItemColour(stock_Item_Colour_ID).subscribe(response => {         
+      this.editColour = response as StockItemColours;
+
+      this.editForm.controls['name'].setValue(this.editColour.stock_Item_Colour_Name);
+    })    
+    this.isModalOpen = isOpen;
+  }
+
+  confirmeditmodal(){
+    try
+    {
+      let editedColour = new StockItemColours();
+      editedColour.stock_Item_Colour_Name = this.editForm.value.name;
+
+      this.service.UpdateStockItemColour(this.editColour.stock_Item_Colour_ID, editedColour).subscribe(result =>{
+        this.editSuccessAlert();
+      })      
+    }
+    catch{      
+      this.editErrorAlert();
+    }    
+  }
+
+  canceleditmodal() {
+    this.isModalOpen = false;
+  }
+
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+  //=============== Alerts ====
+  async editSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Colour Updated',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async editErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Colour Was Not Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
   }
 
   async DeleteColourSuccessAlert() {

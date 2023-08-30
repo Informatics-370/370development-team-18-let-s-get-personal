@@ -144,7 +144,7 @@ namespace IPKP___API.Controllers
         {
             try
             {
-                var results = await _IPKPRepository.GetCustomerDetailsAsync(employee_ID);
+                var results = await _IPKPRepository.GetEmployeeDetailsAsync(employee_ID);
                 return Ok(results);
             }
             catch (Exception)
@@ -187,7 +187,7 @@ namespace IPKP___API.Controllers
         {
             try
             {
-                var existingEmployee = await _IPKPRepository.GetPolicyAsync(Employee_ID);
+                var existingEmployee = await _IPKPRepository.GetEmployeeDetailsAsync(Employee_ID);
 
                 if (existingEmployee == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" + Employee_ID });
 

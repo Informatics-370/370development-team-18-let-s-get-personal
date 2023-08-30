@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController,AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { UserProfileDataService } from '../Services/userprofile.service';
+import { Customer } from '../Models/customer';
 
 @Component({
   selector: 'app-view-profile',
@@ -12,8 +14,10 @@ import { Router } from '@angular/router';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class ViewProfilePage implements OnInit {
+  customer: Customer[] =[]
 
-  constructor(private _modalController: ModalController, private _router: Router, private alertController:AlertController) { }
+  constructor(private _modalController: ModalController, private _router: Router, 
+    private alertController:AlertController, private service: UserProfileDataService) { }
   public username: string = ""
 
   ngOnInit() {
@@ -23,6 +27,13 @@ export class ViewProfilePage implements OnInit {
   getUser()
   {
     this.username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
+
+    let customerID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')));
+
+    this.service.GetCustomer(customerID).subscribe(result => {
+      this.customer = result as Customer[];
+    })
+
   }
 
   public updateProfile() {

@@ -17,7 +17,8 @@
     <ion-card *ngFor="let item of stockimages">
       <img src='data:image/png;base64,{{item.stock_Image_File}}'>
       <p>{{item.stock_Image_Name}}</p>
-      <ion-button onclick="deleteStockImage(item.stock_Image_ID)">Delete</ion-button>
+      <ion-button (click)="deleteStockImage(item.stock_Image_ID)">Delete</ion-button>
+      <ion-button (click)="EditImage(item.stock_Image_ID, true)">Edit</ion-button>
     </ion-card>
   </ion-content>
   
@@ -54,6 +55,38 @@
                 <span *ngIf="fileNameUploaded.length > 0"> {{fileNameUploaded}}</span>
               </div>
             </ion-item>                    
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Add Discount Policy Details</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="editForm" >
+          <ion-item>
+            <ion-label>Image Name</ion-label>
+            <ion-input formControlName="name" type="text" id="name" placeholder="New Image Name" ></ion-input>
+          </ion-item>       
+            <ion-item>
+              <div>
+                <ion-label>Image File</ion-label>
+                <input formControlName="imagefile" type="file" id="file" #file placeholder="Choose file" (change)="uploadEditFile(file.files)" style="display:none;">
+                <ion-button mat-stroked-button color="primary" (click)="file.click()">Upload File</ion-button>
+                <span *ngIf="fileNameUploaded.length > 0"> {{fileNameUploaded}}</span>
+              </div>
+            </ion-item> 
         </form>
       </ion-content>
     </ng-template>

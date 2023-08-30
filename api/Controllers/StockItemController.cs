@@ -104,7 +104,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateStockItem/{stock_Item_ID}")]
-        public async Task<IActionResult> UpdateStockItemAsync(Guid stock_Item_ID, StockItemViewModel sivm)
+        public async Task<IActionResult> UpdateStockItemAsync(Guid stock_Item_ID, Stock_Item sivm)
         {
             try
             {
@@ -116,6 +116,10 @@ namespace IPKP___API.Controllers
                 existingStockItem.Stock_Type_ID = sivm.Stock_Type_ID;
                 existingStockItem.Stock_Image_ID = sivm.Stock_Image_ID;
                 existingStockItem.Stock_Item_Colour_ID = sivm.Stock_Item_Colour_ID;
+                existingStockItem.Inventory_Comments = sivm.Inventory_Comments;
+                existingStockItem.Stock_Item_Price = sivm.Stock_Item_Price;
+                existingStockItem.Stock_Item_Size = sivm.Stock_Item_Size;
+
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {

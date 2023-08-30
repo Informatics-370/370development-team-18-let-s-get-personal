@@ -67,12 +67,7 @@ export class StockTypesPage implements OnInit {
     })
   }
 
-  getstocktype(stock_Type_ID:number){
-    //[routerLink]="['/course', course.courseId]"
-    this.router.navigate(['./editstocktype',stock_Type_ID]);
-  }
-
-  deleteStockTypes(stock_Type_ID:number){
+  deleteStockTypes(stock_Type_ID:string){
     this.service.DeleteStockType(stock_Type_ID).subscribe(result =>{
       if(result.status == "Error")
           {
@@ -83,7 +78,74 @@ export class StockTypesPage implements OnInit {
           }
     });
   }
+  
+  //=============== Edit ===============
+  isModalOpen = false;
+  editStockType: StockTypes = new StockTypes();
+  editForm: FormGroup = new FormGroup({
+    name: new FormControl('',[Validators.required])
+  })
 
+  EditType(discount_ID:string, isOpen: boolean)
+  {    
+    this.service.GetStockType(discount_ID).subscribe(response => {         
+      this.editStockType = response as StockTypes;
+
+      this.editForm.controls['name'].setValue(this.editStockType.stock_Type_Name);
+    })
+    
+    this.isModalOpen = isOpen;
+  }
+
+  confirmeditmodal(){
+    try
+    {
+      let editedType = new StockTypes();
+      editedType.stock_Type_Name = this.editForm.value.name;
+
+      this.service.UpdateStockType(this.editStockType.stock_Type_ID, editedType).subscribe(result =>{
+        this.editSuccessAlert();
+      })      
+    }
+    catch{      
+      this.editErrorAlert();
+    }    
+  }
+
+  canceleditmodal() {
+    this.isModalOpen = false;
+  }
+
+  async editSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Stock Type Updated',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async editErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Stock Type Was Not Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
   
 
   canceladdmodal() {
