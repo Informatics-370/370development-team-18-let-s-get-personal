@@ -16,7 +16,8 @@ import { RegisterVM } from '../ViewModels/registerVM';
 })
 export class CreateProfilePage implements OnInit {
   data = {profileId: 0, email: '', password: '', cellnumber: '', Firstname: '', Lastname: ''};
-  constructor(private service:AuthenticationService, private alertController:AlertController) { }
+  constructor(private service:AuthenticationService, private alertController:AlertController, 
+    private router: Router) { }
   customer: Customer[] =[]
   ngOnInit() {
   }
@@ -54,13 +55,13 @@ export class CreateProfilePage implements OnInit {
   async AddEmployeeSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
-      subHeader: 'Employee Added',
+      subHeader: "You've been Registered",
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        // handler:() =>{
-        //   this.reloadPage();
-        // }
+        handler:() =>{
+          this.router.navigate(['./tabs/create-profile']);;
+        }
       }],
     });
     await alert.present();
@@ -69,7 +70,7 @@ export class CreateProfilePage implements OnInit {
   async AddEmployeeErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Employee Was Not Added',
+      subHeader: 'Registration failed',
       message: 'Please try again',
       buttons: [{
         text: 'OK',

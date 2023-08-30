@@ -100,7 +100,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateStockImage/{stock_Image_ID}")]
-        public async Task<IActionResult> UpdateStockImageAsync(Guid stock_Image_ID, Stock_Image si)
+        public async Task<IActionResult> UpdateStockImageAsync(Guid stock_Image_ID, [FromForm] IFormCollection formData)
         {
             try
             {
@@ -110,9 +110,28 @@ namespace IPKP___API.Controllers
                 {
                     return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Image" + stock_Image_ID });
                 }
+                else
+                {
+                    var formCollection = await Request.ReadFormAsync();
+                    var file = formCollection.Files.First();
+                    if (file.Length > 0)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            file.CopyTo(ms);
+                            var fileBytes = ms.ToArray();
+                            string base64 = Convert.ToBase64String(fileBytes);
 
-                existingStockImage.Stock_Image_File = si.Stock_Image_File;
-
+                            existingStockImage.Stock_Image_File = base64;
+                            existingStockImage.Stock_Image_File = formData["name"];
+                        }                        
+                    }
+                    else
+                    {
+                        existingStockImage.Stock_Image_File = formData["name"];
+                    }
+                }
+                
                 if (await _IPKPRepository.SaveChangesAsync())
                 {
                     return Ok(new Response { Status = "Success", Message = "Stock Image Updated Successfully" });

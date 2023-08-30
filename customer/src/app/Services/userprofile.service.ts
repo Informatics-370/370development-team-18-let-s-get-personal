@@ -22,13 +22,13 @@ import { Employee } from '../Models/employee';
     }
     
     //get selected one
-    public GetCustomer(Customer_ID:number){ 
+    public GetCustomer(Customer_ID:string){ 
       return this.httpClient.get(`${this.apiUrl}UserProfile/GetCustomer/${Customer_ID}`)
       .pipe(map(result => result))
     }
   
     //edit
-    public UpdateCustomer(Customer_ID:number, customer:Customer){
+    public UpdateCustomer(Customer_ID:string, customer:Customer){
       return this.httpClient.put<Response>(`${this.apiUrl}UserProfile/UpdateCustomer/${Customer_ID}`, customer)
     }
   

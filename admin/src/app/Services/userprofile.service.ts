@@ -37,18 +37,18 @@ import { Employee } from '../Models/employee';
     }
   
     //get selected one
-    public GetCustomer(Customer_ID:number){ 
+    public GetCustomer(Customer_ID:string){ 
       return this.httpClient.get(`${this.apiUrl}UserProfile/GetCustomer/${Customer_ID}`)
       .pipe(map(result => result))
     }
   
     //edit
-    public UpdateCustomer(Customer_ID:number, customer:Customer){
+    public UpdateCustomer(Customer_ID:string, customer:Customer){
       return this.httpClient.put<Response>(`${this.apiUrl}UserProfile/UpdateCustomer/${Customer_ID}`, customer)
     }
   
     //delete 
-    public DeleteStockType(Customer_ID:number){
+    public DeleteCustomer(Customer_ID:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}UserProfile/DeleteCustomer/${Customer_ID}`)
     }
 
@@ -59,7 +59,7 @@ import { Employee } from '../Models/employee';
     }
 
  //get selected one
-    public GetEmployee(Employee_ID:number){ 
+    public GetEmployee(Employee_ID:string){ 
         return this.httpClient.get(`${this.apiUrl}UserProfile/GetEmployee/${Employee_ID}`)
         .pipe(map(result => result))
       }
@@ -71,12 +71,12 @@ import { Employee } from '../Models/employee';
   //   } 
 
  //edit
-    public UpdateEmployee(Employee_ID:number, employee:Employee){
+    public UpdateEmployee(Employee_ID:string, employee:Employee){
         return this.httpClient.put<Response>(`${this.apiUrl}UserProfile/UpdateEmployee/${Employee_ID}`, employee)
     }
 
   //delete 
-    public DeleteEmployee(Employee_ID:number){
+    public DeleteEmployee(Employee_ID:string){
         return this.httpClient.delete<Response>(`${this.apiUrl}UserProfile/DeleteEmployee/${Employee_ID}`)        
     }
   

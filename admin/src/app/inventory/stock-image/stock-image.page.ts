@@ -64,12 +64,16 @@ export class StockImagePage implements OnInit {
       })
     //}          
   }
-
-  EditStockImage(stock_Image_ID:number){
-    this.router.navigate(['./editStockImage',stock_Image_ID]);
+  
+  canceladdImagemodal() {
+    this.modal.dismiss(null, 'cancel');
   }
 
-  deleteStockImage(stock_Image_ID:number){
+  confirmaddImagemodal() {
+    this.addStockImage();    
+  }
+
+  deleteStockImage(stock_Image_ID:string){
     this.service.DeleteStockImage(stock_Image_ID).subscribe(result =>{
       if(result.status == "Error") {
         this.DeleteStockImageErrorAlert();
@@ -80,16 +84,82 @@ export class StockImagePage implements OnInit {
     });
   }
 
-  canceladdImagemodal() {
-    this.modal.dismiss(null, 'cancel');
+  //========= Edits =====
+  isModalOpen = false;
+  editImage: Stock_Image = new Stock_Image();
+  editForm: FormGroup = new FormGroup({
+    imagefile: new FormControl(''),     
+    name: new FormControl(''),
+  })
+
+  uploadEditFile = (files: any) => {
+    let fileToUpload = <File>files[0];
+    this.formData.append('file', fileToUpload , fileToUpload.name); //
+    this.fileNameUploaded = fileToUpload.name
   }
 
-  confirmaddImagemodal() {
-    this.addStockImage();    
+  EditImage(stock_Image_ID:string, isOpen: boolean)
+  {
+    this.service.GetStockImage(stock_Image_ID).subscribe(response => {         
+      this.editImage = response as Stock_Image;
+      this.editForm.controls['name'].setValue(this.editImage.stock_Image_Name);
+      this.editForm.controls['imagefile'].setValue(this.editImage.stock_Image_File);
+    })    
+    this.isModalOpen = isOpen;
+  }
+
+  confirmeditmodal(){
+    try
+    {
+      this.formData.append('name', this.editForm.get('name')!.value);
+
+      this.service.UpdateStockImage(this.editImage.stock_Image_ID, this.formData).subscribe(result =>{
+        this.editSuccessAlert();
+      })      
+    }
+    catch{      
+      this.editErrorAlert();
+    }    
+  }
+
+  canceleditmodal() {
+    this.isModalOpen = false;
   }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+  //========= Alerts =====
+  async editSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Image Updated',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async editErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Image Was Not Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); //routeBack
+        }
+    }],
+    });
+    await alert.present();
   }
  
   async DeleteStockImageSuccessAlert() {
