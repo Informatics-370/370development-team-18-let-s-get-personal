@@ -58,14 +58,14 @@ namespace IPKP___API.Controllers
 
                 if (requests == null)
                 {
-                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                    return NotFound(new Response { Status = "Error", Message = "No Stock Items were found." });
                 }
                 else
                 {
                     requests.Delivery_Status = "Received";
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
-                        return Ok(requests);
+                        return Ok(new Response { Status = "Success", Message = "Status updated." });
                     }
                 }
             }

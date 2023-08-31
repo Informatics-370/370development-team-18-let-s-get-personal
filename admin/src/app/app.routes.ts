@@ -96,7 +96,11 @@ export const routes: Routes = [
   {
     path: 'product-trends',
     loadComponent: () => import('./product-trends/product-trends.page').then( m => m.ProductTrendsPage)
+  },  {
+    path: 'previous-orders',
+    loadComponent: () => import('./previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage)
   },
+
 
 
 

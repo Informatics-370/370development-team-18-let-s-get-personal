@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Response } from '../Models/response';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
+import { Order } from '../Models/orders';
 @Injectable({
   providedIn: 'root'
 })
@@ -39,7 +40,7 @@ export class OrderService {
   }
 
   public ProcessOrder(order_Line_Item_ID:string): Observable<any>{
-    return this.httpClient.put<Response>(`${this.apiUrl}Order/ProcessOrder/${order_Line_Item_ID}`, this.httpOptions)
+    return this.httpClient.delete(`${this.apiUrl}Order/ProcessOrder/${order_Line_Item_ID}`, this.httpOptions)
     .pipe(map((result: any) => result))
   }
 
@@ -51,6 +52,16 @@ export class OrderService {
   public GetAllOrders(): Observable<any>{
     return this.httpClient.get(`${this.apiUrl}Order/GetAllOrders`)
     .pipe(map((result: any) => result))
+  }
+
+  public GetOrderByID(order_Line_Item_ID:string){ 
+    return this.httpClient.get(`${this.apiUrl}Order/GetOrderByID/${order_Line_Item_ID}`)
+    .pipe(map(result => result))
+  }
+
+  public AddOrder(order:Order){
+    return this.httpClient.post<Response>(`${this.apiUrl}Order/AddOrder`, order)
+    .pipe(map(result => result))
   }
 
   // public GetAllOrderStatuses(): Observable<any>{

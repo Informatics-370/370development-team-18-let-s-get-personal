@@ -14,6 +14,7 @@ import { OrderService } from '../Services/order.service';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { Order } from '../Models/orders';
 export type jsPDFDocument = any;
 type Opts = { [key: string]: string | number }
 
@@ -70,21 +71,59 @@ export class DeliveriesPage implements OnInit {
     try
     {
       this.service.ChangeStatusToRecieved(DeliveryId).subscribe(result =>{
-                      
-      })
-
-      this.orderservice.ProcessOrder(order_Line_Item_ID).subscribe(result =>{
-                     
-      })
-      this.ReceiveDeliverySuccessAlert 
+        if(result.status == "Success"){
+          console.log(result);
+          this.addToOrder(order_Line_Item_ID); 
+        }
+      }) 
     }
     catch{
       this.ReceiveDeliveryErrorAlert
     }
   }
 
-  addToOrder(){
+  orderlineitem: OrderLineItemVM = new OrderLineItemVM();
 
+  addToOrder(order_Line_Item_ID:string){
+    try{
+      this.orderservice.GetOrderByID(order_Line_Item_ID).subscribe(result =>{
+        console.log(result);
+        this.orderlineitem =result as OrderLineItemVM;
+  
+        let order = new Order();
+        order.customer_ID = this.orderlineitem.customer_ID
+        order.order_Quantity = this.orderlineitem.order_Line_Item_Quantity
+        order.stock_Item_ID = this.orderlineitem.stock_Item_ID
+        this.orderservice.AddOrder(order).subscribe(response => {
+          if(response.status == "Success")
+          {
+            console.log(response);
+            this.proccessOrder(order_Line_Item_ID);
+          }
+          else
+          {
+            this.AddOrderErrorAlert()
+          }
+        })
+      })  
+    }
+    catch{
+      this.AddOrderErrorAlert()
+    }    
+  }
+
+  proccessOrder(order_Line_Item_ID:string){
+    try
+    {
+      this.orderservice.ProcessOrder(order_Line_Item_ID).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    catch
+    {
+      this.DeleteOrderLineItemErrorAlert()
+    }
+    
   }
 
   reloadPage(){
@@ -128,7 +167,39 @@ export class DeliveriesPage implements OnInit {
   async ReceiveDeliveryErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Delivery Was Not Successfully Received',
+      subHeader: 'Delivery Status Was Not Successfully Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async AddOrderErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Order was not added to Successful Orders',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async DeleteOrderLineItemErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Order was not removed from Orders In Progress',
       message: 'Please try again',
       buttons: [{
         text: 'OK',

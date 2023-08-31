@@ -29,8 +29,13 @@ import { Employee } from '../Models/employee';
   
     //edit
     public UpdateCustomer(customer_ID:string, customer:Customer){
-      return this.httpClient.put<Response>(`${this.apiUrl}UserProfile/UpdateCustomer/${customer_ID}`, customer)
+      return this.httpClient.put<Response>(`${this.apiUrl}UserProfile/UpdateCustomerUserProfile/${customer_ID}`, customer)
     }
+
+    //delete 
+    public DeleteCustomer(customer_ID:string){
+      return this.httpClient.delete<Response>(`${this.apiUrl}UserProfile/DeleteCustomerUser/${customer_ID}`)        
+  }
   
   
   }

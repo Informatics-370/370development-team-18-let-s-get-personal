@@ -44,16 +44,8 @@ throw new Error('Method not implemented.');
 
   cartItems: any[] = [];  
 
-  token?:any;
-
   ngOnInit() {
     this.cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
-
-    this.token=localStorage.getItem("token");
-
-    //let decode=jwt_decode(this.token);
-
-    console.log(this.token);
   }
  
   public removeItemFromBasket(id: any):void {

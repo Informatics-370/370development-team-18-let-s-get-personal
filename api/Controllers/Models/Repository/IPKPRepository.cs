@@ -489,6 +489,7 @@ namespace IPKP___API.Controllers.Models.Repository
                     Image_File = di.Image_File,
                     Design_Text = dt.Design_Text_Description,
 
+                    Stock_Item_ID = s.Stock_Item_ID,
                     Stock_Item_Name = s.Stock_Item_Name,
                     Stock_Colour_Name = c.Stock_Item_Colour_Name,
                     Stock_Item_Size = s.Stock_Item_Size,

@@ -32,6 +32,8 @@ type Opts = { [key: string]: string | number }
 })
 export class InventoryPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
+  @ViewChild(IonModal) modal!: IonModal
+  errormsg: string = ""; 
   Products: StockItemViewModel[] = [];
   searchString: string = "";
   searchedinventory: StockItemViewModel[] = [];
@@ -133,6 +135,53 @@ export class InventoryPage implements OnInit {
       PDF.save('IPKP-Products.pdf');
     });
   }
+
+  //========= add ========
+  AddStockForm: FormGroup = new FormGroup({
+    Stock_Item_Name: new FormControl('',[Validators.required]),
+    Stock_Item_Price: new FormControl('',[Validators.required]),
+    Stock_Item_Size: new FormControl('',[Validators.required]),
+    Inventory_Comments: new FormControl(''),
+    Stock_Item_Quantity: new FormControl('',[Validators.required]),
+    Stock_Type_ID: new FormControl('',[Validators.required]),
+    Stock_Image_ID: new FormControl('',[Validators.required]),
+    Stock_Item_Colour_ID: new FormControl('',[Validators.required]),
+  })
+
+  AddStockItem(){
+    let addStockItem = new Stock_Item();
+    addStockItem.stock_Item_Name = this.AddStockForm.value.Stock_Item_Name;
+    addStockItem.stock_Item_Price = this.AddStockForm.value.Stock_Item_Price;
+    addStockItem.stock_Item_Size = this.AddStockForm.value.Stock_Item_Size;
+    addStockItem.inventory_Comments = this.AddStockForm.value.Inventory_Comments;
+    addStockItem.stock_Item_Quantity = this.AddStockForm.value.Stock_Item_Quantity;
+    addStockItem.stock_Type_ID = this.AddStockForm.value.Stock_Type_ID;
+    addStockItem.stock_Image_ID = this.AddStockForm.value.Stock_Image_ID;
+    addStockItem.stock_Item_Colour_ID = this.AddStockForm.value.Stock_Item_Colour_ID;
+    
+
+    this.stockitemservice.AddStockItem(addStockItem).subscribe(result => {
+      if(result.status == "Error")
+        {
+          this.AddStockItemErrorAlert();
+          this.errormsg = result.Message;
+        }
+      else if(result.status == "Success")
+        {
+          console.log(addStockItem)
+          this.AddStockItemSuccessAlert();
+        }
+    }) 
+  }  
+
+  canceladdmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirmaddmodal() {
+    this.AddStockItem();    
+  }
+
 
   //============== Edit =======
   isModalOpen = false;
@@ -275,6 +324,37 @@ export class InventoryPage implements OnInit {
           this.reloadPage(); //routeBack
         }
     }],
+    });
+    await alert.present();
+  }
+  
+  async AddStockItemSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Stock Item added',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
+
+  async AddStockItemErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Stock Item was not added',
+      message: this.errormsg,
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
     });
     await alert.present();
   }

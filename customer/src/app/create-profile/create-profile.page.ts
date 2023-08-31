@@ -31,6 +31,8 @@ export class CreateProfilePage implements OnInit {
     Password: new FormControl('',[Validators.required]),
   })
 
+  get f(){return this.AddCustomerForm.controls}
+
   AddProfile(){
     let addcustomer = new RegisterVM()
     addcustomer.firstName = this.AddCustomerForm.value.FirstName

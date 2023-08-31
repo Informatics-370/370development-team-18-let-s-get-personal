@@ -47,7 +47,7 @@ namespace IPKP___API.Controllers
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok(new Response { Status = "Success", Message = "Order Request Added To Database." });
+            //return Ok(new Response { Status = "Success", Message = "Order Request Added To Database." });
         }
 
         //get requested orders 
@@ -164,13 +164,14 @@ namespace IPKP___API.Controllers
 
         //1. change order line status
         //2. add new order item 
-        [HttpPut]
-        [Route("ProcessOrder/{order_Line_Item_ID}")]
-        public async Task<ActionResult<Order_Line_Item>> ProcessOrder(Guid order_Line_Item_ID, OrderLineItemVM orli)
+
+        [HttpGet]
+        [Route("GetOrderByID/{order_Line_Item_ID}")]
+        public object GetOrderByID(Guid order_Line_Item_ID)
         {
             try
             {
-                var requests = await _IPKPRepository.GetOrderLineItemByID(order_Line_Item_ID);
+                var requests = _IPKPRepository.GetOrderLineItemByID(order_Line_Item_ID); //GetOrderRequests();
 
                 if (requests == null)
                 {
@@ -178,46 +179,14 @@ namespace IPKP___API.Controllers
                 }
                 else
                 {
-                    requests.Order_Status = "Completed";
-                    if (await _IPKPRepository.SaveChangesAsync())
-                    {
-                        return Ok(requests);
-                    }
+                    return Ok(requests);
                 }
             }
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-
-            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
-        }
-
-        //decrease quantity
-        [HttpPut]
-        [Route("DecreaseStockItemQuantity/{stock_Item_ID}")]
-        public async Task<IActionResult> DecreaseStockItemQuantity(Guid stock_Item_ID, StockItemViewModel sivm)
-        {
-            try
-            {
-                var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
-                //var orderQuantity = AddOrderLineItemAsync();
-
-                if (existingStockItem == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
-
-                existingStockItem.Stock_Item_Quantity = sivm.Stock_Item_Quantity;
-
-                if (await _IPKPRepository.SaveChangesAsync())
-                {
-                    return Ok(new Response { Status = "Success", Message = "Stock Item Updated Successfully" });
-                }
-            }
-            catch (Exception)
-            {
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-            }
-            return Ok(new Response { Status = "Success", Message = "Stock Item Saved To Database." });
-        }
+        }      
 
         [HttpPost]
         [Route("AddOrder")]
@@ -228,8 +197,10 @@ namespace IPKP___API.Controllers
                 var order = new Order
                 {
                     Order_ID = new Guid(),
-                    Order_Notes = o.Order_Notes,
-                    Order_Line_Item_ID = o.Order_Line_Item_ID,
+                    Stock_Item_ID = o.Stock_Item_ID,
+                    Customer_ID = o.Customer_ID,
+                    Order_Quantity = o.Order_Quantity,
+                    Order_Completed_Date = DateTime.Now,
                 };
 
                 _IPKPRepository.Add(order);
@@ -240,6 +211,37 @@ namespace IPKP___API.Controllers
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Order Request Added To Database." });
+        }
+
+
+        [HttpDelete]
+        [Route("ProcessOrder/{order_Line_Item_ID}")]
+        public async Task<IActionResult> ProcessOrder(Guid order_Line_Item_ID)
+        {
+            //delete 
+            try
+            {
+                var order = await _IPKPRepository.GetOrderLineItemByID(order_Line_Item_ID);
+
+                if (order == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "No Order Items were found." });
+                }
+                else
+                {
+                    _IPKPRepository.Delete(order);
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(order);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+
+            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
         }
 
         [HttpGet]
