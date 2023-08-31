@@ -50,6 +50,12 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.FirstOrDefaultAsync();
         }
 
+        public async Task<Admin> GetAdmin(string username)
+        {
+            return await _appDbContext.Admin
+                .FirstOrDefaultAsync(x => x.Username == username);
+        }
+
         //Customers
         public async Task<Customer[]> GetAllCustomersAsync()
         {
@@ -62,7 +68,12 @@ namespace IPKP___API.Controllers.Models.Repository
                       .Where(u => u.Customer_ID == customer_ID);
             return await query.FirstOrDefaultAsync();
         }
-        
+        public async Task<Customer> GetUser(string username)
+        {
+            return await _appDbContext.Customers
+                .FirstOrDefaultAsync(x => x.Username == username);
+        }
+
         //employees
         public async Task<Employee[]> GetAllEmployeesAsync()
         {
@@ -74,6 +85,12 @@ namespace IPKP___API.Controllers.Models.Repository
             IQueryable<Employee> query = _appDbContext.Employees
                       .Where(u => u.Employee_ID == employee_ID);
             return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Employee> GetEmployee(string username)
+        {
+            return await _appDbContext.Employees
+                .FirstOrDefaultAsync(x => x.Username == username);
         }
 
         //users
@@ -294,11 +311,7 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.ToArrayAsync();
         }
 
-        public async Task<Customer> GetUser(string username)
-        {
-            return await _appDbContext.Customers
-                .FirstOrDefaultAsync(x => x.Username == username);
-        }
+        
 
         public object GetStockNames()
         {

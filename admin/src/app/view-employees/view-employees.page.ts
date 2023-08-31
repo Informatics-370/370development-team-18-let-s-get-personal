@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { IonicModule, AlertController, ModalController, IonModal } from '@ionic/angular';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { User } from 'src/app/Models/user';
-import { Customer } from 'src/app/Models/customer';
 import { Employee } from 'src/app/Models/employee';
 import { UserProfileDataService } from '../Services/userprofile.service';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -24,8 +22,8 @@ export class ViewEmployeesPage implements OnInit {
   employee: any
   @ViewChild(IonModal) modal!: IonModal
   
-  constructor( private alertController:AlertController, 
-    private empservice: UserProfileDataService, public modalCtrl: ModalController,
+  constructor( private alertController:AlertController, public modalCtrl: ModalController,
+    private empservice: UserProfileDataService, 
     public authservice: AuthenticationService, public router: Router) { } //private service:ProfileService,
 
   ngOnInit() {
@@ -121,9 +119,9 @@ export class ViewEmployeesPage implements OnInit {
     username: new FormControl('',[Validators.required])
   })
 
-  EditEmployee(stock_Item_ID:string, isOpen: boolean)
+  EditEmployee(employee_ID:string, isOpen: boolean)
   {    
-    this.empservice.GetEmployee(stock_Item_ID).subscribe(response => {         
+    this.empservice.GetEmployee(employee_ID).subscribe(response => {         
       this.editEmployee = response as Employee;
 
       this.editForm.controls['firstName'].setValue(this.editEmployee.firstName);

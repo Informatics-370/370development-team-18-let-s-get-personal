@@ -262,6 +262,38 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAdminID/{username}")]
+        public async Task<IActionResult> GetAdminID(string username)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetAdmin(username);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Admin" });
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetEmployeeID/{username}")]
+        public async Task<IActionResult> GetEmployeeID(string username)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetEmployee(username);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Admin" });
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));

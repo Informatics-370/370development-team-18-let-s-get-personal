@@ -37,6 +37,21 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAdminDetails/{admin_ID}")]
+        public async Task<IActionResult> GetAdminDetails(Guid admin_ID)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetAdminDetailsAsync(admin_ID);
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+            }
+        }
+
 
         //*************** Customers ***************\\
         [HttpGet]

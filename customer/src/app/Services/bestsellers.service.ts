@@ -19,11 +19,6 @@ export class BestsellersService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public SaveBestSellersList(selectedProducts: Stock_Item[]): Observable<any> {
-    return this.httpClient.post<Response>(`${this.apiUrl}BestSellers/SaveBestSellersList`, selectedProducts, this.httpOptions)
-    .pipe(map(result => result))
-  }
-
   public GetBestSellers(): Observable<any>{ 
     return this.httpClient.get(`${this.apiUrl}StockItem/GetLastestBestSellers`)
     .pipe(map(result => result))

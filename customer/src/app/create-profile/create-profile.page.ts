@@ -25,34 +25,44 @@ export class CreateProfilePage implements OnInit {
   AddCustomerForm: FormGroup = new FormGroup({
     FirstName: new FormControl('',[Validators.required]),
     Surname: new FormControl('',[Validators.required]),
-    Email: new FormControl('',[Validators.required]),    
-    Cell_Number: new FormControl('',[Validators.required]),
+    Email: new FormControl('',Validators.compose([Validators.required,Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])),    
+    Cell_Number: new FormControl('',Validators.compose([Validators.required,Validators.minLength(10),Validators.maxLength(12)])), //,Validators.pattern("^(\\+27|0)[6-8][0-9]{8}$")
     Username: new FormControl('',[Validators.required]),
-    Password: new FormControl('',[Validators.required]),
+    Password: new FormControl('',Validators.compose([Validators.required,Validators.minLength(8)])), //,Validators.pattern('(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[$@$!%?&])[A-Za-zd$@$!%?&].{8,15}')
   })
 
   get f(){return this.AddCustomerForm.controls}
 
   AddProfile(){
-    let addcustomer = new RegisterVM()
-    addcustomer.firstName = this.AddCustomerForm.value.FirstName
-    addcustomer.surname = this.AddCustomerForm.value.Surname
-    addcustomer.email = this.AddCustomerForm.value.Email
-    addcustomer.cell_Number = this.AddCustomerForm.value.Cell_Number
-    addcustomer.username = this.AddCustomerForm.value.Username
-    addcustomer.password = this.AddCustomerForm.value.Password
+    try
+    {
+      let addcustomer = new RegisterVM()
+      addcustomer.firstName = this.AddCustomerForm.value.FirstName
+      addcustomer.surname = this.AddCustomerForm.value.Surname
+      addcustomer.email = this.AddCustomerForm.value.Email
+      addcustomer.cell_Number = this.AddCustomerForm.value.Cell_Number
+      addcustomer.username = this.AddCustomerForm.value.Username
+      addcustomer.password = this.AddCustomerForm.value.Password
 
-    this.service.RegisterCustomer(addcustomer).subscribe(result => {
-      if(result.status == "Error")
-        {
-          this.AddEmployeeErrorAlert()
-        }        
-      else if(result.status == "Success")
-        {
-          this.AddEmployeeSuccessAlert()
-          console.log(addcustomer)
-        }
-    }) 
+      console.log(addcustomer)
+  
+      this.service.RegisterCustomer(addcustomer).subscribe(result => {
+        if(result.status == "Error")
+          {
+            this.AddEmployeeErrorAlert()
+          }        
+        else if(result.status == "Success")
+          {
+            this.AddEmployeeSuccessAlert()
+            console.log(addcustomer)
+          }
+      })
+    }
+    catch
+    {
+      this.AddEmployeeErrorAlert()
+    }
+     
   }
   async AddEmployeeSuccessAlert() {
     const alert = await this.alertController.create({
@@ -62,7 +72,7 @@ export class CreateProfilePage implements OnInit {
         text: 'OK',
         role: 'cancel',
         handler:() =>{
-          this.router.navigate(['./tabs/create-profile']);;
+          this.router.navigate(['./tabs/login']);;
         }
       }],
     });

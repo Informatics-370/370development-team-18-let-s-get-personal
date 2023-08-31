@@ -5,6 +5,7 @@ import { StockTypes } from '../Models/stocktypes';
 import { Customer } from '../Models/customer';
 import { Response } from '../Models/response';
 import { Employee } from '../Models/employee';
+import { Admin } from '../Models/admin';
 @Injectable({
     providedIn: 'root' 
   })
@@ -24,32 +25,18 @@ import { Employee } from '../Models/employee';
       return this.httpClient.get(`${this.apiUrl}UserProfile/GetAllAdmins`)
       .pipe(map(result => result))
     }
+    public GetAdminDetails(admin_ID:string){ 
+      return this.httpClient.get(`${this.apiUrl}UserProfile/GetAdminDetails/${admin_ID}`)
+      .pipe(map(result => result))
+    }
+
+    public UpdateAdmin(admin_ID:string, admin:Admin){
+      return this.httpClient.put<Response>(`${this.apiUrl}UserProfile/UpdateAdmin/${admin_ID}`, admin)
+    }
   
     public GetAllCustomers(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}UserProfile/GetAllCustomers`)
       .pipe(map(result => result))
-    }
-  
-    //add
-    public AddCustomer(customer:Customer){
-      return this.httpClient.post<Response>(`${this.apiUrl}UserProfile/AddCustomer`, customer)
-      .pipe(map(result => result))
-    }
-  
-    //get selected one
-    public GetCustomer(Customer_ID:string){ 
-      return this.httpClient.get(`${this.apiUrl}UserProfile/GetCustomer/${Customer_ID}`)
-      .pipe(map(result => result))
-    }
-  
-    //edit
-    public UpdateCustomer(Customer_ID:string, customer:Customer){
-      return this.httpClient.put<Response>(`${this.apiUrl}UserProfile/UpdateCustomer/${Customer_ID}`, customer)
-    }
-  
-    //delete 
-    public DeleteCustomer(Customer_ID:string){
-      return this.httpClient.delete<Response>(`${this.apiUrl}UserProfile/DeleteCustomer/${Customer_ID}`)
     }
 
     //get all
@@ -59,25 +46,19 @@ import { Employee } from '../Models/employee';
     }
 
  //get selected one
-    public GetEmployee(Employee_ID:string){ 
-        return this.httpClient.get(`${this.apiUrl}UserProfile/GetEmployee/${Employee_ID}`)
+    public GetEmployee(employee_ID:string){ 
+        return this.httpClient.get(`${this.apiUrl}UserProfile/GetEmployee/${employee_ID}`)
         .pipe(map(result => result))
       }
 
-  // //add
-  //   public AddEmployee(employee:Employee){
-  //       return this.httpClient.post<Response>(`${this.apiUrl}UserProfile/AddEmployee`, employee)
-  //       .pipe(map(result => result))
-  //   } 
-
  //edit
-    public UpdateEmployee(Employee_ID:string, employee:Employee){
-        return this.httpClient.put<Response>(`${this.apiUrl}UserProfile/UpdateEmployee/${Employee_ID}`, employee)
+    public UpdateEmployee(employee_ID:string, employee:Employee){
+        return this.httpClient.put<Response>(`${this.apiUrl}UserProfile/UpdateEmployee/${employee_ID}`, employee)
     }
 
   //delete 
-    public DeleteEmployee(Employee_ID:string){
-        return this.httpClient.delete<Response>(`${this.apiUrl}UserProfile/DeleteEmployee/${Employee_ID}`)        
+    public DeleteEmployee(employee_ID:string){
+        return this.httpClient.delete<Response>(`${this.apiUrl}UserProfile/DeleteEmployee/${employee_ID}`)        
     }
   
   }

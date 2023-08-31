@@ -59,6 +59,16 @@ export class AuthenticationService {
     return this.currentUser.asObservable();
   }
 
+  public GetAdminID(username:string){ 
+    return this.httpClient.get(`${this.apiUrl}Authenticate/GetAdminID`+ "/" + username)
+    .pipe(map(result => result))
+  }
+
+  public GetEmployeeID(username:string){ 
+    return this.httpClient.get(`${this.apiUrl}Authenticate/GetEmployeeID`+ "/" + username)
+    .pipe(map(result => result))
+  }
+
   public Logout() {
     localStorage.removeItem('token');
     this.currentUser.next(false);

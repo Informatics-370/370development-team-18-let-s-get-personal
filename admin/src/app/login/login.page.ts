@@ -6,6 +6,8 @@ import { AuthenticationService } from 'src/app/Services/authentication.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { Admin } from '../Models/admin';
+import { Employee } from '../Models/employee';
 
 @Component({
   selector: 'app-login',
@@ -26,10 +28,6 @@ export class LoginPage implements OnInit {
   ngOnInit(): void {
   }
 
-  logout(){
-
-  }
-
   login(form: NgForm) {
     try{
       this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
@@ -39,22 +37,45 @@ export class LoginPage implements OnInit {
         if(roles.includes('User')){
           this.ErrorAlert();
         }
-        else { //if(roles.includes('Admin'))
+        else if(roles.includes('Admin')){ 
           this.router.navigateByUrl('/tabs/order-requests', {replaceUrl: true});
           localStorage.setItem('username', form.value.username,);
+          this.FindAdminID()
         }
-        // else if (roles.includes('Employee')){
-        //   this.router.navigateByUrl('/tabs/orders', {replaceUrl: true});
-        //   localStorage.setItem('username', form.value.username,);
-        // }
-        // else{
-        //   this.LoginFailErrorAlert()
-        // }          
+        else if (roles.includes('Employee')){
+          this.router.navigateByUrl('/tabs/orders', {replaceUrl: true});
+          localStorage.setItem('username', form.value.username,);
+          this.FindEmployeeID()
+        }
+        else{
+          this.LoginFailErrorAlert()
+        }          
       });
     }
     catch{
       this.LoginFailErrorAlert()
     }
+  }
+
+  admin!: Admin
+  employee!: Employee
+
+  FindAdminID(){
+    let username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
+    this.authService.GetAdminID(username).subscribe(result => {
+      this.admin = result as Admin
+      let userID = this.admin.admin_ID 
+      localStorage.setItem('userID', userID);
+    })
+  }
+
+  FindEmployeeID(){
+    let username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
+    this.authService.GetEmployeeID(username).subscribe(result => {
+      this.employee = result as Employee
+      let userID = this.employee.employee_ID 
+      localStorage.setItem('userID', userID);
+    })
   }
 
   async LoginFailErrorAlert() {
