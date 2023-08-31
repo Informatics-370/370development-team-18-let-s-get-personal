@@ -28,6 +28,11 @@ export class SalesPage implements OnInit {
     this.router.navigate(['./tabs/product-trends']);
   }
 
+  prevOrdersNav()
+  {
+    this.router.navigate(['./tabs/previous-orders']);
+  }
+
   ngOnInit(): void {
     this.GetSalesList()
   }

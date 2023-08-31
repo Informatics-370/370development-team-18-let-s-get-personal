@@ -95,6 +95,7 @@ throw new Error('Method not implemented.');
     let totalPrice = 0;
     for (const item of this.cartItems) {
       totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;
+      localStorage.setItem('quantity', JSON.stringify(item.basket_Quantity));
     }
     this.order.price=totalPrice;
     return totalPrice;
@@ -116,6 +117,7 @@ throw new Error('Method not implemented.');
     this.order.basketItems=items;
   
     this.order.paid=false;
+
 
     localStorage.setItem("order",JSON.stringify(this.order));
 

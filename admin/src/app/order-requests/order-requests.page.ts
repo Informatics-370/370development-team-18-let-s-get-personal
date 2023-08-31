@@ -89,7 +89,13 @@ export class OrderRequestsPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Success!',
       // subHeader: 'Item Added To Best Seller List',
-      buttons: ['OK'],
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
     });
     await alert.present();
   }
@@ -99,9 +105,19 @@ export class OrderRequestsPage implements OnInit {
       header: 'We are sorry!',
       // subHeader: 'Item Was Not Added',
       message: 'Please try again',
-      buttons: ['OK'],
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
     });
     await alert.present();
+  }
+
+  reloadPage() {
+    window.location.reload()
   }
 
 }

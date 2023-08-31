@@ -76,8 +76,10 @@ export class ViewProfilePage implements OnInit {
       editedCustomer.username = this.editForm.value.username;
 
       this.service.UpdateCustomer(this.editCustomer.customer_ID, editedCustomer).subscribe(result =>{
-        this.editSuccessAlert();
-      })      
+        
+      }) 
+      
+      this.editSuccessAlert();     
     }
     catch{      
       this.editErrorAlert();
@@ -86,6 +88,10 @@ export class ViewProfilePage implements OnInit {
 
   canceleditmodal() {
     this.isModalOpen = false;
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
   public deleteProfile(customer_ID: string) {

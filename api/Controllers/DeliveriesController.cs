@@ -73,7 +73,7 @@ namespace IPKP___API.Controllers
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
+            return Ok(new Response { Status = "Success", Message = "Status updated." });
         }
 
         //change status to failed
@@ -102,7 +102,7 @@ namespace IPKP___API.Controllers
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
+            return Ok(new Response { Status = "Success", Message = "Status updated." });
         }
 
         //get previous successful deliveries

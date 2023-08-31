@@ -171,11 +171,11 @@ namespace IPKP___API.Controllers
         {
             try
             {
-                var requests = _IPKPRepository.GetOrderLineItemByID(order_Line_Item_ID); //GetOrderRequests();
+                var requests = _IPKPRepository.GetOrderLineDetailsByID(order_Line_Item_ID); //GetOrderRequests();
 
                 if (requests == null)
                 {
-                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                    return NotFound(new Response { Status = "Success", Message = "No Order Items were found." });
                 }
                 else
                 {

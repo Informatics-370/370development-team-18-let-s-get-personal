@@ -57,9 +57,14 @@ export class SuccessfulPaymentPage implements OnInit {
     }
     catch
     {
-
+      /// ============== Error alert
     }
   }
+
+  addSale(){
+    
+  }
+
 
   private placeOrder(order:OrderT):void{
     //this.orderService.placeOrder(order).subscribe(res=>{

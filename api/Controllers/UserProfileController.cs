@@ -52,6 +52,34 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("UpdateAdmin/{admin_ID}")]
+        public async Task<IActionResult> UpdateAdminAsync(Guid admin_ID, Admin admin)
+        {
+            try
+            {
+                var existingAdmin = await _IPKPRepository.GetAdminDetailsAsync(admin_ID);
+
+                if (existingAdmin == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee " + admin_ID });
+
+                existingAdmin.User = admin.User;
+                existingAdmin.FirstName = admin.FirstName;
+                existingAdmin.Surname = admin.Surname;
+                existingAdmin.Cell_Number = admin.Cell_Number;
+                existingAdmin.Email = admin.Email;
+
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(new Response { Status = "Success", Message = "Employee Updated Successfully" });
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Employee Saved To Database." });
+        }
+
 
         //*************** Customers ***************\\
         [HttpGet]

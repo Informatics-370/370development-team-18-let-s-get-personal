@@ -12,6 +12,7 @@
   </ion-header>
   <ion-content id="content">
     <ion-button (click)="Logout()">Log out</ion-button>
+    <ion-button (click)="EditAdmin(profile.admin_ID, true)">Update Profile</ion-button>
     <ion-card>
       <ion-card-header>
         <ion-card-title>{{profile.firstName}}'s Details:</ion-card-title>

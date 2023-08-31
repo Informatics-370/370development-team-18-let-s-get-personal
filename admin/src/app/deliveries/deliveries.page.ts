@@ -70,12 +70,14 @@ export class DeliveriesPage implements OnInit {
   ReceiveDelivery(DeliveryId: string, order_Line_Item_ID:string){
     try
     {
+      localStorage.setItem('order_Line_Item_ID', JSON.stringify(order_Line_Item_ID));
       this.service.ChangeStatusToRecieved(DeliveryId).subscribe(result =>{
         if(result.status == "Success"){
           console.log(result);
-          this.addToOrder(order_Line_Item_ID); 
+          
         }
       }) 
+      this.addToOrder(); 
     }
     catch{
       this.ReceiveDeliveryErrorAlert
@@ -84,13 +86,15 @@ export class DeliveriesPage implements OnInit {
 
   orderlineitem: OrderLineItemVM = new OrderLineItemVM();
 
-  addToOrder(order_Line_Item_ID:string){
+  addToOrder(){
+    let order_Line_Item_ID = JSON.parse(localStorage.getItem('order_Line_Item_ID') as string)
     try{
       this.orderservice.GetOrderByID(order_Line_Item_ID).subscribe(result =>{
         console.log(result);
-        this.orderlineitem =result as OrderLineItemVM;
-  
-        let order = new Order();
+        this.orderlineitem = result as OrderLineItemVM;
+      })  
+
+      let order = new Order();
         order.customer_ID = this.orderlineitem.customer_ID
         order.order_Quantity = this.orderlineitem.order_Line_Item_Quantity
         order.stock_Item_ID = this.orderlineitem.stock_Item_ID
@@ -98,23 +102,23 @@ export class DeliveriesPage implements OnInit {
           if(response.status == "Success")
           {
             console.log(response);
-            this.proccessOrder(order_Line_Item_ID);
+            this.proccessOrder();
           }
           else
           {
             this.AddOrderErrorAlert()
           }
-        })
-      })  
+      })
     }
     catch{
       this.AddOrderErrorAlert()
     }    
   }
 
-  proccessOrder(order_Line_Item_ID:string){
+  proccessOrder(){
     try
     {
+      let order_Line_Item_ID = JSON.parse(localStorage.getItem('order_Line_Item_ID') as string)
       this.orderservice.ProcessOrder(order_Line_Item_ID).subscribe(result =>{
         console.log(result)
       })
