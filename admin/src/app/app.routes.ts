@@ -114,7 +114,11 @@ export const routes: Routes = [
     path: 'previous-orders',
     loadComponent: () => import('./previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage),
     canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
+  },  {
+    path: 'successful-deliveries',
+    loadComponent: () => import('./deliveries/successful-deliveries/successful-deliveries.page').then( m => m.SuccessfulDeliveriesPage)
   },
+
 
 
 

@@ -52,6 +52,12 @@ export class DeliveriesPage implements OnInit {
     this.router.navigate(['./tabs/delivery-companies']);
   }
 
+  RoutePrevDeliveries()
+  {
+    this.router.navigate(['./tabs/successful-deliveries']);
+  }
+  
+
   GetRequestedDeliveries(){
     this.service.GetOutDeliveries().subscribe(res => {
       this.deliveries = res as OrderLineItemVM[]
@@ -122,6 +128,7 @@ export class DeliveriesPage implements OnInit {
       this.orderservice.ProcessOrder(order_Line_Item_ID).subscribe(result =>{
         console.log(result)
       })
+      this.ReceiveDeliverySuccessAlert()
     }
     catch
     {

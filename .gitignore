@@ -509,3 +509,4 @@ api/Migrations/20230819184426_initial.Designer.cs
 api/Migrations/20230819184426_initial.Designer.cs
 api/Migrations/20230819184426_initial.cs
 api/appsettings.json
+api/Migrations/AppDbContextModelSnapshot.cs

@@ -62,6 +62,7 @@ namespace IPKP___API.Controllers
                 }
                 else
                 {
+                    requests.DateDelivered = DateTime.Now;
                     requests.Delivery_Status = "Received";
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
@@ -112,7 +113,7 @@ namespace IPKP___API.Controllers
         {
             try
             {
-                string orderStatus = "Recieved";
+                string orderStatus = "Received";
                 var requests = _IPKPRepository.GetDeliveryBySatus(orderStatus);
 
                 if (requests == null)

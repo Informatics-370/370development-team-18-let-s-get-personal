@@ -17,6 +17,8 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(255)]
         public string Delivery_Status { get; set; }
 
+        public DateTime DateDelivered { get; set; }
+
         //Address Foreign key
         public Guid? Delivery_Address_ID { get; set; }
         //public virtual Delivery_Address Delivery_Address { get; set; }

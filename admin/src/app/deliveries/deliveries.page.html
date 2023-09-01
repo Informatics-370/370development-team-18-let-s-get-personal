@@ -1,7 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Deliveries in Progress</ion-title>
-  </ion-toolbar>
+  </ion-toolbar>  
+  
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -10,10 +11,16 @@
       <ion-title size="large">Deliveries In Progress</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-toolbar>    
+    <ion-buttons>
+      <ion-button (click)="RoutePrevDeliveries()">View Previous Deliveries</ion-button>
+      <ion-button (click)="Routedeliverycompanies()">Manage Delivery Companies</ion-button>
+      <ion-button (click)="openPDF()">Download Deliveries in Progress Report</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
   
   <ion-content id="htmlData">
-    <ion-button (click)="Routedeliverycompanies()">View Delivery Companies</ion-button>
-    <ion-button (click)="openPDF()">Download Deliveries in Progress Report</ion-button>
+    
     <ion-searchbar [(ngModel)]="searchValue"  (ionInput)="updateSearchResults()" ></ion-searchbar>               
     <ion-grid>
       <ion-row>

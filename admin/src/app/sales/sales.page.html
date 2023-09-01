@@ -20,25 +20,15 @@
     <ion-grid>
       <ion-row>
         <ion-col style="font-weight: bold;"> Customer </ion-col>
-        <!-- <ion-col style="font-weight: bold;"> Address </ion-col> -->
-        <!-- <ion-col style="font-weight: bold;"> Delivery Company </ion-col> -->
-        <ion-col style="font-weight: bold;"> Product </ion-col>
-        <ion-col style="font-weight: bold;"> Product Size </ion-col>
-        <ion-col style="font-weight: bold;"> Product Colour </ion-col>
         <ion-col style="font-weight: bold;"> Amount Paid </ion-col>
-        <!-- <ion-col style="font-weight: bold;"> Quantity </ion-col> -->
+        <ion-col style="font-weight: bold;"> Quantity </ion-col>
         <ion-col style="font-weight: bold;"> Date Paid </ion-col>
       </ion-row>
       <ion-row *ngFor="let item of sales">
         <ion-col> {{item.customer_UserName}} </ion-col>
-        <!-- <ion-col> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col> -->
-        <!-- <ion-col> {{item.delivery_Company_Name}} </ion-col> -->
-        <ion-col> {{item.stock_Item_Name}} </ion-col>
-        <ion-col> {{item.stock_Item_Size}} </ion-col>
-        <ion-col> {{item.stock_Colour_Name}} </ion-col> 
-        <ion-col>{{item.order_Request_Total_Price}}</ion-col>
-        <!-- <ion-col>{{item.order_Line_Item_Quantity}}</ion-col> -->
-        <ion-col> {{item.order_Request_Date}} </ion-col>
+        <ion-col> {{item.payment_Amount}} </ion-col>
+        <ion-col> {{item.sale_Quantity}} </ion-col>
+        <ion-col> {{item.sale_Date}} </ion-col>
       </ion-row>
     </ion-grid>
   </div>

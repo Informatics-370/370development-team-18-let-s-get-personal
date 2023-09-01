@@ -1,13 +1,7 @@
 <ion-header [translucent]="true">  
   <ion-toolbar>
-    <ion-buttons>
-      <ion-button id="addStockmodal">Add New Stock Item</ion-button>
-      <ion-button (click)="stocktypes()">Stock Types</ion-button>
-      <ion-button (click)="stockcoloursnav()">Stock Colours</ion-button>
-      <ion-button (click)="stockimagesnav()">Stock Images</ion-button>
-      <ion-button (click)="stocktakenav()">Preform Stock Take</ion-button>
-  </ion-buttons>
-  </ion-toolbar>
+    <ion-title>Inventory</ion-title>
+  </ion-toolbar> 
 </ion-header>
 <link rel="stylesheet" href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css">   
 
@@ -17,27 +11,25 @@
       <ion-title size="large">inventory</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-toolbar>
+    <ion-buttons>      
+      <ion-button id="addStockmodal">Add New Stock Item</ion-button>
+      <ion-button (click)="stocktypes()">Stock Types</ion-button>
+      <ion-button (click)="stockcoloursnav()">Stock Colours</ion-button>
+      <ion-button (click)="stockimagesnav()">Stock Images</ion-button>
+      <ion-button (click)="stocktakenav()">Preform Stock Take</ion-button>
+      <ion-button (click)="openPDF()" >Download Inventory PDF</ion-button>
+  </ion-buttons>
+  </ion-toolbar>
   
-  <ion-button (click)="openPDF()" >Download Inventory PDF</ion-button>
-  <!-- <ion-grid>
-    <ion-row >
-      <ion-col *ngFor="let item of textprice">
-        Current Text Personlisation Price: {{item.text_Price_Amount}}
-      </ion-col>
-      <ion-col *ngFor="let item of imageprice">
-        Current Image Personlisation Price: {{item.image_Price_Amount}}        
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
+  
   
   <div id="htmlData">
-    <h2>Inventory</h2>
+    <!-- <h2>Inventory</h2> -->
      <form [formGroup]="SearchStockForm">      
       <ion-item>
         <ion-label>Search by Name</ion-label>
         <ion-input type="text" formControlName="name" placeholder="Product Name" required></ion-input>
-        <!--<ion-input type="date" formControlName="startdate" placeholder="Start date" required></ion-input>
-        <ion-input type="date" formControlName="enddate" placeholder="End date" required></ion-input> -->
         <ion-button (click)="search()">Search</ion-button>
       </ion-item> 
     </form> 

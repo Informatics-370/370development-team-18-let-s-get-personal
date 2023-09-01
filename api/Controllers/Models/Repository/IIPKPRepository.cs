@@ -65,11 +65,13 @@ namespace IPKP___API.Controllers.Models.Repository
         object GetStockNames();
         object GetAllDeliveries();
         object GetDeliveryBySatus(string status);
+
         Task<Order_Line_Item> GetOrderLineItemByID(Guid orderlineitemID);
         object GetOrderLineDetailsByID(Guid orderlineitemID);
-        object GetOrderLineItembyStatus(string orderlinestatus);
-        object GetSalesReport();
-        object ProductTrends();
+        object GetOrderLineItembyStatus(string orderlinestatus);        
         object GetAllOrderLineItems();
+
+        object GetSalesReport();
+        Task<Payment[]> GetAlPaymentsAsync();
     }
 }

@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Successful Deliveries</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">successful_deliveries</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col style="font-weight: bold;">Delivery Company Name</ion-col>
+      <ion-col style="font-weight: bold;">Street</ion-col>
+      <ion-col style="font-weight: bold;">City</ion-col>
+      <ion-col style="font-weight: bold;">Province</ion-col>
+      <ion-col style="font-weight: bold;">Date Delivered</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let item of deliveries">
+      <ion-col>{{item.delivery_Company_Name}}</ion-col>
+      <ion-col>{{item.streetNumber}} {{item.streetName}}</ion-col>
+      <ion-col>{{item.city}}</ion-col>
+      <ion-col>{{item.province}}</ion-col>
+      <ion-col>{{item.dateDelivered}}</ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
