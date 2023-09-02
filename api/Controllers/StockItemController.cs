@@ -22,6 +22,7 @@ namespace IPKP___API.Controllers
         {
             _IPKPRepository = iPKPRepository;
         }
+
         [HttpGet]
         [Route("GetAllStockItems")]
         public object GetAllStockItemsAsync()

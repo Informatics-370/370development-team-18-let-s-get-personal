@@ -73,5 +73,7 @@ namespace IPKP___API.Controllers.Models.Repository
 
         object GetSalesReport();
         Task<Payment[]> GetAlPaymentsAsync();
+
+        object GetWrittenOffItems();
     }
 }

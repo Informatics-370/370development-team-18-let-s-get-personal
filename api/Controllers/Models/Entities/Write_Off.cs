@@ -16,9 +16,8 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public DateTime Write_Off_Date { get; set; }
 
-        public Guid? Stock_Item_ID { get; set; }
-
-        public virtual Stock_Item Stock_Item { get; set; }
+        //public Guid? Stock_Item_ID { get; set; }
+        //public virtual Stock_Item Stock_Item { get; set; }
 
     }
 }

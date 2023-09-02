@@ -12,7 +12,7 @@
   </ion-header>
   
   <ion-content>
-    
+    <ion-button (click)="prevWriteOffsNav()">View Write Offs</ion-button>
     <ion-grid>
       <ion-row>
         <ion-col style="font-weight: bold;">Product Name</ion-col>
@@ -39,11 +39,65 @@
         <ion-col>{{item.inventory_Date}}</ion-col>
         <ion-col>{{item.inventory_Comments}}</ion-col>        
         <ion-col><ion-input value="{{item.stock_Item_Quantity}}" placeholder=""> </ion-input></ion-col>
-        <ion-col> <ion-button onclick="UpdateQuantity()">Update</ion-button> </ion-col>
-        <ion-col> <ion-button onclick="Writeoff()">Write-off</ion-button> </ion-col>
+        <ion-col> <ion-button (click)="UpdateQuantity(item.stock_Item_ID, true)">Update</ion-button> </ion-col>
+        <ion-col> <ion-button (click)="WriteOffModal(item.stock_Item_ID, true)">Write-off</ion-button> </ion-col>
       </ion-row>
     </ion-grid>
-  </ion-content>
-  
+  </ion-content>  
 </ion-content>
 
+<ion-footer>
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Add Stock Take Details</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="editForm" >              
+            <ion-item>
+              <ion-input label="Inventory_Comments" type="text" formControlName="Inventory_Comments" placeholder="" ></ion-input>
+            </ion-item> 
+
+            <ion-item>
+              <ion-input label="Current Quantity" type="number" formControlName="Stock_Item_Quantity" required></ion-input>
+            </ion-item>
+      </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isWriteOffModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Add Write Off Details</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="Writeoff()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="writeoffForm" >              
+            <ion-item>
+              <ion-input label="Write Off Reason" type="text" formControlName="Write_Off_Reason" placeholder="" ></ion-input>
+            </ion-item> 
+
+            <ion-item>
+              <ion-input label="Write Off Quantity" type="number" formControlName="Write_Off_Quantity" required></ion-input>
+            </ion-item>
+      </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-footer>

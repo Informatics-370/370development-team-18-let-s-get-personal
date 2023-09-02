@@ -305,7 +305,7 @@ export class InventoryPage implements OnInit {
         text: 'OK',
         role: 'cancel',
         handler:() =>{
-          this.reloadPage(); //routeBack
+          this.reloadPage(); 
         }
     }],
     });
@@ -321,7 +321,7 @@ export class InventoryPage implements OnInit {
         text: 'OK',
         role: 'cancel',
         handler:() =>{
-          this.reloadPage(); //routeBack
+          this.reloadPage(); 
         }
     }],
     });

@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>write-off</ion-title>
+    <ion-title>Write Offs</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,6 +11,19 @@
     </ion-toolbar>
   </ion-header>
   <ion-content id="content">
-
+    <ion-grid>
+      <ion-row>
+        <ion-col style="font-weight: bold;">Product Name</ion-col>
+        <ion-col style="font-weight: bold;">Write Off Reason</ion-col>
+        <ion-col style="font-weight: bold;">Quantity Written Off</ion-col>
+        <ion-col style="font-weight: bold;">Write Off Date</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of writeoffs">
+        <ion-col>{{item.stock_Item_Name}}</ion-col>
+        <ion-col>{{item.write_Off_Reason}}</ion-col>
+        <ion-col>{{item.write_Off_Quantity}}</ion-col>
+        <ion-col>{{item.write_Off_Date}}</ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-content>
 </ion-content>

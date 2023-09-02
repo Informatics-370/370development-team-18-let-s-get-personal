@@ -684,5 +684,35 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.ToArrayAsync();
         }
 
+//write off
+
+        public object GetWrittenOffItems()
+        {
+            List<WriteOffVM> writeoffs = (
+
+                from wo in _appDbContext.Write_Offs.ToList()
+                join woli in _appDbContext.Write_Off_Line_Items.ToList()
+                on wo.Write_Off_ID equals woli.Write_Off_ID
+                join s in _appDbContext.Stock_Items.ToList()
+                on woli.Stock_Item_ID equals s.Stock_Item_ID
+
+                select new WriteOffVM
+                {
+                    Write_Off_Line_Item_ID = woli.Write_Off_Line_Item_ID,
+                    Write_Off_Quantity = woli.Write_Off_Quantity,
+                    Write_Off_Reason = woli.Write_Off_Reason,
+
+                    Write_Off_ID = wo.Write_Off_ID,
+                    Write_Off_Date = wo.Write_Off_Date,
+
+                    Stock_Item_ID = s.Stock_Item_ID,
+                    Stock_Item_Name = s.Stock_Item_Name,
+                }              
+                ).ToList();
+
+            return writeoffs;
+        }
+
+
     }
 }

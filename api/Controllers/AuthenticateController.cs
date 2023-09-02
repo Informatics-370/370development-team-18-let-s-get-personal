@@ -327,7 +327,7 @@ namespace IPKP___API.Controllers
                     // 2 Step Verification
                     var otp = GenerateTwoFactorCodeFor(user.UserName);
 
-                    var fromEmailAddress = "resinartnewsletter@gmail.com"; // you must add your own provided email
+                    var fromEmailAddress = "u19032618@tuks.co.za"; // you must add your clients email
                     var subject = "System Log in";
                     var message = $"Enter the following OTP: {otp}";
                     var toEmailAddress = user.Email;
@@ -392,7 +392,7 @@ namespace IPKP___API.Controllers
                     smtp.EnableSsl = true;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential("itspersonal@gmail.com", "pnyblzriureedwgp"); // your own provided email and password
+                    smtp.Credentials = new NetworkCredential("satahpick@gmail.com", "Sarah@Gmail0702"); // your own provided email and password
                     await smtp.SendMailAsync(compiledMessage);
                 }
             }

@@ -31,7 +31,7 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(255)]
         public string Province { get; set; }
 
-        [StringLength(255)]
+        [StringLength(4)]
         public string AreaCode { get; set; }        
 
         //public virtual ICollection<Delivery> Delivery { get; set; }
