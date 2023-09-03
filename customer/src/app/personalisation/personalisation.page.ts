@@ -139,21 +139,21 @@ export class PersonalisationPage implements OnInit {
     })
   }
 
-  UpdatePersonalisation(personalisation_Design_ID: number) {
+  /*UpdatePersonalisation(personalisation_Design_ID: number) {
     this._router.navigate(['/edit-personalization', personalisation_Design_ID]);
-  }
+  }*/
 
-  // DeletePersonalisation(personalisation_Design_ID: string) {
-  //   this.service.DeletePersonalisation(personalisation_Design_ID).subscribe(result => {
-  //     console.log(result);
-  //     if (result.status == "Error") {
-  //       this.DeletePersonalizationErrorAlert();
-  //     }
-  //     else if (result.status == "Success") {
-  //       this.DeletePersonalizationSuccessAlert();
-  //     }
-  //   })
-  // }
+  /* DeletePersonalisation(personalisation_Design_ID: string) {
+     this.service.DeletePersonalisation(personalisation_Design_ID).subscribe(result => {
+       console.log(result);
+       if (result.status == "Error") {
+         this.DeletePersonalizationErrorAlert();
+      }
+       else if (result.status == "Success") {
+        this.DeletePersonalizationSuccessAlert();
+       }
+    })
+   }*/
 
   public basket() {
     

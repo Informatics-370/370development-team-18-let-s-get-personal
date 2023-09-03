@@ -27,6 +27,8 @@ export class ShopAllPage implements OnInit {
   searchString: string = "";
   stockType: StockTypes[]=[];
 
+  counter=document.querySelector("#counter"); 
+
   constructor(private _modalController: ModalController, public loadingController: LoadingController,
     private _router: Router, private alertController: AlertController,
     private basketservice: BasketService, private service: StockItemDataService) { }
@@ -46,6 +48,8 @@ export class ShopAllPage implements OnInit {
     {
       this.searchedStockType = this.stockType;
     }
+    this.counter = document.querySelector("#counter");
+   
   }
 
   async presentLoading() {
@@ -82,19 +86,28 @@ export class ShopAllPage implements OnInit {
     this._router.navigate(["/tabs/basket"])
   }
   
-
+  
   public addToBasket(stock: any): void {
 
     try {
       let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
       let existingItem = cartItems.find((cartItem: any) => cartItem.stock_Item.stock_Item_ID === stock.stock_Item_ID);
       //const counter = document.querySelector("#counter");
+      if(this.counter){
+        this.counter.innerHTML=cartItems.basket_Quantity;
+        //this.counter.innerHTML=existingItem.basket_Quantity;
+        //this.counter.innerHTML=basket.basket_Quantity.toString();
+        //make the counter constant after a page refresh
+        //localStorage.setItem('basketQuantity', cartItems.basket_Quantity.toString());
+        
+      }
 
       let basket = new BasketItems();
       if (!existingItem) {
         basket.stock_Item = stock;
         basket.basket_Quantity = 1;
         cartItems.push(basket);
+
 
       } else {
         existingItem.basket_Quantity += 1;
@@ -110,6 +123,7 @@ export class ShopAllPage implements OnInit {
     } catch {
       this.addToBasketErrorAlert();
     }
+    
   }
 
   reloadPage() {

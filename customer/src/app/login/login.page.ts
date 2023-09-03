@@ -41,6 +41,11 @@ export class LoginPage implements OnInit {
         this.router.navigateByUrl('tabs/basket'); //, {replaceUrl: true}
         this.FindID()
       }
+    },
+    (error) => {
+      // Handle registration error
+      this.ErrorAlert();
+      console.error('Login error:', error);
     });
       /*if (error.status === 401) {
         this.showToast('Invalid username or password');
@@ -55,7 +60,7 @@ export class LoginPage implements OnInit {
   async ErrorAlert() {
     const alert = await this.alertController.create({
       header: 'Oops!',
-      subHeader: 'Error..',
+      subHeader: 'Error',
       message: 'Invalid username or password.',
       buttons: [{
         text: 'OK',
