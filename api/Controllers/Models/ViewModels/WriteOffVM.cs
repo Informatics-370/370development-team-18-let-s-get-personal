@@ -11,5 +11,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
         public int Write_Off_Quantity { get; set; }
         public Guid Write_Off_ID { get; set; }
         public Guid Write_Off_Line_Item_ID { get; set; }
+        public int Stock_Item_Quantity { get; set; }
+
     }
 }

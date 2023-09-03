@@ -6,4 +6,5 @@ export class WriteOffVM{
     write_Off_Quantity!: number
     write_Off_ID!: string
     write_Off_Line_Item_ID!: string
+    stock_Item_Quantity!: number
 }

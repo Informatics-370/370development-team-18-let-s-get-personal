@@ -5,6 +5,7 @@ import { Write_Off } from '../Models/writeoff';
 import { Stock_Item } from '../Models/stockitem';
 import { Response } from '../Models/response';
 import { Write_Off_Line_Item } from '../Models/writeofflineitem';
+import { WriteOffVM } from '../ViewModels/writeoffVM';
 @Injectable({
     providedIn: 'root' 
   })
@@ -36,6 +37,10 @@ import { Write_Off_Line_Item } from '../Models/writeofflineitem';
     public GetWriteOffs(): Observable<any>{ 
       return this.httpClient.get(`${this.apiUrl}Inventory/GetWriteOffs`)
       .pipe(map(result => result))
+    }
+
+    public DecreaseStockQuantity(stock_Item_ID:string, writeoff:WriteOffVM){
+      return this.httpClient.put<Response>(`${this.apiUrl}Inventory/DecreaseStockQuantity/${stock_Item_ID}`, writeoff)
     }
     
 }

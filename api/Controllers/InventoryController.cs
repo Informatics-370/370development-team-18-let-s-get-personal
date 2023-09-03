@@ -131,6 +131,35 @@ namespace IPKP___API.Controllers
             }
         }
 
+        //reduce quantity
+        [HttpPut]
+        [Route("DecreaseStockQuantity/{stock_Item_ID}")]
+        public async Task<IActionResult> DecreaseStockQuantityAsync(Guid stock_Item_ID, WriteOffVM sivm)
+        {
+            try
+            {
+                var stocktakeitem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
+
+                if (stocktakeitem == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
+                }
+                else
+                {
+                    stocktakeitem.Stock_Item_Quantity = stocktakeitem.Stock_Item_Quantity - sivm.Write_Off_Quantity;
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Stock Item Updated Successfully" });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Stock Item Saved To Database." });
+        }
 
 
     }

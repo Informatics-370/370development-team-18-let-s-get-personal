@@ -15,6 +15,7 @@ import { Write_Off } from 'src/app/Models/writeoff';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { Write_Off_Line_Item } from 'src/app/Models/writeofflineitem';
 import { PersonalisationService } from 'src/app/Services/personalisation.service';
+import { WriteOffVM } from 'src/app/ViewModels/writeoffVM';
 
 @Component({
   selector: 'app-stock-take',
@@ -127,22 +128,30 @@ export class StockTakePage implements OnInit {
     }
   }
 
+  writeoffquantity!: any
   //add to write off line item
   WriteOffLine() 
   {
-    let lineitem = new Write_Off_Line_Item()
-
-    let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)//JSON.parse(JSON.stringify(localStorage.getItem('stockitemID')));
-    let writeoffID = JSON.parse(JSON.stringify(localStorage.getItem('writeoffID')));   
-    lineitem.write_Off_Quantity = this.writeoffForm.value.Write_Off_Quantity
-    lineitem.write_Off_Reason = this.writeoffForm.value.Write_Off_Reason
-    lineitem.stock_Item_ID = stockitemID
-    lineitem.write_Off_ID = writeoffID
     try
     {
+      let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)//JSON.parse(JSON.stringify(localStorage.getItem('stockitemID')));
+      let writeoffID = JSON.parse(localStorage.getItem('writeoffID') as string)//JSON.parse(JSON.stringify(localStorage.getItem('writeoffID')));   
+    
+      console.log(stockitemID)
+      console.log(writeoffID)
+
+      let lineitem = new Write_Off_Line_Item()    
+      lineitem.write_Off_Quantity = this.writeoffForm.value.Write_Off_Quantity
+      lineitem.write_Off_Reason = this.writeoffForm.value.Write_Off_Reason
+      lineitem.stock_Item_ID = stockitemID
+      lineitem.write_Off_ID = writeoffID
+
+      this.writeoffquantity = this.writeoffForm.value.Write_Off_Quantity
+    
       this.inventoryservice.AddToWriteoffLine(lineitem).subscribe(result => {
         if(result.status == "Success"){
-          this.WriteOffLineSuccessAlert()
+          this.decreaseQuantity()
+          console.log(result)
         }
       })
     }
@@ -150,6 +159,25 @@ export class StockTakePage implements OnInit {
     {
       this.WriteOffLineErrorAlert()
     }
+  }
+
+  decreaseQuantity()
+  {
+    let VM = new WriteOffVM()
+    let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)
+    VM.write_Off_Quantity = this.writeoffquantity
+
+    try{
+      this.inventoryservice.DecreaseStockQuantity(stockitemID, VM).subscribe(result => {
+        if(result.status == "Success"){
+          this.WriteOffLineSuccessAlert()
+          console.log(result)
+        }
+      })
+    }
+    catch{
+      this.DecreasesQuantityErrorAlert()
+    }    
   }
 
 //========== Alerts ===============
@@ -193,7 +221,7 @@ export class StockTakePage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Success!',
       subHeader: 'Write off completed',
-      message: 'Please try again',
+      // message: 'Please try again',
       buttons: [{
         text: 'OK',
         role: 'cancel',
@@ -225,6 +253,22 @@ export class StockTakePage implements OnInit {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
       subHeader: 'Write off request faild',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async DecreasesQuantityErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Write off Quantity update faild',
       message: 'Please try again',
       buttons: [{
         text: 'OK',
