@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, ViewChild,AfterViewInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, AlertController } from '@ionic/angular';
@@ -32,44 +32,52 @@ import { Design_Image_Line_Item } from '../Models/designimagelineitem';
 })
 export class BasketPage implements OnInit {
 
-/*uploadFile(arg0: FileList|null) {
-throw new Error('Method not implemented.');
-}*/
+  /*uploadFile(arg0: FileList|null) {
+  throw new Error('Method not implemented.');
+  }*/
   user: string = ""
   @ViewChild(IonModal) modal!: IonModal
-  order = new OrderT(); 
-  
-  constructor( public modalCtrl: ModalController, private _router: Router,
-    private service: PersonalisationService, private alertController: AlertController) { }
+  order = new OrderT();
 
-  cartItems: any[] = [];  
+  constructor(public modalCtrl: ModalController, private _router: Router,
+    private service: PersonalisationService, private alertController: AlertController) {
+    this.counter = document.querySelector("#counter");
+    const storedQuantity = localStorage.getItem('basketQuantity');
+
+  }
+
+  cartItems: any[] = [];
+  counter = document.querySelector("#counter");
 
   ngOnInit() {
     this.cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+    //this.reloadPage();
 
-   // this.token=localStorage.getItem("token");
+    // this.token=localStorage.getItem("token");
 
     //let decode=jwt_decode(this.token);
 
     //console.log(this.token);
   }
- 
-  public removeItemFromBasket(id: any):void {
+
+
+
+  public removeItemFromBasket(id: any): void {
     this.cartItems = this.cartItems.filter((cartItem) => cartItem.stock_Item.stock_Item_ID !== id);
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
 
-  public async incrementQuantity(item: any){
-    
-    if (item.basket_Quantity< 10) {
+  public async incrementQuantity(item: any) {
+
+    if (item.basket_Quantity < 10) {
       item.basket_Quantity++;
-      /*const counter=document.querySelector("#counter");
-      if(counter){
-        counter.innerHTML=item.basket_Quantity;
-      }*/
+      /*const counter=document.querySelector("#counter");*/
+      if (this.counter) {
+        this.counter.innerHTML = item.basket_Quantity;
+      }
       localStorage.setItem('cart', JSON.stringify(this.cartItems));
     }
-    else{
+    else {
       console.log("Maximum item reached!")
       const alert = await this.alertController.create({
         header: 'Alert!',
@@ -89,10 +97,12 @@ throw new Error('Method not implemented.');
   public decrementQuantity(item: any): void {
     if (item.basket_Quantity > 1) {
       item.basket_Quantity--;
-     /* const counter=document.querySelector("#counter");
-      if(counter){
-        counter.innerHTML=item.basket_Quantity;
-      }*/
+      /* const counter=document.querySelector("#counter");*/
+      if (this.counter) {
+        this.counter.innerHTML = item.basket_Quantity;
+        item.basket_Quantity -= 1;
+        localStorage.setItem('basketQuantity', item.basket_Quantity.toString());
+      }
     }
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
@@ -103,7 +113,7 @@ throw new Error('Method not implemented.');
       totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;
       localStorage.setItem('quantity', JSON.stringify(item.basket_Quantity));
     }
-    this.order.price=totalPrice;
+    this.order.price = totalPrice;
     return totalPrice;
   }
 
@@ -120,12 +130,12 @@ throw new Error('Method not implemented.');
     const existingItem = localStorage.getItem('cart');
     let items = JSON.parse(localStorage.getItem('cart') as string)
 
-    this.order.basketItems=items;
-  
-    this.order.paid=false;
+    this.order.basketItems = items;
+
+    this.order.paid = false;
 
 
-    localStorage.setItem("order",JSON.stringify(this.order));
+    localStorage.setItem("order", JSON.stringify(this.order));
 
     console.log(items);
 
@@ -134,31 +144,31 @@ throw new Error('Method not implemented.');
     // this.AddPersonalisation()
     //this._router.navigate(["/tabs/make-payment"])
     this.CheckUser()
-  } 
+  }
 
-  CheckUser(){
+  CheckUser() {
     this.user = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
-    if (this.user === "User"){  //  [==="User"]
+    if (this.user === "User") {  //  [==="User"]
       this._router.navigate(['./tabs/make-payment']);
     }
-    else{      
+    else {
       this._router.navigate(['./tabs/login']);
     }
   }
-//localStorage.setItem('roles', token[roleLongName]);
- /*==============PERSONALIZATION===========================================*/
- AddTextForm: FormGroup = new FormGroup({
-    designText: new FormControl('',[Validators.required])
+  //localStorage.setItem('roles', token[roleLongName]);
+  /*==============PERSONALIZATION===========================================*/
+  AddTextForm: FormGroup = new FormGroup({
+    designText: new FormControl('', [Validators.required])
   });
 
   UploadImageForm: FormGroup = new FormGroup({
-    designImage: new FormControl('',[Validators.required])
+    designImage: new FormControl('', [Validators.required])
   });
 
   personalizations!: Personalisation_Design
   fileNameUploaded = ''
   errmsg: string = ""
-//  textprice: TextPrice[] =[]
+  //  textprice: TextPrice[] =[]
   imageprice: any //Image_Price[] =[]
   imagepriceID!: string
   formData = new FormData();
@@ -166,56 +176,54 @@ throw new Error('Method not implemented.');
   uploadedImage!: Design_Image;
   uploadedText!: Design_Text;
 
- public personalize(id:any) {
-    localStorage.setItem("stockId",id);
+  public personalize(id: any) {
+    localStorage.setItem("stockId", id);
   }
 
   uploadFile = (files: any) => {
     let fileToUpload = <File>files[0];
-    this.formData.append('file', fileToUpload , fileToUpload.name); //
+    this.formData.append('file', fileToUpload, fileToUpload.name); //
     this.fileNameUploaded = fileToUpload.name
   }
 
-  uploadImage(){     
-    this.service.UploadDesignImage(this.formData).subscribe(result =>{
+  uploadImage() {
+    this.service.UploadDesignImage(this.formData).subscribe(result => {
       this.uploadedImage = result as Design_Image
     })
-      
-    try
-    {
+
+    try {
       console.log(this.uploadedImage)
       this.uploadText()
     }
-    catch{
+    catch {
       this.addImageErrorAlert()
-    }    
+    }
   }
 
-  uploadText(){  
+  uploadText() {
     let addedtext = new Design_Text()
     addedtext.design_Text_Description = this.AddTextForm.value.designText
     this.service.UploadDesignText(addedtext).subscribe(res => {
       this.uploadedText = res as Design_Text
     })
-    try{
+    try {
       console.log(this.uploadedText)
       this.UploadPersonalisation()
     }
-    catch{
+    catch {
 
-    }  
+    }
   }
 
-  UploadPersonalisation(){
+  UploadPersonalisation() {
     let personalisation = new PersonalisationDesignVM()
-      //let stockId=localStorage.getItem("stockId");
-      personalisation.design_Text_ID = this.uploadedText.design_Text_ID
-      personalisation.design_Image_ID = this.uploadedImage.design_Image_ID
-      personalisation.stock_Item_ID = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));      
-      console.log(personalisation)     
-    try
-    {
-      this.service.AddPersonalisation(personalisation).subscribe(res =>{
+    //let stockId=localStorage.getItem("stockId");
+    personalisation.design_Text_ID = this.uploadedText.design_Text_ID
+    personalisation.design_Image_ID = this.uploadedImage.design_Image_ID
+    personalisation.stock_Item_ID = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
+    console.log(personalisation)
+    try {
+      this.service.AddPersonalisation(personalisation).subscribe(res => {
         this.personalizations = res as Personalisation_Design
         let personalisedID = this.personalizations.personalisation_Design_ID
         localStorage.setItem('personalisedID', JSON.stringify(personalisedID));
@@ -229,12 +237,12 @@ throw new Error('Method not implemented.');
   }
 
   canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');    
+    this.modal.dismiss(null, 'cancel');
   }
 
   confirmaddmodal() {
-    
-    this.uploadImage()   
+
+    this.uploadImage()
 
 
     // let items = JSON.parse(localStorage.getItem('cart') as string) || [];
@@ -242,24 +250,24 @@ throw new Error('Method not implemented.');
 
     // let design_Text = this.AddForm.value.designText;
     // let image_File = "Kamo";
- 
+
     // if(existingItem){
     //   //items.push({ ...existingItem, personalization. : 1 });
     //   existingItem.personalization.personalizationText=design_Text;
     //   existingItem.personalization.img=image_File;
     //   localStorage.removeItem("stockId");
-     
+
 
     // localStorage.setItem('cart',JSON.stringify(items));
 
-   //try{
+    //try{
     //this.personalize(); 
     /*this._router.navigate(["/tabs/personalisation"])  
     }
     catch{
       this.addPersonalizationErrorAlert();
     }*/
-     
+
   }
 
   onWillDismiss(event: Event) {
@@ -283,7 +291,7 @@ throw new Error('Method not implemented.');
       }],
     });
     await alert.present();
-  }  
+  }
 
   async addPersonalizationErrorAlert() {
     const alert = await this.alertController.create({
@@ -332,18 +340,18 @@ throw new Error('Method not implemented.');
     });
     await alert.present();
   }
-   // addPersonalization(){
+  // addPersonalization(){
   //   let stockId=localStorage.getItem("stockId");
 
   //   let items = JSON.parse(localStorage.getItem('cart') as string) || [];
   //   let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
-   
+
   //   // this.formData.append('designText', this.AddForm.get('designText')!.value);
   //   // this.formData.append('designImage', this.AddForm.get('designImage')!.value); 
 
   //  //let design_Text = this.AddForm.value.designText;
   //  //let image_File = this.UploadImage.value.imageFile;
- 
+
   //  if(existingItem)
   //  {
   //    //items.push({ ...existingItem, personalization. : 1 });
@@ -377,6 +385,5 @@ throw new Error('Method not implemented.');
 
   }*/
 
-  
+
 }
- 

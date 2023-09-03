@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
   }
 
   login(form: NgForm) {
-    try{
+    
       this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
 
         let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
@@ -50,11 +50,13 @@ export class LoginPage implements OnInit {
         else{
           this.LoginFailErrorAlert()
         }          
+      },(error) => {
+        // Handle registration error
+        this.Alert();
+        console.error('Login error:', error);
       });
-    }
-    catch{
-      this.LoginFailErrorAlert()
-    }
+    
+    
   }
 
   admin!: Admin
@@ -96,4 +98,19 @@ export class LoginPage implements OnInit {
     });
     await alert.present();
   }
+  
+async Alert() {
+  const alert = await this.alertController.create({
+    header: 'Oops!',
+    subHeader: 'Error',
+    message: 'Invalid username or password.',
+    buttons: [{
+      text: 'OK',
+      role: 'cancel'
+    }],
+  });
+  await alert.present();
 }
+
+}
+
