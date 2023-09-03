@@ -24,18 +24,18 @@
       </ion-row>
       <ion-row *ngFor="let item of employees">
         <ion-col>{{item.employee_ID}}</ion-col>
-        <ion-col> {{item.firstName}}  {{item.surname}}</ion-col>
+        <ion-col> {{item.firstName}} {{item.surname}}</ion-col>
         <ion-col>{{item.email}}</ion-col>
         <ion-col>{{item.cell_Number}}</ion-col>
         <ion-col><ion-button onclick="DeleteEmployee(Employee_ID)">Delete Employee</ion-button></ion-col>
-        <ion-col><ion-button onclick="GetEmployee(Employee_ID)">View Employee</ion-button></ion-col>          
-      </ion-row>        
-    </ion-grid> 
+        <ion-col><ion-button onclick="GetEmployee(Employee_ID)">View Employee</ion-button></ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-content>
-  
+
 </ion-content>
 
-<ion-footer> 
+<ion-footer>
   <ion-modal trigger="addEmployeemodal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
@@ -45,24 +45,34 @@
           </ion-buttons>
           <ion-title>Add Employee</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmaddmodal()" [disabled]="AddEmployeeForm.invalid"
+              [strong]="true">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <form [formGroup]="AddEmployeeForm">      
+        <form [formGroup]="AddEmployeeForm">
           <ion-item>
             <ion-label position="stacked">First Name</ion-label><br>
-            <ion-input type="text" formControlName="FirstName" placeholder="" required></ion-input>
-          </ion-item> 
+            <ion-input type="text" formControlName="FirstName" placeholder=""
+              [class.is-invalid]="f['FirstName'].invalid && f['FirstName'].touched" required></ion-input>
+
+          </ion-item>
           <ion-item>
             <ion-label position="stacked">Last Name</ion-label><br>
             <ion-input type="text" formControlName="Surname" placeholder="" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Email Address</ion-label><br>
-            <ion-input type="text" formControlName="Email" placeholder="" required></ion-input>
+            <ion-input type="Email" formControlName="Email" placeholder=""
+              [class.is-invalid]="f['Email'].invalid && f['Email'].touched" required></ion-input>
           </ion-item>
+          <div class="text-center" *ngIf="f['Email'].invalid && f['Email'].touched">
+            <p style="color: crimson;" class="small mt-1" *ngIf="f['Email'].errors?.['required']">Email is
+              required!</p>
+            <p style="color: crimson;" class="small mt-1" *ngIf="f['Email'].errors?.['pattern']">
+              Email is Invalid</p>
+          </div>
           <ion-item>
             <ion-label position="stacked">Cellphone number</ion-label><br>
             <ion-input type="text" formControlName="Cell_Number" placeholder="" required></ion-input>
@@ -73,8 +83,17 @@
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Employee Password</ion-label><br>
-            <ion-input type="text" formControlName="Password" placeholder="" required></ion-input>
+            <ion-input type="password" formControlName="Password" placeholder=""
+              [class.is-invalid]="f['Password'].invalid && f['Password'].touched" required></ion-input>
           </ion-item>
+          <div class="text-center" *ngIf="f['Password'].invalid && f['Password'].touched">
+            <p style="color: crimson;" class="small mt-1" *ngIf="f['Password'].errors?.['required']">
+              Password is required!</p>
+            <p style="color: crimson;" class="small mt-1" *ngIf="f['Password'].errors?.['pattern']">
+              Password must contain minimum of 8 characters,at least one uppercase letter,at least one
+              lowercase letter
+              ,at least one number and at least one special character</p>
+          </div>
         </form>
       </ion-content>
     </ng-template>

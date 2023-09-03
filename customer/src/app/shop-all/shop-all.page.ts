@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { IonicModule, ModalController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Stock_Item } from '../Models/stockitem';
@@ -11,6 +11,7 @@ import { StockItemDataService } from '../Services/stockitem.service';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
 
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
+import { StockTypes } from '../Models/stocktypes';
 @Component({
   selector: 'app-shop-all',
   templateUrl: './shop-all.page.html',
@@ -22,14 +23,29 @@ export class ShopAllPage implements OnInit {
   menuType: string = 'overlay';
   Products: StockItemViewModel[] = [];
   stockItems: Stock_Item[] = [];
+  searchedStockType: StockTypes[]=[];
+  searchString: string = "";
+  stockType: StockTypes[]=[];
 
   constructor(private _modalController: ModalController, public loadingController: LoadingController,
     private _router: Router, private alertController: AlertController,
     private basketservice: BasketService, private service: StockItemDataService) { }
 
-
+    SearchForm: FormGroup = new FormGroup({
+      name:new FormControl('',[Validators.required])
+    })
+    
+    searchStockType(){
+      this.searchString=this.SearchForm.get('name')?.value;
+      this.searchedStockType = this.stockType.filter(
+        f => f.stock_Type_Name.toLowerCase().includes(this.searchString.toLowerCase()));
+    }
   ngOnInit() {
     this.GetStockItems();
+    if(this.searchString === "")
+    {
+      this.searchedStockType = this.stockType;
+    }
   }
 
   async presentLoading() {
@@ -130,44 +146,6 @@ export class ShopAllPage implements OnInit {
     await alert.present();
   }
 }
-
-  //Data for testing
-  /* dummy_data = [{
-   id: 0, title: "Plain T-shirt", colour: "White",
-   image_url: "https://supremetextiles.co.za/761-large_default/adult-plain-round-neck-t-shirt-white.jpg", price: 90,
-   quantity: 0
- },
- {
-   id: 1, title: "Photo Mug", colour: "White",
-   image_url: "https://smash-images.photobox.com/optimised/f10581d7b173933f6b5670a7191ef11caad09a4e_file_image_Simple-mug-lifestyle-5760x4512.jpg", price: 160,
-   quantity: 0
- },
- {
-   id: 2, title: "Diary", colour: "Brown",
-   image_url: "https://cdn.igp.com/f_auto,q_auto,t_pnopt6prodlp/products/p-stationery-addict-personalized-stationery-kit-122187-m.jpg", price: 120,
-   quantity: 0
- },
- {
-   id: 3, title: "Twin Babies", colour: "Dusty White",
-   image_url: "https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/Search/676/K62163.jpg", price: 350,
-   quantity: 0
- }
- ];*/
-
- /*addToBasket(dummy_data:any):void{
-
-    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
-    let existingItem = cartItems.find((cartItem:any) => cartItem.id === dummy_data.id);
-
-    if (!existingItem) {
-      cartItems.push({ ...dummy_data, quantity: 1 });
-    } else {
-      
-      existingItem.quantity += 1;
-    }
-    localStorage.setItem('cart',JSON.stringify(cartItems));
-    this.addToBasketSuccessAlert();
-  }*/
 
   /*addToBasket(Products:any):void{
 

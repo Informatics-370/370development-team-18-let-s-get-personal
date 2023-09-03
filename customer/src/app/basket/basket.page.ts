@@ -51,7 +51,7 @@ throw new Error('Method not implemented.');
 
     this.token=localStorage.getItem("token");
 
-    //let decode=jwt_decode(this.token);
+    let decode=jwt_decode(this.token);
 
     console.log(this.token);
   }
@@ -138,7 +138,7 @@ throw new Error('Method not implemented.');
 
   CheckUser(){
     this.user = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
-    if (this.user = "User"){
+    if (this.user === "User"){  //  [==="User"]
       this._router.navigate(['./tabs/make-payment']);
     }
     else{      
@@ -158,7 +158,7 @@ throw new Error('Method not implemented.');
   personalizations!: Personalisation_Design
   fileNameUploaded = ''
   errmsg: string = ""
-  textprice: TextPrice[] =[]
+  //textprice: TextPrice[] =[]
   imageprice: any //Image_Price[] =[]
   imagepriceID!: string
   formData = new FormData();
@@ -248,7 +248,7 @@ throw new Error('Method not implemented.');
     //   existingItem.personalization.personalizationText=design_Text;
     //   existingItem.personalization.img=image_File;
     //   localStorage.removeItem("stockId");
-     }
+     
 
     // localStorage.setItem('cart',JSON.stringify(items));
 
@@ -258,9 +258,9 @@ throw new Error('Method not implemented.');
     }
     catch{
       this.addPersonalizationErrorAlert();
-    }
+    }*/
      
-  }*/
+  }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;

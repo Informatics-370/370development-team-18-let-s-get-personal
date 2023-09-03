@@ -38,15 +38,23 @@ export class MakePaymentPage implements OnInit {
   constructor(private service:OrderRequestService, private router: Router, public modalCtrl: ModalController,
     private alertController:AlertController, public delservice: DeliveryDataService) { }
 
+
+    validProvinces = ['Limpopo', 'Gauteng', 'North West','Kwa-Zulu Natal','Eastern Cape','Mpumalanga','Western Cape','Free State','Northern Cape'];
+    dwellingType = ['House', 'Apartment','Estate'];
+
+
   AddDelAddressForm: FormGroup = new FormGroup({
-    streetNumber: new FormControl('',[Validators.required]),
+    streetNumber: new FormControl('',[Validators.required, Validators.max(99999)]),
     streetName: new FormControl('',[Validators.required]),
     province: new FormControl('',[Validators.required]),
-    city: new FormControl('',[Validators.required]),
-    areaCode: new FormControl('',[Validators.required]),
+    city: new FormControl('',[Validators.required,Validators.pattern('^[a-zA-Z]+$')]),
+    //areaCode: new FormControl('',[Validators.required,Validators.minLength(4), Validators.maxLength(4)]),
+    areaCode:new FormControl('',[Validators.required,Validators.minLength(4), Validators.maxLength(4)]),//Validators.pattern('/^(0\d{1,2}|0\d{3}-\d{4})$/')
     dwellingtype: new FormControl('',[Validators.required]),
     deliveryCompanyID: new FormControl('',[Validators.required]),
   })
+
+  get f(){return this.AddDelAddressForm.controls}
   
   //order = new OrderT();
   
@@ -58,7 +66,7 @@ export class MakePaymentPage implements OnInit {
   }
 
   AddDeliveryAddress(){
-    let addDelivery = new DeliveryAddress();
+   try{ let addDelivery = new DeliveryAddress();
     addDelivery.city = this.AddDelAddressForm.value.city;
     addDelivery.areaCode = this.AddDelAddressForm.value.areaCode;
     addDelivery.dwelling_Type = this.AddDelAddressForm.value.dwellingtype; 
@@ -68,7 +76,9 @@ export class MakePaymentPage implements OnInit {
 
     this.service.AddDeliveryAdress(addDelivery).subscribe(response => {
       this.addedaddres = response as DeliveryAddress;
-      try
+      this.AddDeliveryRequest();
+      this.confirmAlert();
+      /*try
       {
         console.log(this.addedaddres)
         //let addressID = this.addedaddres.delivery_Address_ID
@@ -78,8 +88,13 @@ export class MakePaymentPage implements OnInit {
       catch
       {
         this.addDeliveryErrorAlert()
-      }
+      }*/
     })
+    
+  }
+  catch{
+      this.confirmErrorAlert()
+    }
   }
 
   AddDeliveryRequest(){
@@ -153,8 +168,23 @@ export class MakePaymentPage implements OnInit {
   async confirmErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'There is an issue with confirming your order!',
+      subHeader: 'There is an issue with confirming your adress!',
       message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+  async confirmAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Confirmed.',
+      message: 'Proceed to payment.',
       buttons: [{
         text: 'OK',
         role: 'cancel',

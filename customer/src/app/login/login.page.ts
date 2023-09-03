@@ -1,11 +1,12 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule,AlertController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/Services/authentication.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { Customer } from '../Models/customer';
+
 
 @Component({
   selector: 'app-login',
@@ -16,9 +17,9 @@ import { Customer } from '../Models/customer';
 })
 export class LoginPage implements OnInit {
   user: string = ""
-  data = {username: '', password: '', token: []};
+  data = { username: '', password: '', token: [] };
   customer!: Customer
-  constructor( private authService: AuthenticationService, private router: Router) { }
+  constructor(private authService: AuthenticationService, private router: Router,private alertController: AlertController) { }
 
   ngOnInit(): void {
     this.CheckUser()
@@ -32,48 +33,64 @@ export class LoginPage implements OnInit {
     this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
       let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
       console.log(roles);
-      if(roles.includes('Admin')) 
-      {
-        this.router.navigateByUrl('/home', {replaceUrl: true});
-      } 
-      else if(roles.includes('User')) 
-      {        
+      if (roles.includes('Admin')) {
+        this.router.navigateByUrl('/home', { replaceUrl: true });
+      }
+      else if (roles.includes('User')) {
         localStorage.setItem('username', form.value.username,);
-        this.router.navigateByUrl('tabs/basket', {replaceUrl: true});
+        this.router.navigateByUrl('tabs/basket', { replaceUrl: true });
         this.FindID()
       }
     });
-    
+      /*if (error.status === 401) {
+        this.showToast('Invalid username or password');
+    } else if (error.status === 500) {
+        this.showToast('An error occurred on the server');
+    } else {
+        this.showToast('An unexpected error occurred');
+    }
+    return throwError(error);*/
   }
 
-  FindID(){
+  async ErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Oops!',
+      subHeader: 'Error..',
+      message: 'Invalid username or password.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel'
+      }],
+    });
+    await alert.present();
+  }
+
+  FindID() {
     let username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
     this.authService.GetCustomerID(username).subscribe(result => {
       this.customer = result as Customer
-      let customerID = this.customer.customer_ID 
+      let customerID = this.customer.customer_ID
       localStorage.setItem('customerID', JSON.stringify(customerID));
     })
   }
 
 
-  CheckUser(){
+  CheckUser() {
     this.user = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
     console.log(this.user)
-    if (this.user === "User"){
+    if (this.user === "User") {
       this.router.navigate(['./tabs/view-profile']);
     }
-    else{
-      
+    else {
+
     }
   }
 
-  CreateProfileNav()
-  {
+  CreateProfileNav() {
     this.router.navigate(['./tabs/create-profile']);
   }
 
-  ForgotPasswordNav()
-  {
+  ForgotPasswordNav() {
     this.router.navigate(['./tabs/forgot-password']);
   }
 }

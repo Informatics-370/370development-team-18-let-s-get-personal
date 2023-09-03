@@ -16,23 +16,13 @@
     </ion-toolbar>
   </ion-header>
   <ion-grid id="grid">
-  
-    <!--dummy data-->
-    <!--<ion-row>
-      <ion-col *ngFor="let item of dummy_data">
-        <ion-card>
-          <ion-card-title>{{item.title}}</ion-card-title>
-          <ion-card-content>
-            <ion-img src={{item.image_url}}></ion-img>
-            <p>{{item.colour}}</p>
-            <p>R: {{item.price}}</p>
-          </ion-card-content> <ion-button (click)="addToBasket(item)">Add To Basket</ion-button>
-        </ion-card>
-      </ion-col>
-    </ion-row>-->
-    
-  <!--Database (API)-->
-
+    <!--search-->
+  <!--<form [formGroup]="SearchForm">      
+    <ion-item>
+      <ion-input type="text" formControlName="stocktype" placeholder="Stock Type" required></ion-input>
+      <ion-button (click)="searchStockType()">Search</ion-button>
+    </ion-item> 
+  </form>-->
     <ion-row>
       <ion-col *ngFor="let item of Products">
         <ion-card>

@@ -18,95 +18,113 @@ import { RegisterVM } from '../ViewModels/registerVM';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class ViewEmployeesPage implements OnInit {
-  register: RegisterVM[] =[]
+  register: RegisterVM[] = []
   //Profile: User[] = []
   employees: Employee[] = []
   employee: any
   @ViewChild(IonModal) modal!: IonModal
-  
-  constructor( private alertController:AlertController, 
+
+  constructor(private alertController: AlertController,
     private empservice: UserProfileDataService, public modalCtrl: ModalController,
     public authservice: AuthenticationService, public router: Router) { } //private service:ProfileService,
 
   ngOnInit() {
-  //  this.getProfle()
+    //  this.getProfle()
     this.GetAllEmployees()
-  } 
+  }
 
-  backButton(){
+  backButton() {
     this.router.navigate(['./tabs/profiles']);
   }
 
   AddEmployeeForm: FormGroup = new FormGroup({
-    FirstName: new FormControl('',[Validators.required]),
-    Surname: new FormControl('',[Validators.required]),
-    Email: new FormControl('',[Validators.required]),    
-    Cell_Number: new FormControl('',[Validators.required]),
-    Username: new FormControl('',[Validators.required]),
-    Password: new FormControl('',[Validators.required]),
+    FirstName: new FormControl('', [Validators.required]),
+    Surname: new FormControl('', [Validators.required]),
+    Email: new FormControl('', Validators.compose([Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])),
+    Cell_Number: new FormControl('', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(12), Validators.pattern("^(\\+27|0)[6-8][0-9]{8}$")])),
+    Username: new FormControl('', [Validators.required]),
+    // Password: new FormControl('',Validators.compose([Validators.required,Validators.minLength(8),Validators.pattern('(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[$@$!%?&])[A-Za-zd$@$!%?&].{8,15}')])),
+    Password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')])
   })
 
-  GetAllEmployees(){
-    this.empservice.GetAllEmployees().subscribe(result =>{
+  get f() { return this.AddEmployeeForm.controls }
+
+  GetAllEmployees() {
+    this.empservice.GetAllEmployees().subscribe(result => {
       this.employees = result as Employee[];
     })
   }
-  
-  GetEmployee(Employee_ID: number){
+
+  GetEmployee(Employee_ID: number) {
     this.empservice.GetEmployee(Employee_ID).subscribe(result => {
-      this.employee = result  
+      this.employee = result
       console.log(result);
     })
   }
 
-  AddEmployee(){
-    let addemployee = new RegisterVM()
-    addemployee.firstName = this.AddEmployeeForm.value.FirstName
-    addemployee.surname = this.AddEmployeeForm.value.Surname
-    addemployee.email = this.AddEmployeeForm.value.Email
-    addemployee.cell_Number = this.AddEmployeeForm.value.Cell_Number
-    addemployee.username = this.AddEmployeeForm.value.Username
-    addemployee.password = this.AddEmployeeForm.value.Password
+  AddEmployee() {
+    if (this.AddEmployeeForm.valid) {
+      const formData = this.AddEmployeeForm.value;
+      console.log(formData);
 
-    this.authservice.RegisterEmployee(addemployee).subscribe(result => {
-      if(result.status == "Error")
-        {
+      let addemployee = new RegisterVM()
+      addemployee.firstName = this.AddEmployeeForm.value.FirstName
+      addemployee.surname = this.AddEmployeeForm.value.Surname
+      addemployee.email = this.AddEmployeeForm.value.Email
+      addemployee.cell_Number = this.AddEmployeeForm.value.Cell_Number
+      addemployee.username = this.AddEmployeeForm.value.Username
+      addemployee.password = this.AddEmployeeForm.value.Password
+
+      this.authservice.RegisterEmployee(addemployee).subscribe(result => {
+        this.AddEmployeeSuccessAlert()
+        console.log(this.AddEmployee)
+      },
+        (error) => {
+          // Handle registration error
           this.AddEmployeeErrorAlert()
-        }        
-      else if(result.status == "Success")
-        {
-          this.AddEmployeeSuccessAlert()
-          console.log(this.AddEmployee)
+          console.error('Registration error:', error);
         }
-    }) 
+      );
+    }
   }
+
+  /*if(result.status == "Error")
+    {
+      this.AddEmployeeErrorAlert()
+    }        
+  else if(result.status == "Success")
+    {
+      this.AddEmployeeSuccessAlert()
+      console.log(this.AddEmployee)
+    }
+}*/
 
   canceladdmodal() {
     this.modal.dismiss(null, 'cancel');
   }
 
   confirmaddmodal() {
-    this.AddEmployee();    
+    this.AddEmployee();
   }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
-  reloadPage(){
+  reloadPage() {
     window.location.reload()
   }
 
-  DeleteEmployee(Employee_ID: number){
+  DeleteEmployee(Employee_ID: number) {
     this.empservice.DeleteEmployee(Employee_ID).subscribe(result => {
       console.log(result);
-      if(result == null){
+      if (result == null) {
         this.DeleteEmployeeErrorAlert();
       }
-      else{
+      else {
         this.DeleteEmployeeSuccessAlert();
       }
-    })    
+    })
   }
 
   async DeleteEmployeeSuccessAlert() {
@@ -116,7 +134,7 @@ export class ViewEmployeesPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler:() =>{
+        handler: () => {
           this.reloadPage();
         }
       }],
@@ -132,7 +150,7 @@ export class ViewEmployeesPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler:() =>{
+        handler: () => {
           this.reloadPage();
         }
       }],
@@ -147,7 +165,7 @@ export class ViewEmployeesPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler:() =>{
+        handler: () => {
           this.reloadPage();
         }
       }],
@@ -163,7 +181,7 @@ export class ViewEmployeesPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler:() =>{
+        handler: () => {
           this.reloadPage();
         }
       }],
