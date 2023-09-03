@@ -27,27 +27,11 @@ import { Response } from '../Models/response';
         .pipe(map(result => result))
     }
 
-  //add
-    public AddDiscount(discount:Discount){
-        return this.httpClient.post<Response>(`${this.apiUrl}Discount/AddDiscount`, discount)
-        .pipe(map(result => result))
-    }
-
   //get selected one
     public GetDiscount(discount_ID:number){ 
         return this.httpClient.get(`${this.apiUrl}Discount/GetDiscount/${discount_ID}`)
         .pipe(map(result => result))
       }
-
-  //edit
-    public UpdateDiscount(discount_ID:number, discount:Discount){
-        return this.httpClient.put<Response>(`${this.apiUrl}Discount/edit-discounts/${discount_ID}`, discount)
-    }
-
-    //delete 
-    public DeleteDiscount(Discount_ID:number){
-        return this.httpClient.delete<Response>(`${this.apiUrl}Discount/DeleteDiscount/${Discount_ID}`)  
-    }
-   
+  
   
   }

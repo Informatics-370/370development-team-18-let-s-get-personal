@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Admin Profile</ion-title>
+    <ion-title>Your Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,8 +12,78 @@
   </ion-header>
   <ion-content id="content">
     <ion-button (click)="Logout()">Log out</ion-button>
-    <!-- <ion-button>Get user</ion-button> -->
-    <ion-label>{{username}}</ion-label>
+    <ion-button (click)="EditAdmin(profile.admin_ID, true)">Update Profile</ion-button>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{profile.firstName}}'s Details:</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>Name</ion-label>
+            <p>{{profile.firstName}} {{profile.surname}}</p>
+          </ion-item>
+  
+          <ion-item>
+            <ion-label>Cell Number</ion-label>
+            <p>{{profile.cell_Number}}</p>
+          </ion-item>
+  
+          <ion-item>
+            <ion-label>Email Adress</ion-label>
+            <p>{{profile.email}}</p>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Username</ion-label>
+            <p>{{profile.username}}</p>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
   </ion-content>
   
 </ion-content>
+
+<ion-footer>
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <!-- <ion-title>Add Discount Policy Details</ion-title> -->
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="editForm" >
+          <ion-item>
+            <ion-label position="stacked">First Name</ion-label><br>
+            <ion-input type="text" formControlName="firstName" placeholder="" required></ion-input>
+          </ion-item> 
+          <ion-item>
+            <ion-label position="stacked">Last Name</ion-label><br>
+            <ion-input type="text" formControlName="surname" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Email Address</ion-label><br>
+            <ion-input type="text" formControlName="email" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Cellphone number</ion-label><br>
+            <ion-input type="text" formControlName="cell_Number" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Employee Username</ion-label><br>
+            <ion-input type="text" formControlName="username" placeholder="" required></ion-input>
+          </ion-item>  
+      </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-footer>

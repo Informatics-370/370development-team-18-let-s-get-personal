@@ -36,7 +36,7 @@ import { Response } from '../Models/response';
     }
   
     public UpdateStockItemColour(stock_Item_Colour_ID:string, stockitemcolour:StockItemColours){
-      return this.httpClient.put<Response>(`${this.apiUrl}StockType/UpdateStockItemColour/${stock_Item_Colour_ID}`, stockitemcolour, this.httpOptions)
+      return this.httpClient.put<Response>(`${this.apiUrl}StockItemColour/UpdateStockItemColour/${stock_Item_Colour_ID}`, stockitemcolour, this.httpOptions)
     }
   
     public DeleteStockItemColour(stock_Item_Colour_ID:string){

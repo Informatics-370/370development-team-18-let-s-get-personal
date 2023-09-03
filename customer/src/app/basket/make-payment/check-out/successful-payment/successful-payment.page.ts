@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
-//import { OrderT } from 'src/app/Models/basket';
+import { SalesService } from 'src/app/Services/sales.service';
 import { OrderService } from 'src/app/Services/order.service';
 import { BasketItems, OrderT } from 'src/app/Models/basket';
 import { Order_Line_Item } from 'src/app/Models/orderlineitem';
+import { Payment } from 'src/app/Models/payment';
 
 @Component({
   selector: 'app-successful-payment',
@@ -20,20 +21,14 @@ export class SuccessfulPaymentPage implements OnInit {
   order = new OrderT();
   cartitems: any 
   basket = new BasketItems();
-  constructor(private router:Router,private orderService:OrderService) { }
+  constructor(private router:Router, private orderService:OrderService, private saleService: SalesService) { }
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)
     this.order.paid=true;
-    //this.placeOrder(this.order)
-    this.cartitems = JSON.parse(localStorage.getItem('cart') as string)//localStorage.setItem('cart', JSON.stringify(this.cartItems));
+    this.cartitems = JSON.parse(localStorage.getItem('cart') as string)
     this.AddOrderLineItem()
   }
-
-  // public removeItemFromBasket(id: any):void {
-  //   this.cartItems = this.cartItems.filter((cartItem) => cartItem.stock_Item.stock_Item_ID !== id);
-  //   localStorage.setItem('cart', JSON.stringify(this.cartItems));
-  // }
 
   AddOrderLineItem(){
     try
@@ -50,31 +45,50 @@ export class SuccessfulPaymentPage implements OnInit {
       addedOrder.personalisation_ID = personalisedID
 
       this.orderService.AddOrderLineItem(addedOrder).subscribe(result => {
+        console.log(result)
+      })
 
+      this.addSale()      
+    }
+    catch
+    {
+      /// ============== Error alert
+    }
+  }
+
+  addSale(){
+    
+    let addedSale = new Payment();
+    let price = JSON.parse(localStorage.getItem('totalprice') as string)
+    let username = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    let quantity = JSON.parse(localStorage.getItem('quantity') as string)
+    let stockitem = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
+
+    addedSale.payment_Amount = price
+    addedSale.customer_UserName = username
+    addedSale.sale_Quantity = quantity
+    addedSale.stock_Item_ID = stockitem
+
+    try{
+
+      this.saleService.AddSale(addedSale).subscribe(result =>{
+        console.log(result)
       })
 
       this.placeOrder(this.order);
     }
-    catch
-    {
+    catch{
 
     }
   }
 
   private placeOrder(order:OrderT):void{
-    //this.orderService.placeOrder(order).subscribe(res=>{
       localStorage.removeItem("order");
       localStorage.removeItem("cart");
       localStorage.removeItem("orderRequestID");
       localStorage.removeItem("personalisedID");
       localStorage.removeItem("totalprice");
       localStorage.removeItem("deliveryID");
-      //console.log(res);
-    // },err=>{
-    //   console.log(err);
-    //   localStorage.removeItem("order");
-    //   localStorage.removeItem("cart"); 
-    // })
   }
 
   ionViewDidEnter() {

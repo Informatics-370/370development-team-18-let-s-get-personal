@@ -15,7 +15,7 @@ namespace IPKP___API.Controllers.Models.Entities
         //foreign keys
         [ForeignKey(nameof(Discount_ID))]
         public Guid Discount_ID { get; set; }
-        public virtual Discount Discount { get; set; }
+        //public virtual Discount Discount { get; set; }
 
         [StringLength(255)]
         public string Discount_Reason { get; set; }

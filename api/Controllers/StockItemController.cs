@@ -22,6 +22,7 @@ namespace IPKP___API.Controllers
         {
             _IPKPRepository = iPKPRepository;
         }
+
         [HttpGet]
         [Route("GetAllStockItems")]
         public object GetAllStockItemsAsync()
@@ -104,7 +105,7 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateStockItem/{stock_Item_ID}")]
-        public async Task<IActionResult> UpdateStockItemAsync(Guid stock_Item_ID, StockItemViewModel sivm)
+        public async Task<IActionResult> UpdateStockItemAsync(Guid stock_Item_ID, Stock_Item sivm)
         {
             try
             {
@@ -116,6 +117,10 @@ namespace IPKP___API.Controllers
                 existingStockItem.Stock_Type_ID = sivm.Stock_Type_ID;
                 existingStockItem.Stock_Image_ID = sivm.Stock_Image_ID;
                 existingStockItem.Stock_Item_Colour_ID = sivm.Stock_Item_Colour_ID;
+                existingStockItem.Inventory_Comments = sivm.Inventory_Comments;
+                existingStockItem.Stock_Item_Price = sivm.Stock_Item_Price;
+                existingStockItem.Stock_Item_Size = sivm.Stock_Item_Size;
+
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {
@@ -151,6 +156,32 @@ namespace IPKP___API.Controllers
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Stock Item  Removed From Database." });
+        }
+
+        //decrease quantity
+        [HttpPut]
+        [Route("DecreaseStockItemQuantity/{stock_Item_ID}")]
+        public async Task<IActionResult> DecreaseStockItemQuantity(Guid stock_Item_ID, StockItemViewModel sivm)
+        {
+            try
+            {
+                var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
+                //var orderQuantity = AddOrderLineItemAsync();
+
+                if (existingStockItem == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
+
+                existingStockItem.Stock_Item_Quantity = sivm.Stock_Item_Quantity;
+
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(new Response { Status = "Success", Message = "Stock Item Updated Successfully" });
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Stock Item Saved To Database." });
         }
 
     }

@@ -6,7 +6,7 @@ import { Best_Sellers } from "./bestsellers"
 import { BasketItems } from "./basket"
 import { StockPriceHistory } from "./stockpricehistory"
 export class  Stock_Item{
-    stock_Item_ID!: number
+    stock_Item_ID!: string
     stock_Item_Name!: String 
     stock_Item_Price!: Number
     stock_Item_Size!: string

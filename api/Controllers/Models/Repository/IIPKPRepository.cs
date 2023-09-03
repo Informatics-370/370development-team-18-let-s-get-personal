@@ -15,8 +15,10 @@ namespace IPKP___API.Controllers.Models.Repository
 
         Task<Admin[]> GetAllAdminssAsync();
         Task<Admin> GetAdminDetailsAsync(Guid admin_ID);
+        Task<Admin> GetAdmin(string username);
         Task<Employee> GetEmployeeDetailsAsync(Guid employee_ID);
         Task<Employee[]> GetAllEmployeesAsync();
+        Task<Employee> GetEmployee(string username);
         Task<Customer> GetCustomerDetailsAsync(Guid customer_ID);
         Task<Customer[]> GetAllCustomersAsync();
         Task<BestSellers[]> GetAllBestSellersAsync();
@@ -64,10 +66,15 @@ namespace IPKP___API.Controllers.Models.Repository
         object GetStockNames();
         object GetAllDeliveries();
         object GetDeliveryBySatus(string status);
+
         Task<Order_Line_Item> GetOrderLineItemByID(Guid orderlineitemID);
-        object GetOrderLineItembyStatus(string orderlinestatus);
-        object GetSalesReport();
-        object ProductTrends();
+        object GetOrderLineDetailsByID(Guid orderlineitemID);
+        object GetOrderLineItembyStatus(string orderlinestatus);        
         object GetAllOrderLineItems();
+
+        object GetSalesReport();
+        Task<Payment[]> GetAlPaymentsAsync();
+
+        object GetWrittenOffItems();
     }
 }

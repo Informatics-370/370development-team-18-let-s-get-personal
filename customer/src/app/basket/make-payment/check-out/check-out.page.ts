@@ -61,11 +61,12 @@ export class CheckOutPage implements OnInit {
   }
 
   AddOrderRequest(){
-    try
-    {
+    // try
+    // {
       let addorderRequest = new Order_Request();
       let delID = JSON.parse(localStorage.getItem('deliveryID') as string)
-      let customerID = JSON.parse(localStorage.getItem('customerID') as string)
+      let customerID = JSON.parse(JSON.stringify(localStorage.getItem('customerID'))) //JSON.parse(localStorage.getItem('customerID') as string)
+
       let ortprice = this.totalprice 
 
       addorderRequest.delivery_ID = delID
@@ -74,15 +75,16 @@ export class CheckOutPage implements OnInit {
 
       this.service.AddOrderRequest(addorderRequest).subscribe(result => {
         this.orderrequest = result as Order_Request
+        console.log(this.orderrequest)
         let orderRequestID = this.orderrequest.order_Request_ID
         localStorage.setItem('orderRequestID', JSON.stringify(orderRequestID));
       })
       this.proceedToPayFast()
-    }
-    catch
-    {
+    // }
+    // catch
+    // {
 
-    }
+    // }
     
   } 
 

@@ -24,9 +24,7 @@ export class OrderService {
   public AddOrderLineItem(oli:Order_Line_Item){
     return this.httpClient.post<Response>(`${this.apiUrl}Order/AddOrderLineItem`, oli)
     .pipe(map(result => result))
-  }
-
-  
+  } 
 
   public AddOrder(o:Order){
     return this.httpClient.post<Response>(`${this.apiUrl}Order/AddOrder`, o)

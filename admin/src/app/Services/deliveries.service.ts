@@ -37,7 +37,7 @@ export class DeliveryDataService {
   }
 
   public ChangeStatusToRecieved(delivery_Id:string){
-    return this.httpClient.put(`${this.apiUrl}Deliveries/ChangeStatusToRecieved/${delivery_Id}`, this.httpOptions)
+    return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/ChangeStatusToRecieved/${delivery_Id}`, this.httpOptions)
   }
 
   public ChangeStatusToFailed(delivery_Id:string){

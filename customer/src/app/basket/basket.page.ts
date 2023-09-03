@@ -44,16 +44,14 @@ throw new Error('Method not implemented.');
 
   cartItems: any[] = [];  
 
-  token?:any;
-
   ngOnInit() {
     this.cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
 
-    this.token=localStorage.getItem("token");
+   // this.token=localStorage.getItem("token");
 
-    let decode=jwt_decode(this.token);
+    //let decode=jwt_decode(this.token);
 
-    console.log(this.token);
+    //console.log(this.token);
   }
  
   public removeItemFromBasket(id: any):void {
@@ -103,6 +101,7 @@ throw new Error('Method not implemented.');
     let totalPrice = 0;
     for (const item of this.cartItems) {
       totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;
+      localStorage.setItem('quantity', JSON.stringify(item.basket_Quantity));
     }
     this.order.price=totalPrice;
     return totalPrice;
@@ -124,6 +123,7 @@ throw new Error('Method not implemented.');
     this.order.basketItems=items;
   
     this.order.paid=false;
+
 
     localStorage.setItem("order",JSON.stringify(this.order));
 
@@ -158,7 +158,7 @@ throw new Error('Method not implemented.');
   personalizations!: Personalisation_Design
   fileNameUploaded = ''
   errmsg: string = ""
-  //textprice: TextPrice[] =[]
+//  textprice: TextPrice[] =[]
   imageprice: any //Image_Price[] =[]
   imagepriceID!: string
   formData = new FormData();

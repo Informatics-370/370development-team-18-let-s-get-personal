@@ -37,6 +37,49 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAdminDetails/{admin_ID}")]
+        public async Task<IActionResult> GetAdminDetails(Guid admin_ID)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetAdminDetailsAsync(admin_ID);
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateAdmin/{admin_ID}")]
+        public async Task<IActionResult> UpdateAdminAsync(Guid admin_ID, Admin admin)
+        {
+            try
+            {
+                var existingAdmin = await _IPKPRepository.GetAdminDetailsAsync(admin_ID);
+
+                if (existingAdmin == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee " + admin_ID });
+
+                existingAdmin.User = admin.User;
+                existingAdmin.FirstName = admin.FirstName;
+                existingAdmin.Surname = admin.Surname;
+                existingAdmin.Cell_Number = admin.Cell_Number;
+                existingAdmin.Email = admin.Email;
+
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(new Response { Status = "Success", Message = "Employee Updated Successfully" });
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Employee Saved To Database." });
+        }
+
 
         //*************** Customers ***************\\
         [HttpGet]
@@ -144,7 +187,7 @@ namespace IPKP___API.Controllers
         {
             try
             {
-                var results = await _IPKPRepository.GetCustomerDetailsAsync(employee_ID);
+                var results = await _IPKPRepository.GetEmployeeDetailsAsync(employee_ID);
                 return Ok(results);
             }
             catch (Exception)
@@ -187,7 +230,7 @@ namespace IPKP___API.Controllers
         {
             try
             {
-                var existingEmployee = await _IPKPRepository.GetPolicyAsync(Employee_ID);
+                var existingEmployee = await _IPKPRepository.GetEmployeeDetailsAsync(Employee_ID);
 
                 if (existingEmployee == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" + Employee_ID });
 

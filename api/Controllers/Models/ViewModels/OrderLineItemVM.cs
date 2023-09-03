@@ -29,6 +29,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
         public string Image_File { get; set; }
         public string Design_Text { get; set; }
 
+        public Guid Stock_Item_ID { get; set; }
         public string Stock_Item_Name { get; set; }
         public string Stock_Item_Size { get; set; }
         public string Stock_Colour_Name { get; set; }

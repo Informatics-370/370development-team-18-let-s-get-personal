@@ -11,7 +11,7 @@ export class OrderLineItemVM{
     areaCode!: string
     delivery_ID!: string
    
-    customer_ID!: number
+    customer_ID!: string
     customer_UserName!: string
 
     order_Request_Date!: Date
@@ -20,6 +20,7 @@ export class OrderLineItemVM{
     image_File!: string    
     design_Text!: string
 
+    stock_Item_ID!: string
     stock_Item_Name!: string
     stock_Item_Price!: number
     stock_Item_Size!: string

@@ -50,8 +50,8 @@ export const routes: Routes = [
       },
       {
         path: 'view-profile',
-        loadComponent: () => import('../view-profile/view-profile.page').then( m => m.ViewProfilePage)
-       
+        loadComponent: () => import('../view-profile/view-profile.page').then( m => m.ViewProfilePage),
+        canActivate:[AuthGuard],data:{roles:['User']}
       },
       {
         path: 'make-payment',
@@ -72,19 +72,18 @@ export const routes: Routes = [
       },
       {
         path: 'previous-orders',
-        loadComponent: () => import('../view-profile/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage)
+        loadComponent: () => import('../view-profile/previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage),
+        canActivate:[AuthGuard],data:{roles:['User']}
       },
       {
         path: 'experience-rating',
-        loadComponent: () => import('../view-profile/experience-rating/experience-rating.page').then( m => m.ExperienceRatingPage)
-      },
-      {
-        path: 'update-profile',
-        loadComponent: () => import('../view-profile/update-profile/update-profile.page').then( m => m.UpdateProfilePage)
+        loadComponent: () => import('../view-profile/experience-rating/experience-rating.page').then( m => m.ExperienceRatingPage),
+        canActivate:[AuthGuard],data:{roles:['User']}
       },
       {
         path: 'product-rating',
-        loadComponent: () => import('../view-profile/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage)
+        loadComponent: () => import('../view-profile/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage),
+        canActivate:[AuthGuard],data:{roles:['User']}
       },
       {
         path: 'edit-product-rating',

@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { IonicModule, AlertController, ModalController, IonModal } from '@ionic/angular';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { User } from 'src/app/Models/user';
-import { Customer } from 'src/app/Models/customer';
 import { Employee } from 'src/app/Models/employee';
 import { UserProfileDataService } from '../Services/userprofile.service';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -23,9 +21,9 @@ export class ViewEmployeesPage implements OnInit {
   employees: Employee[] = []
   employee: any
   @ViewChild(IonModal) modal!: IonModal
-
-  constructor(private alertController: AlertController,
-    private empservice: UserProfileDataService, public modalCtrl: ModalController,
+  
+  constructor( private alertController:AlertController, public modalCtrl: ModalController,
+    private empservice: UserProfileDataService, 
     public authservice: AuthenticationService, public router: Router) { } //private service:ProfileService,
 
   ngOnInit() {
@@ -54,12 +52,24 @@ export class ViewEmployeesPage implements OnInit {
       this.employees = result as Employee[];
     })
   }
-
-  GetEmployee(Employee_ID: number) {
+  
+  GetEmployee(Employee_ID: string){
     this.empservice.GetEmployee(Employee_ID).subscribe(result => {
       this.employee = result
       console.log(result);
     })
+  }
+  
+  DeleteEmployee(employee_ID: string){
+    this.empservice.DeleteEmployee(employee_ID).subscribe(result => {
+      console.log(result);
+      if(result == null){
+        this.DeleteEmployeeErrorAlert();
+      }
+      else{
+        this.DeleteEmployeeSuccessAlert();
+      }
+    })    
   }
 
   AddEmployee() {
@@ -115,16 +125,86 @@ export class ViewEmployeesPage implements OnInit {
     window.location.reload()
   }
 
-  DeleteEmployee(Employee_ID: number) {
-    this.empservice.DeleteEmployee(Employee_ID).subscribe(result => {
-      console.log(result);
-      if (result == null) {
-        this.DeleteEmployeeErrorAlert();
-      }
-      else {
-        this.DeleteEmployeeSuccessAlert();
-      }
+  //=========== edits
+  isModalOpen = false;
+  editEmployee: Employee = new Employee();
+
+  editForm: FormGroup = new FormGroup({
+    firstName: new FormControl('',[Validators.required]),
+    surname: new FormControl('',[Validators.required]),
+    email: new FormControl('',[Validators.required]),
+    cell_Number: new FormControl(''),
+    username: new FormControl('',[Validators.required])
+  })
+
+  EditEmployee(employee_ID:string, isOpen: boolean)
+  {    
+    this.empservice.GetEmployee(employee_ID).subscribe(response => {         
+      this.editEmployee = response as Employee;
+
+      this.editForm.controls['firstName'].setValue(this.editEmployee.firstName);
+      this.editForm.controls['surname'].setValue(this.editEmployee.surname);
+      this.editForm.controls['email'].setValue(this.editEmployee.email);
+      this.editForm.controls['cell_Number'].setValue(this.editEmployee.cell_Number);
+      this.editForm.controls['username'].setValue(this.editEmployee.username);
     })
+    
+    this.isModalOpen = isOpen;
+  }
+
+  confirmeditmodal(){
+    try
+    {
+      let editedEmployee = new Employee();
+      editedEmployee.firstName = this.editForm.value.firstName;
+      editedEmployee.surname = this.editForm.value.surname;
+      editedEmployee.email = this.editForm.value.email;
+      editedEmployee.cell_Number = this.editForm.value.cell_Number;
+      editedEmployee.username = this.editForm.value.username;
+
+      this.empservice.UpdateEmployee(this.editEmployee.employee_ID, editedEmployee).subscribe(result =>{
+        this.editSuccessAlert();
+      })
+    }
+    catch{      
+      this.editErrorAlert();
+    }    
+  }
+
+  canceleditmodal() {
+    this.isModalOpen = false;
+  }
+
+  //=========== alerts
+  async editSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Employee Updated',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async editErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Employee Was Not Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
   }
 
   async DeleteEmployeeSuccessAlert() {

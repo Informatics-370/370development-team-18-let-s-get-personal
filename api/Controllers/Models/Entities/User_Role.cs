@@ -14,9 +14,6 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(255)]
         public string User_Role_Name { get; set; }
 
-        
-        public virtual ICollection<User_Role_Permission> User_Role_Permission { get; set; }       
-
         public virtual ICollection<User> User { get; set; }
 
         public const string admin = "Admin";

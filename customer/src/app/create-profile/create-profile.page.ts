@@ -77,13 +77,13 @@ export class CreateProfilePage implements OnInit {
   async AddCustomerSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
-      subHeader: 'Customer profile is successfully created!',
+      subHeader: "You've been Registered",
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        // handler:() =>{
-        //   this.reloadPage();
-        // }
+        handler:() =>{
+          this._router.navigate(['./tabs/login']);;
+        }
       }],
     });
     await alert.present();
@@ -92,7 +92,7 @@ export class CreateProfilePage implements OnInit {
   async AddCustomerErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Your profile creation was unsuccessful.',
+      subHeader: 'Registration failed',
       message: 'Please try again',
       buttons: [{
         text: 'OK',

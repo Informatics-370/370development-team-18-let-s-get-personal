@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { OrderService } from '../Services/order.service';
 import { RouterModule, Router } from '@angular/router';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
+import { SalesService } from '../Services/sales.service';
+import { Payment } from '../Models/payment';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 export type jsPDFDocument = any;
@@ -19,13 +21,18 @@ type Opts = { [key: string]: string | number }
 })
 export class SalesPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
-  sales: OrderLineItemVM[] =[]
-  constructor(private service: OrderService, private router: Router, 
+  sales: Payment[] =[]
+  constructor(private service: SalesService, private router: Router, 
     public environmentInjector: EnvironmentInjector) { }  
 
   prodReportNav()
   {
     this.router.navigate(['./tabs/product-trends']);
+  }
+
+  prevOrdersNav()
+  {
+    this.router.navigate(['./tabs/previous-orders']);
   }
 
   ngOnInit(): void {
@@ -34,8 +41,8 @@ export class SalesPage implements OnInit {
 
   GetSalesList()
   {
-    this.service.GetAllOrders().subscribe(res => {
-      this.sales = res as OrderLineItemVM[]
+    this.service.GetAllSales().subscribe(res => {
+      this.sales = res as Payment[]
     })
   }
 

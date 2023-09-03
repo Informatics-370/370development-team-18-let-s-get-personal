@@ -58,14 +58,15 @@ namespace IPKP___API.Controllers
 
                 if (requests == null)
                 {
-                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                    return NotFound(new Response { Status = "Error", Message = "No Stock Items were found." });
                 }
                 else
                 {
+                    requests.DateDelivered = DateTime.Now;
                     requests.Delivery_Status = "Received";
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
-                        return Ok(requests);
+                        return Ok(new Response { Status = "Success", Message = "Status updated." });
                     }
                 }
             }
@@ -73,7 +74,7 @@ namespace IPKP___API.Controllers
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
+            return Ok(new Response { Status = "Success", Message = "Status updated." });
         }
 
         //change status to failed
@@ -102,7 +103,7 @@ namespace IPKP___API.Controllers
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return BadRequest(new Response { Status = "Error", Message = "Your request is invalid." });
+            return Ok(new Response { Status = "Success", Message = "Status updated." });
         }
 
         //get previous successful deliveries
@@ -112,7 +113,7 @@ namespace IPKP___API.Controllers
         {
             try
             {
-                string orderStatus = "Recieved";
+                string orderStatus = "Received";
                 var requests = _IPKPRepository.GetDeliveryBySatus(orderStatus);
 
                 if (requests == null)

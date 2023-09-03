@@ -15,5 +15,6 @@ namespace IPKP___API.Controllers.Models.ViewModels
         public string City { get; set; }
         public string Province { get; set; }
         public string AreaCode { get; set; }
+        public DateTime DateDelivered { get; set; }
     }
 }

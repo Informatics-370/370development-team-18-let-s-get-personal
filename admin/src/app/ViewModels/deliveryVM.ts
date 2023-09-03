@@ -12,4 +12,5 @@ export class DeliveryViewModel{
     province!: string
     areaCode!: string
     tracking_Number!: string
+    dateDelivered!: Date
 }

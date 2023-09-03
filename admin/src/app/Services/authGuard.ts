@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate{
 
         if(this.token){
             if(!allowedRoles.includes(this.role)){
-                this.router.navigate(['/login']);
+                this.router.navigate(['/tabs/profiles']);
                 return false;
             }
             return true;

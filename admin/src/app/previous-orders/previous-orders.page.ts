@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
-  selector: 'app-update-imageprice',
-  templateUrl: './update-imageprice.page.html',
-  styleUrls: ['./update-imageprice.page.scss'],
+  selector: 'app-previous-orders',
+  templateUrl: './previous-orders.page.html',
+  styleUrls: ['./previous-orders.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class UpdateImagepricePage implements OnInit {
+export class PreviousOrdersPage implements OnInit {
 
   constructor() { }
 

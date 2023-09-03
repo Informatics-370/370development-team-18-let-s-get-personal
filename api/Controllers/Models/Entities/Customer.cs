@@ -21,7 +21,7 @@ namespace IPKP___API.Controllers.Models.Entities
         [StringLength(13)]
         public string Cell_Number { get; set; }
 
-        [StringLength(255)]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [StringLength(255)]

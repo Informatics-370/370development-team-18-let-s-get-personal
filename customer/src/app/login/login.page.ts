@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
       }
       else if (roles.includes('User')) {
         localStorage.setItem('username', form.value.username,);
-        this.router.navigateByUrl('tabs/basket', { replaceUrl: true });
+        this.router.navigateByUrl('tabs/basket'); //, {replaceUrl: true}
         this.FindID()
       }
     });
@@ -75,7 +75,8 @@ export class LoginPage implements OnInit {
   }
 
 
-  CheckUser() {
+
+  CheckUser(){
     this.user = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
     console.log(this.user)
     if (this.user === "User") {
@@ -92,5 +93,9 @@ export class LoginPage implements OnInit {
 
   ForgotPasswordNav() {
     this.router.navigate(['./tabs/forgot-password']);
+  }
+
+  reloadPage() {
+    window.location.reload()
   }
 }
