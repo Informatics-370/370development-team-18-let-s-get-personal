@@ -21,10 +21,10 @@
         <ion-col style="font-weight: bold;">Product Type</ion-col>
         <ion-col style="font-weight: bold;">Product Colour</ion-col>
         <ion-col style="font-weight: bold;">Product Image</ion-col>
-        <ion-col style="font-weight: bold;">Old Quantity</ion-col>
+        <!-- <ion-col style="font-weight: bold;">Old Quantity</ion-col> -->
         <ion-col style="font-weight: bold;">Date Added</ion-col>
         <ion-col style="font-weight: bold;">Inventory Comments</ion-col>
-        <ion-col style="font-weight: bold;">Enter Current Quantity</ion-col>
+        <ion-col style="font-weight: bold;">Current Quantity</ion-col>
         <ion-col></ion-col>
         <ion-col></ion-col>
       </ion-row>
@@ -35,10 +35,10 @@
         <ion-col>{{item.stockTypeName}}</ion-col>
         <ion-col>{{item.stockColourName}}</ion-col>
         <ion-col><img src='data:image/png;base64,{{item.stockImageFile}}'></ion-col>
-        <ion-col>{{item.stock_Item_Quantity}}</ion-col>
+        <!-- <ion-col>{{item.stock_Item_Quantity}}</ion-col> -->
         <ion-col>{{item.inventory_Date}}</ion-col>
         <ion-col>{{item.inventory_Comments}}</ion-col>        
-        <ion-col><ion-input value="{{item.stock_Item_Quantity}}" placeholder=""> </ion-input></ion-col>
+        <ion-col>{{item.stock_Item_Quantity}}</ion-col>
         <ion-col> <ion-button (click)="UpdateQuantity(item.stock_Item_ID, true)">Update</ion-button> </ion-col>
         <ion-col> <ion-button (click)="WriteOffModal(item.stock_Item_ID, true)">Write-off</ion-button> </ion-col>
       </ion-row>

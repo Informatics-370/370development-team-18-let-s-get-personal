@@ -3,32 +3,68 @@
     <ion-title> Frequently Asked Questions (FAQ) </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-content color="primary" class="ion-padding">
-    <h1>How can I Personalize my Order</h1>
-    <p>After browsing through the shop, click the plus attached to the inventory item. Once clicked you'll a page where you can add your design image and select your colour.</p>
-  </ion-content>
-  <ion-content color="secondary" class="ion-padding">
-    <h1>How Can i request a refund? </h1>
-    <p>First, take a look at the refund policy to ensure you qualify. Then, if you qualify, head over to the "Request Refund" page. Here you must enter a refund reason and submit your response. Once your response has been sent, you will receive a notification stating that your refund has been received.<p>
-  </ion-content>
-  <ion-content color="tertiary" class="ion-padding">
-    <h1>When will I receive my refund?</h1>
-    <p>If your refund has been accepted, you can expect to receive the refund in the next 10 days.</p>
-  </ion-content>
-  <ion-content color="success" class="ion-padding">
-    <h1>How can I get in contact with someone from "It's Personal"?</h1>
-    <p>Simply visit the "Contact Us" page, here you must enter your name, email and leave a comment.</p>
-  </ion-content>
-  <ion-content color="warning" class="ion-padding">
-    <h1>What is the refund policy?</h1>
-    <p>The refund policy can be found in the "Refunds" tab</p>
-  </ion-content>
-  <ion-content color="danger" class="ion-padding">
-    <h1>What is the delivery options?</h1>
-    <p>We use external courier services.</p>
-  </ion-content>
-  <ion-content color="light" class="ion-padding">
-    <h1>Where are you located?</h1>
-    <p>Our head office is located in Edenvale, Johannesburg. Most operations are done online however.</p>
-  </ion-content>
+<ion-content [fullscreen]="true">
+  <div class="background">
+    <br>
+    <div class="center">
+      <h1>How can I personalize my Order?</h1>
+      <p>
+        In the basket page select the personalisation button. <br>
+        Please note we do require bothe the text you would like and an inspiration photo.  
+        Once clicked you'll a page where you can add your design image and select your colour.
+      </p>
+    </div>
+    <br>    
+    <div class="center">
+      <h1>What are the delivery options?</h1>
+      <p>
+        When placing your order you will be directed to a page where you can choose what delivery company you would like to use.
+        <br> Please note we only delivery within South Africa.
+      </p>
+    </div>
+    <br>
+    <div class="center">
+      <h1>What are our payment options?</h1>
+      <p>
+        We are currently only using payfast as an option as it is secure and reliable.
+      </p>
+    </div>
+    <br>
+    <div class="center">
+      <h1>Where are we located?</h1>
+      <p>
+        Our head office is located in Edenvale, Johannesburg.
+      </p>
+    </div>
+    <br>
+    <div class="center">
+      <h1>What is the current refund policy?</h1>
+      <p *ngFor="let item of policy">
+        Current Refund Policy: {{item.refund_Policy_Description}}
+      </p>
+    </div>
+    <br>
+    <div class="center">
+      <h1>How can I request a refund? </h1>
+      <p>
+        First, take a look above at the refund policy to ensure you qualify. 
+        Then, if you qualify, please send an email to itspersonal@gmail.com. 
+      <p>
+      </div>
+      <br>
+    <div class="center">
+      <h1>When will I receive my refund?</h1>
+      <p>
+        If your refund has been accepted, you can expect to receive the refund in the next 5 working days.
+      </p>
+    </div>
+    <br>
+    <div class="center">
+      <h1>How can I get in contact with someone from "It's Personal"?</h1>
+      <p>
+        Simply visit the "Contact Us" page, here you must enter your name, email and leave a comment.
+      </p>
+    </div>    
+    <br>
+  </div>
+</ion-content>
