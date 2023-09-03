@@ -10,7 +10,8 @@ namespace IPKP___API.Controllers.Models.Entities
   {
     [Key]
     public Guid Experience_Rating_ID { get; set; }
-    public virtual Customer Customer { get; set; }
+    //public virtual Customer Customer { get; set; }
+    public Guid Customer_ID { get; set; }
     public int Experience_Star_Rating { get; set; }
     [StringLength(255)]
     public string Experience_Rating_Comments { get; set; }

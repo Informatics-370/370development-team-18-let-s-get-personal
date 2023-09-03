@@ -26,9 +26,15 @@ import { Response } from '../Models/response';
     }
 
     //get selected one
-    public GetExperienceRating(Experience_Rating_ID:number){ 
+    public GetExperienceRating(Experience_Rating_ID:string){ 
         return this.httpClient.get(`${this.apiUrl}ExperienceRating/GetExperienceRating/${Experience_Rating_ID}`)
         .pipe(map(result => result))
+    }
+
+    public GetExperienceRatingByCustomerID(customerID:any){ 
+      console.log(customerID)
+      return this.httpClient.get(this.apiUrl+"ExperienceRating/GetExperienceRatingByCustomerID/"+customerID)
+      .pipe(map(result => result))
     }
 
     //add
@@ -38,12 +44,12 @@ import { Response } from '../Models/response';
     } 
 
     //edit
-    public UpdateExperienceRating(Experience_Rating_ID:number, Experience_Rating:Experience_Rating){
+    public UpdateExperienceRating(Experience_Rating_ID:string, Experience_Rating:Experience_Rating){
         return this.httpClient.put<Response>(`${this.apiUrl}ExperienceRating/UpdateExperienceRating/${Experience_Rating_ID}`, Experience_Rating)
     }
 
     //delete 
-    public DeleteExperienceRating(Experience_Rating_ID:number){
+    public DeleteExperienceRating(Experience_Rating_ID:string){
         return this.httpClient.delete<Response>(`${this.apiUrl}ExperienceRating/DeleteExeperienceRating/${Experience_Rating_ID}`)
     }
   

@@ -6,7 +6,6 @@ import { Router, RouterModule } from '@angular/router';
 import { ProductRatingDataService } from 'src/app/Services/productrating.service';
 import { ProductRating } from 'src/app/Models/productrating';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, } from '@angular/forms';
 import { Stock_Item } from 'src/app/Models/stockitem';
 
 //for modal
@@ -29,102 +28,90 @@ enum COLORS {
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class ProductRatingPage implements OnInit {
+  comment: any;
 
-  @Input()
+  prodRatings: ProductRating[] = [];
+  results: any;
+
+  rating: ProductRating = new ProductRating();
+
+  customerId: any;
+  @ViewChild(IonModal) modal!: IonModal;
+
+ /* @Input()
   rating!: number;
 
-  @Output() ratingChange: EventEmitter<number> = new EventEmitter();
+  @Output() ratingChange: EventEmitter<number> = new EventEmitter();*/
   
 
-  @ViewChild(IonModal) modal!: IonModal;
   constructor(private _modalController: ModalController, private _router: Router, private alertController: AlertController,
     private service: ProductRatingDataService) { }
 
-  AddForm: FormGroup = new FormGroup({
+  /*AddForm: FormGroup = new FormGroup({
     prodRating: new FormControl('', [Validators.required]),
     comment: new FormControl('', [Validators.required])
-  })
+  })*/
 
 
   productRatings: ProductRating[] = [];
   stockItems: Stock_Item[] = [];
 
   ngOnInit() {
-  }
-  rate(index: number) {
-    this.rating = index;
-    this.ratingChange.emit(this.rating);
-    console.log(this.rating)
+    this.customerId = localStorage.getItem("customerID");
+    console.log(this.customerId);
+    this.getRatingByCustomerID(this.customerId.replace(/"/g, ''));
   }
 
-  getColor(index: number) {
-    if (this.isAboveRating(index)) {
-      return COLORS.GREY;
-    }
-    switch (this.rating) {
-      case 1:
-      case 2:
-        return COLORS.RED;
-      case 3:
-        return COLORS.YELLOW;
-      case 4:
-      case 5:
-        return COLORS.GREEN;
-      default:
-        return COLORS.GREY;
-    }
-  }
+  private getRatingByCustomerID(customer_ID: any): void {
 
-  isAboveRating(index: number): boolean {
-    return index >this.rating;
-  }
+    console.log(customer_ID);
 
-
-
-  public updateProdRating(product_Rating_ID: string) {
-    this._router.navigate(["/tabs/edit-product-rating"])
-  }
-
-
-  AddProdRating(Stock_Item_ID: string) {
-    let AddProdRating = new ProductRating();
-
-    AddProdRating.product_Star_Rating = this.AddForm.value.prodRating;
-    AddProdRating.product_Rating_Comments = this.AddForm.value.comment;
-
-    this.service.AddProductRating(AddProdRating).subscribe(response => {
-      if (response.status == "Error") {
-        this.addProdRatingErrorAlert();
-      }
-      else {
-        this.addProdRatingSuccessAlert();
-      }
+    this.service.GetExperienceRatingByCustomerID(customer_ID).subscribe(res => {
+      this.results = res;
+      this.prodRatings = this.results;
+    }, error => {
+      console.log(error);
     })
   }
 
-  DeleteProductRating(product_Rating_ID: string) {
-    // this.service.DeleteProductRating(product_Rating_ID).subscribe(result => {
-    //   console.log(result);
-    //   if (result.status == "Error") {
-    //     this.DeleteProdRatingErrorAlert();
-    //   }
-    //   else if (result.status == "Success") {
-    //     this.DeleteProdRatingSuccessAlert();
-    //   }
-    // })
+  public submitRating(): void {
+    this.comment = this.AddForm.get('comment')?.value;
+    console.log("Rating " + this.selectedRating + "\nComment " + this.comment);
   }
 
+  AddForm: FormGroup = new FormGroup({
+    comment: new FormControl('', [Validators.required]),
+  });
 
-  reloadPage() {
-    window.location.reload()
+  selectedRating: number = 0;
+  stars: number[] = [1, 2, 3, 4, 5];
+
+  rateExperience(rating: number): void {
+    this.selectedRating = rating;
   }
 
+  confirmaddmodal(/*Stock_Item_ID: string*/ ) {
+
+    this.comment = this.AddForm.get('comment')?.value;
+
+    this.rating.customer_ID = this.customerId.replace(/"/g, '')
+    this.rating.product_Rating_Comments = this.comment;
+    this.rating.product_Star_Rating = this.selectedRating;
+    try {
+      this.service.AddProductRating(this.rating).subscribe(res => {
+       this.addProdRatingSuccessAlert();
+      }, error => {
+        console.log(error);
+      })
+    } catch {
+      this.addProdRatingErrorAlert()
+    }
+    if (this.comment = null) {
+      this.addProdRatingErrorAlert()
+    }
+  }
   canceladdmodal() {
     this.modal.dismiss(null, 'cancel');
-  }
-
-  confirmaddmodal() {
-    this.AddProdRating(Stock_Item.name);  //??
   }
 
   onWillDismiss(event: Event) {
@@ -160,6 +147,137 @@ export class ProductRatingPage implements OnInit {
     });
     await alert.present();
   }
+  
+  isModalOpen = false;
+
+  editForm: FormGroup = new FormGroup({
+    selectedRating: new FormControl('', [Validators.required]),
+    comment: new FormControl('', [Validators.required]),
+  })
+  editProdRating: ProductRating = new ProductRating();
+
+  EditExpRating(product_Rating_ID: string, isOpen: boolean) {
+    this.service.GetProductRating(product_Rating_ID).subscribe(response => {
+
+      this.editProdRating = response as ProductRating;
+      this.editForm.controls['selectedRating'].setValue(this.editProdRating.product_Star_Rating);
+      this.editForm.controls['comment'].setValue(this.editProdRating.product_Rating_Comments);
+
+    })
+
+    this.isModalOpen = isOpen;
+  }
+  canceleditmodal() {
+    this.isModalOpen = false;
+  }
+
+  confirmEditmodal() {
+    
+    let editedProdRating = new ProductRating();
+    editedProdRating.product_Star_Rating = this.selectedRating;
+    editedProdRating.product_Rating_Comments = this.editForm.get('comment')?.value;
+    console.log(editedProdRating)
+    try {
+      this.service.UpdateProductRating(this.editProdRating.product_Rating_ID, editedProdRating).subscribe(result => {
+        this.editProdRatingSuccessAlert();
+      })
+    }
+    catch {
+      this.editProdRatingErrorAlert();
+    }
+  }
+
+ /* rate(index: number) {
+    this.rating = index;
+    this.ratingChange.emit(this.rating);
+    console.log(this.rating)
+  }
+
+  getColor(index: number) {
+    if (this.isAboveRating(index)) {
+      return COLORS.GREY;
+    }
+    switch (this.rating) {
+      case 1:
+      case 2:
+        return COLORS.RED;
+      case 3:
+        return COLORS.YELLOW;
+      case 4:
+      case 5:
+        return COLORS.GREEN;
+      default:
+        return COLORS.GREY;
+    }
+  }
+
+  isAboveRating(index: number): boolean {
+    return index >this.rating;
+  }*/
+
+
+  async editProdRatingSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Product Rating Updated',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage(); 
+        }
+      }],
+    });
+    await alert.present();
+  }
+
+  async editProdRatingErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Product Rating Was Not Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage(); 
+        }
+      }],
+    });
+    await alert.present();
+  }
+  /*AddProdRating(Stock_Item_ID: string) {
+    let AddProdRating = new ProductRating();
+
+    AddProdRating.product_Star_Rating = this.AddForm.value.prodRating;
+    AddProdRating.product_Rating_Comments = this.AddForm.value.comment;
+
+    this.service.AddProductRating(AddProdRating).subscribe(response => {
+      if (response.status == "Error") {
+        this.addProdRatingErrorAlert();
+      }
+      else {
+        this.addProdRatingSuccessAlert();
+      }
+    })
+  }*/
+
+  DeleteProductRating(product_Rating_ID: string) {
+     this.service.DeleteProductRating(product_Rating_ID).subscribe(result => {
+       console.log(result);
+       if (result.status == "Error") {
+         this.DeleteProdRatingErrorAlert();
+       }
+       else if (result.status == "Success") {
+         this.DeleteProdRatingSuccessAlert();
+      }
+     })
+  }
+
+
+  reloadPage() {
+    window.location.reload()
+  }
 
 
 
@@ -193,6 +311,5 @@ export class ProductRatingPage implements OnInit {
     });
     await alert.present();
   }
-
 
 }

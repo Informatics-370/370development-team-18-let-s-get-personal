@@ -33,19 +33,24 @@ import { Response } from '../Models/response';
     }
   
     //get selected one
-    public GetProductRating(productRatingId:number){ 
+    public GetProductRating(productRatingId:string){ 
       return this.httpClient.get(`${this.apiUrl}ProductRating/GetProductRating/${productRatingId}`)
+      .pipe(map(result => result))
+    }
+    public GetExperienceRatingByCustomerID(customerID:any){ 
+      console.log(customerID)
+      return this.httpClient.get(this.apiUrl+"ExperienceRating/GetExperienceRatingByCustomerID/"+customerID)
       .pipe(map(result => result))
     }
   
     //edit
-    public UpdateProductRating(productRatingId:number, productRating:ProductRating){
+    public UpdateProductRating(productRatingId:string, productRating:ProductRating){
       return this.httpClient.put<Response>(`${this.apiUrl}ProductRating/UpdateProductRating/${productRatingId}`, productRating)
       .pipe(map(result => result))
     }
   
     //delete 
-    public DeleteProductRating(productRatingId:number){
+    public DeleteProductRating(productRatingId:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}ProductRating/DeleteProductRating/${productRatingId}`)
       .pipe(map(result => result))
     }

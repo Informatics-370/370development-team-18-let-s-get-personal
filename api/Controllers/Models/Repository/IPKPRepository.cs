@@ -249,6 +249,12 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.ToArrayAsync();
         }
 
+        public async Task<Experience_Rating[]> GetExperienceRatingByCustomerIDAsync(Guid customer_ID)
+        {
+            IQueryable<Experience_Rating> query = _appDbContext.Experience_Rating.Where(u=>u.Customer_ID==customer_ID);
+            return await query.ToArrayAsync();
+        }
+
         //refund policies
         public async Task<Refund_Policy[]> GetAllPoliciesAsync()
         {

@@ -35,6 +35,24 @@ namespace IPKP___API.Controllers
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
+
+        [HttpGet]
+        [Route("GetExperienceRatingByCustomerID" +
+            "/{customer_ID}")]
+        public async Task<IActionResult> GetExperienceRatingByCustomerID(Guid customer_ID)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetExperienceRatingByCustomerIDAsync(customer_ID);
+
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
         //get one
         [HttpGet]
         [Route("GetExperienceRating/{experience_Rating_ID}")]
@@ -67,7 +85,8 @@ namespace IPKP___API.Controllers
                 }
                 else
                 {
-                    existingRating.Customer.Customer_ID = exRating.Customer.Customer_ID;
+                     existingRating.Customer_ID = exRating.Customer_ID;
+                    //existingRating.Customer.Customer_ID = exRating.Customer.Customer_ID;
                     existingRating.Experience_Star_Rating = exRating.Experience_Star_Rating;
                     existingRating.Experience_Rating_ID = exRating.Experience_Rating_ID;
                     existingRating.Experience_Rating_Comments = exRating.Experience_Rating_Comments;
@@ -88,26 +107,27 @@ namespace IPKP___API.Controllers
         //add
         [HttpPost]
         [Route("AddExperienceRating")]
-        public async Task<IActionResult> AddExperienceRating(Experience_Rating exRating)
+        public async Task<IActionResult> AddExperienceRating(ExperienceRatingVM exRating)
         {
             try
             {
-
+               var results = await _IPKPRepository.GetCustomerDetailsAsync(new Guid(exRating.Customer_ID));
                 var newRating = new Experience_Rating
                 {
                     Experience_Rating_ID = new Guid(),
                     Experience_Star_Rating = exRating.Experience_Star_Rating,
-                    Customer = exRating.Customer,
+                    Customer_ID = new Guid(exRating.Customer_ID),
                     Experience_Rating_Comments = exRating.Experience_Rating_Comments
                 };
                 _IPKPRepository.Add(newRating);
+
                 await _IPKPRepository.SaveChangesAsync();
             }
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok(new Response { Status = "Success", Message = "Rating Added To Database." });
+            return Ok(new Response { Status = "Success", Message = " Experience Rating Added To Database." });
         }
 
         //delete

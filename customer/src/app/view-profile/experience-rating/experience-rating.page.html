@@ -1,33 +1,30 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Your Experience Rating</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-title>Your Experience Rating</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card-content>
+	<ion-card-content>
 		<ion-button id="addProdRatingmodal">Add Experience Rating</ion-button>
 		<!-- <ion-searchbar [(ngModel)]="filterTerm" (ionInput)="updateSearchResults()"></ion-searchbar>                     -->
 		<ion-grid>
 			<ion-row>
 				<ion-col>
-					 Experience Star Rating
+					Experience Star Rating
 				</ion-col>
 				<ion-col> Experience Rating Description</ion-col>
 				<ion-col></ion-col>
-        <ion-col></ion-col>
+				<ion-col></ion-col>
 			</ion-row>
 			<ion-row *ngFor="let item of expRatings">
-        <ion-col>{{item.experience_Star_Rating}}</ion-col>
+				<ion-col>{{item.experience_Star_Rating}}</ion-col>
 				<ion-col>{{item.experience_Rating_Comments}}</ion-col>
-				<!-- <ion-col> <ion-button (click)="updateExpRating(item.experience_Rating_ID)">Update Experience Rating</ion-button></ion-col>
-				<ion-col><ion-button (click)="DeleteExperienceRating(item.experience_Rating_ID)">Delete Experinec Rating</ion-button></ion-col> -->
+				<ion-col> <ion-button (click)="EditExpRating(item.experience_Rating_ID,true)">Update Experience Rating</ion-button></ion-col>
+				<ion-col><ion-button (click)="DeleteExperienceRating(item.experience_Rating_ID)">Delete Experience Rating</ion-button></ion-col>
 			</ion-row>
 		</ion-grid>
 	</ion-card-content>
-  
- 
-  
 </ion-content>
 
 <ion-footer>
@@ -46,7 +43,21 @@
 			</ion-header>
 			<ion-content class="ion-padding">
 				<form [formGroup]="AddForm">
+					<ion-row>
+						<ion-col *ngFor="let star of stars" (click)="rateExperience(star)">
+							<ion-icon [name]="star >= selectedRating ? 'star' : 'star-outline'"
+								formControlName="selectedRating"></ion-icon>
+						</ion-col>
+					</ion-row>
+					<p>Selected Rating: {{ selectedRating }}</p>
 					<ion-item>
+						<ion-label position="stacked">
+							<h3>Comment</h3>
+						</ion-label><br>
+						<ion-input type="text" formControlName="comment" placeholder="" required></ion-input>
+					</ion-item>
+<!--###################################################################################################################-->
+					<!--<ion-item>
 						<ion-label position="stacked">
 							<h3>5 Star Rating</h3>
 						</ion-label><br>
@@ -56,6 +67,40 @@
             <ion-label position="stacked">
 							<h3>Comment</h3>
 						</ion-label><br>
+						<ion-input type="text" formControlName="comment" placeholder="" required></ion-input>
+					</ion-item>-->
+				</form>
+			</ion-content>
+		</ng-template>
+	</ion-modal>
+
+	<ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+		<ng-template>
+			<ion-header>
+				<ion-toolbar>
+					<ion-buttons slot="start">
+						<ion-button (click)="canceleditmodal()">Cancel</ion-button>
+					</ion-buttons>
+					<ion-title>Update Experience Rating Details</ion-title>
+					<ion-buttons slot="end">
+						<ion-button (click)="confirmEditmodal()" [strong]="true">Confirm</ion-button>
+					</ion-buttons>
+				</ion-toolbar>
+			</ion-header>
+			<ion-content class="ion-padding">
+				<form [formGroup]="editForm">
+					<!-- (ngSubmit)="onSubmit(editForm)" -->
+					<ion-item>
+						<ion-label position="stacked">Experience Rating</ion-label><br>
+						<ion-row>
+							<ion-col *ngFor="let star of stars" (click)="rateExperience(star)">
+								<ion-icon [name]="star >= selectedRating ? 'star' : 'star-outline'"></ion-icon>
+							</ion-col>
+						</ion-row>
+						<p>Selected Rating: {{ selectedRating }}</p>
+					</ion-item>
+					<ion-item>
+						<ion-label position="stacked">Comment</ion-label><br>
 						<ion-input type="text" formControlName="comment" placeholder="" required></ion-input>
 					</ion-item>
 				</form>
