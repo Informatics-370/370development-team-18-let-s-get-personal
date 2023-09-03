@@ -7,9 +7,15 @@
 <ion-content [fullscreen]="true">
   <ion-grid id="grid">
     <ion-row>
-      <ion-col *ngFor="let item of policy">
-            <p>{{item.Refund_Policy.refund_Policy_Version}}</p>
-            <p>{{item.Refund_Policy.refund_Policy_Description}}</p>
+      <ion-col style="font-weight: bold;">Version number</ion-col>
+      <ion-col style="font-weight: bold;">Descrption</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let item of policy">
+      <ion-col >
+          {{item.refund_Policy_Version}}
+      </ion-col>
+      <ion-col>
+        {{item.refund_Policy_Description}}
       </ion-col>
     </ion-row>
   </ion-grid>
