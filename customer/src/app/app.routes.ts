@@ -90,6 +90,10 @@ export const routes: Routes = [
   {
     path: 'edit-personalization',
     loadComponent: () => import('./personalisation/edit-personalization/edit-personalization.page').then( m => m.EditPersonalizationPage)
+  },  {
+    path: 'view-refund-policy',
+    loadComponent: () => import('./faq/view-refund-policy/view-refund-policy.page').then( m => m.ViewRefundPolicyPage)
   },
+
 
 ];

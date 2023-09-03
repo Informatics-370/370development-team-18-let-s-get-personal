@@ -317,11 +317,11 @@ namespace IPKP___API.Controllers.Models.Repository
             return await query.ToArrayAsync();
         }
 
-        public async Task<Customer> GetUser(string username)
+       /* public async Task<Customer> GetUser(string username)
         {
             return await _appDbContext.Customers
                 .FirstOrDefaultAsync(x => x.Username == username);
-        }
+        }*/
 
         public object GetStockNames()
         {
@@ -454,7 +454,7 @@ namespace IPKP___API.Controllers.Models.Repository
 
 
 //orders
-        public async Task<Order[]> GetAllOrdersAsync()
+       /* public async Task<Order[]> GetAllOrdersAsync()
         {
             IQueryable<Order> query = _appDbContext.Orders;
             return await query.ToArrayAsync();
@@ -659,7 +659,7 @@ namespace IPKP___API.Controllers.Models.Repository
         {
             IQueryable<BestSellers> query = _appDbContext.BestSellers;
             return await query.ToArrayAsync();
-        }
+        }*/
 
  //Order line items       
         public async Task<Order_Line_Item> GetOrderLineItemByID(Guid orderlineitemID)

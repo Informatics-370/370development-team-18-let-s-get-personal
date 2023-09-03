@@ -107,6 +107,10 @@ export const routes: Routes = [
         loadComponent: () => import('../basket/make-payment/check-out/successful-payment/successful-payment.page').then( m => m.SuccessfulPaymentPage)
       },
       {
+        path: 'view-refund-policy',
+        loadComponent: () => import('../faq/view-refund-policy/view-refund-policy.page').then( m => m.ViewRefundPolicyPage)
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full',

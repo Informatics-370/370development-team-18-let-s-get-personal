@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule} from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-faq',
@@ -12,9 +13,15 @@ import { IonicModule } from '@ionic/angular';
 })
 export class FaqPage implements OnInit {
 
-  constructor() { }
+  constructor(private _router: Router) { }
 
   ngOnInit() {
   }
+  public ViewRefundPolicy() {
+    this._router.navigate(["/tabs/view-refund-policy"])
+  }
 
+  public ContactUs() {
+    this._router.navigate(["/tabs/contact-us"])
+  }
 }
