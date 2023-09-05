@@ -17,6 +17,7 @@
       <ion-row>
         <ion-col style="font-weight: bold;">Discount Name</ion-col>
         <ion-col style="font-weight: bold;">Discount Amount</ion-col>
+        <ion-col style="font-weight: bold;">Product Name</ion-col>
         <ion-col style="font-weight: bold;">Effective From Date</ion-col>
         <ion-col style="font-weight: bold;">Effective To Date</ion-col>
         <ion-col></ion-col>
@@ -24,7 +25,7 @@
       </ion-row>
       <ion-row *ngFor="let item of discounts">
         <ion-col>{{item.discount_Name}}</ion-col>
-        <ion-col>{{item.discount_Amount}}</ion-col>
+        <ion-col>R: {{item.discount_Amount}}</ion-col>
         <ion-col>{{item.effective_From_Date}}</ion-col>
         <ion-col>{{item.effective_To_Date}}</ion-col>
         <ion-col><ion-button (click)="DeleteDiscount(item.discount_ID)">Delete</ion-button></ion-col>
@@ -45,7 +46,8 @@
           </ion-buttons>
           <ion-title>Add Discount Policy Details</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmaddmodal()" [disabled]="AddForm.invalid"
+            [strong]="true">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -57,16 +59,41 @@
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Discount Amount</ion-label><br>
-              <ion-input type="price" formControlName="amount" placeholder="" required></ion-input>
+              <ion-input type="number" formControlName="amount" placeholder="" required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Product</ion-label><br>
+              <ion-select formControlName="productID" interface="alert">
+                <ion-select-option *ngFor="let product of Products" [value]="product.stock_Item_ID">{{ product.stock_Item_Name}}</ion-select-option>
+              </ion-select>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Effective From Date</ion-label><br>
-              <ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
+              <!--<ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
+            <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime>-->
+            <input type="date" formControlName="effectiveFromdate" placeholder="" required>
             </ion-item> 
+            <div *ngIf="AddForm.get('effectiveFromdate')?.hasError('required')" class="error-message">
+              <p style="color: crimson;">Date is required.</p>
+            </div>
+            <div *ngIf="AddForm.get('effectiveFromdate')?.hasError('dateInPast')" class="error-message">
+              <p style="color: crimson;">Date cannot be in the past.</p>
+            </div>
             <ion-item>
               <ion-label position="stacked">Effective To Date</ion-label><br>
-              <ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input>
-            </ion-item>                    
+              <!--<ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input
+              <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime>>-->
+              <input type="date" formControlName="effectiveTodate" placeholder="" required>
+            </ion-item>  
+            <div *ngIf="AddForm.get('effectiveTodate')?.hasError('required')" class="error-message">
+              <p style="color: crimson;">Date is required.</p>
+            </div>
+            <div *ngIf="AddForm.get('effectiveTodate')?.hasError('dateInPast')" class="error-message">
+              <p style="color: crimson;">Date cannot be in the past.</p>
+            </div> 
+            <div *ngIf="AddForm.get('effectiveTodate')?.hasError('dateB4ToDate')" class="error-message">
+              <p style="color: crimson;">Date cannot be in the past.</p>
+            </div>                 
         </form>
       </ion-content>
     </ng-template>
@@ -93,7 +120,7 @@
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Discount Amount</ion-label><br>
-            <ion-input type="text" formControlName="amount" ></ion-input>
+            <ion-input type="number" formControlName="amount" ></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Effective From Date</ion-label><br>

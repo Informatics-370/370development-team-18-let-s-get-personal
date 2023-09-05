@@ -98,17 +98,6 @@ export class ViewEmployeesPage implements OnInit {
     }
   }
 
-  /*if(result.status == "Error")
-    {
-      this.AddEmployeeErrorAlert()
-    }        
-  else if(result.status == "Success")
-    {
-      this.AddEmployeeSuccessAlert()
-      console.log(this.AddEmployee)
-    }
-}*/
-
   canceladdmodal() {
     this.modal.dismiss(null, 'cancel');
   }

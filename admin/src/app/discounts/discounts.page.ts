@@ -3,13 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ReactiveFormsModule,FormBuilder, } from '@angular/forms';
 import { Discount } from 'src/app/Models/discount';
 import { DiscountService } from 'src/app/Services/discount.service';
+import { StockItemDataService } from '../Services/stockitem.service';
 //for modal
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { StockItemViewModel } from '../ViewModels/stockitemsVM';
+import { Stock_Item } from '../Models/stockitem';
 
 @Component({
   selector: 'app-discounts',
@@ -20,20 +23,42 @@ import { OverlayEventDetail } from '@ionic/core/components';
 })
 export class DiscountsPage implements OnInit {
   discounts:Discount[]=[];
+  Products: StockItemViewModel[] = [];
+  stockItems: Stock_Item[] = [];
+
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DiscountService, private thisroute: Router, public modalCtrl: ModalController,
-    private alertController:AlertController ) { }
+    private alertController:AlertController, private _service:StockItemDataService,private formBuilder: FormBuilder ) { }
 
   AddForm: FormGroup = new FormGroup({
     name: new FormControl('',[Validators.required]),
     amount: new FormControl('',[Validators.required]),
-    effectiveFromdate: new FormControl('',[Validators.required]),
-    effectiveTodate: new FormControl('',[Validators.required])
+    effectiveFromdate: new FormControl('',[Validators.required,this.dateValidator]),
+    effectiveTodate: new FormControl('',[Validators.required,this.dateValidator,/*this.dateB4Validator*/ ]),
+    productID:new FormControl('',Validators.required)
   })
+
+  dateValidator(control: FormControl): { [key: string]: boolean } | null {
+    const inputDate = new Date(control.value);
+    const currentDate = new Date();
+
+    if (inputDate < currentDate) {
+      return { dateInPast: true }; // Return an error if the date is in the past
+    }
+
+    return null; // Validation passed
+  }
+
+  /*dateB4Validator(){
+//effect-to-date should not be before effective-from-date method
+
+  }*/
+
 
   ngOnInit(): void {
     this.getDiscounts();
+    this.GetStockItems();
   }
 
   getDiscounts(){
@@ -44,6 +69,14 @@ export class DiscountsPage implements OnInit {
     })
   }
 
+  public GetStockItems() {
+    this._service.GetStockItems().subscribe(result => {
+      this.Products = result as StockItemViewModel[];
+      console.log(this.Products)
+    })
+  }
+
+
   AddDiscount(){
     let addDiscount = new Discount();
 
@@ -51,6 +84,8 @@ export class DiscountsPage implements OnInit {
     addDiscount.discount_Amount = this.AddForm.value.amount;
     addDiscount.effective_From_Date = this.AddForm.value.effectiveFromdate;
     addDiscount.effective_To_Date = this.AddForm.value.effectiveTodate;
+    addDiscount.stock_Id=this.AddForm.value.productID;
+
 
     this.service.AddDiscount(addDiscount).subscribe(response => {
       if(response.status == "Error")

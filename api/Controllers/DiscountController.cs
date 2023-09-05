@@ -72,7 +72,8 @@ namespace IPKP___API.Controllers
                     Discount_Name = dm.Discount_Name,
                     Discount_Amount = dm.Discount_Amount,
                     Effective_From_Date = dm.Effective_From_Date,
-                    Effective_To_Date = dm.Effective_To_Date
+                    Effective_To_Date = dm.Effective_To_Date,
+                    stock_Id = dm.stock_Id
                 };
                 _IPKPRepository.Add(discount);
                 await _IPKPRepository.SaveChangesAsync();

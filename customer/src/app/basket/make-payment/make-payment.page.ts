@@ -66,7 +66,7 @@ export class MakePaymentPage implements OnInit {
   }
 
   AddDeliveryAddress(){
-   try{ let addDelivery = new DeliveryAddress();
+    let addDelivery = new DeliveryAddress();
     addDelivery.city = this.AddDelAddressForm.value.city;
     addDelivery.areaCode = this.AddDelAddressForm.value.areaCode;
     addDelivery.dwelling_Type = this.AddDelAddressForm.value.dwellingtype; 
@@ -78,6 +78,10 @@ export class MakePaymentPage implements OnInit {
       this.addedaddres = response as DeliveryAddress;
       this.AddDeliveryRequest();
       this.confirmAlert();
+      console.log(this.addedaddres)
+        let addressID = this.addedaddres.delivery_Address_ID
+        localStorage.setItem('addressID', JSON.stringify(addressID));
+        
       /*try
       {
         console.log(this.addedaddres)
@@ -89,13 +93,14 @@ export class MakePaymentPage implements OnInit {
       {
         this.addDeliveryErrorAlert()
       }*/
-    })
+    },(error) => {
+      // Handle registration error
+      this.confirmErrorAlert();
+      console.error('Login error:', error);
+    });
+  }
     
-  }
-  catch{
-      this.confirmErrorAlert()
-    }
-  }
+ 
 
   AddDeliveryRequest(){
     //let addressID = JSON.parse(JSON.stringify(localStorage.getItem('addressID')));    
@@ -168,7 +173,7 @@ export class MakePaymentPage implements OnInit {
   async confirmErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'There is an issue with confirming your adress!',
+      subHeader: 'There is an issue with confirming your address!',
       message: 'Please try again',
       buttons: [{
         text: 'OK',
