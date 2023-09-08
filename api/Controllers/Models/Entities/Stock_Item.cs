@@ -24,11 +24,6 @@ namespace IPKP___API.Controllers.Models.Entities
         [ForeignKey(nameof(Stock_Item_Colour_ID))]
         public Guid Stock_Item_Colour_ID { get; set; }
 
-        //[ForeignKey(nameof(Product_Rating_ID))]
-        //public Guid Product_Rating_ID { get; set; }
-        public List<Product_Rating> ratings { get; set; }
-
-      
         //Attributes
         [StringLength(255)]
         public string Stock_Item_Name { get; set; }
@@ -46,24 +41,15 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public int Stock_Item_Quantity { get; set; }
 
-        //Foreign Key Tables
-        //public Stock_Type Stock_Type { get; set; }
-
-        //public Stock_Image Stock_Image { get; set; }
-        
-        //public Stock_Item_Colour Stock_Item_Colour { get; set; }
-
-        //public Product_Rating Product_Rating { get; set; }
-
-        //Reverse properties
-        //public virtual ICollection<BestSellers> BestSellers { get; set; }
-        
-        //public virtual ICollection<Stock_Price_History> Stock_Price_History { get; set; }
-
-        //public virtual ICollection<Personalisation_Design> Personalisation_Design { get; set; }
+        public int Stock_Sale_Quantity { get; set; }
 
     }
 }
+
+
+//[ForeignKey(nameof(Product_Rating_ID))]
+//public Guid Product_Rating_ID { get; set; }
+//public List<Product_Rating> ratings { get; set; }
 
 
 //public Stock_Item()
@@ -75,3 +61,20 @@ namespace IPKP___API.Controllers.Models.Entities
 //public virtual ICollection<Stock_Image> Stock_Images { get; set; }
 
 //public virtual ICollection<Stock_Item_Colour> Stock_Item_Colours { get; set; }
+
+
+//Foreign Key Tables
+//public Stock_Type Stock_Type { get; set; }
+
+//public Stock_Image Stock_Image { get; set; }
+
+//public Stock_Item_Colour Stock_Item_Colour { get; set; }
+
+//public Product_Rating Product_Rating { get; set; }
+
+//Reverse properties
+//public virtual ICollection<BestSellers> BestSellers { get; set; }
+
+//public virtual ICollection<Stock_Price_History> Stock_Price_History { get; set; }
+
+//public virtual ICollection<Personalisation_Design> Personalisation_Design { get; set; }

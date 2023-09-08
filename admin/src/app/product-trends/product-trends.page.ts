@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { OrderService } from '../Services/order.service';
 import Chart from 'chart.js/auto';
-//import { Chart, ChartData } from 'chart.js';
+import { SalesService } from '../Services/sales.service';
 import { LineController,LineElement,PointElement, LinearScale,Title,CategoryScale,BarController,BarElement } from 'chart.js';
 Chart.register(LineController,LineElement,PointElement, LinearScale,Title,CategoryScale,BarController,BarElement);
 import html2canvas from 'html2canvas';
@@ -25,17 +25,17 @@ export class ProductTrendsPage implements OnInit {
   private labeldata: any[] = [];
   private realdata: any[] = [];
   private chartInfo: any;
-  constructor(private service: OrderService) { }  
+  constructor(private service: SalesService) { }  
   
   ngOnInit(): void {
-    this.service.GetAllOrders().subscribe(result => {
+    this.service.GetSalesGraph().subscribe(result => {
       this.chartInfo = result;
       console.log(this.chartInfo)
 
       if (this.chartInfo != null) {
         for (let i = 0; i < this.chartInfo.length; i++) {
           this.labeldata.push(this.chartInfo[i].stock_Item_Name);
-          this.realdata.push(this.chartInfo[i].order_Line_Item_Quantity);
+          this.realdata.push(this.chartInfo[i].stock_Sale_Quantity);
           //this.colordata.push(this.chartInfo[i].colorcode);
         }
         this.createChart(this.labeldata, this.realdata); //, this.colordata
@@ -77,9 +77,10 @@ export class ProductTrendsPage implements OnInit {
       let fileWidth = 208;
       let fileHeight = (canvas.height * fileWidth) / canvas.width;      
       let position = 10;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
-          
-      PDF.save('IPKP-Product-Trends.pdf');
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);    
+
+      let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+      PDF.save(user + ' IPKP-Product-Trends.pdf');
     });
   }
 

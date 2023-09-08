@@ -10,6 +10,7 @@ namespace IPKP___API.Controllers.Models.Entities
     {
         [Key]
         public Guid Payment_ID { get; set; }
+
         public double Payment_Amount { get; set; }
 
         public int Sale_Quantity { get; set; }

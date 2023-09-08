@@ -21,6 +21,7 @@ namespace IPKP___API.Controllers.Models.Entities
         public string Order_Status { get; set; }
         public int Order_Line_Item_Quantity { get; set; }
         public double Order_Line_Item_Total_Price { get; set; }
+        
 
         //public virtual Order_Request Order_Request { get; set; }
         //public virtual Personalisation_Design Personalisation_Design { get; set; }

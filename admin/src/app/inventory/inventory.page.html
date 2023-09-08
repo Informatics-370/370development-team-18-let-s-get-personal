@@ -18,7 +18,8 @@
       <ion-button (click)="stockcoloursnav()">Stock Colours</ion-button>
       <ion-button (click)="stockimagesnav()">Stock Images</ion-button>
       <ion-button (click)="stocktakenav()">Preform Stock Take</ion-button>
-      <ion-button (click)="openPDF()" >Download Inventory PDF</ion-button>
+      <!-- <ion-button (click)="openPDF()" >Download Inventory PDF</ion-button> -->
+      <ion-button (click)="exportToExcel()" >Download Inventory Excel</ion-button>
   </ion-buttons>
   </ion-toolbar>
   
@@ -49,7 +50,7 @@
       </ion-row>
       <ion-row *ngFor="let item of searchedinventory" class="cell-class">
         <ion-col>{{item.stock_Item_Name}}</ion-col>
-        <ion-col>{{item.stock_Item_Price}}</ion-col>
+        <ion-col>R {{item.stock_Item_Price}}.00</ion-col>
         <ion-col>{{item.stock_Item_Size}}</ion-col>
         <ion-col>{{item.stockTypeName}}</ion-col>
         <ion-col>{{item.stockColourName}}</ion-col>

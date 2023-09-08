@@ -4,12 +4,19 @@
   </ion-toolbar>
 </ion-header>
 
+
+
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">order-requests</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-content *ngIf="orderRequests.length == 0">
+    <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
+      <p>No New Order Requests</p>
+    </div>
+  </ion-content>
   <ion-button (click)="openPDF()" >Download Order Request PDF</ion-button>
   <div id="htmlOrderRequestData">
     <ion-grid>
@@ -40,8 +47,8 @@
         <ion-col> <img src='data:image/png;base64,{{item.image_File}}'> </ion-col>
         <ion-col> {{item.design_Text}} </ion-col>
         <ion-col> {{item.order_Request_Date}}  </ion-col>
-        <ion-col><ion-button (click)="AcceptOrder(item.order_Line_Item_ID)" >Accept</ion-button></ion-col>
-        <ion-col><ion-button (click)="DeclineOrder(item.order_Line_Item_ID)">Decline</ion-button></ion-col>
+        <ion-col><ion-button (click)="AcceptOrder(item.order_Line_Item_ID)">In Progress</ion-button></ion-col>
+        <!-- <ion-col><ion-button (click)="DeclineOrder(item.order_Line_Item_ID)">Decline</ion-button></ion-col> -->
       </ion-row>
     </ion-grid>
   </div>

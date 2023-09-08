@@ -266,6 +266,34 @@ namespace IPKP___API.Controllers.Models.Repository
                 ).ToList();
             return stockitems;
         }
+        public object GetStockList()
+        {
+            List<ExcelVM> stockitems = (
+                from c in _appDbContext.Stock_Item_Colours.ToList()
+                join s in _appDbContext.Stock_Items.ToList()
+                on c.Stock_Item_Colour_ID equals s.Stock_Item_Colour_ID
+                join t in _appDbContext.Stock_Types.ToList()
+                on s.Stock_Type_ID equals t.Stock_Type_ID
+                join i in _appDbContext.Stock_Images.ToList()
+                on s.Stock_Image_ID equals i.Stock_Image_ID
+
+                select new ExcelVM
+                {
+                    Stock_Item_Name = s.Stock_Item_Name,
+                    Stock_Item_Price = s.Stock_Item_Price,
+                    Stock_Item_Size = s.Stock_Item_Size,
+                    Stock_Item_Quantity = s.Stock_Item_Quantity,
+
+                    Inventory_Comments = s.Inventory_Comments,
+                    Inventory_Date = s.Inventory_Date,
+
+                    Stock_Type_Name = t.Stock_Type_Name,
+                    Stock_Image_Name = i.Stock_Image_Name,
+                    Stock_Colour_Name = c.Stock_Item_Colour_Name,
+                }
+                ).ToList();
+            return stockitems;
+        }
 
 //stock types
         public async Task<Stock_Type[]> GetAllStockTypesAsync()
@@ -740,17 +768,14 @@ namespace IPKP___API.Controllers.Models.Repository
         public object GetSalesReport()
         {
             List<SalesVM> sales = (
-                from orli in _appDbContext.Order_Line_Item.ToList()
-                join pd in _appDbContext.Personalisation_Designs.ToList()
-                on orli.Personalisation_ID equals pd.Personalisation_Design_ID
-                join s in _appDbContext.Stock_Items.ToList()
-                on pd.Stock_Item_ID equals s.Stock_Item_ID
-
+                from s in _appDbContext.Stock_Items.ToList() 
+                join p in _appDbContext.Payments.ToList()
+                on s.Stock_Item_ID equals p.Stock_Item_ID
                 select new SalesVM
                 {
                     Stock_Item_Name = s.Stock_Item_Name,
-                    Order_Line_Item_Quantity = orli.Order_Line_Item_Quantity,
-                    //Stock_Item_Quantity = s.Stock_Item_Quantity,
+                    Order_Line_Item_Quantity = p.Sale_Quantity,
+
                 }
                 ).ToList();
 
@@ -761,7 +786,6 @@ namespace IPKP___API.Controllers.Models.Repository
             IQueryable<Payment> query = _appDbContext.Payments;
             return await query.ToArrayAsync();
         }
-
         public object GetCustomerSales(string username)
         {
             List<SalesVM> sales = (
@@ -783,7 +807,7 @@ namespace IPKP___API.Controllers.Models.Repository
             return query;
         }
 
-        //write off
+//write off
         public object GetWrittenOffItems()
         {
             List<WriteOffVM> writeoffs = (

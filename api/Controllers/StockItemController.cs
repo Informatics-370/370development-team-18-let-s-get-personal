@@ -158,31 +158,5 @@ namespace IPKP___API.Controllers
             return Ok(new Response { Status = "Success", Message = "Stock Item  Removed From Database." });
         }
 
-        //decrease quantity
-        [HttpPut]
-        [Route("DecreaseStockItemQuantity/{stock_Item_ID}")]
-        public async Task<IActionResult> DecreaseStockItemQuantity(Guid stock_Item_ID, StockItemViewModel sivm)
-        {
-            try
-            {
-                var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
-                //var orderQuantity = AddOrderLineItemAsync();
-
-                if (existingStockItem == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
-
-                existingStockItem.Stock_Item_Quantity = sivm.Stock_Item_Quantity;
-
-                if (await _IPKPRepository.SaveChangesAsync())
-                {
-                    return Ok(new Response { Status = "Success", Message = "Stock Item Updated Successfully" });
-                }
-            }
-            catch (Exception)
-            {
-                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-            }
-            return Ok(new Response { Status = "Success", Message = "Stock Item Saved To Database." });
-        }
-
     }
 }

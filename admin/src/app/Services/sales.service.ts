@@ -28,4 +28,9 @@ export class SalesService {
     return this.httpClient.get(`${this.apiUrl}Sales/GetAllSales`)
     .pipe(map(result => result))
   } 
+
+  public GetSalesGraph(): Observable<any>{ 
+    return this.httpClient.get(`${this.apiUrl}Sales/GetSalesGraph`)
+    .pipe(map(result => result))
+  } 
 }

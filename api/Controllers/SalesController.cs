@@ -24,6 +24,10 @@ namespace IPKP___API.Controllers
         {
             try
             {
+                var stockitem = await _IPKPRepository.GetStockItemDetailsAsync(sale.Stock_Item_ID);
+                stockitem.Stock_Item_Quantity = stockitem.Stock_Item_Quantity - sale.Sale_Quantity;
+                stockitem.Stock_Sale_Quantity = stockitem.Stock_Sale_Quantity + sale.Sale_Quantity;
+
                 var newsale = new Payment
                 {
                     Payment_ID = new Guid(),
@@ -31,7 +35,8 @@ namespace IPKP___API.Controllers
                     Payment_Amount = sale.Payment_Amount,
                     Sale_Quantity = sale.Sale_Quantity,
                     Customer_UserName = sale.Customer_UserName,
-                    Stock_Item_ID =sale.Stock_Item_ID,
+                    Stock_Item_ID = sale.Stock_Item_ID,                   
+                    
                 };
 
                 _IPKPRepository.Add(newsale);
@@ -74,6 +79,26 @@ namespace IPKP___API.Controllers
             {
                 var results = _IPKPRepository.GetCustomerSales(customer_UserName);
                 if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Customer" + customer_UserName });
+
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetSalesGraph")]
+        public async Task<IActionResult> GetSalesGraph()
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetAllStockItemsAsync();
+
+
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item Colour" });
+
 
                 return Ok(results);
             }
