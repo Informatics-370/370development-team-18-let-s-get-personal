@@ -6,17 +6,29 @@
 
 <ion-content [fullscreen]="true">
 	<ion-card-content>
+		<ion-grid>
+			<ion-row>
+				<ion-col style="font-weight: bold;">Product</ion-col>
+				<ion-col style="font-weight: bold;">Quantity</ion-col>
+				<ion-col style="font-weight: bold;">Date Completed</ion-col>
+				<ion-col style="font-weight: bold;"></ion-col>
+			</ion-row>
+			<ion-row *ngFor="let item of orders">
+				<ion-col>{{item.stock_Item_Name}}</ion-col>
+				<ion-col>{{item.order_Line_Item_Quantity}}</ion-col>
+				<ion-col>{{item.order_Completed_Date}}</ion-col>
+				<ion-col><ion-button (click)="AddRating(item.stock_Item_ID,true, item.stock_Item_Name)">Add Product Rating</ion-button></ion-col>
+			</ion-row>
+		</ion-grid>
+	</ion-card-content>
+	<ion-card-content>
 		<ion-button id="addProdRatingmodal">Add Product Rating</ion-button>
 		<!--<ion-searchbar [(ngModel)]="filterTerm" (ionInput)="updateSearchResults()"></ion-searchbar>  -->
 		<ion-grid>
 			<ion-row>
-				<ion-col style="font-weight: bold;">
-					<h2>Product Name</h2>
-				</ion-col>
-				<ion-col>
-					Product Star Rating
-				</ion-col>
-				<ion-col> Product Rating Comment</ion-col>
+				<ion-col style="font-weight: bold;">Product Name</ion-col>
+				<ion-col style="font-weight: bold;"> Product Star Rating </ion-col>
+				<ion-col style="font-weight: bold;"> Product Rating Comment</ion-col>
 				<ion-col></ion-col>
 				<ion-col></ion-col>
 			</ion-row>
@@ -32,7 +44,7 @@
 </ion-content>
 
 <ion-footer>
-	<ion-modal trigger="addProdRatingmodal" (willDismiss)="onWillDismiss($event)">
+	<ion-modal [isOpen]="isAddModalOpen" (willDismiss)="onWillDismiss($event)"> <!-- trigger="addProdRatingmodal" -->
 		<ng-template>
 			<ion-header>
 				<ion-toolbar>
@@ -51,7 +63,7 @@
 						<ion-label position="stacked">
 							<h3>Product Name</h3>
 						</ion-label><br>
-						<ion-text *ngFor="let item of stockItems">{{item.stock_Item_Name}}</ion-text>
+						<ion-text>{{stockitemName}}</ion-text>
 					</ion-item>
 					<ion-row>
 						<ion-col *ngFor="let star of stars" (click)="rateExperience(star)">

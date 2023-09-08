@@ -25,7 +25,7 @@
         <ion-button (click)="incrementQuantity(item)">+</ion-button>
       </ion-label>
 	  <!-- id="addPersonalizationmodal" -->
-      <ion-button id="addPersonalizationmodal" (click)="personalize(item.stock_Item.stock_Item_ID)">Personalize Item</ion-button>
+      <ion-button (click)="personalize(item.stock_Item.stock_Item_ID,true)">Personalize Item</ion-button>
     </ion-item>
   </ion-list>
   <ion-button (click)="clearBasket()">Empty Basket</ion-button>
@@ -45,8 +45,7 @@
 
 
 <ion-footer>
-
-	<ion-modal trigger="addPersonalizationmodal" (willDismiss)="onWillDismiss($event)">
+	<ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
 		<ng-template>
 			<ion-header>
 				<ion-toolbar>

@@ -30,6 +30,7 @@ export class OrderRequestsPage implements OnInit {
     this.presentLoading()
     this.service.GetRequestedOrders().subscribe(result =>{
       this.orderRequests = result as OrderLineItemVM[]
+      var date = result.order_Request_Date
       console.log(this.orderRequests)
     })
   }

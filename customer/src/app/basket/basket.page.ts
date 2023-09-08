@@ -12,16 +12,11 @@ import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
 import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
 import jwt_decode from 'jwt-decode';
-
-
-//for modal
-
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Design_Image } from '../Models/designimage';
 import { Design_Text } from '../Models/designtext';
 import { Design_Image_Line_Item } from '../Models/designimagelineitem';
-
 
 @Component({
   selector: 'app-basket',
@@ -143,18 +138,31 @@ export class BasketPage implements OnInit {
     //this.AddImageToImageLineItem()
     // this.AddPersonalisation()
     //this._router.navigate(["/tabs/make-payment"])
-    this.CheckUser()
+
+    this.CheckPersonalised()
+    //this.CheckUser()
+  }
+
+  CheckPersonalised(){
+    let personalised = JSON.parse(JSON.stringify(localStorage.getItem('personalisedID')));
+    if (personalised == null) {  //  [==="User"]
+      this.PleasePersonalizeAlert()
+    }
+    else {
+      this.CheckUser()
+    }
   }
 
   CheckUser() {
     this.user = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
-    if (this.user === "User") {  //  [==="User"]
+    if (this.user == "User") {  //  [==="User"]
       this._router.navigate(['./tabs/make-payment']);
     }
     else {
       this._router.navigate(['./tabs/login']);
     }
   }
+
   //localStorage.setItem('roles', token[roleLongName]);
   /*==============PERSONALIZATION===========================================*/
   AddTextForm: FormGroup = new FormGroup({
@@ -175,9 +183,11 @@ export class BasketPage implements OnInit {
 
   uploadedImage!: Design_Image;
   uploadedText!: Design_Text;
+  isModalOpen = false;
 
-  public personalize(id: any) {
+  public personalize(id: any, isOpen: boolean) {
     localStorage.setItem("stockId", id);
+    this.isModalOpen = isOpen;
   }
 
   uploadFile = (files: any) => {
@@ -330,6 +340,21 @@ export class BasketPage implements OnInit {
       header: 'We are sorry!',
       subHeader: 'Your personalization Image was not captured.',
       message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
+    });
+    await alert.present();
+  }
+
+  async PleasePersonalizeAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Add Your Personalisation!',
+      // subHeader: 'Your personalization was captured.',
       buttons: [{
         text: 'OK',
         role: 'cancel',

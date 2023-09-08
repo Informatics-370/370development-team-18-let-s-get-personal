@@ -79,28 +79,43 @@ export class DeliveriesPage implements OnInit {
       localStorage.setItem('order_Line_Item_ID', JSON.stringify(order_Line_Item_ID));
       this.service.ChangeStatusToRecieved(DeliveryId).subscribe(result =>{
         if(result.status == "Success"){
-          console.log(result);
-          
+          console.log(result);          
         }
       }) 
-      this.addToOrder(); 
+      this.getOrder()
     }
     catch{
       this.ReceiveDeliveryErrorAlert
     }
   }
 
-  orderlineitem: OrderLineItemVM = new OrderLineItemVM();
+  orderlineitem: OrderLineItemVM = new OrderLineItemVM()
 
-  addToOrder(){
-    let order_Line_Item_ID = JSON.parse(localStorage.getItem('order_Line_Item_ID') as string)
-    try{
-      this.orderservice.GetOrderByID(order_Line_Item_ID).subscribe(result =>{
-        console.log(result);
-        this.orderlineitem = result as OrderLineItemVM;
-      })  
+  getOrder(){
+    try
+    {
+      let order_Line_Item_ID = JSON.parse(localStorage.getItem('order_Line_Item_ID') as string)
+      console.log(order_Line_Item_ID);
+      this.orderservice.GetOrderByID(order_Line_Item_ID).subscribe(result =>{        
+        this.orderlineitem = result as OrderLineItemVM
+        console.log(this.orderlineitem);
 
-      let order = new Order();
+        let customer = this.orderlineitem.customer_ID
+        localStorage.setItem('customer', JSON.stringify(customer));
+        console.log(customer);
+        this.addToOrder(); 
+      })        
+    }
+    catch{
+      this.AddOrderErrorAlert()
+    }    
+  }
+
+  addToOrder(){    
+    try
+    {
+      let order = new Order;
+      console.log(this.orderlineitem.customer_ID)
         order.customer_ID = this.orderlineitem.customer_ID
         order.order_Quantity = this.orderlineitem.order_Line_Item_Quantity
         order.stock_Item_ID = this.orderlineitem.stock_Item_ID
@@ -108,7 +123,7 @@ export class DeliveriesPage implements OnInit {
           if(response.status == "Success")
           {
             console.log(response);
-            this.proccessOrder();
+            //this.proccessOrder();
           }
           else
           {
@@ -122,6 +137,7 @@ export class DeliveriesPage implements OnInit {
   }
 
   proccessOrder(){
+    //delete from orderline 
     try
     {
       let order_Line_Item_ID = JSON.parse(localStorage.getItem('order_Line_Item_ID') as string)

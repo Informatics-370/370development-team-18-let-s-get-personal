@@ -6,7 +6,7 @@ export class ProductRating{
     //customer!: Customer
     customer_ID!:String;
     stock_Item!: Stock_Item
-
+    stock_Item_ID!: string
     product_Star_Rating!: Number 
     product_Rating_Comments!: String
 }

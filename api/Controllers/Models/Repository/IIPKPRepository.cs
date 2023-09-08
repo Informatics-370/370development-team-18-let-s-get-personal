@@ -41,19 +41,26 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Stock_Type[]> GetAllStockTypesAsync();
         Task<Stock_Item_Colour> GetStockItemColourDetailsAsync(Guid stock_Item_Colour_ID);
         Task<Stock_Item_Colour[]> GetAllStockItemColoursAsync();
-        Task<Product_Rating> GetProductRatingDetailsAsync(Guid product_Rating_ID);
-        Task<Product_Rating[]> GetAllProductRatingsAsync();
+        
         Task<Delivery_Company> GetDeliveryCompanyDetailsAsync(Guid delivery_Company_ID);
         Task<Delivery_Company[]> GetAllDeliveryCompaniesAsync();
         Task<Personalisation_Design> GetPersonalisationAsync(Guid personalisation_ID);
         Task<Order[]> GetAllOrdersAsync();
         Task<Order> GetOrderDetailsAsync(Guid order_ID);
+        object GetOrderByCustomerAsync(Guid customer_ID);
         Task<Order_Request> GetOrderRequestAsync(Guid order_Request_ID);
         Task<Order_Request[]> GetAllOrderRequestsAsync();
+
+        object GetRatingPerProduct();
+        Task<Product_Rating> GetProductRatingDetailsAsync(Guid product_Rating_ID);
+        Task<Product_Rating[]> GetAllProductRatingsAsync();
+        object GetProductRatingByCustomerAsync(Guid customer_ID);
+        object GetProductRatings();
 
         Task<Experience_Rating[]> GetAllExperienceRatings();
         Task<Experience_Rating[]> GetExperienceRatingByCustomerIDAsync(Guid customer_ID);
         Task<Experience_Rating> GetExperienceRatingAsync(Guid Experience_Rating_ID);
+
         Task<Refund_Policy> GetPolicyAsync(Guid Refund_Policy_Id);
         Task<Refund_Policy[]> GetAllPoliciesAsync();
         Task<Discount[]> GetAllDiscountsAsync();
@@ -74,6 +81,7 @@ namespace IPKP___API.Controllers.Models.Repository
 
         object GetSalesReport();
         Task<Payment[]> GetAlPaymentsAsync();
+        object GetCustomerSales(string username);
 
         object GetWrittenOffItems();
     }

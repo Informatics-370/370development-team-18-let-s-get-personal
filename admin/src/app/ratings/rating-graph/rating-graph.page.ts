@@ -2,7 +2,6 @@ import { AfterViewInit, Component, ElementRef, ViewChild, OnInit } from '@angula
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { OrderService } from '../Services/order.service';
 import Chart from 'chart.js/auto';
 //import { Chart, ChartData } from 'chart.js';
 import { LineController,LineElement,PointElement, LinearScale,Title,CategoryScale,BarController,BarElement } from 'chart.js';
@@ -11,36 +10,39 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 export type jsPDFDocument = any;
 type Opts = { [key: string]: string | number }
+import { ProductRatingDataService } from 'src/app/Services/productrating.service';
+import { ProductRatingVM } from 'src/app/ViewModels/productratingVM';
+
 @Component({
-  selector: 'app-product-trends',
-  templateUrl: './product-trends.page.html',
-  styleUrls: ['./product-trends.page.scss'],
+  selector: 'app-rating-graph',
+  templateUrl: './rating-graph.page.html',
+  styleUrls: ['./rating-graph.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class ProductTrendsPage implements OnInit {
+export class RatingGraphPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
   data: any;
   chart: any = []
   private labeldata: any[] = [];
   private realdata: any[] = [];
   private chartInfo: any;
-  constructor(private service: OrderService) { }  
-  
-  ngOnInit(): void {
-    this.service.GetAllOrders().subscribe(result => {
+  constructor(private service: ProductRatingDataService) { }
+
+  ngOnInit() {
+    this.service.GetProductRatings().subscribe(result => {
       this.chartInfo = result;
       console.log(this.chartInfo)
 
       if (this.chartInfo != null) {
         for (let i = 0; i < this.chartInfo.length; i++) {
           this.labeldata.push(this.chartInfo[i].stock_Item_Name);
-          this.realdata.push(this.chartInfo[i].order_Line_Item_Quantity);
+          this.realdata.push(this.chartInfo[i].product_Star_Rating);
           //this.colordata.push(this.chartInfo[i].colorcode);
         }
         this.createChart(this.labeldata, this.realdata); //, this.colordata
       }
-    });    
+    });
   }
 
   createChart(labeldata: any, realdata: any) //, colordata: any
@@ -51,7 +53,7 @@ export class ProductTrendsPage implements OnInit {
         labels: labeldata,
         datasets: [
           {
-            label: 'No. of sales',
+            label: 'Rating',
             data: realdata,
             //backgroundColor: colordata,
             barThickness: 40,

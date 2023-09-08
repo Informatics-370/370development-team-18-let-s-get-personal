@@ -19,7 +19,8 @@ export class LoginPage implements OnInit {
   user: string = ""
   data = { username: '', password: '', token: [] };
   customer!: Customer
-  constructor(private authService: AuthenticationService, private router: Router,private alertController: AlertController) { }
+  constructor(private authService: AuthenticationService, private router: Router,
+    private alertController: AlertController) { }
 
   ngOnInit(): void {
     this.CheckUser()
