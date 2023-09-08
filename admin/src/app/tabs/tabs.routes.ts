@@ -127,6 +127,14 @@ export const routes: Routes = [
         loadComponent: () => import('../deliveries/successful-deliveries/successful-deliveries.page').then( m => m.SuccessfulDeliveriesPage)
       },
       {
+        path: 'ratings',
+        loadComponent: () => import('../ratings/ratings.page').then( m => m.RatingsPage)
+      },
+      {
+        path: 'rating-graph',
+        loadComponent: () => import('../ratings/rating-graph/rating-graph.page').then( m => m.RatingGraphPage)
+      },
+      {
         path: '',
         redirectTo: '/tabs/login',
         pathMatch: 'full',

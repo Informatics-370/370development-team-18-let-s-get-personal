@@ -65,5 +65,23 @@ namespace IPKP___API.Controllers
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
+
+        [HttpGet]
+        [Route("GetPreviousOrders/{customer_UserName}")]
+        public object GetPreviousOrdersAsync(string customer_UserName)
+        {
+            try
+            {
+                var results = _IPKPRepository.GetCustomerSales(customer_UserName);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Customer" + customer_UserName });
+
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
     }
 }

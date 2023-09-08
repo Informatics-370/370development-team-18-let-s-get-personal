@@ -23,4 +23,9 @@ export class SalesService {
     return this.httpClient.post<Response>(`${this.apiUrl}Sales/AddSale`, payment)
     .pipe(map(result => result))
   }
+
+  public getPreviousOrders(customer_UserName:string){
+    return this.httpClient.get(`${this.apiUrl}Sales/GetPreviousOrders/${customer_UserName}`)
+    .pipe(map(result => result))
+  }
 }

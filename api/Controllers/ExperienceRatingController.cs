@@ -37,8 +37,7 @@ namespace IPKP___API.Controllers
         }
 
         [HttpGet]
-        [Route("GetExperienceRatingByCustomerID" +
-            "/{customer_ID}")]
+        [Route("GetExperienceRatingByCustomerID/{customer_ID}")]
         public async Task<IActionResult> GetExperienceRatingByCustomerID(Guid customer_ID)
         {
             try
@@ -111,12 +110,12 @@ namespace IPKP___API.Controllers
         {
             try
             {
-               var results = await _IPKPRepository.GetCustomerDetailsAsync(new Guid(exRating.Customer_ID));
+               //var results = await _IPKPRepository.GetCustomerDetailsAsync(new Guid(exRating.Customer_ID));
                 var newRating = new Experience_Rating
                 {
                     Experience_Rating_ID = new Guid(),
                     Experience_Star_Rating = exRating.Experience_Star_Rating,
-                    Customer_ID = new Guid(exRating.Customer_ID),
+                    Customer_ID = exRating.Customer_ID,
                     Experience_Rating_Comments = exRating.Experience_Rating_Comments
                 };
                 _IPKPRepository.Add(newRating);

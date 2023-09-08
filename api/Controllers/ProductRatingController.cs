@@ -11,24 +11,43 @@ using System.Threading.Tasks;
 
 namespace IPKP___API.Controllers
 {
-  [Route("api/[controller]")]
-  [ApiController]
-  public class ProductRatingController : ControllerBase
-  {
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductRatingController : ControllerBase
+    {
         private readonly IIPKPRepository _IPKPRepository;
         public ProductRatingController(IIPKPRepository iPKPRepository)
         {
           _IPKPRepository = iPKPRepository;
         }
 
+        //get previous orders
         [HttpGet]
-        [Route("GetAllProductRatings")]
-        public async Task<IActionResult> GetAllProductRatingsAsync()
+        [Route("GetPreviousOrders/{customer_ID}")]
+        public object GetPreviousOrdersAsync(Guid customer_ID)
         {
             try
             {
-                var results = await _IPKPRepository.GetAllProductRatingsAsync();
-                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Product Rating"  });
+                var results =  _IPKPRepository.GetOrderByCustomerAsync(customer_ID);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Customer" + customer_ID });
+
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAllProductRatings")]
+        public object GetAllProductRatingsAsync()
+        {
+            try
+            {
+                var results = _IPKPRepository.GetProductRatings();
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Any Product Ratings"  });
 
                 return Ok(results);
             }
@@ -55,18 +74,34 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetProductRatingByCustomerID/{customer_ID}")]
+        public object GetProductRatingByCustomerID(Guid customer_ID)
+        {
+            try
+            {
+                var results =  _IPKPRepository.GetProductRatingByCustomerAsync(customer_ID);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Customer" + customer_ID });
+
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
         [HttpPost]
         [Route("AddProductRating")]
-        public async Task<IActionResult> AddProductRatingAsync(ProductRatingViewModel prvm)
+        public async Task<IActionResult> AddProductRatingAsync(Product_Rating prvm)
         {
             var productRating = new Product_Rating
             {
                 Product_Rating_ID = new Guid(),
-                Customer = prvm.Customer_ID,
-                //Stock_Item = prvm.St,
+                Customer_ID = prvm.Customer_ID,
                 Product_Star_Rating = prvm.Product_Star_Rating,
                 Product_Rating_Comments = prvm.Product_Rating_Comments,
-                stock=prvm.Stock_Item_ID
+                Stock_Item_ID = prvm.Stock_Item_ID
             };
             try
             {
@@ -128,5 +163,11 @@ namespace IPKP___API.Controllers
             }
             return Ok(new Response { Status = "Success", Message = "Product Rating Removed From Database." });
         }
-      }
+
+        //Get product ratings per customer
+
+
+
+    }
 }
+

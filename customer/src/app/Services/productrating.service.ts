@@ -19,37 +19,32 @@ import { Response } from '../Models/response';
   
     constructor(private httpClient: HttpClient) { 
     }
-  
-    //return http.loacalhost:5116/api/Course/GetAllStockTypes
-    public GetProductRatings(): Observable<any>{ 
-      return this.httpClient.get(`${this.apiUrl}ProductRating/GetAllProductRatings`)
+ 
+    public getPreviousOrders(customerID:string){
+      return this.httpClient.get(`${this.apiUrl}ProductRating/GetPreviousOrders/${customerID}`)
       .pipe(map(result => result))
     }
-  
-    //add
     public AddProductRating(productRating:ProductRating){
       return this.httpClient.post<Response>(`${this.apiUrl}ProductRating/AddProductRating`, productRating)
       .pipe(map(result => result))
     }
   
-    //get selected one
     public GetProductRating(productRatingId:string){ 
       return this.httpClient.get(`${this.apiUrl}ProductRating/GetProductRating/${productRatingId}`)
       .pipe(map(result => result))
     }
-    public GetExperienceRatingByCustomerID(customerID:any){ 
+
+    public GetProductRatingByCustomerID(customerID:any){ 
       console.log(customerID)
-      return this.httpClient.get(this.apiUrl+"ExperienceRating/GetExperienceRatingByCustomerID/"+customerID)
+      return this.httpClient.get(`${this.apiUrl}ProductRating/GetProductRating/${customerID}`)
       .pipe(map(result => result))
     }
   
-    //edit
     public UpdateProductRating(productRatingId:string, productRating:ProductRating){
       return this.httpClient.put<Response>(`${this.apiUrl}ProductRating/UpdateProductRating/${productRatingId}`, productRating)
       .pipe(map(result => result))
     }
-  
-    //delete 
+
     public DeleteProductRating(productRatingId:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}ProductRating/DeleteProductRating/${productRatingId}`)
       .pipe(map(result => result))

@@ -1,0 +1,18 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>ratingGraph</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">ratingGraph</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-button (click)="openPDF()">Download Trend Chart</ion-button>
+
+  <div id="TrendsData" class="chart-container">
+    <canvas id="MyChart" >{{ chart }}</canvas>
+  </div>
+</ion-content>

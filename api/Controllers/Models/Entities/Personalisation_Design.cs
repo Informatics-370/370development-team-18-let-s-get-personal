@@ -23,7 +23,8 @@ namespace IPKP___API.Controllers.Models.Entities
 
         [ForeignKey(nameof(Stock_Item_ID))]
         public Guid Stock_Item_ID { get; set; }
-        public virtual Stock_Item Stock_Item { get; set; }        
+        public virtual Stock_Item Stock_Item { get; set; }
+        //public List<Stock_Item> stockitems { get; set; } 
 
         //reverse properties
         public virtual ICollection<Order_Line_Item> Order_Line_Item { get; set; }

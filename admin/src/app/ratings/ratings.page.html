@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Ratings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">ratings</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-button (click)="navRatingGraph()">Ratings Graph</ion-button>
+  <ion-row>
+    
+    <ion-col> <!-- Experience -->
+      <ion-row>Experience Ratings</ion-row>
+      <ion-row>
+        <ion-col style="font-weight: bold;">Customer Username</ion-col>
+        <ion-col style="font-weight: bold;">Rating Comments</ion-col>
+        <ion-col style="font-weight: bold;">Rating</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of experienceratings">
+        <ion-col>{{item.customer_UserName}}</ion-col>
+        <ion-col>{{item.experience_Rating_Comments}}</ion-col>
+        <ion-col> <ion-icon name="star-outline"></ion-icon> {{item.experience_Star_Rating}}</ion-col>
+      </ion-row>
+
+    </ion-col>
+
+    <ion-col> <!-- Product -->
+      <ion-row>Product Ratings</ion-row>
+      <ion-row>
+        <ion-col style="font-weight: bold;">Product </ion-col>
+        <ion-col style="font-weight: bold;">Customer Username</ion-col>
+        <ion-col style="font-weight: bold;">Rating Comments</ion-col>
+        <ion-col style="font-weight: bold;">Rating</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of productratings">
+        <ion-col>{{item.stock_Item_Name}}</ion-col>
+        <ion-col>{{item.customer_UserName}}</ion-col>
+        <ion-col>{{item.Product_Rating_Comments}}</ion-col>
+        <ion-col> <ion-icon name="star-outline"></ion-icon> {{item.product_Star_Rating}} </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-content>

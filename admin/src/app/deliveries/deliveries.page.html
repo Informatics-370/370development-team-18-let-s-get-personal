@@ -30,7 +30,7 @@
         <ion-col style="font-weight: bold;">Delivery Company</ion-col>
         <ion-col style="font-weight: bold;">Delivery Price</ion-col>
         <ion-col style="font-weight: bold;"> Date Requested </ion-col>
-        <ion-col style="font-weight: bold;">Tracking Number</ion-col>
+        <!-- <ion-col style="font-weight: bold;">Tracking Number</ion-col> -->
         <ion-col></ion-col>
         <ion-col></ion-col>
       </ion-row>
@@ -41,7 +41,7 @@
         <ion-col>{{item.delivery_Company_Name}}</ion-col>
         <ion-col>{{item.delivery_Price}}</ion-col>
         <ion-col> {{item.order_Request_Date}} </ion-col>
-        <ion-col><ion-input label="Enter Tracking Number"></ion-input></ion-col>
+        <!-- <ion-col><ion-input label="Enter Tracking Number"></ion-input></ion-col> -->
         <ion-col><ion-button (click)="ReceiveDelivery(item.delivery_ID, item.order_Line_Item_ID)">Delivered</ion-button></ion-col>
         <ion-col><ion-button>Failed</ion-button></ion-col>
       </ion-row>
