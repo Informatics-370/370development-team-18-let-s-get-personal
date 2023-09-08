@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Net;
 using IPKP___API.Controllers.Models.Repository;
+using static System.Net.WebRequestMethods;
 
 namespace IPKP___API.Controllers
 {
@@ -134,6 +135,29 @@ namespace IPKP___API.Controllers
             {
                 await _userManager.AddToRoleAsync(user, User_Role.user);
             }
+
+            var subject = "Your IPKP account has been successfully been registered!";
+            var message = "We are excited to welcome you to It's Personal's community!<br><br>" +
+    "We are writing to inform you that your account has been successfully registered, and you are now a valued member of our platform. This is a significant step toward enjoying the full range of benefits and services we offer.<br><br>" +
+    "Here are some key details about your account:<br>" +
+    "<ul>" +
+    "<li>Username: " + model.Username + "</li>" +
+    "<li>Email Address: " + model.Email + "</li>" +
+    "<li>Account Created On: " + customer.Date_Registered + "</li>" +
+    "</ul>" +
+    "With your newly registered account, you can now:<br>" +
+    "<ul>" +
+    "<li>Access our platform and explore all the features and services we offer.</li>" +
+    "<li>Customize your profile and preferences to tailor your experience.</li>" +
+    "<li>Enjoy personalizing your products and gifting your loved ones.</li>" +
+    "</ul>" +
+    "If you encounter any issues during the registration process or have questions about using our platform, please don't hesitate to reach out to our dedicated customer support team at <a href='mailto:ktlmamadi@gmail.com'>IPKP@gmail.com</a>. We are here to assist you every step of the way.<br><br>" +
+    "Thank you for choosing It's Personal. We look forward to providing you with an exceptional experience, and we're excited to have you as a member of our community.<br><br>" +
+    "Warm regards,<br>Let's Get Personal";
+
+            await SendEmail(subject, message, model.Email);
+
+
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
 
@@ -333,7 +357,7 @@ namespace IPKP___API.Controllers
                     var toEmailAddress = user.Email;
 
                     // Sending email
-                    await SendEmail(fromEmailAddress, subject, message, toEmailAddress);
+                    await SendEmail(subject, message, toEmailAddress);
 
                     //return GenerateJWTToken(user);
 
@@ -375,11 +399,37 @@ namespace IPKP___API.Controllers
             return optCode.ToString();
         }
 
-        private async Task SendEmail(string fromEmailAddress, string subject, string message, string toEmailAddress)
+        private async Task SendEmail(/*string fromEmailAddress,*/ string subject, string message, string toEmailAddress)
         {
+            string fromEmailAddress = "sarahpick@gmail.com";
             var fromAddress = new MailAddress(fromEmailAddress);
             var toAddress = new MailAddress(toEmailAddress);
 
+            SmtpClient client = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "amojsldimzrbrtot"),
+                EnableSsl = true
+            };
+
+            MailMessage msg = new MailMessage() { 
+                From= new MailAddress(fromEmailAddress),
+                Subject =subject,
+                Body = message,
+                IsBodyHtml=true
+            };
+
+            msg.To.Add(toEmailAddress);
+
+            try {
+                client.Send(msg);
+                Console.WriteLine("Email sent successfully!");
+            }
+            catch (Exception e) {
+                Console.WriteLine($"An error occurred: {e.Message}");
+
+            }
+            /*
             using (var compiledMessage = new MailMessage(fromAddress, toAddress))
             {
                 compiledMessage.Subject = subject;
@@ -389,13 +439,14 @@ namespace IPKP___API.Controllers
                 {
                     smtp.Host = "smtp.gmail.com"; // for example: smtp.gmail.com
                     smtp.Port = 587;
-                    smtp.EnableSsl = true;
+                   // smtp.EnableSsl = true;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential("satahpick@gmail.com", "Sarah@Gmail0702"); // your own provided email and password
+               
+                    smtp.Credentials = new NetworkCredential("sarahpick@gmail.com", "Sarah@Gmail0702"); // your own provided email and password
                     await smtp.SendMailAsync(compiledMessage);
                 }
-            }
+            }*/
         }
     }
 }
