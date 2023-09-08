@@ -147,7 +147,7 @@
             </ion-buttons>
             <ion-title>Add Stock Item Colour</ion-title>
             <ion-buttons slot="end">
-              <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+              <ion-button (click)="confirmaddmodal()" [disabled]="AddStockForm.invalid" [strong]="true">Confirm</ion-button>
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
@@ -166,7 +166,10 @@
         
             <ion-item>
               <ion-label position="stacked">Stock Item Size</ion-label><br>
-              <ion-input type="text" formControlName="Stock_Item_Size" placeholder="" required></ion-input>
+             <!--<ion-input type="text" formControlName="Stock_Item_Size" placeholder="" required></ion-input>-->
+              <ion-select formControlName="Stock_Item_Size" interface="alert" placeholder="Example: Large">
+                <ion-select-option *ngFor="let Stock_Item_Size of size " [value]="Stock_Item_Size">{{ Stock_Item_Size }}</ion-select-option>
+              </ion-select>
             </ion-item>  
         
             <!-- Stock Type -->

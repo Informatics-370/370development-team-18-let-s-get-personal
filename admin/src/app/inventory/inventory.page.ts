@@ -136,6 +136,7 @@ export class InventoryPage implements OnInit {
     });
   }
 
+  size= ['Small', 'Medium','Large'];
   //========= add ========
   AddStockForm: FormGroup = new FormGroup({
     Stock_Item_Name: new FormControl('',[Validators.required]),
@@ -149,6 +150,8 @@ export class InventoryPage implements OnInit {
   })
 
   AddStockItem(){
+    if(this.AddStockForm.valid){
+
     let addStockItem = new Stock_Item();
     addStockItem.stock_Item_Name = this.AddStockForm.value.Stock_Item_Name;
     addStockItem.stock_Item_Price = this.AddStockForm.value.Stock_Item_Price;
@@ -161,17 +164,15 @@ export class InventoryPage implements OnInit {
     
 
     this.stockitemservice.AddStockItem(addStockItem).subscribe(result => {
-      if(result.status == "Error")
-        {
-          this.AddStockItemErrorAlert();
-          this.errormsg = result.Message;
-        }
-      else if(result.status == "Success")
-        {
-          console.log(addStockItem)
+      console.log(addStockItem)
           this.AddStockItemSuccessAlert();
-        }
-    }) 
+    }, 
+    (error) => {
+      this.AddStockItemErrorAlert();
+      console.error('Add stock item error:', error);
+    }); 
+    //this.presentLoading();
+   }
   }  
 
   canceladdmodal() {
