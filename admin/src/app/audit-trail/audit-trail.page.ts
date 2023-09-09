@@ -5,7 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { AuditTrail } from '../Models/adittrail';
 import { AuditTrailService } from '../Services/audittrail.service';
 import { AuditTrailVM } from '../ViewModels/audittrailVM';
-
+import { ExcelService } from '../Services/excel.service';
+import { ExcelViewModel } from '../ViewModels/excelVM';
 @Component({
   selector: 'app-audit-trail',
   templateUrl: './audit-trail.page.html',
@@ -17,7 +18,7 @@ export class AuditTrailPage implements OnInit {
   AdminAuditTrails: AuditTrailVM[] = []
   EmployeeAuditTrails: AuditTrailVM[] = []
 
-  constructor(private service:AuditTrailService ) { }
+  constructor(private service:AuditTrailService, private excelservice: ExcelService ) { }
 
   ngOnInit() {
     this.getAdminAuditTrails()
@@ -37,23 +38,41 @@ export class AuditTrailPage implements OnInit {
   }
 
   getOnlyAdmins(){
+    this.getAdminAuditTrails()
     this.EmployeeAuditTrails = [] 
-    this.reloadPage()
+    //this.reloadPage()
   }
 
   getOnlyEmployees(){
+    this.getEmployeeAuditTrails()
     this.AdminAuditTrails = []
-    this.reloadPage()
+    //this.reloadPage()
   }
 
   getAll(){
-    this.getAdminAuditTrails()
-    this.getEmployeeAuditTrails()
     this.reloadPage()
   }
 
   reloadPage(){
     window.location.reload()
   }
+
+  // excelData: ExcelViewModel[] = []
+  exportToExcel() 
+  {
+    try
+    {      
+      let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+      let date = new Date
+      date.setHours(0, 0, 0, 0)
+      console.log(date)
+      this.excelservice.exportToExcel(this.AdminAuditTrails, user + 'Admin-Audit-Trail'); // + date
+    }
+    catch
+    {
+      //this.ExcelDownloadErrorAlert()
+    }    
+  }
+
 
 }

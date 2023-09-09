@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>User Audit Trail</ion-title>
-  </ion-toolbar>
+    <ion-title>User Audit Trail</ion-title>    
+  </ion-toolbar>  
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -9,37 +9,48 @@
     <ion-toolbar>
       <ion-title size="large">audit-trail</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> 
 
-  <p>Filter By: 
-    <ion-button (click)="getOnlyAdmins()">Admin</ion-button> 
-    <ion-button (click)="getOnlyEmployees()">Employee</ion-button>
-    <ion-button (click)="getAll()">All</ion-button>
-  </p>
+  <ion-toolbar>    
+    <ion-buttons>
+      <ion-tab-button (click)="getOnlyAdmins()">View Admins</ion-tab-button>
+      <ion-tab-button (click)="getOnlyEmployees()">View Employees</ion-tab-button>
+      <ion-tab-button (click)="getAll()">View All</ion-tab-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- <ion-item>    
+    <ion-label>  Filter By: 
+      <ion-button (click)="getOnlyAdmins()">View Admins</ion-button>
+      <ion-button (click)="getOnlyEmployees()">View Employees</ion-button>
+      <ion-button (click)="getAll()">View All</ion-button>
+    </ion-label> 
+  </ion-item> -->
+  
 
   <ion-grid>
     <ion-row style="border-bottom-style: solid;">
       <ion-col sizeLg="1" sizeMd="1" sizeXs="1"></ion-col>
       <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">User</ion-col>
-      <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">Action</ion-col>
-      <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">Action Date</ion-col>
-      <ion-col sizeLg="2" sizeMd="2" sizeXs="2"></ion-col>
+      <ion-col size="4" style="font-weight: bold; text-align: center;">Action Description</ion-col>
+      <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">Action Date and Time</ion-col>
+      <ion-col size="1" ></ion-col>
     </ion-row>
 
     <ion-row *ngFor="let item of EmployeeAuditTrails">
       <ion-col sizeLg="1" sizeMd="1" sizeXs="1"></ion-col>
-      <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.firstName}} + {{item.surname}}</ion-col>
-      <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.actionName}}</ion-col>
+      <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
+      <ion-col size="4"  style="text-align: center;">{{item.actionName}}</ion-col>
       <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.actionDate}}</ion-col>
-      <ion-col sizeLg="2" sizeMd="2" sizeXs="2"></ion-col>
+      <ion-col size="1" ></ion-col>
     </ion-row>
 
     <ion-row *ngFor="let item of AdminAuditTrails">
       <ion-col sizeLg="1" sizeMd="1" sizeXs="1"></ion-col>
-      <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.firstName}} + {{item.surname}}</ion-col>
-      <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.actionName}}</ion-col>
+      <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
+      <ion-col size="4"  style="text-align: center;">{{item.actionName}}</ion-col>
       <ion-col sizeLg="3" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.actionDate}}</ion-col>
-      <ion-col sizeLg="2" sizeMd="2" sizeXs="2"></ion-col>
+      <ion-col size="1" ></ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

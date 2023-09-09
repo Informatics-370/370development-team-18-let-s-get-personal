@@ -188,7 +188,11 @@ namespace IPKP___API.Controllers
                 {
                     return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery" });
                 }
-                return Ok(results);
+                else
+                {
+                    return Ok(results);
+                }
+                
             }
             catch (Exception)
             {

@@ -5,14 +5,16 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header>
     <ion-toolbar>
-      <ion-title size="large">Discounts</ion-title>
+      <ion-buttons>
+        <ion-tab-button id="adddiscountmodal">Add Discount</ion-tab-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   
   <ion-content id="content">
-    <ion-button id="adddiscountmodal">Add Discount</ion-button>
+    
     <ion-grid>
       <ion-row>
         <ion-col  sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Discount Name</ion-col>

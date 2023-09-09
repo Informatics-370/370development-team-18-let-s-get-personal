@@ -39,7 +39,7 @@ export class ViewEmployeesPage implements OnInit {
     FirstName: new FormControl('', [Validators.required]),
     Surname: new FormControl('', [Validators.required]),
     Email: new FormControl('', Validators.compose([Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])),
-    Cell_Number: new FormControl('', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(12), Validators.pattern("^(\\+27|0)[6-8][0-9]{8}$")])),
+    Cell_Number: new FormControl('', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(12)])), //, Validators.pattern("^(\\+27|0)[6-8][0-9]{8}$")
     Username: new FormControl('', [Validators.required]),
     // Password: new FormControl('',Validators.compose([Validators.required,Validators.minLength(8),Validators.pattern('(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[$@$!%?&])[A-Za-zd$@$!%?&].{8,15}')])),
     Password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')])

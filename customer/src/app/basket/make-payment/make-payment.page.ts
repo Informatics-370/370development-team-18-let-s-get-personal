@@ -76,7 +76,7 @@ export class MakePaymentPage implements OnInit {
 
     this.service.AddDeliveryAdress(addDelivery).subscribe(response => {
       this.addedaddres = response as DeliveryAddress;
-      this.AddDeliveryRequest();
+      //this.AddDeliveryRequest();
       this.confirmAlert();
       console.log(this.addedaddres)
         let addressID = this.addedaddres.delivery_Address_ID
@@ -95,7 +95,7 @@ export class MakePaymentPage implements OnInit {
       }*/
     },(error) => {
       // Handle registration error
-      this.confirmErrorAlert();
+      this.addDeliveryErrorAlert();
       console.error('Login error:', error);
     });
   }
@@ -113,13 +113,13 @@ export class MakePaymentPage implements OnInit {
       this.service.AddDeliveryRequest(addDeliveryRequest).subscribe(res =>{
         let added = res as Delivery;
         let deliveryID = added.delivery_ID
-        localStorage.setItem('deliveryID', JSON.stringify(deliveryID));
+        localStorage.setItem('deliveryID', deliveryID);
         this.router.navigate(["/tabs/check-out"])
       })
     }
     catch
     {
-      this.addDeliveryErrorAlert()
+      this.confirmErrorAlert()
     }    
   }
 
@@ -194,7 +194,8 @@ export class MakePaymentPage implements OnInit {
         text: 'OK',
         role: 'cancel',
         handler:() =>{
-          this.reloadPage();
+          //this.reloadPage();
+          this.AddDeliveryRequest()
         }
     }],
     });

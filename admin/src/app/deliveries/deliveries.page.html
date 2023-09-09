@@ -1,23 +1,23 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Deliveries in Progress</ion-title>
-  </ion-toolbar>  
-  
+  </ion-toolbar>   
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Deliveries In Progress</ion-title>
+  <ion-header>
+    <ion-toolbar>    
+      <ion-buttons>
+        <!-- <ion-button (click)="RoutePrevDeliveries()">View Previous Deliveries</ion-button>
+        <ion-button (click)="Routedeliverycompanies()">Manage Delivery Companies</ion-button>
+        <ion-button (click)="openPDF()">Download Deliveries in Progress Report</ion-button> -->
+        <ion-tab-button (click)="Routedeliverycompanies()">Delivery Companies</ion-tab-button>
+        <ion-tab-button (click)="RoutePrevDeliveries()">Past Deliveries</ion-tab-button>        
+        <ion-tab-button (click)="openPDF()"> Deliveries Report</ion-tab-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-toolbar>    
-    <ion-buttons>
-      <ion-button (click)="RoutePrevDeliveries()">View Previous Deliveries</ion-button>
-      <ion-button (click)="Routedeliverycompanies()">Manage Delivery Companies</ion-button>
-      <ion-button (click)="openPDF()">Download Deliveries in Progress Report</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+  
   <ion-content *ngIf="deliveries.length == 0">
     <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
       <p>No Deliveries In Progress</p>

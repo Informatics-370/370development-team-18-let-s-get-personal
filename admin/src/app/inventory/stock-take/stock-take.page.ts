@@ -87,7 +87,7 @@ export class StockTakePage implements OnInit {
       this.inventoryservice.Stocktake(this.editProduct.stock_Item_ID, editedProduct).subscribe(result =>{
         if(result.status == "Success"){
           this.editSuccessAlert();
-          this.action = "Stock Take"+ stockitemname +" Quantity: " + editedProduct.stock_Item_Quantity
+          this.action = "Stock Take "+ stockitemname +". Quantity: " + editedProduct.stock_Item_Quantity
           this.AddTrail()
         }       
       })

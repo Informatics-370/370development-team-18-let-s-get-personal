@@ -21,34 +21,30 @@
   <div id="htmlOrderRequestData">
     <ion-grid>
       <ion-row>
-        <!-- <ion-col style="font-weight: bold;"> Order ID </ion-col> -->
-        <ion-col style="font-weight: bold;"> Customer </ion-col>
-        <ion-col style="font-weight: bold;"> Address </ion-col>
-        <ion-col style="font-weight: bold;"> Delivery Company </ion-col>
-        <ion-col style="font-weight: bold;"> Product </ion-col>
-        <ion-col style="font-weight: bold;"> Quantity </ion-col>
-        <ion-col style="font-weight: bold;"> Product Size </ion-col>
-        <ion-col style="font-weight: bold;"> Product Colour </ion-col>
-        <ion-col style="font-weight: bold;"> Design Image </ion-col>
-        <ion-col style="font-weight: bold;"> Design Text </ion-col>
-        <ion-col style="font-weight: bold;"> Date Requested </ion-col>
-        <ion-col></ion-col>
-        <ion-col></ion-col>
+        <ion-col offset="0.5" size="1" style="font-weight: bold; text-align: center;"> Customer </ion-col>
+        <ion-col size="1" style="font-weight: bold; text-align: center;"> Address </ion-col>
+        <ion-col size="1" style="font-weight: bold; text-align: center;"> Delivery Company </ion-col>
+        <ion-col size="1" style="font-weight: bold; text-align: center;"> Product </ion-col>
+        <ion-col size="1" style="font-weight: bold; text-align: center;"> Quantity </ion-col>
+        <ion-col size="1" style="font-weight: bold; text-align: center;"> Product Size </ion-col>
+        <ion-col size="1" style="font-weight: bold; text-align: center;"> Product Colour </ion-col>
+        <ion-col size="1" style="font-weight: bold; text-align: center;"> Design Image </ion-col>
+        <ion-col size="1" style="font-weight: bold; text-align: center;"> Design Text </ion-col>
+        <ion-col size="1" style="font-weight: bold; text-align: center;"> Date Requested </ion-col>
+        <ion-col size="1" style="font-weight: bold; text-align: center;"></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of orderRequests">
-        <!-- <ion-col> {{item.order_Line_Item_ID}} </ion-col> -->
-        <ion-col> {{item.customer_UserName}} </ion-col>
-        <ion-col> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
-        <ion-col> {{item.delivery_Company_Name}} </ion-col>
-        <ion-col> {{item.stock_Item_Name}} </ion-col>
-        <ion-col> {{item.order_Line_Item_Quantity}} </ion-col>
-        <ion-col> {{item.stock_Item_Size}} </ion-col>
-        <ion-col> {{item.stock_Colour_Name}} </ion-col>      
-        <ion-col> <img src='data:image/png;base64,{{item.image_File}}'> </ion-col>
-        <ion-col> {{item.design_Text}} </ion-col>
-        <ion-col> {{item.order_Request_Date}}  </ion-col>
-        <ion-col><ion-button (click)="AcceptOrder(item.order_Line_Item_ID)">In Progress</ion-button></ion-col>
-        <!-- <ion-col><ion-button (click)="DeclineOrder(item.order_Line_Item_ID)">Decline</ion-button></ion-col> -->
+        <ion-col offset="0.5" size="1" style="text-align: center;"> {{item.customer_UserName}} </ion-col>
+        <ion-col size="1" style="text-align: center;"> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
+        <ion-col size="1" style="text-align: center;"> {{item.delivery_Company_Name}} </ion-col>
+        <ion-col size="1" style="text-align: center;"> {{item.stock_Item_Name}} </ion-col>
+        <ion-col size="1" style="text-align: center;"> {{item.order_Line_Item_Quantity}} </ion-col>
+        <ion-col size="1" style="text-align: center;"> {{item.stock_Item_Size}} </ion-col>
+        <ion-col size="1" style="text-align: center;"> {{item.stock_Colour_Name}} </ion-col>      
+        <ion-col size="1" style="text-align: center;"> <img src='data:image/png;base64,{{item.image_File}}'> </ion-col>
+        <ion-col size="1" style="text-align: center;"> {{item.design_Text}} </ion-col>
+        <ion-col size="1" style="text-align: center;"> {{item.order_Request_Date}}  </ion-col>
+        <ion-col size="1" style="text-align: center;"><ion-button (click)="AcceptOrder(item.order_Line_Item_ID)">In Progress</ion-button></ion-col>
       </ion-row>
     </ion-grid>
   </div>

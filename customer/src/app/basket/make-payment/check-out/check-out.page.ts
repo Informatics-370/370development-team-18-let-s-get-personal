@@ -8,6 +8,7 @@ import { OrderService } from 'src/app/Services/order.service';
 import { OrderRequestService } from 'src/app/Services/orderrequest.service';
 import { DeliveryVM } from 'src/app/ViewModels/deliveryVM';
 import { Order_Request } from 'src/app/Models/orderrequest';
+import { Delivery } from 'src/app/Models/delivery';
 @Component({
   selector: 'app-check-out',
   templateUrl: './check-out.page.html',
@@ -21,7 +22,7 @@ export class CheckOutPage implements OnInit {
   basketItems: BasketItems[] = [];
   address:DeliveryAddress= new DeliveryAddress();
   deliveryvm: any;
-  delprice!: number;
+  delprice: number = 0;
   totalprice: number = 0
   orderrequest!: Order_Request
   constructor(public service: OrderRequestService) { }
@@ -38,13 +39,13 @@ export class CheckOutPage implements OnInit {
   GetOrderDetails(){    
     try
     {
-      let delID = JSON.parse(localStorage.getItem('deliveryID') as string)
+      let delID = JSON.parse(JSON.stringify(localStorage.getItem('deliveryID'))) // JSON.parse(localStorage.getItem('deliveryID') as string)
       this.service.GetDeliveryByID(delID).subscribe(result =>{
-      this.deliveryvm = result as DeliveryVM[];
-      console.log(this.deliveryvm)
-      this.delprice = this.deliveryvm.delivery_Price
-      console.log(this.delprice)
-    })
+        this.deliveryvm = result as DeliveryVM;
+          console.log(this.deliveryvm)
+          this.delprice = this.deliveryvm.delivery_Price
+          console.log(this.delprice)
+      })
       
       this.culculate()
     }
@@ -55,7 +56,7 @@ export class CheckOutPage implements OnInit {
 
   culculate(){
     let orderprice = this.order.price
-    this.totalprice = orderprice + 100
+    this.totalprice = orderprice + this.delprice
     console.log(this.totalprice)
     localStorage.setItem('totalprice', JSON.stringify(this.totalprice));
   }
@@ -64,7 +65,7 @@ export class CheckOutPage implements OnInit {
     // try
     // {
       let addorderRequest = new Order_Request();
-      let delID = JSON.parse(localStorage.getItem('deliveryID') as string)
+      let delID = JSON.parse(JSON.stringify(localStorage.getItem('deliveryID'))) //JSON.parse(localStorage.getItem('deliveryID') as string)
       let customerID = JSON.parse(JSON.stringify(localStorage.getItem('customerID'))) //JSON.parse(localStorage.getItem('customerID') as string)
 
       let ortprice = this.totalprice 

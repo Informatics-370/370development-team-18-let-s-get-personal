@@ -106,7 +106,7 @@ export class LoginPage implements OnInit {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
       message: 'Please Wait....',
-      duration: 2000,
+      duration: 3000,
       backdropDismiss: true,
     });
     
