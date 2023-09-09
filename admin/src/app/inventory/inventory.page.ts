@@ -4,7 +4,8 @@ import { FormsModule, ReactiveFormsModule, FormControl, FormGroup, Validators } 
 import { AlertController, IonicModule, LoadingController, IonModal, ModalController } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
 import { OverlayEventDetail } from '@ionic/core/components';
-
+import { AuditTrailService } from '../Services/audittrail.service';
+import { AuditTrail } from '../Models/adittrail';
 import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { PersonalisationService } from 'src/app/Services/personalisation.service';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
@@ -12,7 +13,6 @@ import { StockTypeDataService } from 'src/app/Services/stocktype.service';
 import { StockItemColourDataService } from 'src/app/Services/stockitemcolours.service';
 import { StockImageDataService } from 'src/app/Services/stockimage.service';
 import { ExcelService } from '../Services/excel.service';
-
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { Stock_Item } from 'src/app/Models/stockitem';
 import { StockTypes } from 'src/app/Models/stocktypes';
@@ -45,7 +45,7 @@ export class InventoryPage implements OnInit {
     public stockitemservice: StockItemDataService, public pservice: PersonalisationService, 
     public loadingController: LoadingController, private typeservice:StockTypeDataService,
     private imageservice:StockImageDataService, private colourservice:StockItemColourDataService,
-    private excelservice: ExcelService) { }
+    private excelservice: ExcelService, private trailservice: AuditTrailService) { }
 
   SearchStockForm: FormGroup = new FormGroup({
     /*startdate: new FormControl('',[Validators.required]),
@@ -91,6 +91,8 @@ export class InventoryPage implements OnInit {
       date.setHours(0, 0, 0, 0)
       console.log(date)
       this.excelservice.exportToExcel(this.excelData, user + 'IPKP-Products'); // + date
+      this.action = "Downloaded Inventory Report"
+      this.AddTrail()
     }
     catch
     {
@@ -118,6 +120,15 @@ export class InventoryPage implements OnInit {
     Stock_Item_Colour_ID: new FormControl('',[Validators.required]),
   })
 
+  canceladdmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirmaddmodal() {
+    //this.AddStockItem();  
+    this.addStockImage();
+  }
+
   AddStockItem(){
     if(this.AddStockForm.valid){
 
@@ -133,8 +144,12 @@ export class InventoryPage implements OnInit {
     
 
     this.stockitemservice.AddStockItem(addStockItem).subscribe(result => {
-      console.log(addStockItem)
-          this.AddStockItemSuccessAlert();
+      console.log(addStockItem)     
+      this.AddStockItemSuccessAlert();
+
+      this.action = "Added Product: " + this.AddStockForm.value.Stock_Item_Name
+      this.AddTrail()
+      
     }, 
     (error) => {
       this.AddStockItemErrorAlert();
@@ -144,12 +159,55 @@ export class InventoryPage implements OnInit {
    }
   }  
 
-  canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
+  AddImageForm:FormGroup = new FormGroup({
+    imagefile: new FormControl('',[Validators.required]),     
+    name: new FormControl('',[Validators.required]), 
+  }); 
+
+  formData = new FormData();
+  fileNameUploaded = ''
+  addedimageID: any
+  uploadFile = (files: any) => {
+    let fileToUpload = <File>files[0];
+    
+    // Check if the file is an image (you can extend this check with more image types)
+    if (fileToUpload.type.startsWith('image/')) {
+      this.formData.append('file', fileToUpload, fileToUpload.name);
+      this.fileNameUploaded = fileToUpload.name;
+    } else {
+      // Display an error message or handle the non-image file as needed
+      this.fileNameUploaded = 'Invalid file type. Please choose an image file.';
+    }
   }
 
-  confirmaddmodal() {
-    this.AddStockItem();    
+  addStockImage(){
+    //if(this.AddImageForm.valid)
+    //{
+      this.formData.append('name', this.AddImageForm.get('name')!.value);
+      this.imageservice.AddStockImage(this.formData).subscribe(result => {
+        let stockimage = result as Stock_Image
+        this.addedimageID = stockimage.stock_Image_ID
+        let imageName = stockimage.stock_Image_Name
+        console.log(this.addedimageID)
+
+        if(this.addedimageID == null){
+          this.AddStockImageErrorAlert()
+        }
+        else{
+          this.AddStockItem()
+
+          this.action = "Uploaded Image: " + imageName
+          this.AddTrail()
+        }
+        
+        // if(result.status == "Error"){        
+        //   this.AddStockImageSuccessAlert();
+        // }
+        // else if(result.status == "Success"){
+        //   this.AddStockImageSuccessAlert();
+        // }
+      })
+    //}          
   }
 
 
@@ -198,6 +256,9 @@ export class InventoryPage implements OnInit {
 
       this.stockitemservice.UpdateStockItem(this.editProduct.stock_Item_ID, editedProduct).subscribe(result =>{
         this.editSuccessAlert();
+
+        this.action = "Updated Product " + this.editForm.value.Stock_Item_Name 
+        this.AddTrail()
       })
     }
     catch{      
@@ -213,6 +274,32 @@ export class InventoryPage implements OnInit {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
+//============== Audit Trail =======
+  action!: string
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+  }
+
+
+//============== Gets =======
   GetStockTypes(){
     this.typeservice.GetStockTypes().subscribe(result =>{
       this.stocktypes = result as StockTypes[];
@@ -267,6 +354,38 @@ export class InventoryPage implements OnInit {
   }
 
   //============== Alerts =======
+
+  async AddStockImageSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Stock Image added',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  } 
+  
+  async AddStockImageErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Stock Image was not added',
+      message: 'Please try again',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
+
   async addToBestSellersSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',

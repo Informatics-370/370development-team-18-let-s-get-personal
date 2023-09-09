@@ -27,7 +27,7 @@ import { Response } from '../Models/response';
     }
   
     public AddStockImage(stockimage:FormData){
-      return this.httpClient.post<Response>(`${this.apiUrl}StockImage/AddStockImage`, stockimage, this.httpOptions)
+      return this.httpClient.post(`${this.apiUrl}StockImage/AddStockImage`, stockimage, this.httpOptions)
     }
 
     public GetStockImage(stock_Image_ID:string){ 

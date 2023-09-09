@@ -8,7 +8,8 @@ import { AlertController } from '@ionic/angular';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
+import { AuditTrail } from 'src/app/Models/adittrail';
 import { Stock_Image } from 'src/app/Models/stockimage';
 import { StockImageDataService } from 'src/app/Services/stockimage.service';
 
@@ -24,9 +25,11 @@ export class StockImagePage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   stockimages: Stock_Image[] =[];
   fileNameUploaded = ''
+  action!: string
 
   constructor(public modalCtrl: ModalController, private service:StockImageDataService,
-    private router: Router, private alertController: AlertController, private route:ActivatedRoute) { }
+    private router: Router, private alertController: AlertController, private route:ActivatedRoute,
+    private trailservice: AuditTrailService) { }
 
   AddImageForm:FormGroup = new FormGroup({
     imagefile: new FormControl('',[Validators.required]),     
@@ -75,12 +78,20 @@ export class StockImagePage implements OnInit {
     //{
       this.formData.append('name', this.AddImageForm.get('name')!.value);
       this.service.AddStockImage(this.formData).subscribe(result => {
-        if(result.status == "Error"){        
-          this.AddStockImageSuccessAlert();
+        if(result == null){
+          this.AddStockImageErrorAlert()
         }
-        else if(result.status == "Success"){
-          this.AddStockImageSuccessAlert();
+        else{
+          this.action = "Added Stock Image: " + this.AddImageForm.value.name
+          this.AddTrail()
+          this.AddStockImageSuccessAlert() 
         }
+        // if(result.status == "Error"){        
+        //   this.AddStockImageSuccessAlert();
+        // }
+        // else if(result.status == "Success"){
+        //   this.AddStockImageSuccessAlert();
+        // }
       })
     //}          
   }
@@ -93,12 +104,14 @@ export class StockImagePage implements OnInit {
     this.addStockImage();    
   }
 
-  deleteStockImage(stock_Image_ID:string){
+  deleteStockImage(stock_Image_ID:string, stock_Image_Name:string){
     this.service.DeleteStockImage(stock_Image_ID).subscribe(result =>{
       if(result.status == "Error") {
         this.DeleteStockImageErrorAlert();
       }
       else if(result.status == "Success"){
+        this.action = "Deleted Stock Image: " + stock_Image_Name
+        this.AddTrail()
         this.DeleteStockImageSuccessAlert();
       }         
     });
@@ -134,6 +147,9 @@ export class StockImagePage implements OnInit {
       this.formData.append('name', this.editForm.get('name')!.value);
 
       this.service.UpdateStockImage(this.editImage.stock_Image_ID, this.formData).subscribe(result =>{
+        this.action = "Edited Stock Image From "+ this.editImage.stock_Image_Name + " To: " + this.editForm.value.name
+        this.AddTrail()
+
         this.editSuccessAlert();
       })      
     }
@@ -148,6 +164,28 @@ export class StockImagePage implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
   }
 
   //========= Alerts =====

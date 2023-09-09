@@ -12,6 +12,8 @@ export type jsPDFDocument = any;
 type Opts = { [key: string]: string | number }
 import { ProductRatingDataService } from 'src/app/Services/productrating.service';
 import { ProductRatingVM } from 'src/app/ViewModels/productratingVM';
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
+import { AuditTrail } from 'src/app/Models/adittrail';
 
 @Component({
   selector: 'app-rating-graph',

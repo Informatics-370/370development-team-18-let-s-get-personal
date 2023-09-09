@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Delivery_Company } from '../Models/deliverycompany';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { DeliveryDataService } from '../Services/deliveries.service';
 import { DeliveryViewModel } from '../ViewModels/deliveryVM';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
-import { OverlayEventDetail } from '@ionic/core/components';
+import { AuditTrailService } from '../Services/audittrail.service';
+import { AuditTrail } from '../Models/adittrail';
 import { OrderService } from '../Services/order.service';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 import jsPDF from 'jspdf';
@@ -23,7 +23,7 @@ type Opts = { [key: string]: string | number }
   templateUrl: './deliveries.page.html',
   styleUrls: ['./deliveries.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterModule]
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule]
 })
 export class DeliveriesPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
@@ -45,7 +45,7 @@ export class DeliveriesPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DeliveryDataService, private router: Router, public modalCtrl: ModalController,
     private alertController:AlertController, public environmentInjector: EnvironmentInjector, 
-    public orderservice: OrderService,) { }
+    public orderservice: OrderService, private trailservice: AuditTrailService) { }
   
   Routedeliverycompanies()
   {
@@ -90,7 +90,6 @@ export class DeliveriesPage implements OnInit {
   }
 
   orderlineitem: OrderLineItemVM = new OrderLineItemVM()
-
   getOrder(){
     try
     {
@@ -145,12 +144,39 @@ export class DeliveriesPage implements OnInit {
         console.log(result)
       })
       this.ReceiveDeliverySuccessAlert()
+      
+      this.action = "Changed Delivery status to Received" 
+      this.AddTrail()
     }
     catch
     {
       this.DeleteOrderLineItemErrorAlert()
     }
     
+  }
+
+  //=========== Audit trail ===========
+  action!: string
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
   }
 
   reloadPage(){

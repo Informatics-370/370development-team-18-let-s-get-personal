@@ -11,6 +11,7 @@ import { AuditTrail } from 'src/app/Models/adittrail';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+
 @Component({
   selector: 'app-stock-types',
   templateUrl: './stock-types.page.html',
@@ -56,7 +57,7 @@ export class StockTypesPage implements OnInit {
           this.AddStockTypeSuccessAlert();
         }
         else if(result.status == "Success"){
-          this.action = "Added Stock Type"
+          this.action = "Added Stock Type: " + this.AddTypeForm.value.name
           this.AddTrail()
           this.AddStockTypeSuccessAlert();
         }
@@ -72,17 +73,17 @@ export class StockTypesPage implements OnInit {
   }
 
   //=============== Delete ===============
-  deleteStockTypes(stock_Type_ID:string){
+  deleteStockTypes(stock_Type_ID:string, stock_Type_Name: string){
     this.service.DeleteStockType(stock_Type_ID).subscribe(result =>{
       if(result.status == "Error")
-          {
-            this.DeleteStockTypeErrorAlert();
-          }
-          else if(result.status == "Success"){
-            this.action = "Deleted Stock Type"
-            this.AddTrail()
-            this.DeleteStockTypeSuccessAlert();
-          }
+      {
+        this.DeleteStockTypeErrorAlert();
+      }
+      else if(result.status == "Success"){
+        this.action = "Deleted Stock Type " + stock_Type_Name
+        this.AddTrail()
+        this.DeleteStockTypeSuccessAlert();
+      }
     });
   }
   
@@ -110,7 +111,7 @@ export class StockTypesPage implements OnInit {
       editedType.stock_Type_Name = this.editForm.value.name;
 
       this.service.UpdateStockType(this.editStockType.stock_Type_ID, editedType).subscribe(result =>{
-        this.action = "Deleted Stock Type"
+        this.action = "Updated Stock Type Name From:" + this.editStockType.stock_Type_Name + " To: "+this.editForm.value.name
         this.AddTrail()
         this.editSuccessAlert();
       })      

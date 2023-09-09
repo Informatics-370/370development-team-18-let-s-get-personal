@@ -85,6 +85,22 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
+        <form [formGroup]="AddImageForm">   
+          <ion-item>
+            <ion-label>Image Name</ion-label>
+            <ion-input formControlName="name" type="text" id="name" placeholder="New Image Name" ></ion-input>
+          </ion-item>       
+            <ion-item>
+              <div>
+                <ion-label>Image File</ion-label>
+                <input formControlName="imagefile" type="file" id="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;" accept="image/*">
+                <ion-button mat-stroked-button color="primary" (click)="file.click()">Upload File</ion-button>
+                <span *ngIf="fileNameUploaded.length > 0"> {{fileNameUploaded}}</span>
+                <!--<p style="color: crimson;"*ngIf="fileNameUploaded === 'Invalid file type. Please choose an image file.'">{{ fileNameUploaded }}</p>-->
+              </div>
+            </ion-item>                    
+        </form>
+
         <form [formGroup]="editForm" >
           <ion-item>
             <ion-label position="stacked">Stock Item Name</ion-label><br>
@@ -124,16 +140,15 @@
           </ion-item> 
 
             <!-- Stock Image -->
-            <ion-item>
+            <!-- <ion-item>
               <ion-label position="stacked">Stock Item Image</ion-label><br>
               <ion-select placeholder="Select a Stock Item Image" formControlName="Stock_Image_ID">
                 <div slot="label">Stock Item Image<ion-text color="danger">(Required)</ion-text></div>
                 <ion-select-option *ngFor="let image of stockimages" value="{{image.stock_Image_ID}}" >
                   {{image.stock_Image_Name}}
-                  <!-- <img src='data:image/png;base64,{{image.stock_Image_Name}}'> -->
                 </ion-select-option>
               </ion-select>
-            </ion-item>          
+            </ion-item>           -->
             
             <ion-item>
               <ion-label position="stacked">Inventory_Comments</ion-label><br>

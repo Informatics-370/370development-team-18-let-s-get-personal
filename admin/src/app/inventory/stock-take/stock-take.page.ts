@@ -69,7 +69,7 @@ export class StockTakePage implements OnInit {
     this.stockitemservice.GetStockItem(stock_Item_ID).subscribe(response => {         
       this.editProduct = response as Stock_Item;
       localStorage.setItem('stock_Item_Name', JSON.stringify(this.editProduct.stock_Item_Name));
-      this.editForm.controls['Inventory_Comments'].setValue(this.editProduct.inventory_Comments);
+      // this.editForm.controls['Inventory_Comments'].setValue(this.editProduct.inventory_Comments);
       this.editForm.controls['Stock_Item_Quantity'].setValue(this.editProduct.stock_Item_Quantity);
     })
     
@@ -81,13 +81,15 @@ export class StockTakePage implements OnInit {
     {
       let editedProduct = new Stock_Item();
       editedProduct.stock_Item_Quantity = this.editForm.value.Stock_Item_Quantity;
-      editedProduct.inventory_Comments = this.editForm.value.Inventory_Comments;
+      // editedProduct.inventory_Comments = this.editForm.value.Inventory_Comments;
       let stockitemname = JSON.parse(localStorage.getItem('stock_Item_Name') as string)
 
       this.inventoryservice.Stocktake(this.editProduct.stock_Item_ID, editedProduct).subscribe(result =>{
         if(result.status == "Success"){
           this.editSuccessAlert();
-          this.action = "Stock Take "+ stockitemname +". Quantity: " + editedProduct.stock_Item_Quantity
+          
+          this.action = "Stock Take "+ stockitemname +". New Quantity: " + this.editForm.value.Stock_Item_Quantity 
+          +". Old Quantity: " + this.editProduct.stock_Item_Quantity
           this.AddTrail()
         }       
       })

@@ -2,7 +2,8 @@ import { AfterViewInit, Component, ElementRef, ViewChild, OnInit } from '@angula
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { OrderService } from '../Services/order.service';
+import { AuditTrailService } from '../Services/audittrail.service';
+import { AuditTrail } from '../Models/adittrail';
 import Chart from 'chart.js/auto';
 import { SalesService } from '../Services/sales.service';
 import { LineController,LineElement,PointElement, LinearScale,Title,CategoryScale,BarController,BarElement } from 'chart.js';
@@ -25,7 +26,7 @@ export class ProductTrendsPage implements OnInit {
   private labeldata: any[] = [];
   private realdata: any[] = [];
   private chartInfo: any;
-  constructor(private service: SalesService) { }  
+  constructor(private service: SalesService, private trailservice: AuditTrailService) { }  
   
   ngOnInit(): void {
     this.service.GetSalesGraph().subscribe(result => {
@@ -81,7 +82,30 @@ export class ProductTrendsPage implements OnInit {
 
       let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
       PDF.save(user + ' IPKP-Product-Trends.pdf');
+      this.AddTrail()
     });
+  }
+
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+    let action = "Downloaded Product Trends Report"
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
   }
 
 }

@@ -25,7 +25,7 @@
       <ion-row *ngFor="let item of stocktypes">
         <ion-col> {{item.stock_Type_Name}}</ion-col>
         <ion-col><ion-button (click)="EditType(item.stock_Type_ID, true)">Edit</ion-button></ion-col>
-        <ion-col><ion-button (click)="deleteStockTypes(item.stock_Type_ID)">Delete</ion-button> </ion-col>          
+        <ion-col><ion-button (click)="deleteStockTypes(item.stock_Type_ID, item.stock_Type_Name)">Delete</ion-button> </ion-col>          
       </ion-row>
     </ion-grid>
 

@@ -10,6 +10,8 @@ import { AlertController } from '@ionic/angular';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
+import { AuditTrail } from 'src/app/Models/adittrail';
 
 @Component({
   selector: 'app-stock-item-colours',
@@ -37,7 +39,7 @@ export class StockItemColoursPage implements OnInit {
   
 
   constructor(public modalCtrl: ModalController, private toast: ToastController, 
-    private service:StockItemColourDataService,
+    private service:StockItemColourDataService, private trailservice: AuditTrailService,
     private router: Router, private route: ActivatedRoute, private alertController: AlertController) {  }
 
   AddColourForm:FormGroup = new FormGroup({
@@ -66,6 +68,8 @@ export class StockItemColoursPage implements OnInit {
     let addColour = new StockItemColours();
     addColour.stock_Item_Colour_Name = this.AddColourForm.value.name;
     this.service.AddStockItemColour(addColour).subscribe(result => {
+      this.action = "Added Stock Item Colour: " + this.editForm.value.name
+        this.AddTrail()
       this.AddColourSuccessAlert();
     },
     (error) => {
@@ -77,13 +81,15 @@ export class StockItemColoursPage implements OnInit {
   }
   }
 
-  deletecolour(stock_Item_Colour_ID:string){
+  deletecolour(stock_Item_Colour_ID:string, stock_Item_Colour_Name:string){
     this.service.DeleteStockItemColour(stock_Item_Colour_ID).subscribe(result =>{
       if(result.status == "Error")
       {
         this.DeleteColourErrorAlert();
       }
       else if(result.status == "Success"){
+        this.action = "Deleted Stock Item Colour:" + stock_Item_Colour_Name
+        this.AddTrail()
         this.DeleteColourSuccessAlert();
       }
      });
@@ -121,6 +127,9 @@ export class StockItemColoursPage implements OnInit {
       editedColour.stock_Item_Colour_Name = this.editForm.value.name;
 
       this.service.UpdateStockItemColour(this.editColour.stock_Item_Colour_ID, editedColour).subscribe(result =>{
+        this.action = "Updated Stock Item Colour From " + this.editColour.stock_Item_Colour_Name + "  To: " + this.editForm.value.name
+        this.AddTrail()
+
         this.editSuccessAlert();
       })      
     }
@@ -135,6 +144,29 @@ export class StockItemColoursPage implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+  action!: string
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
   }
 
   //=============== Alerts ====

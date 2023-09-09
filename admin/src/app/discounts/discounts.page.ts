@@ -7,7 +7,8 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormBuilder, }
 import { Discount } from 'src/app/Models/discount';
 import { DiscountService } from 'src/app/Services/discount.service';
 import { StockItemDataService } from '../Services/stockitem.service';
-//for modal
+import { AuditTrailService } from '../Services/audittrail.service';
+import { AuditTrail } from '../Models/adittrail';
 import { ModalController } from '@ionic/angular';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -29,7 +30,8 @@ export class DiscountsPage implements OnInit {
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service: DiscountService, private thisroute: Router, public modalCtrl: ModalController,
-    private alertController: AlertController, private _service: StockItemDataService, private formBuilder: FormBuilder) { }
+    private alertController: AlertController, private _service: StockItemDataService, private formBuilder: FormBuilder, 
+    private trailservice: AuditTrailService) { }
 
   AddForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -79,7 +81,7 @@ export class DiscountsPage implements OnInit {
     })
   }
 
-
+//=========== Add ===========
   AddDiscount() {
     let addDiscount = new Discount();
 
@@ -96,10 +98,13 @@ export class DiscountsPage implements OnInit {
       }
       else {
         this.addDiscountSuccessAlert();
+        this.action = "Added discount: " + this.AddForm.value.name
+        this.AddTrail()
       }
     })
   }
 
+//=========== Edit ===========
   isModalOpen = false;
   editDiscount: Discount = new Discount();
   editForm: FormGroup = new FormGroup({
@@ -112,7 +117,6 @@ export class DiscountsPage implements OnInit {
 
   EditDiscount(discount_ID: string, isOpen: boolean) {
     this.service.GetDiscount(discount_ID).subscribe(response => {
-
       this.editDiscount = response as Discount;
 
       this.editForm.controls['name'].setValue(this.editDiscount.discount_Name);
@@ -120,7 +124,6 @@ export class DiscountsPage implements OnInit {
       this.editForm.controls['effectiveFromdate'].setValue(this.editDiscount.effective_From_Date);
       this.editForm.controls['effectiveTodate'].setValue(this.editDiscount.effective_To_Date);
     })
-
     this.isModalOpen = isOpen;
   }
 
@@ -134,11 +137,77 @@ export class DiscountsPage implements OnInit {
 
       this.service.UpdateDiscount(this.editDiscount.discount_ID, editedDiscount).subscribe(result => {
         this.editDiscountSuccessAlert();
+
+        this.action = "Updated discount from "+ this.editDiscount.discount_Name + "," + this.editDiscount.discount_Amount + "," + this.editDiscount.effective_From_Date  + "," + this.editDiscount.effective_To_Date
+         + " to: " + this.editForm.value.name + "," +this.editForm.value.amount + "," +this.editForm.value.effectiveFromdate + "," + this.editForm.value.effectiveTodate
+        this.AddTrail()
       })
     }
     catch {
       this.editDiscountErrorAlert();
     }
+  }
+
+  canceleditmodal() {
+    this.isModalOpen = false;
+    //this.modal.dismiss(null, 'cancel');
+  }
+
+//=========== Delete ===========
+  DeleteDiscount(discount_ID: string, discount_Name:string) {
+    this.service.DeleteDiscount(discount_ID).subscribe(result => {
+      console.log(result);
+      if (result.status == "Error") {
+        this.DeleteDiscountErrorAlert();
+      }
+      else if (result.status == "Success") {
+        this.DeleteDiscountSuccessAlert();
+
+        this.action = "Deleted Discount" + discount_Name
+        this.AddTrail()
+      }
+    })
+  }
+
+//=========== Audit trail ===========
+  action!: string
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+  }
+
+
+  reloadPage() {
+    window.location.reload()
+  }
+
+  canceladdmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirmaddmodal() {
+    this.AddDiscount();
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
   async editDiscountSuccessAlert() {
@@ -170,39 +239,6 @@ export class DiscountsPage implements OnInit {
       }],
     });
     await alert.present();
-  }
-
-  DeleteDiscount(discount_ID: string) {
-    this.service.DeleteDiscount(discount_ID).subscribe(result => {
-      console.log(result);
-      if (result.status == "Error") {
-        this.DeleteDiscountErrorAlert();
-      }
-      else if (result.status == "Success") {
-        this.DeleteDiscountSuccessAlert();
-      }
-    })
-  }
-
-  reloadPage() {
-    window.location.reload()
-  }
-
-  canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  canceleditmodal() {
-    this.isModalOpen = false;
-    //this.modal.dismiss(null, 'cancel');
-  }
-
-  confirmaddmodal() {
-    this.AddDiscount();
-  }
-
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
   async addDiscountSuccessAlert() {

@@ -7,6 +7,7 @@ using System;
 using IPKP___API.Controllers.Models.Entities;
 using System.Linq;
 using System.IO;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace IPKP___API.Controllers
 {
@@ -82,8 +83,9 @@ namespace IPKP___API.Controllers
 
                         _IPKPRepository.Add(image);
                         await _IPKPRepository.SaveChangesAsync();
+                        return Ok(image);
                     }
-                    return Ok(new Response { Status = "Success", Message = "Stock Image Added To Database." });
+                    
                 }
                 else
                 {

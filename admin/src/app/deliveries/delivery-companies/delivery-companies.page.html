@@ -25,8 +25,8 @@
       <ion-row *ngFor="let item of deliverycompanies">
         <ion-col>{{item.delivery_Company_Name}}</ion-col>
         <ion-col>R {{item.delivery_Price}}</ion-col>
-        <ion-col><ion-button (click)="DeleteDeliveryCompany(item.delivery_Company_ID)">Delete</ion-button></ion-col>
-        <ion-col><ion-button (click)="EditDeliveryCompany(item.delivery_Company_ID)" >Update</ion-button></ion-col>      
+        <ion-col><ion-button (click)="DeleteDeliveryCompany(item.delivery_Company_ID, item.delivery_Company_Name)">Delete</ion-button></ion-col>
+        <ion-col><ion-button (click)="EditDeliveryCompany(item.delivery_Company_ID, true)" >Update</ion-button></ion-col>      
       </ion-row>
     </ion-grid>
 
@@ -61,4 +61,33 @@
       </ion-content>
     </ng-template>
   </ion-modal>
+
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Add Delivery Company Details</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="editForm" >
+          <ion-item>
+            <ion-label position="stacked">Delivery Company Name</ion-label><br>
+            <ion-input type="text" formControlName="deliverycompanyname"></ion-input> 
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Delivery Company Price</ion-label><br>
+            <ion-input type="number" formControlName="Delivery_Price"></ion-input>
+          </ion-item>                   
+      </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-footer>
