@@ -34,7 +34,7 @@
           </ion-buttons>
           <ion-title>Add Image</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmaddImagemodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmaddImagemodal()" [strong]="true" [disabled]="AddImageForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -50,9 +50,10 @@
             <ion-item>
               <div>
                 <ion-label>Image File</ion-label>
-                <input formControlName="imagefile" type="file" id="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+                <input formControlName="imagefile" type="file" id="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;" accept="image/*">
                 <ion-button mat-stroked-button color="primary" (click)="file.click()">Upload File</ion-button>
                 <span *ngIf="fileNameUploaded.length > 0"> {{fileNameUploaded}}</span>
+                <!--<p style="color: crimson;"*ngIf="fileNameUploaded === 'Invalid file type. Please choose an image file.'">{{ fileNameUploaded }}</p>-->
               </div>
             </ion-item>                    
         </form>
