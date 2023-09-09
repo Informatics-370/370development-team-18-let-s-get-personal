@@ -48,7 +48,13 @@ export class ShopAllPage implements OnInit {
     {
       this.searchedStockType = this.stockType;
     }
-    this.counter = document.querySelector("#counter");
+    // Retrieve the cart item count from localStorage
+  const cartItemCount = localStorage.getItem('cartItemCount');
+  if (cartItemCount) {
+    if (this.counter) {
+      this.counter.innerHTML = cartItemCount;
+    }
+  }
    
   }
 
@@ -92,38 +98,40 @@ export class ShopAllPage implements OnInit {
     try {
       let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
       let existingItem = cartItems.find((cartItem: any) => cartItem.stock_Item.stock_Item_ID === stock.stock_Item_ID);
-      //const counter = document.querySelector("#counter");
-      if(this.counter){
-        this.counter.innerHTML=cartItems.basket_Quantity;
-        //this.counter.innerHTML=existingItem.basket_Quantity;
-        //this.counter.innerHTML=basket.basket_Quantity.toString();
-        //make the counter constant after a page refresh
-        //localStorage.setItem('basketQuantity', cartItems.basket_Quantity.toString());
-        
-      }
 
       let basket = new BasketItems();
       if (!existingItem) {
         basket.stock_Item = stock;
         basket.basket_Quantity = 1;
         cartItems.push(basket);
-
-
       } else {
         existingItem.basket_Quantity += 1;
-        
       }
       localStorage.setItem('cart', JSON.stringify(cartItems));
-      this.addToBasketSuccessAlert();
+      // Update the counter span
+    this.updateCounterSpan(cartItems);
+    
 
-      /*if (counter) {
-        counter.innerHTML = existingItem.basket_Quantity;
-      }*/
+    this.addToBasketSuccessAlert();
+    
 
     } catch {
       this.addToBasketErrorAlert();
     }
     
+  }
+
+  private updateCounterSpan(cartItems: any[]): void {
+    const totalQuantity = cartItems.reduce((sum, item) => sum + item.basket_Quantity, 0);
+    if (this.counter) {
+      this.counter.innerHTML = totalQuantity.toString();
+    }
+    // Call the method to update the cart item count in localStorage
+    this.storeCartItemCountInLocalStorage(cartItems);
+  }
+  private storeCartItemCountInLocalStorage(cartItems: any[]): void {
+    const totalQuantity = cartItems.reduce((sum, item) => sum + item.basket_Quantity, 0);
+    localStorage.setItem('cartItemCount', totalQuantity.toString());
   }
 
   reloadPage() {

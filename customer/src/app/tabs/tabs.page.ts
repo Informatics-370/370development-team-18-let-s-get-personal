@@ -29,5 +29,13 @@ export class TabsPage {
       this.router.navigate(['./tabs/login']);
     }
   }
+
+  SetUsernameInLocalStorage(username: string) {
+    localStorage.setItem('username', username);
+  }
+
+  GetUsernameFromLocalStorage(): string | null {
+    return localStorage.getItem('username');
+  }
   
 }

@@ -18,5 +18,13 @@ export class TabsPage {
   constructor(public AuthService:AuthenticationService,private router:Router){}
 
   roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
+  
+  SetUsernameInLocalStorage(username: string) {
+    localStorage.setItem('username', username);
+  }
+
+  GetUsernameFromLocalStorage(): string | null {
+    return localStorage.getItem('username');
+  }
 
 }

@@ -49,11 +49,26 @@ export class StockImagePage implements OnInit {
     this.router.navigate(['./tabs/inventory']);
   }
 
-  uploadFile = (files: any) => {
+   /*uploadFile = (files: any) => {
+ uploadFile = (files: any) => {
     let fileToUpload = <File>files[0];
     this.formData.append('file', fileToUpload , fileToUpload.name); //
     this.fileNameUploaded = fileToUpload.name
+  }*/
+
+  uploadFile = (files: any) => {
+    let fileToUpload = <File>files[0];
+    
+    // Check if the file is an image (you can extend this check with more image types)
+    if (fileToUpload.type.startsWith('image/')) {
+      this.formData.append('file', fileToUpload, fileToUpload.name);
+      this.fileNameUploaded = fileToUpload.name;
+    } else {
+      // Display an error message or handle the non-image file as needed
+      this.fileNameUploaded = 'Invalid file type. Please choose an image file.';
+    }
   }
+  
 
   addStockImage(){
     //if(this.AddImageForm.valid)

@@ -18,11 +18,13 @@
 
     <ion-tab-button tab="basket" >
       <ion-icon name="cart-outline"></ion-icon>
-      <!--<ion-badge id="counter">0</ion-badge>-->
+      <ion-badge><span id="counter"></span></ion-badge>
+      
     </ion-tab-button>
 
     <ion-tab-button (click)="CheckUser()">
       <ion-icon name="person-outline"></ion-icon>
+      <span class="username">{{ GetUsernameFromLocalStorage() || 'Guest' }}</span>
     </ion-tab-button>
 
   </ion-tab-bar>
