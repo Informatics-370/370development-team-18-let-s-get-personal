@@ -57,17 +57,20 @@ export class StockItemColoursPage implements OnInit {
   }
 
   addcolour(){
+    if (this.AddColourForm.valid){
+
     let addColour = new StockItemColours();
     addColour.stock_Item_Colour_Name = this.AddColourForm.value.name;
     this.service.AddStockItemColour(addColour).subscribe(result => {
-      if(result.status == "Error")
-      {
-        this.AddColourErrorAlert();
-      }
-      else if(result.status == "Success"){
-        this.AddColourSuccessAlert();
-      }
-    })
+      this.AddColourSuccessAlert();
+    },
+    (error) => {
+      this.AddColourErrorAlert();
+      console.error('Add stock colour error:', error);
+    }
+    );
+    //this.presentLoading();
+  }
   }
 
   deletecolour(stock_Item_Colour_ID:string){

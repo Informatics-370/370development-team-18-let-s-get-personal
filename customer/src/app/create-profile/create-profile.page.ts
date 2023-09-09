@@ -7,6 +7,9 @@ import { IonicModule, AlertController } from '@ionic/angular';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Customer } from '../Models/customer';
 import { RegisterVM } from '../ViewModels/registerVM';
+import { LoadingController } from '@ionic/angular';
+
+
 @Component({
   selector: 'app-create-profile',
   templateUrl: './create-profile.page.html',
@@ -16,7 +19,7 @@ import { RegisterVM } from '../ViewModels/registerVM';
 })
 export class CreateProfilePage implements OnInit {
   data = { profileId: 0, email: '', password: '', cellnumber: '', Firstname: '', Lastname: '' };
-  constructor(private service: AuthenticationService, private alertController: AlertController, private _router: Router) { }
+  constructor(private service: AuthenticationService, private alertController: AlertController, private _router: Router,public loadingController: LoadingController) { }
   customer: Customer[] = []
   ngOnInit() {
   }
@@ -55,25 +58,28 @@ export class CreateProfilePage implements OnInit {
         this._router.navigate(['./tabs/login']);
       },
       (error) => {
-        // Handle registration error
         this.AddCustomerErrorAlert();
         console.error('Registration error:', error);
       }
       );
+      this.presentLoading();
     }
-
-    /*if (result.status == "Error") {
-
-    }
-    else if (result.status == "Success") {
-      this.AddCustomerSuccessAlert()
-      console.log(addcustomer)
-      this._router.navigate(['./tabs/login']);
-    }*/
-    //})
-    //}
-
   }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Registering...',
+      duration: 4000,
+      backdropDismiss: true,
+    });
+    
+    await loading.present();
+  
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
+  } 
+
   async AddCustomerSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',

@@ -43,7 +43,7 @@
           </ion-buttons>
           <ion-title>Add Stock Item Colour</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmaddmodal()" [disabled]="AddColourForm.invalid" [strong]="true">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>

@@ -91,9 +91,9 @@
             <div *ngIf="AddForm.get('effectiveTodate')?.hasError('dateInPast')" class="error-message">
               <p style="color: crimson;">Date cannot be in the past.</p>
             </div> 
-            <div *ngIf="AddForm.get('effectiveTodate')?.hasError('dateB4ToDate')" class="error-message">
-              <p style="color: crimson;">Date cannot be in the past.</p>
-            </div>                 
+            <div *ngIf="AddForm.hasError('notValid', ['effectiveTodate'])">
+              <p style="color: crimson;">Effective To Date cannot be earlier than Effective From Date.</p>
+            </div>                
         </form>
       </ion-content>
     </ng-template>
