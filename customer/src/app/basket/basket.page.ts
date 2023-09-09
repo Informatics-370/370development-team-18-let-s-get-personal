@@ -251,33 +251,7 @@ export class BasketPage implements OnInit {
   }
 
   confirmaddmodal() {
-
     this.uploadImage()
-
-
-    // let items = JSON.parse(localStorage.getItem('cart') as string) || [];
-    // let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
-
-    // let design_Text = this.AddForm.value.designText;
-    // let image_File = "Kamo";
-
-    // if(existingItem){
-    //   //items.push({ ...existingItem, personalization. : 1 });
-    //   existingItem.personalization.personalizationText=design_Text;
-    //   existingItem.personalization.img=image_File;
-    //   localStorage.removeItem("stockId");
-
-
-    // localStorage.setItem('cart',JSON.stringify(items));
-
-    //try{
-    //this.personalize(); 
-    /*this._router.navigate(["/tabs/personalisation"])  
-    }
-    catch{
-      this.addPersonalizationErrorAlert();
-    }*/
-
   }
 
   onWillDismiss(event: Event) {
@@ -365,6 +339,31 @@ export class BasketPage implements OnInit {
     });
     await alert.present();
   }
+  
+//confirm add modal
+    // let items = JSON.parse(localStorage.getItem('cart') as string) || [];
+    // let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
+
+    // let design_Text = this.AddForm.value.designText;
+    // let image_File = "Kamo";
+
+    // if(existingItem){
+    //   //items.push({ ...existingItem, personalization. : 1 });
+    //   existingItem.personalization.personalizationText=design_Text;
+    //   existingItem.personalization.img=image_File;
+    //   localStorage.removeItem("stockId");
+
+
+    // localStorage.setItem('cart',JSON.stringify(items));
+
+    //try{
+    //this.personalize(); 
+    /*this._router.navigate(["/tabs/personalisation"])  
+    }
+    catch{
+      this.addPersonalizationErrorAlert();
+    }*/
+
   // addPersonalization(){
   //   let stockId=localStorage.getItem("stockId");
 

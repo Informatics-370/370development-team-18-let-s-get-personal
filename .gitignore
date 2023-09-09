@@ -511,3 +511,4 @@ api/Migrations/20230819184426_initial.cs
 api/appsettings.json
 api/Migrations/AppDbContextModelSnapshot.cs
 api/Migrations/AppDbContextModelSnapshot.cs
+api/Controllers/Models/Repository/AppDbContext.cs

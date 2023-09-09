@@ -12,6 +12,7 @@
   </ion-header>
   
   <ion-content>
+    <p style="cursor:pointer;" (click)="inventoryNav()"><ion-icon name="chevron-back-outline"></ion-icon>Inventory</p>
     <ion-button (click)="prevWriteOffsNav()">View Write Offs</ion-button>
     <ion-grid>
       <ion-row>
@@ -40,7 +41,7 @@
         <ion-col>{{item.inventory_Comments}}</ion-col>        
         <ion-col>{{item.stock_Item_Quantity}}</ion-col>
         <ion-col> <ion-button (click)="UpdateQuantity(item.stock_Item_ID, true)">Update</ion-button> </ion-col>
-        <ion-col> <ion-button (click)="WriteOffModal(item.stock_Item_ID, true)">Write-off</ion-button> </ion-col>
+        <ion-col> <ion-button (click)="WriteOffModal(item.stock_Item_ID, true, item.stock_Item_Name)">Write-off</ion-button> </ion-col>
       </ion-row>
     </ion-grid>
   </ion-content>  

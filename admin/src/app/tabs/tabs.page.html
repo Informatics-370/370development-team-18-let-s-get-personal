@@ -30,7 +30,7 @@
       <ion-label>Ratings</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="profiles">
+    <ion-tab-button tab="profiles" *ngIf="roles == 'Admin'">
       <ion-label>View Users</ion-label>
     </ion-tab-button>
 

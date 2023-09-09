@@ -15,21 +15,22 @@
     <ion-button id="adddiscountmodal">Add Discount</ion-button>
     <ion-grid>
       <ion-row>
-        <ion-col style="font-weight: bold;">Discount Name</ion-col>
-        <ion-col style="font-weight: bold;">Discount Amount</ion-col>
-        <ion-col style="font-weight: bold;">Product Name</ion-col>
-        <ion-col style="font-weight: bold;">Effective From Date</ion-col>
-        <ion-col style="font-weight: bold;">Effective To Date</ion-col>
-        <ion-col></ion-col>
-        <ion-col></ion-col>
+        <ion-col  sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Discount Name</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="font-weight: bold; text-align: center;">Discount Amount</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="font-weight: bold; text-align: center;">Product Name</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="font-weight: bold; text-align: center;">Effective From Date</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="font-weight: bold; text-align: center;">Effective To Date</ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="font-weight: bold; text-align: center;"></ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="font-weight: bold; text-align: center;"></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of discounts">
-        <ion-col>{{item.discount_Name}}</ion-col>
-        <ion-col>R: {{item.discount_Amount}}</ion-col>
-        <ion-col>{{item.effective_From_Date}}</ion-col>
-        <ion-col>{{item.effective_To_Date}}</ion-col>
-        <ion-col><ion-button (click)="DeleteDiscount(item.discount_ID)">Delete</ion-button></ion-col>
-        <ion-col><ion-button (click)="EditDiscount(item.discount_ID, true)" >Update</ion-button></ion-col>      
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">{{item.discount_Name}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">R {{item.discount_Amount}}.00</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;"></ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">{{item.effective_From_Date}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">{{item.effective_To_Date}}</ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;"><ion-button (click)="DeleteDiscount(item.discount_ID)">Delete</ion-button></ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;"><ion-button (click)="EditDiscount(item.discount_ID, true)" >Update</ion-button></ion-col>      
       </ion-row>
     </ion-grid>
 

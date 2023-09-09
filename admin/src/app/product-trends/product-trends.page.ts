@@ -51,7 +51,7 @@ export class ProductTrendsPage implements OnInit {
         labels: labeldata,
         datasets: [
           {
-            label: 'No. of sales',
+            label: 'No. of Sales per Product',
             data: realdata,
             //backgroundColor: colordata,
             barThickness: 40,

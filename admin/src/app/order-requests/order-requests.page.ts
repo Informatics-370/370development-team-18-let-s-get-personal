@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../Services/order.service';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
+import { AuditTrailService } from '../Services/audittrail.service';
+import { AuditTrail } from '../Models/adittrail';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { LoadingController } from '@ionic/angular';
@@ -20,7 +22,8 @@ export class OrderRequestsPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
   orderRequests: OrderLineItemVM[] =[]
   constructor(public service: OrderService, public environmentInjector: EnvironmentInjector,
-     private alertController:AlertController, public loadingController: LoadingController ) { }
+     private alertController:AlertController, public loadingController: LoadingController,
+     private trailservice: AuditTrailService ) { }
 
   ngOnInit() {
     this.GetOrderRequests()
@@ -55,6 +58,7 @@ export class OrderRequestsPage implements OnInit {
         
       })
       this.AcceptSuccessAlert()
+      this.AddTrail()
     }
     catch
     {
@@ -63,9 +67,28 @@ export class OrderRequestsPage implements OnInit {
     
   }
 
-  DeclineOrder(order_Line_Item_ID: string){
-
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+    let action = "Added order to 'In Progress'"
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
   }
+ 
 
   @ViewChild('htmlOrderRequestData') htmlOrderRequestData!: ElementRef;
   

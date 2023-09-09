@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { InventoryDataService } from 'src/app/Services/inventory.service';
 import { WriteOffVM } from 'src/app/ViewModels/writeoffVM';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-write-off',
   templateUrl: './write-off.page.html',
@@ -14,7 +15,7 @@ import { WriteOffVM } from 'src/app/ViewModels/writeoffVM';
 export class WriteOffPage implements OnInit {
 
   writeoffs: WriteOffVM[] = []
-  constructor(public service: InventoryDataService) { }
+  constructor(public service: InventoryDataService, private router: Router) { }
 
   ngOnInit() 
   {
@@ -25,6 +26,16 @@ export class WriteOffPage implements OnInit {
     this.service.GetWriteOffs().subscribe(result => {
       this.writeoffs = result as WriteOffVM[]
     })
+  }
+
+  inventoryNav()
+  {
+    this.router.navigate(['./tabs/inventory']);
+  }
+
+  stocktakeNav()
+  {
+    this.router.navigate(['./tabs/stock-take']);
   }
 
 }

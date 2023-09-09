@@ -35,7 +35,7 @@ export class InventoryPage implements OnInit {
   searchString: string = "";
   searchedinventory: StockItemViewModel[] = [];
 
-  stockTypes: StockTypes[] =[];
+  stocktypes: StockTypes[] =[];
   stockitemcolours: StockItemColours[] = [];
   stockimages: Stock_Image[] =[];
   
@@ -215,7 +215,7 @@ export class InventoryPage implements OnInit {
 
   GetStockTypes(){
     this.typeservice.GetStockTypes().subscribe(result =>{
-      this.stockTypes = result as StockTypes[];
+      this.stocktypes = result as StockTypes[];
       console.log(this.stocktypes);
     })
   }
@@ -249,7 +249,7 @@ export class InventoryPage implements OnInit {
   }
 
   //============== Routes =======
-  stocktypes()
+  stocktypesnav()
   {
     this.router.navigate(['./tabs/stock-types']);
   }

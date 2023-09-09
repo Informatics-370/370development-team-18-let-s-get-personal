@@ -12,13 +12,13 @@ import { DeliveryViewModel } from 'src/app/ViewModels/deliveryVM';
   templateUrl: './successful-deliveries.page.html',
   styleUrls: ['./successful-deliveries.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule]
 })
 export class SuccessfulDeliveriesPage implements OnInit {
 
   deliveries: DeliveryViewModel[] =[]
   date: any
-  constructor(private service: DeliveryDataService) { }
+  constructor(private service: DeliveryDataService, private router: Router) { }
 
   ngOnInit() {
     this.getSuccessfulDeliveries()
@@ -32,6 +32,13 @@ export class SuccessfulDeliveriesPage implements OnInit {
     })
   }
 
+  deliveriesnav()
+  {
+    this.router.navigate(['./tabs/deliveries']);
+  }
 
+  uploadWayBill(){
+    
+  }
 
 }

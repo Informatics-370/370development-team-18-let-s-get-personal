@@ -111,21 +111,26 @@ export const routes: Routes = [
     canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
   },
   {
-    path: 'previous-orders',
-    loadComponent: () => import('./previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage),
-    canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
-  },  {
     path: 'successful-deliveries',
-    loadComponent: () => import('./deliveries/successful-deliveries/successful-deliveries.page').then( m => m.SuccessfulDeliveriesPage)
+    loadComponent: () => import('./deliveries/successful-deliveries/successful-deliveries.page').then( m => m.SuccessfulDeliveriesPage),
+    canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
   },
   {
     path: 'ratings',
-    loadComponent: () => import('./ratings/ratings.page').then( m => m.RatingsPage)
+    loadComponent: () => import('./ratings/ratings.page').then( m => m.RatingsPage),
+    canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
   },
   {
     path: 'rating-graph',
-    loadComponent: () => import('./ratings/rating-graph/rating-graph.page').then( m => m.RatingGraphPage)
+    loadComponent: () => import('./ratings/rating-graph/rating-graph.page').then( m => m.RatingGraphPage),
+    canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
   },
+  {
+    path: 'audit-trail',
+    loadComponent: () => import('./audit-trail/audit-trail.page').then( m => m.AuditTrailPage),
+    canActivate:[AuthGuard],data:{roles:['Admin']}
+  },
+
 
 
 

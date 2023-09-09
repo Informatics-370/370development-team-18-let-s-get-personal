@@ -85,5 +85,8 @@ namespace IPKP___API.Controllers.Models.Repository
         object GetCustomerSales(string username);
 
         object GetWrittenOffItems();
+
+        object GetAdminAuditTrailDetails();
+        object GetEmployeeAuditTrailDetails();
     }
 }

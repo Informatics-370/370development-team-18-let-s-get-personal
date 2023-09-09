@@ -6,7 +6,8 @@ import { StockTypeDataService } from 'src/app/Services/stocktype.service';
 import { FormsModule, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-//for modal
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
+import { AuditTrail } from 'src/app/Models/adittrail';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -18,24 +19,12 @@ import { OverlayEventDetail } from '@ionic/core/components';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class StockTypesPage implements OnInit {
-//search function
-/*searchValue: string ='';
-  stocktypes:any=StockTypes;
-
-  filteredStockType = this.stocktypes.filter((items: { stock_Type_Name: string;}) => 
-  items.stock_Type_Name.toLowerCase().includes(this.searchValue));
-
-
-  updateSearchResults() {
-    this.filteredStockType = this.stocktypes.filter((items: { stock_Type_Name: string; }) =>
-     items.stock_Type_Name.toLowerCase().includes(this.searchValue.toLowerCase()));
-  }*/
-
+  action!: string
   @ViewChild(IonModal) modal!: IonModal
   stocktypes: StockTypes[] =[];
   constructor(
     public modalCtrl: ModalController, private service:StockTypeDataService, private router: Router,  
-    private alertController: AlertController, private route:ActivatedRoute) { }
+    private alertController: AlertController, private route:ActivatedRoute, private trailservice: AuditTrailService) { }
 
   AddTypeForm:FormGroup = new FormGroup({
     name: new FormControl('',[Validators.required])      
@@ -52,6 +41,11 @@ export class StockTypesPage implements OnInit {
     })
   }
 
+  inventoryNav()
+  {
+    this.router.navigate(['./tabs/inventory']);
+  }
+
   addStockTypes(){
     let addStockType = new StockTypes();
     addStockType.stock_Type_Name = this.AddTypeForm.value.name;
@@ -62,11 +56,22 @@ export class StockTypesPage implements OnInit {
           this.AddStockTypeSuccessAlert();
         }
         else if(result.status == "Success"){
+          this.action = "Added Stock Type"
+          this.AddTrail()
           this.AddStockTypeSuccessAlert();
         }
     })
   }
+  
+  canceladdmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
 
+  confirmaddmodal() {
+    this.addStockTypes();    
+  }
+
+  //=============== Delete ===============
   deleteStockTypes(stock_Type_ID:string){
     this.service.DeleteStockType(stock_Type_ID).subscribe(result =>{
       if(result.status == "Error")
@@ -74,6 +79,8 @@ export class StockTypesPage implements OnInit {
             this.DeleteStockTypeErrorAlert();
           }
           else if(result.status == "Success"){
+            this.action = "Deleted Stock Type"
+            this.AddTrail()
             this.DeleteStockTypeSuccessAlert();
           }
     });
@@ -92,8 +99,7 @@ export class StockTypesPage implements OnInit {
       this.editStockType = response as StockTypes;
 
       this.editForm.controls['name'].setValue(this.editStockType.stock_Type_Name);
-    })
-    
+    })    
     this.isModalOpen = isOpen;
   }
 
@@ -104,6 +110,8 @@ export class StockTypesPage implements OnInit {
       editedType.stock_Type_Name = this.editForm.value.name;
 
       this.service.UpdateStockType(this.editStockType.stock_Type_ID, editedType).subscribe(result =>{
+        this.action = "Deleted Stock Type"
+        this.AddTrail()
         this.editSuccessAlert();
       })      
     }
@@ -116,51 +124,33 @@ export class StockTypesPage implements OnInit {
     this.isModalOpen = false;
   }
 
-  async editSuccessAlert() {
-    const alert = await this.alertController.create({
-      header: 'Success!',
-      subHeader: 'Stock Type Updated',
-      buttons: [{
-        text: 'OK',
-        role: 'cancel',
-        handler:() =>{
-          this.reloadPage(); 
-        }
-    }],
-    });
-    await alert.present();
-  }
-
-  async editErrorAlert() {
-    const alert = await this.alertController.create({
-      header: 'We are sorry!',
-      subHeader: 'Stock Type Was Not Updated',
-      message: 'Please try again',
-      buttons: [{
-        text: 'OK',
-        role: 'cancel',
-        handler:() =>{
-          this.reloadPage(); 
-        }
-    }],
-    });
-    await alert.present();
-  }
-  
-
-  canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  confirmaddmodal() {
-    this.addStockTypes();
+  //========= Trail ========
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
     
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
   }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
+  //=============== Alerts ===============
   async DeleteStockTypeSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
@@ -223,7 +213,51 @@ export class StockTypesPage implements OnInit {
     await alert.present();
   }
 
+  async editSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Stock Type Updated',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async editErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Stock Type Was Not Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
   reloadPage(){
     window.location.reload()
   }
 }
+
+//search function
+/*searchValue: string ='';
+  stocktypes:any=StockTypes;
+
+  filteredStockType = this.stocktypes.filter((items: { stock_Type_Name: string;}) => 
+  items.stock_Type_Name.toLowerCase().includes(this.searchValue));
+
+
+  updateSearchResults() {
+    this.filteredStockType = this.stocktypes.filter((items: { stock_Type_Name: string; }) =>
+     items.stock_Type_Name.toLowerCase().includes(this.searchValue.toLowerCase()));
+  }*/

@@ -17,5 +17,6 @@ export class TabsPage {
   islogged: boolean = true 
   constructor(public AuthService:AuthenticationService,private router:Router){}
 
+  roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
 
 }

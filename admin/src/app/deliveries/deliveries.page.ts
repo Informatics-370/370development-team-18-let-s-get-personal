@@ -23,7 +23,7 @@ type Opts = { [key: string]: string | number }
   templateUrl: './deliveries.page.html',
   styleUrls: ['./deliveries.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule,RouterModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterModule]
 })
 export class DeliveriesPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument

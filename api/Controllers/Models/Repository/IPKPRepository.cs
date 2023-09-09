@@ -835,213 +835,253 @@ namespace IPKP___API.Controllers.Models.Repository
             return writeoffs;
         }
         
-        
-        //orders
-        /* public async Task<Order[]> GetAllOrdersAsync()
-         {
-             IQueryable<Order> query = _appDbContext.Orders;
-             return await query.ToArrayAsync();
-         }
+//audit trail
+        public object GetAdminAuditTrailDetails()
+        {
+            List<AuditTrailVM> trail = (
+                from t in _appDbContext.AuditTrail.ToList()
+                join a in _appDbContext.Admin.ToList()
+                on t.Admin_ID equals a.Admin_ID
 
-         public async Task<Order> GetOrderDetailsAsync(Guid order_ID)
-         {
-             IQueryable<Order> query = _appDbContext.Orders
-               .Where(u => u.Order_ID == order_ID);
-             return await query.FirstOrDefaultAsync();
-         }
+                select new AuditTrailVM
+                {
+                    ActionDate = t.ActionDate,
+                    ActionName = t.ActionName,
 
- //Order Requests
-         public async Task<Order_Request[]> GetAllOrderRequestsAsync()
-         {
-           IQueryable<Order_Request> query = _appDbContext.Order_Requests;
-           return await query.ToArrayAsync();
-         }
+                    FirstName = a.FirstName,
+                    Surname = a.Surname,
+                }
+                ).ToList();
+            return trail;
+        }
 
-         public async Task<Order_Request> GetOrderRequestAsync(Guid order_Request_ID)
-         {
-             IQueryable<Order_Request> query = _appDbContext.Order_Requests
-                       .Where(u => u.Order_Request_ID == order_Request_ID);
-             return await query.FirstOrDefaultAsync();
-         }
+        public object GetEmployeeAuditTrailDetails()
+        {
+            List<AuditTrailVM> trail = (
+                from t in _appDbContext.AuditTrail.ToList()
+                join e in _appDbContext.Employees.ToList()
+                on t.Employee_ID equals e.Employee_ID
 
- //personalisation
-         public async Task<Personalisation_Design> GetPersonalisationAsync(Guid personalisation_ID)
-         {
-             IQueryable<Personalisation_Design> query = _appDbContext.Personalisation_Designs
-               .Where(u => u.Personalisation_Design_ID == personalisation_ID);
-             return await query.FirstOrDefaultAsync();
-         }
+                select new AuditTrailVM
+                {
+                    ActionDate = t.ActionDate,
+                    ActionName = t.ActionName,
 
- //stock item images
-         public async Task<Stock_Image[]> GetAllStockItmagesAsync()
-         {
-             IQueryable<Stock_Image> query = _appDbContext.Stock_Images;
-             return await query.ToArrayAsync();
-         }
-         public async Task<Stock_Image> GetStockImageByID(Guid stock_image_id)
-         {
-             IQueryable<Stock_Image> query = _appDbContext.Stock_Images
-               .Where(u => u.Stock_Image_ID == stock_image_id);
-             return await query.FirstOrDefaultAsync();
-         }
+                    FirstName = e.FirstName,
+                    Surname = e.Surname,
+                }
+                ).ToList();
+            return trail;
+        }
 
- //Stock Items
-         public async Task<Stock_Item[]> GetAllStockItemsAsync()
-         {
-             IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
-             return await query.ToArrayAsync();
-         }
-         public async Task<Stock_Item> GetStockItemByName(string stock_Item_Name)
-         {
-             IQueryable<Stock_Item> query = _appDbContext.Stock_Items
-               .Where(u => u.Stock_Item_Name == stock_Item_Name);
-             return await query.FirstOrDefaultAsync();
-         }
-         public async Task<Stock_Item> GetStockItemDetailsAsync(Guid stock_Item_ID)
-         {
-             IQueryable<Stock_Item> query = _appDbContext.Stock_Items
-                       .Where(u => u.Stock_Item_ID == stock_Item_ID);
-             return await query.FirstOrDefaultAsync();
-         }
-
-         public object GetStockNames()
-         {
-             List<StockItemViewModel> stockitems = (
-                 from c in _appDbContext.Stock_Item_Colours.ToList()
-                 join s in _appDbContext.Stock_Items.ToList()
-                 on c.Stock_Item_Colour_ID equals s.Stock_Item_Colour_ID
-                 join t in _appDbContext.Stock_Types.ToList()
-                 on s.Stock_Type_ID equals t.Stock_Type_ID
-                 join i in _appDbContext.Stock_Images.ToList()
-                 on s.Stock_Image_ID equals i.Stock_Image_ID
-
-                 select new StockItemViewModel
-                 {
-                     Stock_Item_ID = s.Stock_Item_ID,
-                     Stock_Item_Name = s.Stock_Item_Name,
-                     Stock_Item_Price = s.Stock_Item_Price,
-                     Stock_Item_Size = s.Stock_Item_Size,
-                     Stock_Item_Quantity = s.Stock_Item_Quantity,
-                     Inventory_Comments = s.Inventory_Comments,
-                     Inventory_Date = s.Inventory_Date,
-
-
-                     Stock_Item_Colour_ID = c.Stock_Item_Colour_ID,
-                     StockColourName = c.Stock_Item_Colour_Name,
-
-                     Stock_Type_ID = t.Stock_Type_ID,
-                     StockTypeName = t.Stock_Type_Name,
-
-                     Stock_Image_ID = i.Stock_Image_ID,
-                     StockImageName = i.Stock_Image_Name,
-                     StockImageFile = i.Stock_Image_File,
-                 }
-                 ).ToList();
-             return stockitems;
-         }
-
-
- //stock types
-         public async Task<Stock_Type[]> GetAllStockTypesAsync()
-         {
-           IQueryable<Stock_Type> query = _appDbContext.Stock_Types;
-           return await query.ToArrayAsync();
-         }
-
-         public async Task<Stock_Type> GetStockTypeDetailsAsync(Guid stock_Type_ID)
-         {
-             IQueryable<Stock_Type> query = _appDbContext.Stock_Types
-                       .Where(u => u.Stock_Type_ID == stock_Type_ID);
-             return await query.FirstOrDefaultAsync();
-         } 
-
- //Stock item colours
-         public async Task<Stock_Item_Colour[]> GetAllStockItemColoursAsync()
-         {
-             IQueryable<Stock_Item_Colour> query = _appDbContext.Stock_Item_Colours;
-             return await query.ToArrayAsync();
-         }
-         public async Task<Stock_Item_Colour> GetStockItemColourDetailsAsync(Guid stock_Item_Colour_ID)
-         {
-             IQueryable<Stock_Item_Colour> query = _appDbContext.Stock_Item_Colours
-                       .Where(u => u.Stock_Item_Colour_ID == stock_Item_Colour_ID);
-             return await query.FirstOrDefaultAsync();
-         } 
-
- //product ratings
-         public async Task<Product_Rating[]> GetAllProductRatingsAsync()
-         {
-             IQueryable<Product_Rating> query = _appDbContext.Product_Ratings;
-             return await query.ToArrayAsync();
-         }
-
-         public async Task<Product_Rating> GetProductRatingDetailsAsync(Guid product_Rating_ID)
-         {
-           IQueryable<Product_Rating> query = _appDbContext.Product_Ratings
-                     .Where(u => u.Product_Rating_ID == product_Rating_ID);
-           return await query.FirstOrDefaultAsync();
-         }    
-
- //experience ratings
-         public async Task<Experience_Rating> GetExperienceRatingAsync(Guid Experience_Rating_ID)
-         {
-             IQueryable<Experience_Rating> query = _appDbContext.Experience_Ratings
-                     .Where(u => u.Experience_Rating_ID == Experience_Rating_ID);
-             return await query.FirstOrDefaultAsync();
-         }
-
-         public async Task<Experience_Rating[]> GetAllExperienceRatings()
-         {
-             IQueryable<Experience_Rating> query = _appDbContext.Experience_Rating;
-             return await query.ToArrayAsync();
-         }
-
- //refund policies
-         public async Task<Refund_Policy[]> GetAllPoliciesAsync()
-         {
-             IQueryable<Refund_Policy> query = _appDbContext.Refund_Policies;
-             return await query.ToArrayAsync();
-         }
-
-         public async Task<Refund_Policy> GetPolicyAsync(Guid Refund_Policy_Id)
-         {
-             IQueryable<Refund_Policy> query = _appDbContext.Refund_Policies
-                     .Where(u => u.Refund_Policy_ID == Refund_Policy_Id);
-             return await query.FirstOrDefaultAsync();
-         }
-
- //refunds
-         public async Task<Refund[]> GetAllPreviousRefunds()
-         {
-             IQueryable<Refund> query = _appDbContext.Refunds;
-             return await query.ToArrayAsync();
-         }
-
-         public async Task<Refund> GetPreviousRefund(Guid refund_Id)
-         {
-             IQueryable<Refund> query = _appDbContext.Refunds
-                     .Where(u => u.Refund_ID == refund_Id);
-             return await query.FirstOrDefaultAsync();
-         }
-
- //GetAllDiscountsAsync
-         public async Task<Discount[]> GetAllDiscountsAsync()
-         {
-             IQueryable<Discount> query = _appDbContext.Discounts;
-             return await query.ToArrayAsync();
-         }
-         public async Task<Discount> GetDiscountAsync(Guid discount_Id)
-         {
-             IQueryable<Discount> query = _appDbContext.Discounts
-                     .Where(u => u.Discount_ID == discount_Id);
-             return await query.FirstOrDefaultAsync();
-         }
-
- //bestsellers
-         public async Task<BestSellers[]> GetAllBestSellersAsync()
-         {
-             IQueryable<BestSellers> query = _appDbContext.BestSellers;
-             return await query.ToArrayAsync();
-         }*/
     }
 }
+
+/*
+//orders
+ public async Task<Order[]> GetAllOrdersAsync()
+ {
+     IQueryable<Order> query = _appDbContext.Orders;
+     return await query.ToArrayAsync();
+ }
+
+ public async Task<Order> GetOrderDetailsAsync(Guid order_ID)
+ {
+     IQueryable<Order> query = _appDbContext.Orders
+       .Where(u => u.Order_ID == order_ID);
+     return await query.FirstOrDefaultAsync();
+ }
+
+//Order Requests
+ public async Task<Order_Request[]> GetAllOrderRequestsAsync()
+ {
+   IQueryable<Order_Request> query = _appDbContext.Order_Requests;
+   return await query.ToArrayAsync();
+ }
+
+ public async Task<Order_Request> GetOrderRequestAsync(Guid order_Request_ID)
+ {
+     IQueryable<Order_Request> query = _appDbContext.Order_Requests
+               .Where(u => u.Order_Request_ID == order_Request_ID);
+     return await query.FirstOrDefaultAsync();
+ }
+
+//personalisation
+ public async Task<Personalisation_Design> GetPersonalisationAsync(Guid personalisation_ID)
+ {
+     IQueryable<Personalisation_Design> query = _appDbContext.Personalisation_Designs
+       .Where(u => u.Personalisation_Design_ID == personalisation_ID);
+     return await query.FirstOrDefaultAsync();
+ }
+
+//stock item images
+ public async Task<Stock_Image[]> GetAllStockItmagesAsync()
+ {
+     IQueryable<Stock_Image> query = _appDbContext.Stock_Images;
+     return await query.ToArrayAsync();
+ }
+ public async Task<Stock_Image> GetStockImageByID(Guid stock_image_id)
+ {
+     IQueryable<Stock_Image> query = _appDbContext.Stock_Images
+       .Where(u => u.Stock_Image_ID == stock_image_id);
+     return await query.FirstOrDefaultAsync();
+ }
+
+//Stock Items
+ public async Task<Stock_Item[]> GetAllStockItemsAsync()
+ {
+     IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
+     return await query.ToArrayAsync();
+ }
+ public async Task<Stock_Item> GetStockItemByName(string stock_Item_Name)
+ {
+     IQueryable<Stock_Item> query = _appDbContext.Stock_Items
+       .Where(u => u.Stock_Item_Name == stock_Item_Name);
+     return await query.FirstOrDefaultAsync();
+ }
+ public async Task<Stock_Item> GetStockItemDetailsAsync(Guid stock_Item_ID)
+ {
+     IQueryable<Stock_Item> query = _appDbContext.Stock_Items
+               .Where(u => u.Stock_Item_ID == stock_Item_ID);
+     return await query.FirstOrDefaultAsync();
+ }
+
+ public object GetStockNames()
+ {
+     List<StockItemViewModel> stockitems = (
+         from c in _appDbContext.Stock_Item_Colours.ToList()
+         join s in _appDbContext.Stock_Items.ToList()
+         on c.Stock_Item_Colour_ID equals s.Stock_Item_Colour_ID
+         join t in _appDbContext.Stock_Types.ToList()
+         on s.Stock_Type_ID equals t.Stock_Type_ID
+         join i in _appDbContext.Stock_Images.ToList()
+         on s.Stock_Image_ID equals i.Stock_Image_ID
+
+         select new StockItemViewModel
+         {
+             Stock_Item_ID = s.Stock_Item_ID,
+             Stock_Item_Name = s.Stock_Item_Name,
+             Stock_Item_Price = s.Stock_Item_Price,
+             Stock_Item_Size = s.Stock_Item_Size,
+             Stock_Item_Quantity = s.Stock_Item_Quantity,
+             Inventory_Comments = s.Inventory_Comments,
+             Inventory_Date = s.Inventory_Date,
+
+
+             Stock_Item_Colour_ID = c.Stock_Item_Colour_ID,
+             StockColourName = c.Stock_Item_Colour_Name,
+
+             Stock_Type_ID = t.Stock_Type_ID,
+             StockTypeName = t.Stock_Type_Name,
+
+             Stock_Image_ID = i.Stock_Image_ID,
+             StockImageName = i.Stock_Image_Name,
+             StockImageFile = i.Stock_Image_File,
+         }
+         ).ToList();
+     return stockitems;
+ }
+
+
+//stock types
+ public async Task<Stock_Type[]> GetAllStockTypesAsync()
+ {
+   IQueryable<Stock_Type> query = _appDbContext.Stock_Types;
+   return await query.ToArrayAsync();
+ }
+
+ public async Task<Stock_Type> GetStockTypeDetailsAsync(Guid stock_Type_ID)
+ {
+     IQueryable<Stock_Type> query = _appDbContext.Stock_Types
+               .Where(u => u.Stock_Type_ID == stock_Type_ID);
+     return await query.FirstOrDefaultAsync();
+ } 
+
+//Stock item colours
+ public async Task<Stock_Item_Colour[]> GetAllStockItemColoursAsync()
+ {
+     IQueryable<Stock_Item_Colour> query = _appDbContext.Stock_Item_Colours;
+     return await query.ToArrayAsync();
+ }
+ public async Task<Stock_Item_Colour> GetStockItemColourDetailsAsync(Guid stock_Item_Colour_ID)
+ {
+     IQueryable<Stock_Item_Colour> query = _appDbContext.Stock_Item_Colours
+               .Where(u => u.Stock_Item_Colour_ID == stock_Item_Colour_ID);
+     return await query.FirstOrDefaultAsync();
+ } 
+
+//product ratings
+ public async Task<Product_Rating[]> GetAllProductRatingsAsync()
+ {
+     IQueryable<Product_Rating> query = _appDbContext.Product_Ratings;
+     return await query.ToArrayAsync();
+ }
+
+ public async Task<Product_Rating> GetProductRatingDetailsAsync(Guid product_Rating_ID)
+ {
+   IQueryable<Product_Rating> query = _appDbContext.Product_Ratings
+             .Where(u => u.Product_Rating_ID == product_Rating_ID);
+   return await query.FirstOrDefaultAsync();
+ }    
+
+//experience ratings
+ public async Task<Experience_Rating> GetExperienceRatingAsync(Guid Experience_Rating_ID)
+ {
+     IQueryable<Experience_Rating> query = _appDbContext.Experience_Ratings
+             .Where(u => u.Experience_Rating_ID == Experience_Rating_ID);
+     return await query.FirstOrDefaultAsync();
+ }
+
+ public async Task<Experience_Rating[]> GetAllExperienceRatings()
+ {
+     IQueryable<Experience_Rating> query = _appDbContext.Experience_Rating;
+     return await query.ToArrayAsync();
+ }
+
+//refund policies
+ public async Task<Refund_Policy[]> GetAllPoliciesAsync()
+ {
+     IQueryable<Refund_Policy> query = _appDbContext.Refund_Policies;
+     return await query.ToArrayAsync();
+ }
+
+ public async Task<Refund_Policy> GetPolicyAsync(Guid Refund_Policy_Id)
+ {
+     IQueryable<Refund_Policy> query = _appDbContext.Refund_Policies
+             .Where(u => u.Refund_Policy_ID == Refund_Policy_Id);
+     return await query.FirstOrDefaultAsync();
+ }
+
+//refunds
+ public async Task<Refund[]> GetAllPreviousRefunds()
+ {
+     IQueryable<Refund> query = _appDbContext.Refunds;
+     return await query.ToArrayAsync();
+ }
+
+ public async Task<Refund> GetPreviousRefund(Guid refund_Id)
+ {
+     IQueryable<Refund> query = _appDbContext.Refunds
+             .Where(u => u.Refund_ID == refund_Id);
+     return await query.FirstOrDefaultAsync();
+ }
+
+//GetAllDiscountsAsync
+ public async Task<Discount[]> GetAllDiscountsAsync()
+ {
+     IQueryable<Discount> query = _appDbContext.Discounts;
+     return await query.ToArrayAsync();
+ }
+ public async Task<Discount> GetDiscountAsync(Guid discount_Id)
+ {
+     IQueryable<Discount> query = _appDbContext.Discounts
+             .Where(u => u.Discount_ID == discount_Id);
+     return await query.FirstOrDefaultAsync();
+ }
+
+//bestsellers
+ public async Task<BestSellers[]> GetAllBestSellersAsync()
+ {
+     IQueryable<BestSellers> query = _appDbContext.BestSellers;
+     return await query.ToArrayAsync();
+ }*/

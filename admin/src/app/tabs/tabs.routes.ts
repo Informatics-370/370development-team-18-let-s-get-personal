@@ -7,12 +7,6 @@ export const routes: Routes = [
     path: 'tabs',
     component: TabsPage,
     children: [
-      
-      // {
-      //   path: 'tab3',
-      //   loadComponent: () =>
-      //     import('../tab3/tab3.page').then((m) => m.Tab3Page),
-      // },
       {
         path: 'deliveries',
         loadComponent: () => import('../deliveries/deliveries.page').then( m => m.DeliveriesPage),
@@ -66,7 +60,7 @@ export const routes: Routes = [
       {
         path: 'profiles',
         loadComponent: () => import('../profiles/profiles.page').then( m => m.ProfilesPage),
-        canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
+        canActivate:[AuthGuard],data:{roles:['Admin']} //, 'Employee'
       },
       {
         path: 'refunds',
@@ -118,21 +112,24 @@ export const routes: Routes = [
         canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
       },
       {
-        path: 'previous-orders',
-        loadComponent: () => import('../previous-orders/previous-orders.page').then( m => m.PreviousOrdersPage),
+        path: 'successful-deliveries',
+        loadComponent: () => import('../deliveries/successful-deliveries/successful-deliveries.page').then( m => m.SuccessfulDeliveriesPage),
         canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
       },
       {
-        path: 'successful-deliveries',
-        loadComponent: () => import('../deliveries/successful-deliveries/successful-deliveries.page').then( m => m.SuccessfulDeliveriesPage)
-      },
-      {
         path: 'ratings',
-        loadComponent: () => import('../ratings/ratings.page').then( m => m.RatingsPage)
+        loadComponent: () => import('../ratings/ratings.page').then( m => m.RatingsPage),
+        canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
       },
       {
         path: 'rating-graph',
-        loadComponent: () => import('../ratings/rating-graph/rating-graph.page').then( m => m.RatingGraphPage)
+        loadComponent: () => import('../ratings/rating-graph/rating-graph.page').then( m => m.RatingGraphPage),
+        canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
+      },
+      {
+        path: 'audit-trail',
+        loadComponent: () => import('../audit-trail/audit-trail.page').then( m => m.AuditTrailPage),
+        canActivate:[AuthGuard],data:{roles:['Admin']}
       },
       {
         path: '',

@@ -44,6 +44,11 @@ export class StockImagePage implements OnInit {
     })    
   }
 
+  inventoryNav()
+  {
+    this.router.navigate(['./tabs/inventory']);
+  }
+
   uploadFile = (files: any) => {
     let fileToUpload = <File>files[0];
     this.formData.append('file', fileToUpload , fileToUpload.name); //

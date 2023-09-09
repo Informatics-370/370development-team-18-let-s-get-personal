@@ -5,9 +5,8 @@ import { StockItemColours } from 'src/app/Models/stockitemcolour';
 import { StockItemColourDataService } from 'src/app/Services/stockitemcolours.service';
 import { ToastController } from '@ionic/angular';
 import { FormsModule, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-//for modal
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -54,6 +53,11 @@ export class StockItemColoursPage implements OnInit {
       this.stockitemcolours = result as StockItemColours[];
       console.log(this.stockitemcolours)      
     })   
+  }
+
+  inventoryNav()
+  {
+    this.router.navigate(['./tabs/inventory']);
   }
 
   addcolour(){

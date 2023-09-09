@@ -18,6 +18,11 @@
       <ion-button (click)="openPDF()">Download Deliveries in Progress Report</ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-content *ngIf="deliveries.length == 0">
+    <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
+      <p>No Deliveries In Progress</p>
+    </div>
+  </ion-content>
   
   <ion-content id="htmlData">
     

@@ -2,12 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
-import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { DeliveryDataService } from 'src/app/Services/deliveries.service';
 import { Delivery_Company } from 'src/app/Models/deliverycompany';
-
-//for modal
+import { RouterModule, Router } from '@angular/router';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -17,7 +15,7 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: './delivery-companies.page.html',
   styleUrls: ['./delivery-companies.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterModule]
 })
 export class DeliveryCompaniesPage implements OnInit {
 
@@ -41,14 +39,18 @@ export class DeliveryCompaniesPage implements OnInit {
 
   ngOnInit(): void {
     this.getDeliveryCompany()
-  }
-  
+  }  
 
   getDeliveryCompany(){
     this.service.GetDeliveryCompanies().subscribe(result =>{
       this.deliverycompanies = result as Delivery_Company[];
       console.log(this.deliverycompanies)
     })
+  }
+
+  deliveriesnav()
+  {
+    this.thisroute.navigate(['./tabs/deliveries']);
   }
 
   AddDeliveryCompany(){

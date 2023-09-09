@@ -14,7 +14,7 @@
   <ion-toolbar>
     <ion-buttons>      
       <ion-button id="addStockmodal">Add New Stock Item</ion-button>
-      <ion-button (click)="stocktypes()">Stock Types</ion-button>
+      <ion-button (click)="stocktypesnav()">Stock Types</ion-button>
       <ion-button (click)="stockcoloursnav()">Stock Colours</ion-button>
       <ion-button (click)="stockimagesnav()">Stock Images</ion-button>
       <ion-button (click)="stocktakenav()">Preform Stock Take</ion-button>
@@ -37,28 +37,47 @@
 
     <ion-grid>
       <ion-row>
-        <ion-col style="font-weight: bold;">Product Name</ion-col>
-        <ion-col style="font-weight: bold;">Product Price</ion-col>
-        <ion-col style="font-weight: bold;">Product Size</ion-col>
-        <ion-col style="font-weight: bold;">Product Type</ion-col>
-        <ion-col style="font-weight: bold;">Product Colour</ion-col>
-        <ion-col style="font-weight: bold;">Product Image</ion-col>
-        <ion-col style="font-weight: bold;">Quantity In Stock</ion-col>
-        <!-- <ion-col style="font-weight: bold;">Date Added</ion-col> -->
-        <ion-col style="font-weight: bold;">Inventory Comments</ion-col>
-        <ion-col></ion-col>
+        <ion-col offset="0.5" sizeLg="1" sizeMd="1" sizeXs="1" style="font-weight: bold; text-align: center;">Product Name</ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1"  style="font-weight: bold; text-align: center;">Product Price</ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1"  style="font-weight: bold; text-align: center;">Product Size</ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1"  style="font-weight: bold; text-align: center;">Product Type</ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1"  style="font-weight: bold; text-align: center;">Product Colour</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="font-weight: bold; text-align: center;">Product Image</ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1"  style="font-weight: bold; text-align: center;">Quantity In Stock</ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1"  style="font-weight: bold; text-align: center;">Inventory Comments</ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" ></ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" ></ion-col>
       </ion-row>
+
       <ion-row *ngFor="let item of searchedinventory" class="cell-class">
-        <ion-col>{{item.stock_Item_Name}}</ion-col>
-        <ion-col>R {{item.stock_Item_Price}}.00</ion-col>
-        <ion-col>{{item.stock_Item_Size}}</ion-col>
-        <ion-col>{{item.stockTypeName}}</ion-col>
-        <ion-col>{{item.stockColourName}}</ion-col>
-        <ion-col><img src='data:image/png;base64,{{item.stockImageFile}}'></ion-col>
-        <ion-col>{{item.stock_Item_Quantity}}</ion-col>
-        <!-- <ion-col>{{item.inventory_Date}}</ion-col> -->
-        <ion-col>{{item.inventory_Comments}}</ion-col>
-        <ion-col><ion-button (click)="EditDiscount(item.stock_Item_ID, true)">Update Product</ion-button></ion-col>
+        <ion-col offset="0.5" sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          {{item.stock_Item_Name}}
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          R {{item.stock_Item_Price}}.00
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          {{item.stock_Item_Size}}
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          {{item.stockTypeName}}
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          {{item.stockColourName}}
+        </ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">
+          <img src='data:image/png;base64,{{item.stockImageFile}}'>
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          {{item.stock_Item_Quantity}}
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          {{item.inventory_Comments}}
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          <ion-button (click)="EditDiscount(item.stock_Item_ID, true)">Update Product</ion-button>
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" ></ion-col>
       </ion-row>
     </ion-grid>
   </div>
@@ -100,7 +119,7 @@
             <ion-label position="stacked">Stock Item Type</ion-label><br>
             <ion-select placeholder="Select a Stock Type" formControlName="Stock_Type_ID">
               <div slot="label">Stock Types <ion-text color="danger">(Required)</ion-text></div>
-              <ion-select-option *ngFor="let types of stockTypes" value="{{types.stock_Type_ID}}" >
+              <ion-select-option *ngFor="let types of stocktypes" value="{{types.stock_Type_ID}}" >
                 {{types.stock_Type_Name}}
               </ion-select-option>
             </ion-select>
@@ -178,7 +197,7 @@
               <ion-label position="stacked">Stock Item Type</ion-label><br>
               <ion-select placeholder="Select a Stock Type" formControlName="Stock_Type_ID">
                 <div slot="label">Stock Types <ion-text color="danger">(Required)</ion-text></div>
-                <ion-select-option *ngFor="let types of stockTypes" value="{{types.stock_Type_ID}}" >
+                <ion-select-option *ngFor="let types of stocktypes" value="{{types.stock_Type_ID}}" >
                   {{types.stock_Type_Name}}
                 </ion-select-option>
               </ion-select>

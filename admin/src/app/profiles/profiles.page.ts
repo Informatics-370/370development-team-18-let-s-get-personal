@@ -73,6 +73,10 @@ export class ProfilesPage implements OnInit {
     this.router.navigate(['./tabs/view-employees']);
   }
 
+  routeAudit(){
+    this.router.navigate(['./tabs/audit-trail']);
+  }
+
   GetAdmins(){
     this.service.GetAllAdmins().subscribe(result =>{
       this.admin = result as Admin[];

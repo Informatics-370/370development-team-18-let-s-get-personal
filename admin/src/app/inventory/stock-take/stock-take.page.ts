@@ -16,6 +16,9 @@ import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { Write_Off_Line_Item } from 'src/app/Models/writeofflineitem';
 import { PersonalisationService } from 'src/app/Services/personalisation.service';
 import { WriteOffVM } from 'src/app/ViewModels/writeoffVM';
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
+import { AuditTrail } from 'src/app/Models/adittrail';
+
 
 @Component({
   selector: 'app-stock-take',
@@ -29,11 +32,11 @@ export class StockTakePage implements OnInit {
   editProduct: Stock_Item = new Stock_Item();
   Products: StockItemViewModel[] = [];
   stockitems!: Stock_Item[];
-
+  action!: string
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public bestsellerservice:BestsellersService, private alertController:AlertController,     
     public stockitemservice: StockItemDataService, private inventoryservice: InventoryDataService, 
-    public pservice: PersonalisationService) { }
+    public pservice: PersonalisationService, private trailservice: AuditTrailService) { }
     
   ngOnInit() {
     this.GetAllStockItems();
@@ -43,6 +46,11 @@ export class StockTakePage implements OnInit {
     this.stockitemservice.GetStockItems().subscribe(result =>{
       this.Products = result as StockItemViewModel[];
     })    
+  }
+
+  inventoryNav()
+  {
+    this.router.navigate(['./tabs/inventory']);
   }
 
   prevWriteOffsNav(){
@@ -60,7 +68,7 @@ export class StockTakePage implements OnInit {
   {    
     this.stockitemservice.GetStockItem(stock_Item_ID).subscribe(response => {         
       this.editProduct = response as Stock_Item;
-
+      localStorage.setItem('stock_Item_Name', JSON.stringify(this.editProduct.stock_Item_Name));
       this.editForm.controls['Inventory_Comments'].setValue(this.editProduct.inventory_Comments);
       this.editForm.controls['Stock_Item_Quantity'].setValue(this.editProduct.stock_Item_Quantity);
     })
@@ -74,10 +82,13 @@ export class StockTakePage implements OnInit {
       let editedProduct = new Stock_Item();
       editedProduct.stock_Item_Quantity = this.editForm.value.Stock_Item_Quantity;
       editedProduct.inventory_Comments = this.editForm.value.Inventory_Comments;
+      let stockitemname = JSON.parse(localStorage.getItem('stock_Item_Name') as string)
 
       this.inventoryservice.Stocktake(this.editProduct.stock_Item_ID, editedProduct).subscribe(result =>{
         if(result.status == "Success"){
           this.editSuccessAlert();
+          this.action = "Stock Take"+ stockitemname +" Quantity: " + editedProduct.stock_Item_Quantity
+          this.AddTrail()
         }       
       })
     }
@@ -102,7 +113,8 @@ export class StockTakePage implements OnInit {
     Write_Off_Quantity: new FormControl('',[Validators.required]),
   })
 
-  WriteOffModal(stock_Item_ID:string, isOpen: boolean){    
+  WriteOffModal(stock_Item_ID:string, isOpen: boolean, stock_Item_Name:string){  
+    localStorage.setItem('stock_Item_Name', JSON.stringify(stock_Item_Name));  
     localStorage.setItem('stockitemID', JSON.stringify(stock_Item_ID));
     this.isWriteOffModalOpen = isOpen;
   }
@@ -166,18 +178,45 @@ export class StockTakePage implements OnInit {
     let VM = new WriteOffVM()
     let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)
     VM.write_Off_Quantity = this.writeoffquantity
+    let stockitemname = JSON.parse(localStorage.getItem('stock_Item_Name') as string)
 
     try{
       this.inventoryservice.DecreaseStockQuantity(stockitemID, VM).subscribe(result => {
         if(result.status == "Success"){
           this.WriteOffLineSuccessAlert()
           console.log(result)
+
+          this.action = "Wrote off Stock "+ stockitemname + "Quantity: " + this.writeoffquantity
+          this.AddTrail()
         }
       })
     }
     catch{
       this.DecreasesQuantityErrorAlert()
     }    
+  }
+
+  //========== Trail ===============
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
   }
 
 //========== Alerts ===============

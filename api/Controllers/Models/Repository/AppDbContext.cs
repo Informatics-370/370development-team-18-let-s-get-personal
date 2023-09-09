@@ -23,6 +23,7 @@ namespace IPKP___API.Controllers.Models.Repository
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Admin> Admin { get; set; }
+        public DbSet<AuditTrail> AuditTrail { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Delivery_Company> Delivery_Companies { get; set; }

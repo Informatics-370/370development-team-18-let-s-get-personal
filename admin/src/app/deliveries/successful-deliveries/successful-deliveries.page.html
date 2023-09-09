@@ -10,6 +10,16 @@
       <ion-title size="large">successful_deliveries</ion-title>
     </ion-toolbar>
   </ion-header>
+  <p style="cursor:pointer;" (click)="deliveriesnav()"><ion-icon name="chevron-back-outline"></ion-icon>Inventory</p>
+
+  <!-- deliveriesnav() -->
+
+  <ion-content *ngIf="deliveries.length == 0">
+    <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
+      <p>No Successful Deliveries</p>
+    </div>
+  </ion-content>
+
   <ion-grid>
     <ion-row>
       <ion-col style="font-weight: bold;">Delivery Company Name</ion-col>
