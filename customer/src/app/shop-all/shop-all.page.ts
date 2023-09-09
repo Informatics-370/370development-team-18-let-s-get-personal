@@ -88,8 +88,11 @@ export class ShopAllPage implements OnInit {
     this._router.navigate(["/tabs/stationary"])
   }
 
-  public Basket() {
+  /*public Basket() {
     this._router.navigate(["/tabs/basket"])
+  }*/
+  public Help() {
+    this._router.navigate(["/help"])
   }
   
   

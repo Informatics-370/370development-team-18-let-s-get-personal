@@ -1,0 +1,124 @@
+<ion-header [translucent]="true">
+  <!--<ion-toolbar>
+    <ion-title>IPKP Help Documentation</ion-title>
+  </ion-toolbar>-->
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div style="text-align: center;">
+    <div class="heading-container">
+      <h1>Help Documentation "Let's Get Personal"</h1>
+    </div>
+  </div>
+  <div style="text-align: center;">
+    <img src="/assets/team cover.png" alt="IPKP Team" />
+  </div>
+  <h2>Table of Contents</h2>
+  <ul>
+    <li><a [routerLink]="['/help']" fragment="section-introduction">Introduction</a></li>
+    <li><a [routerLink]="['/help']" fragment="section-getting-started">Getting Started</a></li>
+    <li><a [routerLink]="['/help']" fragment="section-usage">Usage</a></li>
+    <li><a [routerLink]="['/help']" fragment="section-registration">Registration and Login</a></li>
+    <li><a [routerLink]="['/help']" fragment="section-basket">Adding to basket and Personalization</a></li>
+    <li><a [routerLink]="['/help']" fragment="section-payment">Payment</a></li>
+    <li><a [routerLink]="['/help']" fragment="section-faqs">FAQs</a></li>
+  </ul>
+  <ion-card-content>
+    
+    <h1 id="section-introduction"><u>Introduction</u></h1>
+    
+      <h2>Welcome to the help documentation of "Let's Get Personal".</h2><br />
+     <p> The primary purpose of this documentation is to serve as a comprehensive guide to customers.
+      It is designed to provide clarity, context, and instruction on how to use the system,
+      ensuring that you can access information with ease and utilize it effectively.<br />
+      It is intended for potential partners also known as customers.<br />
+      This help document comprises several sections, each forming the entire functionality of the system.
+      We hope you get the full understanding of our system and have a smooth experience while using it.
+    </p>
+    <br/><br/>
+    <h1 id="section-getting-started"><u>Getting Started</u></h1>
+    <h2>Welcome to the "Getting Started" section.</h2><br />
+     <p> Whether you're a newcomer to our system or someone looking for a refresher, this section is designed to help you
+      get
+      a head start.</p>
+
+    <div>
+      <p><b>Step 1: Ensure you are using a web browser with.....</b></p>
+    </div>
+    <div>
+      <p><b>Step 2: Visit <a href="###" class="link-fancy" target="_blank">It's
+          Personal.com</a></b></p>
+    </div>
+    <div>
+      <img src="/assets/" alt="Browser Screenshot" style="width: 75%; height: 75%;" /><!--Screen screenshot-->
+    </div>
+    <br/><br/>
+    <h1 id="section-usage">Usage</h1>
+    <p>
+      Learn how to use your application effectively by following the instructions in the "Usage" section.
+    </p>
+<br/>
+    <h1 id="section-registration">Registration and Login</h1>
+    <p>
+      Welcome to the "Registration and Login" section of this documentation.<br />
+      Here you will see how and where to register and also where you can login and the information required.</p>
+
+    <div>
+      <p><b>Step 1: Head to the Profile tab that looks like the following:</b></p>
+      <img src="/assets/profileTab.png" alt="Profile Tab" sizes="50vh" style="width: 75%; height: 75%;" />
+    </div>
+    <div>
+      <p><b>Step 2: Click the sign up button to register</b></p>
+      <img src="/assets/profileTab2.png" alt="Profile Tab" sizes="50vh" style="width: 75%; height: 75%;" />
+    </div>
+    <div>
+      <p><b>Step 3: Insert all the required information such as your name, surname, cellphone number, email, username you'd
+        like to use and your password.</b></p>
+      <img src="/assets/" alt="Register page screenshot" /><!--Screen screenshot-->
+    </div>
+<br/><br/>
+    <h1 id="section-basket">Basket and Personalisation</h1>
+    
+     <h2> Welcome to the "Basket and Personalization" section of this documentation.</h2><br />
+     <p> Here you will see how to add a product to your basket and also how you will add the personalization of your
+      choice.
+    </p>
+
+    <div>
+      <p><b>Step 1: Head to the Shop tab that looks like the following:</b></p>
+      <img src="/assets/" alt="Shop Tab screenshot" sizes="50vh" style="width: 75%; height: 75%;" />
+    </div>
+    <div>
+      <p><b>Step 2: Click the "Add to basket" button</b></p>
+      <img src="/assets/" alt="Add button screenshot" sizes="50vh" style="width: 75%; height: 75%;" />
+    </div>
+    <div>
+      <p>Step 3: Click the cart icon to add personalization</p>
+      <img src="/assets/" alt="Basket screenshot" /><!--Screen screenshot-->
+    </div>
+    <br/><br/>
+    <h1 id="section-payment">Payment</h1>
+    
+     <h2> Welcome to the "Payment" section of this documentation.</h2><br />
+     <p> Here you will see how to go about before making your payment.</p>
+
+    <div>
+      <p><b>Step 1: </b></p>
+      <img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />
+    </div>
+    <div>
+      <p><b>Step 2:</b> </p>
+      <img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />
+    </div>
+    <div>
+      <p><b>Step 3: </b></p>
+      <img src="/assets/" alt="screenshot" /><!--Screen screenshot-->
+    </div>
+    <br/><br/>
+    <h2 id="section-faqs">FAQs</h2>
+    <p>
+      Find answers to frequently asked questions in the
+      <a (click)="faq()">FAQ Page</a>
+    </p>
+  </ion-card-content>
+</ion-content>

@@ -94,6 +94,10 @@ export const routes: Routes = [
     path: 'view-refund-policy',
     loadComponent: () => import('./faq/view-refund-policy/view-refund-policy.page').then( m => m.ViewRefundPolicyPage)
   },
+  {
+    path: 'help',
+    loadComponent: () => import('./help/help.page').then( m => m.HelpPage)
+  },
 
 
 ];
