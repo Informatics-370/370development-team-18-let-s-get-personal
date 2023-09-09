@@ -17,5 +17,12 @@ export class TabsPage {
   islogged: boolean = true 
   constructor(public AuthService:AuthenticationService,private router:Router){}
 
+  SetUsernameInLocalStorage(username: string) {
+    localStorage.setItem('username', username);
+  }
+
+  GetUsernameFromLocalStorage(): string | null {
+    return localStorage.getItem('username');
+  }
 
 }

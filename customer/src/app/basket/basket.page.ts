@@ -53,6 +53,13 @@ export class BasketPage implements OnInit {
     //let decode=jwt_decode(this.token);
 
     //console.log(this.token);
+    // Retrieve the cart item count from localStorage
+  const cartItemCount = localStorage.getItem('cartItemCount');
+  if (cartItemCount) {
+    if (this.counter) {
+      this.counter.innerHTML = cartItemCount;
+    }
+  }
   }
 
 
@@ -66,11 +73,12 @@ export class BasketPage implements OnInit {
 
     if (item.basket_Quantity < 10) {
       item.basket_Quantity++;
-      /*const counter=document.querySelector("#counter");*/
-      if (this.counter) {
-        this.counter.innerHTML = item.basket_Quantity;
-      }
+      // Update the counter span
+    this.updateCounterSpan(this.cartItems);
+
       localStorage.setItem('cart', JSON.stringify(this.cartItems));
+      // Store the cart item count before reloading the page
+    this.storeCartItemCountInLocalStorage();
     }
     else {
       console.log("Maximum item reached!")
@@ -92,15 +100,29 @@ export class BasketPage implements OnInit {
   public decrementQuantity(item: any): void {
     if (item.basket_Quantity > 1) {
       item.basket_Quantity--;
-      /* const counter=document.querySelector("#counter");*/
-      if (this.counter) {
-        this.counter.innerHTML = item.basket_Quantity;
-        item.basket_Quantity -= 1;
-        localStorage.setItem('basketQuantity', item.basket_Quantity.toString());
-      }
+      // Update the counter span
+    this.updateCounterSpan(this.cartItems);
+
+       localStorage.setItem('cart', JSON.stringify(this.cartItems));
+       // Store the cart item count before reloading the page
+    this.storeCartItemCountInLocalStorage();
     }
-    localStorage.setItem('cart', JSON.stringify(this.cartItems));
+   
   }
+
+  private updateCounterSpan(cartItems: any[]): void {
+    const totalQuantity = cartItems.reduce((sum, item) => sum + item.basket_Quantity, 0);
+    localStorage.setItem('cartItemCount', totalQuantity.toString());
+    if (this.counter) {
+      this.counter.innerHTML = totalQuantity.toString();
+    }
+  }
+  private storeCartItemCountInLocalStorage() {
+    const totalQuantity = this.cartItems.reduce((sum, item) => sum + item.basket_Quantity, 0);
+    localStorage.setItem('cartItemCount', totalQuantity.toString());
+  }
+
+
 
   public calculateTotalPrice(): any {
     let totalPrice = 0;
