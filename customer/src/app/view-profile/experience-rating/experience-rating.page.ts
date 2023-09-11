@@ -154,17 +154,23 @@ export class ExperienceRatingPage implements OnInit {
   }
 
   confirmEditmodal() {
+
+    if (this.editForm.valid) {
+      const formData = this.editForm.value;
+      console.log(formData);
+
     let editedExpRating = new Experience_Rating();
     editedExpRating.experience_Star_Rating = this.selectedRating;
     editedExpRating.experience_Rating_Comments = this.editForm.get('comment')?.value;
     console.log(editedExpRating)
-    try {
+    
       this.ratingService.UpdateExperienceRating(this.editExpRating.experience_Rating_ID, editedExpRating).subscribe(result => {
         this.editExpRatingSuccessAlert();
-      })
-    }
-    catch {
-      this.editExpRatingErrorAlert();
+      },(error) => {
+        this.editExpRatingErrorAlert();
+        console.error('Update error:', error);
+      }
+      );
     }
    /* let editedExpRating = new Experience_Rating();
     editedExpRating.experience_Star_Rating = this.editForm.value.selectedRating;
@@ -393,68 +399,6 @@ export class ExperienceRatingPage implements OnInit {
     onWillDismiss(event: Event) {
       const ev = event as CustomEvent<OverlayEventDetail<string>>;
     }
-  
-    async addExpRatingSuccessAlert() {
-      const alert = await this.alertController.create({
-        header: 'Success!',
-        subHeader: 'Your experience rating was captured.',
-        buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler: () => {
-            this.reloadPage();
-          }
-        }],
-      });
-      await alert.present();
-    }
-    async addExpRatingErrorAlert() {
-      const alert = await this.alertController.create({
-        header: 'We are sorry!',
-        subHeader: 'Your experience rating was not captured.',
-        message: 'Please try again',
-        buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler: () => {
-            this.reloadPage();
-          }
-        }],
-      });
-      await alert.present();
-    }
-  
-  
-  
-    async DeleteExpRatingSuccessAlert() {
-      const alert = await this.alertController.create({
-        header: 'Success!',
-        subHeader: 'Your experience rating is successfully deleted!',
-        buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler: () => {
-            this.reloadPage();
-          }
-        }],
-      });
-      await alert.present();
-    }
-  
-    async DeleteExpRatingErrorAlert() {
-      const alert = await this.alertController.create({
-        header: 'We are sorry!',
-        subHeader: 'Your Experience Rating Was Unfortunately Not Deleted.',
-        message: 'Please try again',
-        buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler: () => {
-            this.reloadPage();
-          }
-        }],
-      });
-      await alert.present();
     }*/
 
 

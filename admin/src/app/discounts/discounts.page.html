@@ -28,7 +28,7 @@
       <ion-row *ngFor="let item of discounts">
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">{{item.discount_Name}}</ion-col>
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">R {{item.discount_Amount}}.00</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;"></ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">{{item.stock_Id}}</ion-col>
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">{{item.effective_From_Date}}</ion-col>
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">{{item.effective_To_Date}}</ion-col>
         <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;"><ion-button (click)="DeleteDiscount(item.discount_ID)">Delete</ion-button></ion-col>

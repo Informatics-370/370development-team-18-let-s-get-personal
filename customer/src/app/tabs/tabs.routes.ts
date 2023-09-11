@@ -111,6 +111,10 @@ export const routes: Routes = [
         loadComponent: () => import('../faq/view-refund-policy/view-refund-policy.page').then( m => m.ViewRefundPolicyPage)
       },
       {
+        path: 'otp',
+        loadComponent: () => import('../forgot-password/otp/otp.page').then( m => m.OTPPage)
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full',
