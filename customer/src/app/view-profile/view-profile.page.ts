@@ -111,6 +111,9 @@ export class ViewProfilePage implements OnInit {
   public ExpRating() {
     this._router.navigate(["/tabs/experience-rating"])
   }
+  public ChangePassword() {
+    this._router.navigate(["/tabs/experience-rating"])
+  }
 
   public Logout() {
     localStorage.removeItem('token');
@@ -118,9 +121,14 @@ export class ViewProfilePage implements OnInit {
     localStorage.removeItem('username');
     localStorage.removeItem('roles');
     localStorage.removeItem('name');
-    this._router.navigate(["/tabs/login"])
+    
     // this.currentUser.next(false);
     // this.router.navigateByUrl('/login', {replaceUrl: true});
+    localStorage.removeItem('quantity');
+    localStorage.removeItem('cartItemCount');
+    localStorage.removeItem('cart');
+    //this.reloadPage();
+    this._router.navigate(["/tabs/login"])
   }
 
   async editSuccessAlert() {

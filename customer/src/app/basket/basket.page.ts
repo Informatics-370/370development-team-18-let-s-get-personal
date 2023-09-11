@@ -67,6 +67,8 @@ export class BasketPage implements OnInit {
   public removeItemFromBasket(id: any): void {
     this.cartItems = this.cartItems.filter((cartItem) => cartItem.stock_Item.stock_Item_ID !== id);
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
+    //update the quantity cartItemCount
+    //!!!!!!!!!!!!!
   }
 
   public async incrementQuantity(item: any) {
@@ -137,6 +139,9 @@ export class BasketPage implements OnInit {
   public clearBasket() {
     this.cartItems = this.cartItems.filter((cartItem) => cartItem.stock_Item_ID);
     localStorage.removeItem('cart');
+    localStorage.removeItem('cartItemCount');
+    localStorage.removeItem('quantity');
+    this.reloadPage();
   }
 
   public shopall() {
@@ -157,7 +162,7 @@ export class BasketPage implements OnInit {
     console.log(items);
 
     //change to checkout and go to deliveries then make payment 
-    //this.AddImageToImageLineItem()
+    //this.AddImageToImageLineItem() 
     // this.AddPersonalisation()
     //this._router.navigate(["/tabs/make-payment"])
 
