@@ -142,7 +142,7 @@ namespace IPKP___API.Controllers
                 await _userManager.AddToRoleAsync(user, User_Role.user);
             }
 
-            var subject = "Your IPKP account has been successfully been registered!";
+            var subject = "Your IPKP account has been successfully registered!";
             var message = "We are excited to welcome you to It's Personal's community!<br><br>" +
     "We are writing to inform you that your account has been successfully registered, and you are now a valued member of our platform. This is a significant step toward enjoying the full range of benefits and services we offer.<br><br>" +
     "Here are some key details about your account:<br>" +
