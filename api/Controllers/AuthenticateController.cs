@@ -466,24 +466,26 @@ namespace IPKP___API.Controllers
                 }
             }*/
         }
+        //FOR CAPTURING RATINGS BY CUSTOMER
+[HttpPost]
+[Route("GetCustomerbyID")]
+public async Task<IActionResult> GetCustomerbyID([FromBody] LoginViewModel model)
+{
+    var user = await _userManager.FindByNameAsync(model.Username);
+    if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+    {
+        List<Customer> CustomerList = new List<Customer>();
+
+        var results = await _IPKPRepository.GetAllCustomersAsync();
+
+        return Ok(user);
+    }
+    else
+    {
+        return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
     }
 }
 
-//[HttpPost]
-//[Route("GetCustomerbyID")]
-//public async Task<IActionResult> GetCustomerbyID([FromBody] LoginViewModel model)
-//{
-//    var user = await _userManager.FindByNameAsync(model.Username);
-//    if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-//    {
-//        List<Customer> CustomerList = new List<Customer>();
+    }
+}
 
-//        var results = await _IPKPRepository.GetAllCustomersAsync();
-
-//        return Ok(user);
-//    }
-//    else
-//    {
-//        return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
-//    }
-//}

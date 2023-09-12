@@ -5,9 +5,11 @@
 </ion-header>
 
 <ion-content *ngIf="cartItems.length == 0">
-	<div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
-	  <p>Your basket is empty.</p>
-	  <ion-button (click)="shopall()">Return to shop</ion-button>
+	<div class="col-12 text-center" ><!--style="padding-top: 3cm; margin-left: 2.5cm;"-->
+	  <p style="text-align: center;">Your basket is empty.</p>
+	  <p style="text-align: center;">Add something to make me happy!!</p>
+	  <img src="/assets/EmptyCart.PNG" alt="empty icon" class="center" width="100" height="500"/>
+	  <ion-button class="center" (click)="shopall()">Return to shop</ion-button>
 	</div>
 </ion-content>
 
@@ -41,6 +43,7 @@
       <ion-button (click)="makepayment()">Checkout</ion-button>
     </ion-row>
   </ion-grid>
+  <img src="/assets/Cart.PNG" alt="cart icon" class="center" style="width: 25%; height: 50%;" />
 </ion-content>
 
 
@@ -74,7 +77,7 @@
 					<ion-item>
 						<div>
 							<ion-label>Design Image</ion-label>
-							<input formControlName="designImage" type="file" id="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+							<input formControlName="designImage" type="file" id="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;"  accept="image/*">
 							<ion-button mat-stroked-button color="primary" (click)="file.click()">Upload File</ion-button>
 							<span *ngIf="fileNameUploaded.length > 0"> {{fileNameUploaded}}</span>
 						</div>

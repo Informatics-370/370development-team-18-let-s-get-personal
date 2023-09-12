@@ -89,6 +89,11 @@ export class SuccessfulPaymentPage implements OnInit {
       localStorage.removeItem("personalisedID");
       localStorage.removeItem("totalprice");
       localStorage.removeItem("deliveryID");
+      //*** */
+      localStorage.removeItem("quantity");
+      localStorage.removeItem("addressID");
+      localStorage.removeItem("cartItemCount");
+      localStorage.removeItem("stockId");
   }
 
   ionViewDidEnter() {

@@ -35,7 +35,7 @@
             Password is required!</p>
           </div>
         <ion-button expand="block" class="main-button" type="submit" [disabled]="!f.valid">Log in</ion-button>
-        <ion-button expand="block" class="main-button" onclick="ForgotPasswordNav()" >Forgot Password</ion-button>        
+        <ion-button expand="block" class="main-button" (click)="ForgotPasswordNav()" >Forgot Password</ion-button>        
 
         <div class="sign-up">
           Don't have an account? 

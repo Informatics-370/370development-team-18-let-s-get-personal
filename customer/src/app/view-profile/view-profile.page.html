@@ -41,8 +41,9 @@
 
       </ion-list>
     </ion-card-content>
+   
   </ion-card>
-  
+   <ion-button (click)="ChangePassword()">Change Password</ion-button>
   
 </ion-content>
 
@@ -54,7 +55,7 @@
           <ion-buttons slot="start">
             <ion-button (click)="canceleditmodal()">Cancel</ion-button>
           </ion-buttons>
-          <!-- <ion-title>Add Discount Policy Details</ion-title> -->
+           <ion-title>Update Profile Details</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
           </ion-buttons>
@@ -78,10 +79,10 @@
             <ion-label position="stacked">Cellphone number</ion-label><br>
             <ion-input type="text" formControlName="cell_Number" placeholder="" required></ion-input>
           </ion-item>
-          <!-- <ion-item>
-            <ion-label position="stacked">Employee Username</ion-label><br>
+          <ion-item>
+            <ion-label position="stacked">Customer Username</ion-label><br>
             <ion-input type="text" formControlName="username" placeholder="" required></ion-input>
-          </ion-item>   -->
+          </ion-item>   
       </form>
       <ion-toolbar>
         <ion-title slot="end"><ion-button (click)="deleteProfile(customer.customer_ID)">Delete Profile</ion-button></ion-title>

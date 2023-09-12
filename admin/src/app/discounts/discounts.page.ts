@@ -37,7 +37,7 @@ export class DiscountsPage implements OnInit {
     name: new FormControl('', [Validators.required]),
     amount: new FormControl('', [Validators.required]),
     effectiveFromdate: new FormControl('', [Validators.required, this.dateValidator]),
-    effectiveTodate: new FormControl('', [Validators.required, this.dateValidator.bind(this)/*this.dateB4Validator*/]),
+    effectiveTodate: new FormControl('', [Validators.required, this.dateValidator.bind(this)]),
     productID: new FormControl('', Validators.required)
   })
 
@@ -93,15 +93,15 @@ export class DiscountsPage implements OnInit {
 
 
     this.service.AddDiscount(addDiscount).subscribe(response => {
-      if (response.status == "Error") {
-        this.addDiscountErrorAlert();
-      }
-      else {
+
         this.addDiscountSuccessAlert();
         this.action = "Added discount: " + this.AddForm.value.name
         this.AddTrail()
-      }
-    })
+       
+    },(error) => {
+      this.addDiscountErrorAlert
+      console.error('Discount error:', error);
+    });
   }
 
 //=========== Edit ===========
