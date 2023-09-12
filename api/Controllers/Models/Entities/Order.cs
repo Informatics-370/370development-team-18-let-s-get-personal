@@ -12,19 +12,17 @@ namespace IPKP___API.Controllers.Models.Entities
         [Key]
         public Guid Order_ID { get; set; }
 
-        //[StringLength(255)]
-        public Guid Stock_Item_ID { get; set; }
+        public int Order_Quantity { get; set; }
 
         public DateTime Order_Completed_Date { get; set; }
 
+        //Foreign Keys
+        [ForeignKey(nameof(Customer_ID))]
         public Guid Customer_ID { get; set; }
+        
 
-        public int Order_Quantity { get; set; }
+        [ForeignKey(nameof(Stock_Item_ID))]
+        public Guid Stock_Item_ID { get; set; }
 
-        //[StringLength(255)]
-        //public string Username { get; set; }
-
-        //[StringLength(255)]
-        //public string Order_Notes { get; set; }
     }
 }

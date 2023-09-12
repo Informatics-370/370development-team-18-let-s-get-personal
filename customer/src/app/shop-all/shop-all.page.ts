@@ -9,7 +9,7 @@ import { LoadingController } from '@ionic/angular';
 import { BasketService } from '../Services/basket.service';
 import { StockItemDataService } from '../Services/stockitem.service';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
-
+import { StockTypeDataService } from '../Services/stocktype.service';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { StockTypes } from '../Models/stocktypes';
 @Component({
@@ -30,7 +30,7 @@ export class ShopAllPage implements OnInit {
   counter=document.querySelector("#counter"); 
 
   constructor(private _modalController: ModalController, public loadingController: LoadingController,
-    private _router: Router, private alertController: AlertController,
+    private _router: Router, private alertController: AlertController, private typeservice: StockTypeDataService,
     private basketservice: BasketService, private service: StockItemDataService) { }
 
     SearchForm: FormGroup = new FormGroup({
@@ -44,18 +44,34 @@ export class ShopAllPage implements OnInit {
     }
   ngOnInit() {
     this.GetStockItems();
+    this.GetStockTypes();
+
     if(this.searchString === "")
     {
       this.searchedStockType = this.stockType;
     }
     // Retrieve the cart item count from localStorage
-  const cartItemCount = localStorage.getItem('cartItemCount');
-  if (cartItemCount) {
-    if (this.counter) {
-      this.counter.innerHTML = cartItemCount;
+    const cartItemCount = localStorage.getItem('cartItemCount');
+    if (cartItemCount) {
+      if (this.counter) {
+        this.counter.innerHTML = cartItemCount;
+      }
     }
-  }
    
+  }
+
+  public GetStockItems() {
+    this.service.GetStockItems().subscribe(result => {
+      this.Products = result as StockItemViewModel[];
+      console.log(this.stockItems)
+    })
+  }
+
+  GetStockTypes(){
+    this.typeservice.GetStockTypes().subscribe(result =>{
+      this.stockType = result as StockTypes[];
+      console.log(this.stockType);
+    })
   }
 
   async presentLoading() {
@@ -71,21 +87,13 @@ export class ShopAllPage implements OnInit {
     console.log('Loading dismissed!');
   }
 
-  public GetStockItems() {
-    this.service.GetStockItems().subscribe(result => {
+
+
+  ViewStockType(stocktypeID: string){
+    this.service.GetAllStockItemsByType(stocktypeID).subscribe(result => {
       this.Products = result as StockItemViewModel[];
       console.log(this.stockItems)
     })
-  }
-
-  public clothing() {
-    this._router.navigate(["/tabs/clothing"])
-  }
-  public drinking() {
-    this._router.navigate(["/tabs/drinking"])
-  }
-  public stationary() {
-    this._router.navigate(["/tabs/stationary"])
   }
 
   public Basket() {
@@ -168,6 +176,16 @@ export class ShopAllPage implements OnInit {
     await alert.present();
   }
 }
+
+  // public clothing() {
+  //   this._router.navigate(["/tabs/clothing"])
+  // }
+  // public drinking() {
+  //   this._router.navigate(["/tabs/drinking"])
+  // }
+  // public stationary() {
+  //   this._router.navigate(["/tabs/stationary"])
+  // }
 
   /*addToBasket(Products:any):void{
 

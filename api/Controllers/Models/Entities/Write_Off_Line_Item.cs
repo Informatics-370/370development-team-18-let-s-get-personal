@@ -7,8 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class Write_Off_Line_Item
-  {
+    public class Write_Off_Line_Item
+    {
         [Key]
         public Guid Write_Off_Line_Item_ID { get; set; }
 
@@ -21,10 +21,6 @@ namespace IPKP___API.Controllers.Models.Entities
         public Guid Write_Off_ID { get; set; }
 
         [ForeignKey(nameof(Stock_Item_ID))]
-        public Guid Stock_Item_ID { get; set; }
-
-        //public virtual Write_Off Write_Off { get; set; }
-        //public virtual Stock_Item Stock_Item { get; set; }
-    
-  }
+        public Guid Stock_Item_ID { get; set; }    
+    }
 }

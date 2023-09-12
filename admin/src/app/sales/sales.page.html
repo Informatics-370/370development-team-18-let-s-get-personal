@@ -28,4 +28,20 @@
       </ion-row>
     </ion-grid>
   </div>
+  <div>
+    <ion-grid>
+      <ion-row>        
+        <ion-card *ngFor="let t of stocktypes">
+          <ion-card-header >
+            {{t.stock_Type_Name}}: R {{total}}.00
+          </ion-card-header>
+    
+          <ion-card-content *ngFor="let c of controlbreak" >            
+            <label>{{c.stock_Item_Name}}: R {{c.payment_Amount}}.00</label>
+          </ion-card-content>   
+        </ion-card>
+      </ion-row>
+    </ion-grid>
+    
+  </div>
 </ion-content>

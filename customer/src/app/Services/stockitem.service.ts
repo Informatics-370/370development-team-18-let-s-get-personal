@@ -26,6 +26,11 @@ import { Response } from '../Models/response';
       return this.httpClient.get(`${this.apiUrl}StockItem/GetAllStockItems`)
       .pipe(map(result => result))
     }
+
+    public GetAllStockItemsByType(stock_Type_ID:string){ 
+      return this.httpClient.get(`${this.apiUrl}StockItem/GetAllStockItemsByType/${stock_Type_ID}`)
+      .pipe(map(result => result))
+    }
   
     //add
     public AddStockItem(stockitem:Stock_Item){
@@ -33,19 +38,9 @@ import { Response } from '../Models/response';
     }
   
     //get selected one
-    public GetStockItem(stock_Item_ID:number){ 
+    public GetStockItem(stock_Item_ID:string){ 
       return this.httpClient.get(`${this.apiUrl}StockItem/GetStockItem/${stock_Item_ID}`)
       .pipe(map(result => result))
-    }
-  
-    //edit
-    public UpdateStockItem(stock_Item_ID:number, stockitem:Stock_Item){
-      return this.httpClient.put<Response>(`${this.apiUrl}StockItem/UpdateStockItem/${stock_Item_ID}`, stockitem)
-    }
-  
-    //delete 
-    public DeleteStockItem(stock_Item_ID:number){
-      return this.httpClient.delete<Response>(`${this.apiUrl}StockItem/DeleteStockItem/${stock_Item_ID}`)
     }
   
   }

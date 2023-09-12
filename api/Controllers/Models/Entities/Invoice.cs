@@ -29,10 +29,5 @@ namespace IPKP___API.Controllers.Models.Entities
         public double Invoice_Total_exclVAT { get; set; }
         public double Invoice_Total_VAT { get; set; }
         public double Invoice_Total_inclVAT { get; set; }
-
-        //public virtual ICollection<Invoice> Invoice { get; set; }
-        //public Order Order { get; set; }
-        // public Payment Payment { get; set; }
-        //public virtual Invoice_Discount Invoice_Discount { get; set; }
     }
 }

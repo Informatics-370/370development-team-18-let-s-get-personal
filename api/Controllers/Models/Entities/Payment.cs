@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
@@ -16,11 +17,11 @@ namespace IPKP___API.Controllers.Models.Entities
         public int Sale_Quantity { get; set; }
 
         public DateTime Sale_Date { get; set; }
-
-        public string Customer_UserName { get; set; }
-
+        
+        //Foreign Keys 
+        [ForeignKey(nameof(Stock_Item_ID))]
         public Guid Stock_Item_ID { get; set; }
 
-        public virtual ICollection<Invoice> Invoice { get; set; }
+        public string Customer_UserName { get; set; }
     }
 }

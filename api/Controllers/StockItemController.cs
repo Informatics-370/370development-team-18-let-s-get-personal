@@ -46,6 +46,28 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAllStockItemsByType/{stock_Type_ID}")]
+        public object GetAllStockItemsByType(Guid stock_Type_ID)
+        {
+            try
+            {
+                var stockitems = _IPKPRepository.GetStockNamesByType(stock_Type_ID);
+
+                if (stockitems == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    return Ok(stockitems);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
 
         [HttpPost]
         [Route("AddStockItem")]

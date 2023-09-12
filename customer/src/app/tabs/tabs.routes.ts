@@ -85,10 +85,10 @@ export const routes: Routes = [
         loadComponent: () => import('../view-profile/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage),
         canActivate:[AuthGuard],data:{roles:['User']}
       },
-      {
-        path: 'edit-product-rating',
-        loadComponent: () => import('../view-profile/previous-orders/product-rating/edit-product-rating/edit-product-rating.page').then( m => m.EditProductRatingPage)
-      },
+      // {
+      //   path: 'edit-product-rating',
+      //   loadComponent: () => import('../view-profile/previous-orders/product-rating/edit-product-rating/edit-product-rating.page').then( m => m.EditProductRatingPage)
+      // },
       /* {
        path: 'edit-experience-rating',
         loadComponent: () => import('../view-profile/experience-rating/edit-experience-rating/edit-experience-rating.page').then( m => m.EditExperienceRatingPage)

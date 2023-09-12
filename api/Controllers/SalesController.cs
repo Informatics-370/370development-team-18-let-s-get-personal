@@ -108,5 +108,22 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetSalesControlBreak/{stocktypename}")]
+        public object GetSalesControlBreak(string stocktypename)
+        {
+            try
+            {
+                var results = _IPKPRepository.GetSalesReport(stocktypename);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Any Sales" });
+
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
     }
 }

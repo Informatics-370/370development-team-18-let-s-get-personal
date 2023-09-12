@@ -11,7 +11,12 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 export type jsPDFDocument = any;
 type Opts = { [key: string]: string | number }
-
+import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
+import { Stock_Item } from 'src/app/Models/stockitem';
+import { StockItemDataService } from 'src/app/Services/stockitem.service';
+import { SalesVM } from '../ViewModels/salesVM';
+import { StockTypeDataService } from '../Services/stocktype.service';
+import { StockTypes } from '../Models/stocktypes';
 @Component({
   selector: 'app-sales',
   templateUrl: './sales.page.html',
@@ -22,8 +27,8 @@ type Opts = { [key: string]: string | number }
 export class SalesPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
   sales: Payment[] =[]
-  constructor(private service: SalesService, private router: Router, 
-    public environmentInjector: EnvironmentInjector) { }  
+  constructor(private service: SalesService, private router: Router, public stockitemservice: StockItemDataService,
+    public environmentInjector: EnvironmentInjector, private typeservice: StockTypeDataService) { }  
 
   prodReportNav()
   {
@@ -32,6 +37,7 @@ export class SalesPage implements OnInit {
 
   ngOnInit(): void {
     this.GetSalesList()
+    this.GetStockTypes()
   }
 
   GetSalesList()
@@ -59,5 +65,49 @@ export class SalesPage implements OnInit {
       PDF.save('IPKP-Products.pdf');
     });
   }
+
+  controlbreak: SalesVM[] =[]
+  total:any
+  stocktypename: any
+  stocktypes: StockTypes[] =[];
+  GetStockTypes(){
+    this.typeservice.GetStockTypes().subscribe(result =>{
+      this.stocktypes = result as StockTypes[];
+      console.log(this.stocktypes);
+
+      this.stocktypes.forEach(e => {
+        this.stocktypename = e.stock_Type_Name
+        console.log(this.stocktypename)
+        this.GetControlBreak(this.stocktypename)
+      });
+    })
+  }
+
+  GetControlBreak(typename: string){
+    console.log(typename)
+    this.service.GetSalesControlBreak(typename).subscribe(result => {
+      this.controlbreak = this.controlbreak.concat(result)
+      console.log(this.controlbreak)
+      this.controlbreak.forEach(element => {
+        let amount = element.payment_Amount
+        this.total = amount + element.payment_Amount
+      });
+    }) 
+  }
+
+  Products: StockItemViewModel[] = [];
+  GetAllStockItems(){
+    this.stockitemservice.GetStockItems().subscribe(result =>{
+      this.Products = result as StockItemViewModel[];
+      
+      this.Products.forEach(e => {
+        this.stocktypename = e.stockTypeName
+        console.log(this.stocktypename)
+        this.GetControlBreak(this.stocktypename)
+      });
+    })    
+  }
+
+  
 
 }

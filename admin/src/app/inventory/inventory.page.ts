@@ -116,7 +116,7 @@ export class InventoryPage implements OnInit {
     Inventory_Comments: new FormControl(''),
     Stock_Item_Quantity: new FormControl('',[Validators.required]),
     Stock_Type_ID: new FormControl('',[Validators.required]),
-    Stock_Image_ID: new FormControl('',[Validators.required]),
+    //Stock_Image_ID: new FormControl('',[Validators.required]),
     Stock_Item_Colour_ID: new FormControl('',[Validators.required]),
   })
 
@@ -139,7 +139,7 @@ export class InventoryPage implements OnInit {
     addStockItem.inventory_Comments = this.AddStockForm.value.Inventory_Comments;
     addStockItem.stock_Item_Quantity = this.AddStockForm.value.Stock_Item_Quantity;
     addStockItem.stock_Type_ID = this.AddStockForm.value.Stock_Type_ID;
-    addStockItem.stock_Image_ID = this.AddStockForm.value.Stock_Image_ID;
+    addStockItem.stock_Image_ID = this.addedimageID;
     addStockItem.stock_Item_Colour_ID = this.AddStockForm.value.Stock_Item_Colour_ID;
     
 

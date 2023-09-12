@@ -41,9 +41,12 @@ export class CheckOutPage implements OnInit {
     {
       let delID = JSON.parse(JSON.stringify(localStorage.getItem('deliveryID'))) // JSON.parse(localStorage.getItem('deliveryID') as string)
       this.service.GetDeliveryByID(delID).subscribe(result =>{
-        this.deliveryvm = result as DeliveryVM;
+        this.deliveryvm = result as DeliveryVM[];
           console.log(this.deliveryvm)
-          this.delprice = this.deliveryvm.delivery_Price
+          this.deliveryvm.forEach((element: { "": any; }) => {
+            this.deliveryvm.delivery_Price += this.delprice
+          });
+          //this.delprice = this.deliveryvm.delivery_Price
           console.log(this.delprice)
       })
       

@@ -16,6 +16,9 @@ namespace IPKP___API.Controllers.Models.Entities
         [ForeignKey(nameof(Employee_ID))]
         public Guid Employee_ID { get; set; }
 
+        [ForeignKey(nameof(Customer_ID))]
+        public Guid Customer_ID { get; set; }
+
         public DateTime ActionDate { get; set; }
 
         public string ActionName { get; set; }

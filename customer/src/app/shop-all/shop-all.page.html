@@ -2,6 +2,9 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-title> Shop All </ion-title>
+      <div *ngFor="let item of stockType">
+        <ion-button (click)="ViewStockType(item.stock_Type_ID)"> {{item.stock_Type_Name}} </ion-button>
+      </div>
       <!-- <ion-button (click)="clothing()"> Let's Get Dressed </ion-button>
       <ion-button (click)="drinking()"> Let's Get Drinking </ion-button>
       <ion-button (click)="stationary()"> Let's Get Working </ion-button> -->

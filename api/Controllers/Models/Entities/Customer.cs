@@ -7,8 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class Customer
-  {
+    public class Customer
+    {
         [Key]
         public Guid Customer_ID { get; set; }
 
@@ -30,38 +30,9 @@ namespace IPKP___API.Controllers.Models.Entities
         public DateTime Date_Registered { get; set; }
 
         //foreign key user        
+        [ForeignKey(nameof(User_ID))]
         public Guid User_ID { get; set; }
 
-        public User User { get; set; }
-
-        //public virtual ICollection<Basket> Basket { get; set; }
-
-
-        //public virtual ICollection<Order_Request> Order_Request { get; set; }
-        
+        public User User { get; set; }        
     }
 }
-//public Customer()
-//{
-//    Basket = new HashSet<Basket>();
-//    Order_Request = new HashSet<Order_Request>();
-//}
-
-//public virtual ICollection<User> User { get; set; }
-
-//FK basket
-//public Guid Basket_ID { get; set; }
-//public Basket Basket { get; set; }
-
-//foreign key Title
-
-//public Guid? Title_ID { get; set; }        
-//public virtual Title Title { get; set; }
-
-//FK Order request
-//public Guid Order_Request_ID { get; set; }
-//public Order_Request Order_Request { get; set; }
-
-//inverse properties
-
-//public virtual ICollection<Address> Address { get; set; }

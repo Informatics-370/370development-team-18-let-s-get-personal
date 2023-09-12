@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class Stock_Price_History
-  {
+    public class Stock_Price_History
+    {
         [Key]
         public Guid Stock_Price_History_ID { get; set; }
         public double Stock_Price_Amount { get; set; }

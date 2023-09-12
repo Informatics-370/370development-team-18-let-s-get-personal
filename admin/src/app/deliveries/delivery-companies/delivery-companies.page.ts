@@ -260,7 +260,7 @@ export class DeliveryCompaniesPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Success!',
       subHeader: 'Delivery Company Was Updated.',
-      message: 'Please try again',
+      //message: 'Please try again',
       buttons: [{
         text: 'OK',
         role: 'cancel',

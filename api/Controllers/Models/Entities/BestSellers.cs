@@ -15,21 +15,8 @@ namespace IPKP___API.Controllers.Models.Entities
         [Column("BestSeller_ID")]
         public Guid BestSeller_ID { get; set; }
 
-        [Column("Stock_Item_ID")]
+        [ForeignKey(nameof(Stock_Item_ID))]
         public Guid Stock_Item_ID { get; set; }
 
-        ////[ForeignKey(nameof(Stock_Item_ID))]
-        //[InverseProperty("BestSellers")]
-        //public virtual ICollection<Stock_Item> Stock_Item { get; set; }
-
-
-
-
-        //[StringLength(255)]
-        //public string Stock_Item_Name { get; set; }
-        //public Stock_Item Stock_Item { get; set; }
-        ////public virtual Stock_Image Stock_Image { get; set; }
-        ////public List<Stock_Image> Stock_Image { get; set; } = new List<Stock_Image>();
-        //public virtual Stock_Item_Colour Stock_Item_Colour { get; set; }
     }
 }

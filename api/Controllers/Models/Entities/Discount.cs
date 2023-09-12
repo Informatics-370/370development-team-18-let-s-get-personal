@@ -7,8 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class Discount
-  {
+    public class Discount
+    {
         [Key]
         public Guid Discount_ID { get; set; }
 
@@ -25,6 +25,5 @@ namespace IPKP___API.Controllers.Models.Entities
         public DateTime Effective_From_Date { get; set; }
         public DateTime Effective_To_Date { get; set; }
 
-        public virtual ICollection<Invoice_Discount> Invoice_Discount { get; set; }
     }
 }

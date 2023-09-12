@@ -235,6 +235,7 @@ namespace IPKP___API.Controllers
                 if (existingDeliveryCompany == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery Company" + delivery_Company_ID });
 
                 existingDeliveryCompany.Delivery_Company_Name = dcvm.Delivery_Company_Name;
+                existingDeliveryCompany.Delivery_Price = dcvm.Delivery_Price;
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {

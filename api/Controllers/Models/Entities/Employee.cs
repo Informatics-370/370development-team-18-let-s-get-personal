@@ -3,11 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class Employee
-  {
+    public class Employee
+    {
         [Key]
         public Guid Employee_ID { get; set; }    
 
@@ -28,9 +29,10 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public DateTime Date_Registered { get; set; }
 
-        //foreign key user        
+        //foreign key user
+        [ForeignKey(nameof(User_ID))]
         public Guid User_ID { get; set; }
+
         public User User { get; set; }
-        //public virtual ICollection<User> User { get; set; }
     }
 }

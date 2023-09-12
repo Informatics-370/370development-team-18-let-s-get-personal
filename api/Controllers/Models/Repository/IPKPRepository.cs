@@ -295,6 +295,43 @@ namespace IPKP___API.Controllers.Models.Repository
             return stockitems;
         }
 
+        public object GetStockNamesByType(Guid stocktypeID)
+        {
+            List<StockItemViewModel> stockitems = (
+                from c in _appDbContext.Stock_Item_Colours.ToList()
+                join s in _appDbContext.Stock_Items.ToList()
+                on c.Stock_Item_Colour_ID equals s.Stock_Item_Colour_ID
+                join t in _appDbContext.Stock_Types.ToList()
+                on s.Stock_Type_ID equals t.Stock_Type_ID
+                join i in _appDbContext.Stock_Images.ToList()
+                on s.Stock_Image_ID equals i.Stock_Image_ID
+
+                select new StockItemViewModel
+                {
+                    Stock_Item_ID = s.Stock_Item_ID,
+                    Stock_Item_Name = s.Stock_Item_Name,
+                    Stock_Item_Price = s.Stock_Item_Price,
+                    Stock_Item_Size = s.Stock_Item_Size,
+                    Stock_Item_Quantity = s.Stock_Item_Quantity,
+                    Inventory_Comments = s.Inventory_Comments,
+                    Inventory_Date = s.Inventory_Date,
+
+
+                    Stock_Item_Colour_ID = c.Stock_Item_Colour_ID,
+                    StockColourName = c.Stock_Item_Colour_Name,
+
+                    Stock_Type_ID = t.Stock_Type_ID,
+                    StockTypeName = t.Stock_Type_Name,
+
+                    Stock_Image_ID = i.Stock_Image_ID,
+                    StockImageName = i.Stock_Image_Name,
+                    StockImageFile = i.Stock_Image_File,
+                }
+                ).ToList();
+            IEnumerable<StockItemViewModel> query = stockitems.Where(x => x.Stock_Type_ID == stocktypeID);
+            return query;
+        }
+
 //stock types
         public async Task<Stock_Type[]> GetAllStockTypesAsync()
         {
@@ -765,21 +802,26 @@ namespace IPKP___API.Controllers.Models.Repository
         }
 
 //sales
-        public object GetSalesReport()
+        public object GetSalesReport(string stocktypename)
         {
             List<SalesVM> sales = (
                 from s in _appDbContext.Stock_Items.ToList() 
                 join p in _appDbContext.Payments.ToList()
                 on s.Stock_Item_ID equals p.Stock_Item_ID
+                join t in _appDbContext.Stock_Types.ToList()
+                on s.Stock_Type_ID equals t.Stock_Type_ID
                 select new SalesVM
                 {
                     Stock_Item_Name = s.Stock_Item_Name,
                     Order_Line_Item_Quantity = p.Sale_Quantity,
-
+                    Payment_Amount = p.Payment_Amount,
+                    Stock_Type_Name = t.Stock_Type_Name,
+                    Total_Amount = s.Stock_Sale_Quantity,
                 }
                 ).ToList();
 
-            return sales;
+            IEnumerable<SalesVM> query = sales.Where(x => x.Stock_Type_Name == stocktypename);
+            return query;
         }
         public async Task<Payment[]> GetAlPaymentsAsync()
         {

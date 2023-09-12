@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
@@ -25,11 +26,11 @@ namespace IPKP___API.Controllers.Models.Entities
         public string Username { get; set; }
 
         public DateTime Date_Registered { get; set; }
-        
-        //foreign key user        
+
+        //foreign key user
+        [ForeignKey(nameof(User_ID))]
         public Guid User_ID { get; set; }
         public User User { get; set; }
 
-        //public virtual ICollection<User> User { get; set; }
     }
 }

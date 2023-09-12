@@ -7,8 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class Delivery_Company
-  {        
+    public class Delivery_Company
+    {        
         [Key]
         public Guid Delivery_Company_ID { get; set; }
 
@@ -16,13 +16,6 @@ namespace IPKP___API.Controllers.Models.Entities
         public string Delivery_Company_Name { get; set; }
 
         public double Delivery_Price { get; set; }
-
-        //public virtual ICollection<Delivery> Delivery { get; set; }
+        
     }
 }
-//public Delivery_Company() 
-//{
-//    Delivery = new HashSet<Delivery>();
-//}
-
-//[InverseProperty("Delivery_Company")]

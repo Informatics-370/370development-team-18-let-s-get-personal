@@ -33,4 +33,10 @@ export class SalesService {
     return this.httpClient.get(`${this.apiUrl}Sales/GetSalesGraph`)
     .pipe(map(result => result))
   } 
+
+  public GetSalesControlBreak(stocktypename: string): Observable<any>{ 
+    return this.httpClient.get(`${this.apiUrl}Sales/GetSalesControlBreak/${stocktypename}`)
+    .pipe(map(result => result))
+  } 
+
 }

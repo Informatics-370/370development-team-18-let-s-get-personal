@@ -38,6 +38,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Stock_Item> GetStockItemByName(string stock_Item_Name);
         object GetStockNames();
         object GetStockList();
+        object GetStockNamesByType(Guid stocktypeID);
 
         Task<Stock_Type> GetStockTypeDetailsAsync(Guid stock_Type_ID);
         Task<Stock_Type[]> GetAllStockTypesAsync();
@@ -80,7 +81,7 @@ namespace IPKP___API.Controllers.Models.Repository
         object GetOrderLineItembyStatus(string orderlinestatus);        
         object GetAllOrderLineItems();
 
-        object GetSalesReport();
+        object GetSalesReport(string stocktypename);
         Task<Payment[]> GetAlPaymentsAsync();
         object GetCustomerSales(string username);
 

@@ -5,27 +5,26 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header>
+  <ion-header collapse="condense"><!-- collapse="condense" -->
     <ion-toolbar>    
-      <ion-buttons>
-        <!-- <ion-button (click)="RoutePrevDeliveries()">View Previous Deliveries</ion-button>
-        <ion-button (click)="Routedeliverycompanies()">Manage Delivery Companies</ion-button>
-        <ion-button (click)="openPDF()">Download Deliveries in Progress Report</ion-button> -->
+      <!-- <ion-buttons>
         <ion-tab-button (click)="Routedeliverycompanies()">Delivery Companies</ion-tab-button>
         <ion-tab-button (click)="RoutePrevDeliveries()">Past Deliveries</ion-tab-button>        
         <ion-tab-button (click)="openPDF()"> Deliveries Report</ion-tab-button>
-      </ion-buttons>
+      </ion-buttons> -->
     </ion-toolbar>
   </ion-header>
-  
+  <ion-button (click)="RoutePrevDeliveries()">View Previous Deliveries</ion-button>
+  <ion-button (click)="Routedeliverycompanies()">Manage Delivery Companies</ion-button>
+  <ion-button (click)="openPDF()">Download Deliveries in Progress Report</ion-button>
+
   <ion-content *ngIf="deliveries.length == 0">
     <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
       <p>No Deliveries In Progress</p>
     </div>
   </ion-content>
   
-  <ion-content id="htmlData">
-    
+  <ion-content id="htmlData">   
     <ion-searchbar [(ngModel)]="searchValue"  (ionInput)="updateSearchResults()" ></ion-searchbar>               
     <ion-grid>
       <ion-row>

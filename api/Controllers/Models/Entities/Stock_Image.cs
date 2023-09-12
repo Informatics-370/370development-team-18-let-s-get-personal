@@ -8,22 +8,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPKP___API.Controllers.Models.Entities
 {
-  public class Stock_Image
-  {
+    public class Stock_Image
+    {
         [Key]
         [Column("Stock_Image_ID")]
         public Guid Stock_Image_ID { get; set; }
 
         public string Stock_Image_File { get; set; }
+
+        [StringLength(255)]
         public string Stock_Image_Name { get; set; }
-
-        //[Column("Stock_Item_Id")]
-        //public Guid? Stock_Item_Id { get; set; }
-
-        //[InverseProperty("Stock_Image")]
-        //public virtual ICollection<Stock_Item> Stock_Item { get; set; }
-
-        //public virtual ICollection<Inventory> Inventory { get; set; }
-
     }
 }
