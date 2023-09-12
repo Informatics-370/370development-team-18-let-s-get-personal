@@ -3,7 +3,6 @@ import { ProductRating } from "./productrating"
 import { Stock_Image } from "./stockimage"
 import { StockTypes } from "./stocktypes"
 import { Best_Sellers } from "./bestsellers"
-import { BasketItems } from "./basket"
 import { StockPriceHistory } from "./stockpricehistory"
 export class  Stock_Item{
     stock_Item_ID!: string
@@ -25,7 +24,6 @@ export class  Stock_Item{
     stock_Item_Colour!: StockItemColours
 
     BestSellers!:Best_Sellers
-    Basket!:BasketItems
     productrating!: ProductRating
     Stock_Price_History!:StockPriceHistory
 }

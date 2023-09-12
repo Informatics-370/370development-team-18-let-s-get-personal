@@ -47,13 +47,4 @@ import { Response } from '../Models/response';
       return this.httpClient.get(`${this.apiUrl}Refund/GetAllRefundPolicies`)
       .pipe(map(result => result))
     }  
-    
-    AddRefundPolicy(policy:Refund_Policy){
-      return this.httpClient.post<Response>(`${this.apiUrl}Refund/AddRefundPolicy`, policy)
-      .pipe(map(result => result))
-    }
-    
-    DeleteRefundPolicy(refund_Policy_ID:number){
-      return this.httpClient.delete<Response>(`${this.apiUrl}Refund/DeleteRefundPolicy/${refund_Policy_ID}`);
-    }  
   }

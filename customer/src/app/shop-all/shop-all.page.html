@@ -2,10 +2,6 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-title> Shop All </ion-title>
-      
-      <!-- <ion-button (click)="clothing()"> Let's Get Dressed </ion-button>
-      <ion-button (click)="drinking()"> Let's Get Drinking </ion-button>
-      <ion-button (click)="stationary()"> Let's Get Working </ion-button> -->
     </ion-buttons>
     <ion-button slot="end" (click)="Help()"><ion-icon name="help-outline"></ion-icon></ion-button>
   </ion-toolbar>
@@ -25,6 +21,10 @@
       <ion-button (click)="searchStockType()">Search</ion-button>
     </ion-item> 
   </form>-->
+  <ion-button>View All</ion-button>
+  <div *ngFor="let item of stocktypes">
+    <ion-button (click)="GetByType(item.stock_Type_ID)">View {{item.stock_Type_Name}}</ion-button>
+  </div>
     <ion-row>
       <ion-col size="12" size-md="6" size-lg="4" *ngFor="let item of Products">
         <ion-card>

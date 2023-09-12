@@ -19,12 +19,6 @@ import { Response } from '../Models/response';
     constructor(private httpClient: HttpClient) { 
     }
 
-    //get all
-    public GetAllExperienceRatings(): Observable<any>{ 
-        return this.httpClient.get(`${this.apiUrl}ExperienceRating/GetAllExperienceRatings`)
-        .pipe(map(result => result))
-    }
-
     //get selected one
     public GetExperienceRating(Experience_Rating_ID:string){ 
         return this.httpClient.get(`${this.apiUrl}ExperienceRating/GetExperienceRating/${Experience_Rating_ID}`)

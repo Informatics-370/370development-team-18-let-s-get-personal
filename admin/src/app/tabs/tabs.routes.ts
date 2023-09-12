@@ -122,11 +122,6 @@ export const routes: Routes = [
         canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
       },
       {
-        path: 'rating-graph',
-        loadComponent: () => import('../ratings/rating-graph/rating-graph.page').then( m => m.RatingGraphPage),
-        canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
-      },
-      {
         path: 'audit-trail',
         loadComponent: () => import('../audit-trail/audit-trail.page').then( m => m.AuditTrailPage),
         canActivate:[AuthGuard],data:{roles:['Admin']}

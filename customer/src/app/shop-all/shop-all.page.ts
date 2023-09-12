@@ -9,7 +9,7 @@ import { LoadingController } from '@ionic/angular';
 import { BasketService } from '../Services/basket.service';
 import { StockItemDataService } from '../Services/stockitem.service';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
-
+import { StockTypeDataService } from '../Services/stocktype.service';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { StockTypes } from '../Models/stocktypes';
 @Component({
@@ -30,32 +30,33 @@ export class ShopAllPage implements OnInit {
   counter=document.querySelector("#counter"); 
 
   constructor(private _modalController: ModalController, public loadingController: LoadingController,
-    private _router: Router, private alertController: AlertController,
+    private _router: Router, private alertController: AlertController, private typeservice: StockTypeDataService,
     private basketservice: BasketService, private service: StockItemDataService) { }
 
-    SearchForm: FormGroup = new FormGroup({
-      name:new FormControl('',[Validators.required])
-    })
+  SearchForm: FormGroup = new FormGroup({
+    name:new FormControl('',[Validators.required])
+  })
     
-    searchStockType(){
-      this.searchString=this.SearchForm.get('name')?.value;
-      this.searchedStockType = this.stockType.filter(
-        f => f.stock_Type_Name.toLowerCase().includes(this.searchString.toLowerCase()));
-    }
+  searchStockType(){
+    this.searchString=this.SearchForm.get('name')?.value;
+    this.searchedStockType = this.stockType.filter(
+      f => f.stock_Type_Name.toLowerCase().includes(this.searchString.toLowerCase()));
+  }
+
   ngOnInit() {
     this.GetStockItems();
     if(this.searchString === "")
     {
       this.searchedStockType = this.stockType;
     }
+    
     // Retrieve the cart item count from localStorage
-  const cartItemCount = localStorage.getItem('cartItemCount');
-  if (cartItemCount) {
-    if (this.counter) {
-      this.counter.innerHTML = cartItemCount;
-    }
-  }
-   
+    const cartItemCount = localStorage.getItem('cartItemCount');
+    if (cartItemCount) {
+      if (this.counter) {
+        this.counter.innerHTML = cartItemCount;
+      }
+    }   
   }
 
   async presentLoading() {
@@ -74,30 +75,33 @@ export class ShopAllPage implements OnInit {
   public GetStockItems() {
     this.service.GetStockItems().subscribe(result => {
       this.Products = result as StockItemViewModel[];
-      console.log(this.stockItems)
+      console.log(this.Products)
     })
   }
 
-  public clothing() {
-    this._router.navigate(["/tabs/clothing"])
-  }
-  public drinking() {
-    this._router.navigate(["/tabs/drinking"])
-  }
-  public stationary() {
-    this._router.navigate(["/tabs/stationary"])
-  }
-
-  /*public Basket() {
-    this._router.navigate(["/tabs/basket"])
-  }*/
   public Help() {
     this._router.navigate(["/help"])
   }
-  
-  
-  public addToBasket(stock: any): void {
 
+//========= Search by Stock Type ===========
+  stocktypes: StockTypes[] =[];
+  GetTypes(){
+    this.typeservice.GetStockTypes().subscribe(result => {
+      this.stocktypes = result as StockTypes[];
+      console.log(this.stocktypes);
+    })
+  }
+
+  GetByType(type: string){
+    this.service.GetAllStockItemsByType(type).subscribe(result => {
+      this.Products = result as StockItemViewModel[];
+      console.log(this.Products)
+    })
+  }
+
+  
+//========= Basket ===========
+  public addToBasket(stock: any): void {
     try {
       let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
       let existingItem = cartItems.find((cartItem: any) => cartItem.stock_Item.stock_Item_ID === stock.stock_Item_ID);
@@ -110,18 +114,15 @@ export class ShopAllPage implements OnInit {
       } else {
         existingItem.basket_Quantity += 1;
       }
+
       localStorage.setItem('cart', JSON.stringify(cartItems));
       // Update the counter span
-    this.updateCounterSpan(cartItems);
-    
-
-    this.addToBasketSuccessAlert();
-    
-
-    } catch {
+      this.updateCounterSpan(cartItems);   
+      this.addToBasketSuccessAlert();    
+    } 
+    catch {
       this.addToBasketErrorAlert();
-    }
-    
+    }    
   }
 
   private updateCounterSpan(cartItems: any[]): void {

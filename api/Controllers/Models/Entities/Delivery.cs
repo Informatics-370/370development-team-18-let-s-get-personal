@@ -18,7 +18,7 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public DateTime DateDelivered { get; set; }
 
-        public string FormFile { get; set; }
+        public string Way_Bill_File { get; set; }
 
         //Address Foreign key
         [ForeignKey(nameof(Delivery_Address_ID))]

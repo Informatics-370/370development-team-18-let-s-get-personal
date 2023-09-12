@@ -1,5 +1,4 @@
 export class Response
-{
-    status!:string
+{   status!:string
     message!:string 
 }

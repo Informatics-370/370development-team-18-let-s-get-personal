@@ -14,9 +14,8 @@ import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
 import jwt_decode from 'jwt-decode';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-import { Design_Image } from '../Models/designimage';
 import { Design_Text } from '../Models/designtext';
-import { Design_Image_Line_Item } from '../Models/designimagelineitem';
+import { Design_Image } from '../Models/designimage';
 
 @Component({
   selector: 'app-basket',
@@ -198,14 +197,17 @@ export class BasketPage implements OnInit {
   personalizations!: Personalisation_Design
   fileNameUploaded = ''
   errmsg: string = ""
-  //  textprice: TextPrice[] =[]
-  imageprice: any //Image_Price[] =[]
+  imageprice: any 
   imagepriceID!: string
   formData = new FormData();
 
   uploadedImage!: Design_Image;
   uploadedText!: Design_Text;
   isModalOpen = false;
+
+  confirmaddmodal() {
+    this.uploadImage()
+  }
 
   public personalize(id: any, isOpen: boolean) {
     localStorage.setItem("stockId", id);
@@ -270,10 +272,6 @@ export class BasketPage implements OnInit {
 
   canceladdmodal() {
     this.modal.dismiss(null, 'cancel');
-  }
-
-  confirmaddmodal() {
-    this.uploadImage()
   }
 
   onWillDismiss(event: Event) {

@@ -25,21 +25,9 @@ import { Response } from '../Models/response';
       return this.httpClient.get(`${this.apiUrl}StockImage/GetAllStockImages`)
       .pipe(map(result => result))
     }
-  
-    public AddStockImage(stockimage:FormData){
-      return this.httpClient.post<Response>(`${this.apiUrl}StockImage/AddStockImage`, stockimage, this.httpOptions)
-    }
 
     public GetStockImage(stock_Image_ID:number){ 
       return this.httpClient.get(`${this.apiUrl}StockImage/GetStockImage/${stock_Image_ID}`)
       .pipe(map(result => result))
     }
-
-    public UpdateStockImage(stock_Image_ID:number, stockimage:Stock_Image){
-      return this.httpClient.put<Response>(`${this.apiUrl}StockImage/UpdateStockImage/${stock_Image_ID}`, stockimage)
-    }
-
-    public DeleteStockImage(stock_Image_ID:number){
-      return this.httpClient.delete<Response>(`${this.apiUrl}StockImage/DeleteImage/${stock_Image_ID}`)
-    }  
   }

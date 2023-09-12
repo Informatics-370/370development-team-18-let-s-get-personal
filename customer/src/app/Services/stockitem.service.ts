@@ -32,11 +32,6 @@ import { Response } from '../Models/response';
       .pipe(map(result => result))
     }
   
-    //add
-    public AddStockItem(stockitem:Stock_Item){
-      return this.httpClient.post<Response>(`${this.apiUrl}StockItem/AddStockItem`, stockitem, this.httpOptions)
-    }
-  
     //get selected one
     public GetStockItem(stock_Item_ID:string){ 
       return this.httpClient.get(`${this.apiUrl}StockItem/GetStockItem/${stock_Item_ID}`)

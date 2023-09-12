@@ -5,16 +5,16 @@
 </ion-header>
 
 <ion-content [fullscreen]="false">
-  <ion-header>
+  <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-buttons>
+      <!-- <ion-buttons>
         <ion-tab-button id="addTypemodal"> Add Stock Type</ion-tab-button>
-      </ion-buttons>
+      </ion-buttons> -->
     </ion-toolbar>
   </ion-header>
   <ion-content id="content">
-    <ion-button size="small" style="cursor:pointer; padding-left: 2%;" (click)="inventoryNav()">Back</ion-button>
-    <!-- <ion-button id="addTypemodal">Add Stock Type</ion-button> -->
+    <p style="cursor:pointer;" (click)="inventoryNav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
+    <ion-button id="addTypemodal">Add Stock Type</ion-button>
     
     <ion-grid>
       <ion-row>

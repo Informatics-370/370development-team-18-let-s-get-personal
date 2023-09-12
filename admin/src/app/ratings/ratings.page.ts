@@ -25,10 +25,6 @@ export class RatingsPage implements OnInit {
     this.getProductRatings()
   }
 
-  navRatingGraph(){
-    this.route.navigate(['./tabs/rating-graph']);
-  }
-
   getExperienceRatings(){
     this.eservice.GetAllExperienceRatings().subscribe(result => {
       this.experienceratings = result as ExperienceRatingVM[]

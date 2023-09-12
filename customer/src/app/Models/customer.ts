@@ -1,4 +1,3 @@
-import { User } from "./user"
 export class Customer{  
     customer_ID!: string
     firstName!: String
@@ -7,6 +6,5 @@ export class Customer{
     email!: String  
     username!: string
 
-    user!: User  
     user_ID!: number
 }

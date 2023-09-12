@@ -40,10 +40,3 @@ export class OrderRequestService {
     .pipe(map(result => result))
   }
 }
-
-  
-
-  // public GetDiscount(discount_ID:number){ 
-  //   return this.httpClient.get(`${this.apiUrl}Discount/GetDiscount/${discount_ID}`)
-  //   .pipe(map(result => result))
-  // }

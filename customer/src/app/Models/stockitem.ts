@@ -4,7 +4,6 @@ import { Stock_Image } from "./stockimage"
 import { StockTypes } from "./stocktypes"
 import { Best_Sellers } from "./bestsellers"
 import { BasketItems } from "./basket"
-import { StockPriceHistory } from "./stockpricehistory"
 export class  Stock_Item{
     stock_Item_ID!: string
     stock_Item_Name!: String 
@@ -27,5 +26,4 @@ export class  Stock_Item{
     BestSellers!:Best_Sellers
     Basket!:BasketItems
     productrating!: ProductRating
-    Stock_Price_History!:StockPriceHistory
 }
