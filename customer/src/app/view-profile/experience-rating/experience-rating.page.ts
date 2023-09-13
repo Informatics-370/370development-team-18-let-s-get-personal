@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Experience_Rating } from 'src/app/Models/experiencerating';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Experience_RatingService } from 'src/app/Services/experiencerating.service';
-import { ExperienceRatingVM } from 'src/app/ViewModels/experienceratingsVM';
+
 enum COLORS {
   GREY = "E0E0E0",
   GREEN = "#76FF03",
@@ -21,39 +21,26 @@ enum COLORS {
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class ExperienceRatingPage implements OnInit {
+
   comment: any;
+
   expRatings: Experience_Rating[] = [];
   results: any;
+
   rating: Experience_Rating = new Experience_Rating();
-  username: any;
+
   customerId: any;
   @ViewChild(IonModal) modal!: IonModal
-  
   constructor(private ratingService: Experience_RatingService, private alertController: AlertController) { }
 
   ngOnInit(): void {
     //this.GetExpRatings();
     this.customerId = localStorage.getItem("customerID");
-    this.username  = JSON.parse(JSON.stringify(localStorage.getItem('username')))
     console.log(this.customerId);
     this.getRatingByCustomerID(this.customerId.replace(/"/g, ''));
 
   }
 
-//======== Get =======
-  private getRatingByCustomerID(customer_ID: any): void {
-
-    console.log(customer_ID);
-
-    this.ratingService.GetExperienceRatingByCustomerID(customer_ID).subscribe(res => {
-      this.results = res;
-      this.expRatings = this.results;
-    }, error => {
-      console.log(error);
-    })
-  }
-
-//======== Add =======
   public submitRating(): void {
     this.comment = this.AddForm.get('comment')?.value;
     console.log("Rating " + this.selectedRating + "\nComment " + this.comment);
@@ -62,6 +49,7 @@ export class ExperienceRatingPage implements OnInit {
   AddForm: FormGroup = new FormGroup({
     comment: new FormControl('', [Validators.required]),
   });
+
 
   selectedRating: number = 0;
   stars: number[] = [1, 2, 3, 4, 5];
@@ -73,11 +61,10 @@ export class ExperienceRatingPage implements OnInit {
   confirmaddmodal() {
 
     this.comment = this.AddForm.get('comment')?.value;
+
     this.rating.customer_ID = this.customerId.replace(/"/g, '')
     this.rating.experience_Rating_Comments = this.comment;
     this.rating.experience_Star_Rating = this.selectedRating;
-
-    console.log(this.rating)
     try {
       this.ratingService.AddExperienceRating(this.rating).subscribe(res => {
        this.addExpRatingSuccessAlert();
@@ -92,64 +79,6 @@ export class ExperienceRatingPage implements OnInit {
     }
   }
 
-  canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-  }
-
-//======== Edit =======
-  isModalOpen = false;
-  editForm: FormGroup = new FormGroup({
-    selectedRating: new FormControl('', [Validators.required]),
-    comment: new FormControl('', [Validators.required]),
-  })
-  editExpRating: Experience_Rating = new Experience_Rating();
-
-  EditExpRating(experience_Rating_ID: string, isOpen: boolean) {
-    this.ratingService.GetExperienceRating(experience_Rating_ID).subscribe(response => {
-      this.editExpRating = response as Experience_Rating;
-      this.editForm.controls['selectedRating'].setValue(this.editExpRating.experience_Star_Rating);
-      this.editForm.controls['comment'].setValue(this.editExpRating.experience_Rating_Comments);
-    })
-    this.isModalOpen = isOpen;
-  }
-
-  canceleditmodal() {
-    this.isModalOpen = false;
-  }
-
-  confirmEditmodal() {
-    let editedExpRating = new Experience_Rating();
-    editedExpRating.experience_Star_Rating = this.selectedRating;
-    editedExpRating.experience_Rating_Comments = this.editForm.get('comment')?.value;
-    console.log(editedExpRating)
-    try {
-      this.ratingService.UpdateExperienceRating(this.editExpRating.experience_Rating_ID, editedExpRating).subscribe(result => {
-        this.editExpRatingSuccessAlert();
-      })
-    }
-    catch {
-      this.editExpRatingErrorAlert();
-    }
-  }
-
-//======== Delete =======
-  DeleteExperienceRating(experience_Rating_ID: string) {
-    this.ratingService.DeleteExperienceRating(experience_Rating_ID).subscribe(result => {
-      console.log(result);
-      if (result.status == "Error") {
-        this.DeleteExpRatingErrorAlert();
-      }
-      else if (result.status == "Success") {
-        this.DeleteExpRatingSuccessAlert();
-      }
-    })
-  }
-
-//======== Alerts =======
   async addExpRatingSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
@@ -178,6 +107,84 @@ export class ExperienceRatingPage implements OnInit {
       }],
     });
     await alert.present();
+  }
+
+  private getRatingByCustomerID(customer_ID: any): void {
+
+    console.log(customer_ID);
+
+    this.ratingService.GetExperienceRatingByCustomerID(customer_ID).subscribe(res => {
+      this.results = res;
+      this.expRatings = this.results;
+    }, error => {
+      console.log(error);
+    })
+  }
+
+  canceladdmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+
+  isModalOpen = false;
+
+  editForm: FormGroup = new FormGroup({
+    selectedRating: new FormControl('', [Validators.required]),
+    comment: new FormControl('', [Validators.required]),
+  })
+  editExpRating: Experience_Rating = new Experience_Rating();
+
+  EditExpRating(experience_Rating_ID: string, isOpen: boolean) {
+    this.ratingService.GetExperienceRating(experience_Rating_ID).subscribe(response => {
+
+      this.editExpRating = response as Experience_Rating;
+      this.editForm.controls['selectedRating'].setValue(this.editExpRating.experience_Star_Rating);
+      this.editForm.controls['comment'].setValue(this.editExpRating.experience_Rating_Comments);
+
+    })
+
+    this.isModalOpen = isOpen;
+  }
+  canceleditmodal() {
+    this.isModalOpen = false;
+  }
+
+  confirmEditmodal() {
+
+    if (this.editForm.valid) {
+      const formData = this.editForm.value;
+      console.log(formData);
+
+    let editedExpRating = new Experience_Rating();
+    editedExpRating.experience_Star_Rating = this.selectedRating;
+    editedExpRating.experience_Rating_Comments = this.editForm.get('comment')?.value;
+    console.log(editedExpRating)
+    
+      this.ratingService.UpdateExperienceRating(this.editExpRating.experience_Rating_ID, editedExpRating).subscribe(result => {
+        this.editExpRatingSuccessAlert();
+      },(error) => {
+        this.editExpRatingErrorAlert();
+        console.error('Update error:', error);
+      }
+      );
+    }
+   /* let editedExpRating = new Experience_Rating();
+    editedExpRating.experience_Star_Rating = this.editForm.value.selectedRating;
+    editedExpRating.experience_Rating_Comments = this.editForm.value.comment;
+
+    console.log(editedExpRating)
+    try {
+      this.ratingService.UpdateExperienceRating(this.editExpRating.experience_Rating_ID, editedExpRating).subscribe(result => {
+        this.editExpRatingSuccessAlert();
+      })
+    }
+    catch {
+      this.editExpRatingErrorAlert();
+    }*/
   }
 
   async editExpRatingSuccessAlert() {
@@ -209,6 +216,18 @@ export class ExperienceRatingPage implements OnInit {
       }],
     });
     await alert.present();
+  }
+
+  DeleteExperienceRating(experience_Rating_ID: string) {
+    this.ratingService.DeleteExperienceRating(experience_Rating_ID).subscribe(result => {
+      console.log(result);
+      if (result.status == "Error") {
+        this.DeleteExpRatingErrorAlert();
+      }
+      else if (result.status == "Success") {
+        this.DeleteExpRatingSuccessAlert();
+      }
+    })
   }
 
   reloadPage() {
@@ -245,21 +264,6 @@ export class ExperienceRatingPage implements OnInit {
     });
     await alert.present();
   }
-  
-   /* let editedExpRating = new Experience_Rating();
-    editedExpRating.experience_Star_Rating = this.editForm.value.selectedRating;
-    editedExpRating.experience_Rating_Comments = this.editForm.value.comment;
-
-    console.log(editedExpRating)
-    try {
-      this.ratingService.UpdateExperienceRating(this.editExpRating.experience_Rating_ID, editedExpRating).subscribe(result => {
-        this.editExpRatingSuccessAlert();
-      })
-    }
-    catch {
-      this.editExpRatingErrorAlert();
-    }*/
-
   /*
     @Input() rating!: number;
     @Output() ratingChange: EventEmitter<number> = new EventEmitter(); 
@@ -395,68 +399,6 @@ export class ExperienceRatingPage implements OnInit {
     onWillDismiss(event: Event) {
       const ev = event as CustomEvent<OverlayEventDetail<string>>;
     }
-  
-    async addExpRatingSuccessAlert() {
-      const alert = await this.alertController.create({
-        header: 'Success!',
-        subHeader: 'Your experience rating was captured.',
-        buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler: () => {
-            this.reloadPage();
-          }
-        }],
-      });
-      await alert.present();
-    }
-    async addExpRatingErrorAlert() {
-      const alert = await this.alertController.create({
-        header: 'We are sorry!',
-        subHeader: 'Your experience rating was not captured.',
-        message: 'Please try again',
-        buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler: () => {
-            this.reloadPage();
-          }
-        }],
-      });
-      await alert.present();
-    }
-  
-  
-  
-    async DeleteExpRatingSuccessAlert() {
-      const alert = await this.alertController.create({
-        header: 'Success!',
-        subHeader: 'Your experience rating is successfully deleted!',
-        buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler: () => {
-            this.reloadPage();
-          }
-        }],
-      });
-      await alert.present();
-    }
-  
-    async DeleteExpRatingErrorAlert() {
-      const alert = await this.alertController.create({
-        header: 'We are sorry!',
-        subHeader: 'Your Experience Rating Was Unfortunately Not Deleted.',
-        message: 'Please try again',
-        buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler: () => {
-            this.reloadPage();
-          }
-        }],
-      });
-      await alert.present();
     }*/
 
 

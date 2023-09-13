@@ -126,6 +126,21 @@ export class ShopAllPage implements OnInit {
     }    
   }
 
+/*addToBasket(Products:any):void{
+
+    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+    let existingItem = cartItems.find((cartItem:any) => cartItem.stock_Item_ID === Products.stock_Item_ID);
+
+    if (!existingItem) {
+      cartItems.push({ ...Products, stock_Item_Quantity: 1 });
+    } else {
+      
+      existingItem.stock_Item_Quantity += 1;
+    }    
+    localStorage.setItem('cart',JSON.stringify(cartItems));
+    this.addToBasketSuccessAlert();
+  }*/
+
   private updateCounterSpan(cartItems: any[]): void {
     const totalQuantity = cartItems.reduce((sum, item) => sum + item.basket_Quantity, 0);
     if (this.counter) {
@@ -174,17 +189,4 @@ export class ShopAllPage implements OnInit {
   }
 }
 
-  /*addToBasket(Products:any):void{
-
-    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
-    let existingItem = cartItems.find((cartItem:any) => cartItem.stock_Item_ID === Products.stock_Item_ID);
-
-    if (!existingItem) {
-      cartItems.push({ ...Products, stock_Item_Quantity: 1 });
-    } else {
-      
-      existingItem.stock_Item_Quantity += 1;
-    }
-    localStorage.setItem('cart',JSON.stringify(cartItems));
-    this.addToBasketSuccessAlert();
-  }*/
+  
