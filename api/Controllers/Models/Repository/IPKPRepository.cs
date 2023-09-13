@@ -294,7 +294,6 @@ namespace IPKP___API.Controllers.Models.Repository
                 ).ToList();
             return stockitems;
         }
-
         public object GetStockNamesByType(Guid stocktypeID)
         {
             List<StockItemViewModel> stockitems = (

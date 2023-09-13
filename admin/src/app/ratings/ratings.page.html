@@ -26,7 +26,7 @@
 
       <ion-row>
         <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5"></ion-col>
-        <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="font-weight: bold; text-align: center;">Customer Username</ion-col>
+        <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="font-weight: bold; text-align: center;">Customer Name</ion-col>
         <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="font-weight: bold; text-align: center;">Rating Comments</ion-col>
         <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="font-weight: bold; text-align: center;">Rating</ion-col>
         <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5"></ion-col>
@@ -35,7 +35,7 @@
       <ion-row *ngFor="let item of experienceratings">
         <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5" ></ion-col>
         <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="text-align: center;">
-          {{item.customer_UserName}}
+          {{item.customer_FirstName}} {{item.customer_Surname}}
         </ion-col>
         <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="text-align: center;">
           {{item.experience_Rating_Comments}}

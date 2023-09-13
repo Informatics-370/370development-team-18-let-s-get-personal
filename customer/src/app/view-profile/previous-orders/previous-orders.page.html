@@ -20,7 +20,7 @@
 				<ion-col>{{item.stock_Item_Name}}</ion-col>
 				<ion-col>{{item.order_Line_Item_Quantity}}</ion-col>
 				<ion-col>{{item.order_Completed_Date}}</ion-col>
-				<ion-col><ion-button (click)="AddRating(item.stock_Item_ID,true, item.stock_Item_Name)">Add Product Rating</ion-button></ion-col>			</ion-row>
+				<ion-col><ion-button (click)="AddRating(item.stock_Item_ID, true, item.stock_Item_Name)">Add Product Rating</ion-button></ion-col>			</ion-row>
 		</ion-grid>
 	</ion-card-content>
 
@@ -71,7 +71,8 @@
 					<ion-row>
 						<ion-col *ngFor="let star of stars" (click)="rateExperience(star)">
 							<ion-icon [name]="star >= selectedRating ? 'star' : 'star-outline'"
-								formControlName="selectedRating"></ion-icon>
+								></ion-icon>
+								<!-- formControlName="selectedRating" -->
 						</ion-col>
 					</ion-row>
 					<p>Selected Rating: {{ selectedRating }}</p>

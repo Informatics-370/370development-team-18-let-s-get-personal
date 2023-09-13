@@ -44,14 +44,13 @@ export class PreviousOrdersPage implements OnInit {
   ngOnInit() {    
     this.customerUsername = JSON.parse(JSON.stringify(localStorage.getItem('username')))// JSON.parse(localStorage.getItem('customerID') as string)
     this.getPreviousOrders()
-    this.customerId = localStorage.getItem("customerID");
+    this.customerId = JSON.parse(JSON.stringify(localStorage.getItem('customerID'))) //localStorage.getItem("customerID");
     console.log(this.customerId);
     this.getRatingByCustomerID(this.customerId.replace(/"/g, ''));
-    //console.log("Customer"+customerID);
   }
 
   getPreviousOrders(){
-    this.service.getPreviousOrders(this.customerUsername).subscribe(result =>{
+    this.service.getPreviousOrders(this.customerId).subscribe(result =>{
       this.orders = result as SalesVM[]
       console.log(this.orders)
     })
@@ -74,6 +73,7 @@ export class PreviousOrdersPage implements OnInit {
   stockitemName!: string
   AddRating(stock_Item_ID: string, isAddOpen: boolean, stock_Item_Name:string){
     localStorage.setItem('RatingStockID', stock_Item_ID);
+    console.log(stock_Item_ID)
     this.stockitemName = stock_Item_Name;
     this.isAddModalOpen = isAddOpen;
   }
@@ -98,8 +98,8 @@ export class PreviousOrdersPage implements OnInit {
   confirmaddmodal(/*Stock_Item_ID: string*/ ) {
     this.comment = this.AddForm.get('comment')?.value;
 
-    this.rating.stock_Item_ID = JSON.parse(JSON.stringify(localStorage.getItem('RatingStockID')));
-    this.rating.customer_ID = this.customerId.replace(/"/g, '')
+    this.rating.stock_Item_ID = this.stockitemName //JSON.parse(JSON.stringify(localStorage.getItem('RatingStockID')));
+    this.rating.customer_ID = this.customerId //.replace(/"/g, '')
     this.rating.product_Rating_Comments = this.comment;
     this.rating.product_Star_Rating = this.selectedRating;
 

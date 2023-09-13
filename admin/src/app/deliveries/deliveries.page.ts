@@ -72,10 +72,16 @@ export class DeliveriesPage implements OnInit {
     })
   }
 
+  stockItemID: any
+  customerID: any
+  qauntity: any
 
-  ReceiveDelivery(DeliveryId: string, order_Line_Item_ID:string){
+  ReceiveDelivery(DeliveryId: string, order_Line_Item_ID:string, stockItemID: string, customerID: string, qauntity: number){
     try
     {
+      this.stockItemID = stockItemID
+      this.customerID = customerID
+      this.qauntity = qauntity
       localStorage.setItem('order_Line_Item_ID', JSON.stringify(order_Line_Item_ID));
       this.service.ChangeStatusToRecieved(DeliveryId).subscribe(result =>{
         if(result.status == "Success"){
@@ -115,14 +121,14 @@ export class DeliveriesPage implements OnInit {
     {
       let order = new Order;
       console.log(this.orderlineitem.customer_ID)
-        order.customer_ID = this.orderlineitem.customer_ID
-        order.order_Quantity = this.orderlineitem.order_Line_Item_Quantity
-        order.stock_Item_ID = this.orderlineitem.stock_Item_ID
+        order.customer_ID = this.customerID
+        order.order_Quantity = this.qauntity
+        order.stock_Item_ID = this.stockItemID
         this.orderservice.AddOrder(order).subscribe(response => {
           if(response.status == "Success")
           {
             console.log(response);
-            //this.proccessOrder();
+            this.proccessOrder();
           }
           else
           {
