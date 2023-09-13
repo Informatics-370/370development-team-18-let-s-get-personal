@@ -17,16 +17,16 @@
     <!-- <ion-searchbar [(ngModel)]="filterTerm" (ionInput)="updateSearchResults()"></ion-searchbar>                     -->
     <ion-grid>
       <ion-row>
-        <ion-col style="font-weight: bold;">Delivery Company Name</ion-col>
-        <ion-col style="font-weight: bold;">Delivery Price</ion-col>
-        <ion-col></ion-col>
-        <ion-col></ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="font-weight: bold; text-align: center;">Delivery Company Name</ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="font-weight: bold; text-align: center;">Delivery Price</ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="font-weight: bold; text-align: center;"></ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="font-weight: bold; text-align: center;"></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of deliverycompanies">
-        <ion-col>{{item.delivery_Company_Name}}</ion-col>
-        <ion-col>R {{item.delivery_Price}}</ion-col>
-        <ion-col><ion-button (click)="DeleteDeliveryCompany(item.delivery_Company_ID, item.delivery_Company_Name)">Delete</ion-button></ion-col>
-        <ion-col><ion-button (click)="EditDeliveryCompany(item.delivery_Company_ID, true)" >Update</ion-button></ion-col>      
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.delivery_Company_Name}}</ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">R {{item.delivery_Price}}</ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;"><ion-button (click)="DeleteDeliveryCompany(item.delivery_Company_ID, item.delivery_Company_Name)">Delete</ion-button></ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;"><ion-button (click)="EditDeliveryCompany(item.delivery_Company_ID, true)" >Update</ion-button></ion-col>      
       </ion-row>
     </ion-grid>
 

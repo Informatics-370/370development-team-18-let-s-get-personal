@@ -28,26 +28,24 @@
     <ion-searchbar [(ngModel)]="searchValue"  (ionInput)="updateSearchResults()" ></ion-searchbar>               
     <ion-grid>
       <ion-row>
-        <ion-col style="font-weight: bold;"> Order ID </ion-col>
-        <ion-col style="font-weight: bold;"> Customer </ion-col>
-        <ion-col style="font-weight: bold;">Delivery Address</ion-col>
-        <ion-col style="font-weight: bold;">Delivery Company</ion-col>
-        <ion-col style="font-weight: bold;">Delivery Price</ion-col>
-        <ion-col style="font-weight: bold;"> Date Requested </ion-col>
-        <!-- <ion-col style="font-weight: bold;">Tracking Number</ion-col> -->
-        <ion-col></ion-col>
-        <ion-col></ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;"> Order ID </ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;"> Customer </ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">Delivery Address</ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">Delivery Company</ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">Delivery Price</ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;"> Date Requested </ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;"></ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;"></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of deliveries">
-        <ion-col> {{item.order_Line_Item_ID}} </ion-col>
-        <ion-col> {{item.customer_UserName}} </ion-col>
-        <ion-col>{{item.streetNumber}} {{item.streetName}} <br> {{item.city}}  {{item.province}} <br> {{item.areaCode}}</ion-col>
-        <ion-col>{{item.delivery_Company_Name}}</ion-col>
-        <ion-col>{{item.delivery_Price}}</ion-col>
-        <ion-col> {{item.order_Request_Date}} </ion-col>
-        <!-- <ion-col><ion-input label="Enter Tracking Number"></ion-input></ion-col> -->
-        <ion-col><ion-button (click)="ReceiveDelivery(item.delivery_ID, item.order_Line_Item_ID)">Delivered</ion-button></ion-col>
-        <ion-col><ion-button>Failed</ion-button></ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.order_Line_Item_ID}} </ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.customer_UserName}} </ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.streetNumber}} {{item.streetName}} <br> {{item.city}}  {{item.province}} <br> {{item.areaCode}}</ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.delivery_Company_Name}}</ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.delivery_Price}}</ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.order_Request_Date}} </ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"><ion-button (click)="ReceiveDelivery(item.delivery_ID, item.order_Line_Item_ID)">Delivered</ion-button></ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"><ion-button>Failed</ion-button></ion-col>
       </ion-row>
     </ion-grid>
 

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Best_Sellers } from '../Models/bestsellers';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -13,9 +13,13 @@ import { Best_Sellers } from '../Models/bestsellers';
 })
 export class HomePage implements OnInit {
 
-  constructor() { }
+  constructor(private _router: Router) { }
 
   ngOnInit() {
+  }
+
+  public Help() {
+    this._router.navigate(["/help"])
   }
 
 }

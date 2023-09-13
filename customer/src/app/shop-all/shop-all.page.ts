@@ -45,6 +45,7 @@ export class ShopAllPage implements OnInit {
 
   ngOnInit() {
     this.GetStockItems();
+    this.GetTypes();
     if(this.searchString === "")
     {
       this.searchedStockType = this.stockType;

@@ -23,12 +23,19 @@ namespace IPKP___API.Controllers
         //get all
         [HttpGet]
         [Route("GetAllExperienceRatings")]
-        public async Task<IActionResult> GetAllExperienceRatings()
+        public object GetAllExperienceRatings()
         {
             try
             {
-                var results = await _IPKPRepository.GetAllExperienceRatings();
-                return Ok(results);
+                var results = _IPKPRepository.GetAllExperienceRatings();
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Experience Ratings were found." });
+                }
+                else
+                {
+                    return Ok(results);
+                }
             }
             catch (Exception)
             {
@@ -38,13 +45,20 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetExperienceRatingByCustomerID/{customer_ID}")]
-        public async Task<IActionResult> GetExperienceRatingByCustomerID(Guid customer_ID)
+        public object GetExperienceRatingByCustomerID(Guid customer_ID)
         {
             try
             {
-                var results = await _IPKPRepository.GetExperienceRatingByCustomerIDAsync(customer_ID);
+                var results = _IPKPRepository.GetExperienceRatingByCustomerIDAsync(customer_ID);
 
-                return Ok(results);
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Experience Ratings  were found." });
+                }
+                else
+                {
+                    return Ok(results);
+                }
             }
             catch (Exception)
             {
@@ -106,7 +120,7 @@ namespace IPKP___API.Controllers
         //add
         [HttpPost]
         [Route("AddExperienceRating")]
-        public async Task<IActionResult> AddExperienceRating(ExperienceRatingVM exRating)
+        public async Task<IActionResult> AddExperienceRating(Experience_Rating exRating)
         {
             try
             {

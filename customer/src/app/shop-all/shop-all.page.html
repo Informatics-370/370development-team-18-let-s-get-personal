@@ -13,20 +13,25 @@
       <ion-title size="large">Shop</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-grid id="grid">
-    <!--search-->
-  <!--<form [formGroup]="SearchForm">      
-    <ion-item>
-      <ion-input type="text" formControlName="stocktype" placeholder="Stock Type" required></ion-input>
-      <ion-button (click)="searchStockType()">Search</ion-button>
-    </ion-item> 
-  </form>-->
-  <ion-button>View All</ion-button>
-  <div *ngFor="let item of stocktypes">
-    <ion-button (click)="GetByType(item.stock_Type_ID)">View {{item.stock_Type_Name}}</ion-button>
-  </div>
+  <!--search-->
+    <!--<form [formGroup]="SearchForm">      
+      <ion-item>
+        <ion-input type="text" formControlName="stocktype" placeholder="Stock Type" required></ion-input>
+        <ion-button (click)="searchStockType()">Search</ion-button>
+      </ion-item> 
+    </form>-->
+  <ion-grid>
     <ion-row>
-      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let item of Products">
+      <ion-col sizeLg="1" sizeMd="2" sizeXs="4"><ion-button (click)="GetStockItems()">View All</ion-button></ion-col>
+      <ion-col sizeLg="2" sizeMd="2" sizeXs="4" *ngFor="let item of stocktypes">
+        <ion-button (click)="GetByType(item.stock_Type_ID)">{{item.stock_Type_Name}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid id="grid">
+    <ion-row>
+      <ion-col sizeLg="3" sizeMd="4" sizeXs="6" *ngFor="let item of Products">
         <ion-card>
           <ion-card-title>{{item.stock_Item_Name}}</ion-card-title>
           <ion-card-content>

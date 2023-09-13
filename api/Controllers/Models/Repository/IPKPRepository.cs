@@ -439,15 +439,49 @@ namespace IPKP___API.Controllers.Models.Repository
                     .Where(u => u.Experience_Rating_ID == Experience_Rating_ID);
             return await query.FirstOrDefaultAsync();
         }
-        public async Task<Experience_Rating[]> GetAllExperienceRatings()
+        public object GetAllExperienceRatings()
         {
-            IQueryable<Experience_Rating> query = _appDbContext.Experience_Rating;
-            return await query.ToArrayAsync();
+            List<ExperienceRatingVM> ratings = (
+
+                from e in _appDbContext.Experience_Ratings.ToList()
+                join c in _appDbContext.Customers.ToList()
+                on e.Customer_ID equals c.Customer_ID
+
+                select new ExperienceRatingVM
+                {
+                    Experience_Rating_ID = e.Experience_Rating_ID,
+                    Experience_Star_Rating = e.Experience_Star_Rating,
+                    Experience_Rating_Comments = e.Experience_Rating_Comments,
+
+                    Customer_ID = c.Customer_ID,
+                    Customer_Surname = c.Surname,
+                    Customer_FirstName = c.FirstName,
+                }
+            ).ToList();
+
+            return ratings;
         }
-        public async Task<Experience_Rating[]> GetExperienceRatingByCustomerIDAsync(Guid customer_ID)
+        public object GetExperienceRatingByCustomerIDAsync(Guid customer_ID)
         {
-            IQueryable<Experience_Rating> query = _appDbContext.Experience_Rating.Where(u=>u.Customer_ID==customer_ID);
-            return await query.ToArrayAsync();
+            List<ExperienceRatingVM> ratings = (
+
+                from e in _appDbContext.Experience_Ratings.ToList()
+                join c in _appDbContext.Customers.ToList()
+                on e.Customer_ID equals c.Customer_ID
+
+                select new ExperienceRatingVM
+                {
+                    Experience_Star_Rating = e.Experience_Star_Rating,
+                    Experience_Rating_Comments = e.Experience_Rating_Comments,
+
+                    Customer_ID = c.Customer_ID,
+                    Customer_Surname = c.Surname,
+                    Customer_FirstName = c.FirstName,
+                }
+            ).ToList();
+
+            IEnumerable<ExperienceRatingVM> query = ratings.Where(x => x.Customer_ID == customer_ID);
+            return query;
         }
 
 //refund policies

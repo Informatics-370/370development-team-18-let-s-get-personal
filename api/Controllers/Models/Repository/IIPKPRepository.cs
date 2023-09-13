@@ -60,8 +60,8 @@ namespace IPKP___API.Controllers.Models.Repository
         object GetProductRatingByCustomerAsync(Guid customer_ID);
         object GetProductRatings();
 
-        Task<Experience_Rating[]> GetAllExperienceRatings();
-        Task<Experience_Rating[]> GetExperienceRatingByCustomerIDAsync(Guid customer_ID);
+        object GetAllExperienceRatings();
+        object GetExperienceRatingByCustomerIDAsync(Guid customer_ID);
         Task<Experience_Rating> GetExperienceRatingAsync(Guid Experience_Rating_ID);
 
         Task<Refund_Policy> GetPolicyAsync(Guid Refund_Policy_Id);
