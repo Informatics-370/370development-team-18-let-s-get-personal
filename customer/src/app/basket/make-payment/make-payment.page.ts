@@ -61,7 +61,7 @@ export class MakePaymentPage implements OnInit {
   getDeliveryCompany(){
     this.delservice.GetDeliveryCompanies().subscribe(result =>{
       this.deliverycompanies = result as Delivery_Company[];
-      console.log(this.deliverycompanies)
+      console.log('DeliveryCompanies',this.deliverycompanies)
     })
   }
 
@@ -78,7 +78,7 @@ export class MakePaymentPage implements OnInit {
       this.addedaddres = response as DeliveryAddress;
       //this.AddDeliveryRequest();
       this.confirmAlert();
-      console.log(this.addedaddres)
+      console.log('Address',this.addedaddres)
         let addressID = this.addedaddres.delivery_Address_ID
         localStorage.setItem('addressID', JSON.stringify(addressID));
         
@@ -94,18 +94,15 @@ export class MakePaymentPage implements OnInit {
         this.addDeliveryErrorAlert()
       }*/
     },(error) => {
-      // Handle registration error
       this.addDeliveryErrorAlert();
-      console.error('Login error:', error);
+      console.error('add address error:', error);
     });
   }
     
  
 
   AddDeliveryRequest(){
-    //let addressID = JSON.parse(JSON.stringify(localStorage.getItem('addressID')));    
-    try
-    {
+    let addressID = JSON.parse(JSON.stringify(localStorage.getItem('addressID')));
       let addDeliveryRequest = new Delivery();
       addDeliveryRequest.delivery_Address_ID = this.addedaddres.delivery_Address_ID //this.addedaddres.delivery_Address_ID addressID
       addDeliveryRequest.delivery_Company_ID = this.AddDelAddressForm.value.deliveryCompanyID
@@ -115,12 +112,12 @@ export class MakePaymentPage implements OnInit {
         let deliveryID = added.delivery_ID
         localStorage.setItem('deliveryID', deliveryID);
         this.router.navigate(["/tabs/check-out"])
-      })
-    }
-    catch
-    {
-      this.confirmErrorAlert()
-    }    
+      },
+      (error) => {
+        this.confirmErrorAlert();
+        console.error('add delivery error:', error);
+      });
+    
   }
 
   reloadPage(){

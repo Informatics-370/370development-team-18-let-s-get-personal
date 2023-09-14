@@ -46,10 +46,10 @@ export class PersonalisationService {
   //   .pipe(map(result => result))
   // }
 
-  // public DeletePersonalisation(personalisationId:string): Observable<any>{
-  //   return this.httpClient.delete<Response>(`${this.apiUrl}Personalisation/DeletePersonalisation/${personalisationId}`)
-  //   .pipe(map(result => result))
-  // }
+   public DeletePersonalisation(personalisationId:string): Observable<any>{
+     return this.httpClient.delete<Response>(`${this.apiUrl}Personalisation/DeletePersonalisation/${personalisationId}`)
+     .pipe(map(result => result))
+   }
 
   // public GetAllTextPrices(): Observable<any>{
   //   return this.httpClient.get(`${this.apiUrl}Personalisation/GetAllTextPrices`)
@@ -78,6 +78,12 @@ export class PersonalisationService {
   // public UpdateImagePrice(image_Price_ID:string, imageprice:Image_Price){
   //   return this.httpClient.put<Response>(`${this.apiUrl}Personalisation/UpdateImagePrice/${image_Price_ID}`, imageprice)
   // }
+  
+  public UpdatePersonalisation(personalisationId:number, personalisation:any): Observable<any>{
+     return this.httpClient.put<Response>(`${this.apiUrl}Personalisation/UpdatePersonalisation/${personalisationId}`, personalisation)
+     .pipe(map(result => result))
+   }
+   
 }
 
 
@@ -91,7 +97,4 @@ export class PersonalisationService {
   //   .pipe(map(result => result))
   // }
 
-  // public UpdatePersonalisation(personalisationId:number, personalisation:any): Observable<any>{
-  //   return this.httpClient.put<Response>(`${this.apiUrl}Personalisation/UpdatePersonalisation/${personalisationId}`, personalisation)
-  //   .pipe(map(result => result))
-  // }
+  

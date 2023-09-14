@@ -102,6 +102,10 @@ export const routes: Routes = [
     path: 'otp',
     loadComponent: () => import('./forgot-password/otp/otp.page').then( m => m.OTPPage)
   },
+  {
+    path: 'change-password',
+    loadComponent: () => import('./change-password/change-password.page').then( m => m.ChangePasswordPage)
+  },
 
 
 ];

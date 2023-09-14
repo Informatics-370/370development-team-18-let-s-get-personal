@@ -87,10 +87,6 @@ export class ShopAllPage implements OnInit {
   public stationary() {
     this._router.navigate(["/tabs/stationary"])
   }
-
-  /*public Basket() {
-    this._router.navigate(["/tabs/basket"])
-  }*/
   public Help() {
     this._router.navigate(["/help"])
   }
@@ -111,13 +107,11 @@ export class ShopAllPage implements OnInit {
         existingItem.basket_Quantity += 1;
       }
       localStorage.setItem('cart', JSON.stringify(cartItems));
-      // Update the counter span
+      //sessionStorage.setItem('cart', JSON.stringify(cartItems));
+      /* Update the counter span*/
     this.updateCounterSpan(cartItems);
     
-
     this.addToBasketSuccessAlert();
-    
-
     } catch {
       this.addToBasketErrorAlert();
     }
@@ -163,9 +157,9 @@ export class ShopAllPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler: () => {
+        /*handler: () => {
           this.reloadPage();
-        }
+        }*/
       }],
     });
     await alert.present();

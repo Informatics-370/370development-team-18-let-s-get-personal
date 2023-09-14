@@ -112,7 +112,7 @@ export class ViewProfilePage implements OnInit {
     this._router.navigate(["/tabs/experience-rating"])
   }
   public ChangePassword() {
-    this._router.navigate(["/tabs/experience-rating"])
+    this._router.navigate(["./tabs/change-password"])
   }
 
   public Logout() {
@@ -127,6 +127,8 @@ export class ViewProfilePage implements OnInit {
     localStorage.removeItem('quantity');
     localStorage.removeItem('cartItemCount');
     localStorage.removeItem('cart');
+    localStorage.removeItem('selectedItem');
+    localStorage.removeItem('Image-URL');
     //this.reloadPage();
     this._router.navigate(["/tabs/login"])
   }

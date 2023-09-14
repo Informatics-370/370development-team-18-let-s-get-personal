@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 import { AuthGuard } from '../Guards/auth.guard';
+import { PersonalisationPage } from '../personalisation/personalisation.page';
+import { BasketPage } from '../basket/basket.page';
 
 export const routes: Routes = [
   {
@@ -42,7 +44,8 @@ export const routes: Routes = [
       },
       {
         path: 'personalisation',
-        loadComponent: () => import('../personalisation/personalisation.page').then( m => m.PersonalisationPage)
+        component:PersonalisationPage
+        //loadComponent: () => import('../personalisation/personalisation.page').then( m => m.PersonalisationPage)
       },
       {
         path: 'forgot-password',
@@ -89,10 +92,6 @@ export const routes: Routes = [
         path: 'edit-product-rating',
         loadComponent: () => import('../view-profile/previous-orders/product-rating/edit-product-rating/edit-product-rating.page').then( m => m.EditProductRatingPage)
       },
-      /* {
-       path: 'edit-experience-rating',
-        loadComponent: () => import('../view-profile/experience-rating/edit-experience-rating/edit-experience-rating.page').then( m => m.EditExperienceRatingPage)
-      },*/
       {
         path: 'edit-personalization',
         loadComponent: () => import('../personalisation/edit-personalization/edit-personalization.page').then( m => m.EditPersonalizationPage)
@@ -113,6 +112,10 @@ export const routes: Routes = [
       {
         path: 'otp',
         loadComponent: () => import('../forgot-password/otp/otp.page').then( m => m.OTPPage)
+      },
+      {
+        path: 'change-password',
+        loadComponent: () => import('../change-password/change-password.page').then( m => m.ChangePasswordPage)
       },
       {
         path: '',

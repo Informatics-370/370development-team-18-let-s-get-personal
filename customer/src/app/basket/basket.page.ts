@@ -1,22 +1,20 @@
-import { Component, EventEmitter, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, AlertController } from '@ionic/angular';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, NavigationExtras } from '@angular/router';
 import { BasketItems, OrderT } from '../Models/basket';
-import { BasketService } from '../Services/basket.service';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { Stock_Item } from '../Models/stockitem';
 import { PersonalisationService } from '../Services/personalisation.service';
 import { Personalisation_Design } from '../Models/personalisationdesign';
 import { PersonalisationDesignVM } from '../ViewModels/personalisationdesignVM';
-import jwt_decode from 'jwt-decode';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Design_Image } from '../Models/designimage';
 import { Design_Text } from '../Models/designtext';
-import { Design_Image_Line_Item } from '../Models/designimagelineitem';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-basket',
@@ -33,8 +31,29 @@ export class BasketPage implements OnInit {
   user: string = ""
   @ViewChild(IonModal) modal!: IonModal
   order = new OrderT();
+  storedData: any;
 
-  constructor(public modalCtrl: ModalController, private _router: Router,
+  ionViewDidEnter() {
+
+    console.log("Reloaded");
+
+    try {
+      this.storedData = localStorage.getItem('cart') as string;
+      if (this.storedData) {
+        this.cartItems = JSON.parse(this.storedData);
+      } else {
+        this.cartItems = [];
+      }
+      console.log('cartItems', this.cartItems);
+      this.cdr.detectChanges(); // Trigger change detection
+    } catch (error) {
+      console.error('Error parsing data from localStorage:', error);
+      this.cartItems = []; // Set a default value or handle the error as needed.
+      this.cdr.detectChanges(); // Trigger change detection
+    }
+  }
+
+  constructor(public modalCtrl: ModalController, private _router: Router, private cdr: ChangeDetectorRef,
     private service: PersonalisationService, private alertController: AlertController) {
     this.counter = document.querySelector("#counter");
     const storedQuantity = localStorage.getItem('basketQuantity');
@@ -45,21 +64,25 @@ export class BasketPage implements OnInit {
   counter = document.querySelector("#counter");
 
   ngOnInit() {
-    this.cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
-    //this.reloadPage();
-
+    /* this.cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+    console.log(this.cartItems);*/
     // this.token=localStorage.getItem("token");
-
     //let decode=jwt_decode(this.token);
-
     //console.log(this.token);
-    // Retrieve the cart item count from localStorage
-  const cartItemCount = localStorage.getItem('cartItemCount');
-  if (cartItemCount) {
-    if (this.counter) {
-      this.counter.innerHTML = cartItemCount;
+
+    /* Retrieve the cart item count from localStorage*/
+    const cartItemCount = localStorage.getItem('cartItemCount');
+    if (cartItemCount) {
+      if (this.counter) {
+        this.counter.innerHTML = cartItemCount;
+      }
     }
   }
+
+  view(item: any[]) {
+    // Navigate to the "personalisation" page and pass the selected "item" object
+    this._router.navigate(['/tabs/personalisation'], { queryParams: { item: JSON.stringify(item) } });
+    //this._router.navigate(['/tabs/personalisation',JSON.stringify(item)]);
   }
 
 
@@ -76,11 +99,11 @@ export class BasketPage implements OnInit {
     if (item.basket_Quantity < 10) {
       item.basket_Quantity++;
       // Update the counter span
-    this.updateCounterSpan(this.cartItems);
+      this.updateCounterSpan(this.cartItems);
 
       localStorage.setItem('cart', JSON.stringify(this.cartItems));
       // Store the cart item count before reloading the page
-    this.storeCartItemCountInLocalStorage();
+      this.storeCartItemCountInLocalStorage();
     }
     else {
       console.log("Maximum item reached!")
@@ -103,13 +126,13 @@ export class BasketPage implements OnInit {
     if (item.basket_Quantity > 1) {
       item.basket_Quantity--;
       // Update the counter span
-    this.updateCounterSpan(this.cartItems);
+      this.updateCounterSpan(this.cartItems);
 
-       localStorage.setItem('cart', JSON.stringify(this.cartItems));
-       // Store the cart item count before reloading the page
-    this.storeCartItemCountInLocalStorage();
+      localStorage.setItem('cart', JSON.stringify(this.cartItems));
+      // Store the cart item count before reloading the page
+      this.storeCartItemCountInLocalStorage();
     }
-   
+
   }
 
   private updateCounterSpan(cartItems: any[]): void {
@@ -130,7 +153,7 @@ export class BasketPage implements OnInit {
     let totalPrice = 0;
     for (const item of this.cartItems) {
       totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;
-      localStorage.setItem('quantity', JSON.stringify(item.basket_Quantity));
+      //localStorage.setItem('quantity', JSON.stringify(item.basket_Quantity));
     }
     this.order.price = totalPrice;
     return totalPrice;
@@ -141,6 +164,12 @@ export class BasketPage implements OnInit {
     localStorage.removeItem('cart');
     localStorage.removeItem('cartItemCount');
     localStorage.removeItem('quantity');
+    localStorage.removeItem('Image-URL');
+    localStorage.removeItem('stockId');
+    localStorage.removeItem('addressID');
+    localStorage.removeItem('deliveryID');
+    localStorage.removeItem("order")
+    localStorage.removeItem("selectedItem")
     this.reloadPage();
   }
 
@@ -149,40 +178,57 @@ export class BasketPage implements OnInit {
   }
 
   public makepayment() {
-    const existingItem = localStorage.getItem('cart');
-    let items = JSON.parse(localStorage.getItem('cart') as string)
 
-    this.order.basketItems = items;
+    this.CheckPersonalised();
 
-    this.order.paid = false;
+    if (!this.CheckPersonalised()) {
+      try {
+
+      } catch {
+        const existingItem = localStorage.getItem('cart');
+        let items = JSON.parse(localStorage.getItem('cart') as string)
+        /*to make space in the local storage
+        localStorage.removeItem("stockId")
+        localStorage.removeItem("stockId")
+        localStorage.removeItem("stockId")*/
+
+        console.log('items parsed', items)
+        this.order.basketItems = items;
+        this.order.paid = false;
+
+        localStorage.setItem("order", JSON.stringify(this.order));
+        console.log('order', items);
+
+        this.uploadImage();
+        //this.UploadPersonalisation();
+        //change to checkout and go to deliveries then make payment 
+        //this.AddImageToImageLineItem() 
+        // this.AddPersonalisation()
+        //this._router.navigate(["/tabs/make-payment"])
+      }
+
+    }
 
 
-    localStorage.setItem("order", JSON.stringify(this.order));
-
-    console.log(items);
-
-    //change to checkout and go to deliveries then make payment 
-    //this.AddImageToImageLineItem() 
-    // this.AddPersonalisation()
-    //this._router.navigate(["/tabs/make-payment"])
-
-    this.CheckPersonalised()
-    //this.CheckUser()
   }
 
-  CheckPersonalised(){
-    let personalised = JSON.parse(JSON.stringify(localStorage.getItem('personalisedID')));
+  CheckPersonalised() {
+    //let personalised = JSON.parse(JSON.stringify(localStorage.getItem('personalisedID')));
+    let personalised = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
+
     if (personalised == null) {  //  [==="User"]
       this.PleasePersonalizeAlert()
+      return false;
     }
     else {
       this.CheckUser()
+      return true;
     }
   }
 
   CheckUser() {
     this.user = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
-    if (this.user == "User") {  //  [==="User"]
+    if (this.user === "User") {  //  [==="User"]
       this._router.navigate(['./tabs/make-payment']);
     }
     else {
@@ -191,7 +237,6 @@ export class BasketPage implements OnInit {
   }
 
   //localStorage.setItem('roles', token[roleLongName]);
-  /*==============PERSONALIZATION===========================================*/
   AddTextForm: FormGroup = new FormGroup({
     designText: new FormControl('', [Validators.required])
   });
@@ -200,12 +245,9 @@ export class BasketPage implements OnInit {
     designImage: new FormControl('', [Validators.required])
   });
 
-  personalizations!: Personalisation_Design
-  fileNameUploaded = ''
-  errmsg: string = ""
-  //  textprice: TextPrice[] =[]
-  imageprice: any //Image_Price[] =[]
-  imagepriceID!: string
+  personalizations!: Personalisation_Design;
+  fileNameUploaded = '';
+  errmsg: string = "";
   formData = new FormData();
 
   uploadedImage!: Design_Image;
@@ -217,24 +259,33 @@ export class BasketPage implements OnInit {
     this.isModalOpen = isOpen;
   }
 
+  public update(id: any, isOpen: boolean) {
+    localStorage.setItem("stockId", id);
+    this.isModalOpen = isOpen;
+  }
+
   uploadFile = (files: any) => {
     let fileToUpload = <File>files[0];
-    this.formData.append('file', fileToUpload, fileToUpload.name); //
+    this.formData.append('file', fileToUpload, fileToUpload.name);
     this.fileNameUploaded = fileToUpload.name
+    /****sTORING THE IMAGE URL IN THE LOCAL STORAGE****/
+    if (fileToUpload) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        localStorage.setItem("Image-URL", reader.result as string);
+      });
+
+      reader.readAsDataURL(fileToUpload);
+      console.log(fileToUpload)
+    }
   }
 
   uploadImage() {
     this.service.UploadDesignImage(this.formData).subscribe(result => {
       this.uploadedImage = result as Design_Image
-    })
-
-    try {
-      console.log(this.uploadedImage)
+      console.log('Image API', this.uploadedImage)
       this.uploadText()
-    }
-    catch {
-      this.addImageErrorAlert()
-    }
+    })
   }
 
   uploadText() {
@@ -242,47 +293,50 @@ export class BasketPage implements OnInit {
     addedtext.design_Text_Description = this.AddTextForm.value.designText
     this.service.UploadDesignText(addedtext).subscribe(res => {
       this.uploadedText = res as Design_Text
+      console.log('Text API', this.uploadedText)
     })
-    try {
-      console.log(this.uploadedText)
-      this.UploadPersonalisation()
-    }
-    catch {
-
-    }
   }
 
   UploadPersonalisation() {
+
     let personalisation = new PersonalisationDesignVM()
-    //let stockId=localStorage.getItem("stockId");
-    personalisation.design_Text_ID = this.uploadedText.design_Text_ID
-    personalisation.design_Image_ID = this.uploadedImage.design_Image_ID
-    personalisation.stock_Item_ID = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
-    console.log(personalisation)
-    try {
+    if (personalisation) {
+      //let stockId=localStorage.getItem("stockId");
+      personalisation.design_Text_ID = this.uploadedText.design_Text_ID
+      personalisation.design_Image_ID = this.uploadedImage.design_Image_ID
+      //personalisation.design_Text = this.AddTextForm.get("designText")?.value;
+      //personalisation.image_File = this.UploadImageForm.get("designImage")?.value;
+      personalisation.stock_Item_ID = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
+
       this.service.AddPersonalisation(personalisation).subscribe(res => {
         this.personalizations = res as Personalisation_Design
         let personalisedID = this.personalizations.personalisation_Design_ID
         localStorage.setItem('personalisedID', JSON.stringify(personalisedID));
+        console.log('Both', personalisation);
         this.addPersonalizationSuccessAlert()
-      })
+      },
+        (error) => {
+          this.addPersonalizationErrorAlert()
+          console.error('Upload error:', error);
+        })
     }
-    catch
-    {
-      this.addPersonalizationErrorAlert()
-    }
+
   }
 
   canceladdmodal() {
+    localStorage.removeItem("stockId");
     this.modal.dismiss(null, 'cancel');
   }
+  
 
-  confirmaddmodal() {
-    this.uploadImage()
-  }
+  /*confirmaddmodal() {
+    this.isModalOpen = false;
+    //this.uploadImage()
+  }*/
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+    this.isModalOpen = false;
   }
 
   reloadPage() {
@@ -320,38 +374,6 @@ export class BasketPage implements OnInit {
     await alert.present();
   }
 
-  async addTextErrorAlert() {
-    const alert = await this.alertController.create({
-      header: 'We are sorry!',
-      subHeader: 'Your personalization Text was not captured.',
-      message: 'Please try again',
-      buttons: [{
-        text: 'OK',
-        role: 'cancel',
-        handler: () => {
-          this.reloadPage();
-        }
-      }],
-    });
-    await alert.present();
-  }
-
-  async addImageErrorAlert() {
-    const alert = await this.alertController.create({
-      header: 'We are sorry!',
-      subHeader: 'Your personalization Image was not captured.',
-      message: 'Please try again',
-      buttons: [{
-        text: 'OK',
-        role: 'cancel',
-        handler: () => {
-          this.reloadPage();
-        }
-      }],
-    });
-    await alert.present();
-  }
-
   async PleasePersonalizeAlert() {
     const alert = await this.alertController.create({
       header: 'Please Add Your Personalisation!',
@@ -366,75 +388,75 @@ export class BasketPage implements OnInit {
     });
     await alert.present();
   }
-  
-//confirm add modal
-    // let items = JSON.parse(localStorage.getItem('cart') as string) || [];
-    // let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
 
-    // let design_Text = this.AddForm.value.designText;
-    // let image_File = "Kamo";
-
-    // if(existingItem){
-    //   //items.push({ ...existingItem, personalization. : 1 });
-    //   existingItem.personalization.personalizationText=design_Text;
-    //   existingItem.personalization.img=image_File;
-    //   localStorage.removeItem("stockId");
+  /******************************************************************************************************************************************* */
 
 
-    // localStorage.setItem('cart',JSON.stringify(items));
+  //confirm add modal
+  // let items = JSON.parse(localStorage.getItem('cart') as string) || [];
+  // let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
 
-    //try{
-    //this.personalize(); 
-    /*this._router.navigate(["/tabs/personalisation"])  
-    }
-    catch{
-      this.addPersonalizationErrorAlert();
-    }*/
+  // let design_Text = this.AddForm.value.designText;
+  // let image_File = "Kamo";
 
-  // addPersonalization(){
-  //   let stockId=localStorage.getItem("stockId");
+  // if(existingItem){
+  //   //items.push({ ...existingItem, personalization. : 1 });
+  //   existingItem.personalization.personalizationText=design_Text;
+  //   existingItem.personalization.img=image_File;
+  //   localStorage.removeItem("stockId");
 
-  //   let items = JSON.parse(localStorage.getItem('cart') as string) || [];
-  //   let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
 
-  //   // this.formData.append('designText', this.AddForm.get('designText')!.value);
-  //   // this.formData.append('designImage', this.AddForm.get('designImage')!.value); 
+  // localStorage.setItem('cart',JSON.stringify(items));
 
-  //  //let design_Text = this.AddForm.value.designText;
-  //  //let image_File = this.UploadImage.value.imageFile;
-
-  //  if(existingItem)
-  //  {
-  //    //items.push({ ...existingItem, personalization. : 1 });
-  //    //existingItem.personalization.personalizationText=design_Text;
-  //    //existingItem.personalization.img=image_File;
-  //    localStorage.removeItem("stockId");
-  //   }
-
-  //  //localStorage.setItem('cart',JSON.stringify(items));      
-  // }
-
-  /*
-  confirmaddmodal() {
-    let stockId=localStorage.getItem("stockId");
-
-   let items = JSON.parse(localStorage.getItem('cart') as string) || [];
-   let existingItem:BasketItems = items.find((cartItem:any) => cartItem.stock_Item.stock_Item_ID === stockId);
-  
-  let design_Text = this.AddForm.value.designText;
-  //let image_File = this.UploadImage.value.imageFile;
-
-  if(existingItem){
-    //items.push({ ...existingItem, personalization. : 1 });
-    existingItem.personalization.personalizationText=design_Text;
-    //existingItem.personalization.img=image_File;
-    localStorage.removeItem("stockId");
+  //try{
+  //this.personalize(); 
+  /*this._router.navigate(["/tabs/personalisation"])  
   }
-  localStorage.setItem('cart',JSON.stringify(items));
-  this._router.navigate(["/tabs/personalisation"])
-  }
-
+  catch{
+    this.addPersonalizationErrorAlert();
   }*/
 
+
+  AddForm: FormGroup = new FormGroup({
+    designText: new FormControl('', [Validators.required]),
+    designImage: new FormControl('', [Validators.required])
+  });
+
+
+  addPersonalization() {
+
+    let personalisation = new PersonalisationDesignVM()
+    //let stockId=localStorage.getItem("stockId");
+    personalisation.design_Text = this.AddForm.get("designText")?.value;
+    personalisation.image_File = this.AddForm.get("designImage")?.value;
+    //personalisation.stock_Item_Name = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
+    console.log('addPers', personalisation)
+  }
+
+  isEmptyObject(obj: any) {
+    return Object.keys(obj).length === 0;
+  }
+
+  confirmaddmodal() {
+    let stockId = localStorage.getItem("stockId");
+
+    let items = JSON.parse(localStorage.getItem('cart') as string) || [];
+    let existingItem: BasketItems = items.find((cartItem: any) => cartItem.stock_Item.stock_Item_ID === stockId);
+
+    let design_Text = this.AddTextForm.get('designText')?.value;
+    //let image_File = this.UploadImageForm.get("designImage")?.value;
+    let image_File = localStorage.getItem("Image-URL") ?? "";
+    if (existingItem) {
+      //items.push({ ...existingItem, personalization. : 1 });
+      existingItem.personalization.personalizationText = design_Text;
+      existingItem.personalization.img = image_File;
+      //localStorage.removeItem("stockId");
+      console.log('LocalStorage cart', existingItem)
+    }
+    localStorage.setItem('cart', JSON.stringify(items));
+    //this.uploadImage();
+    //this.UploadPersonalisation();
+    this.addPersonalizationSuccessAlert();
+  }
 
 }
