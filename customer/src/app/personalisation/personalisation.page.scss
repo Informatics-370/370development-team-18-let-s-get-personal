@@ -1,0 +1,40 @@
+ion-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+img {
+  max-width: 100%;
+  max-height: 300px;
+  margin: 20px 0;
+}
+
+canvas {
+  border: 1px solid #ccc;
+}
+
+ion-grid {
+  --ion-grid-padding: 20px;
+
+  --ion-grid-padding-xs: 20px;
+  --ion-grid-padding-sm: 20px;
+  --ion-grid-padding-md: 20px;
+  --ion-grid-padding-lg: 20px;
+  --ion-grid-padding-xl: 20px;
+
+  --ion-grid-column-padding: 30px;
+
+  --ion-grid-column-padding-xs: 30px;
+  --ion-grid-column-padding-sm: 30px;
+  --ion-grid-column-padding-md: 30px;
+  --ion-grid-column-padding-lg: 30px;
+  --ion-grid-column-padding-xl: 30px;
+}
+
+ion-col {
+  background-color: #f1e0e6;
+  border: solid 1px #201e1f;
+  color: #100f0f;
+  text-align: center;
+}

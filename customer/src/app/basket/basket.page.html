@@ -27,8 +27,10 @@
         <span>{{ item.basket_Quantity}}</span>
         <ion-button (click)="incrementQuantity(item)">+</ion-button>
       </ion-label>
-	  <!-- id="addPersonalizationmodal" -->
-      <ion-button (click)="personalize(item.stock_Item.stock_Item_ID,true)">Personalize Item</ion-button>
+      <ion-button *ngIf="isEmptyObject(item.personalization)" (click)="personalize(item.stock_Item.stock_Item_ID,true)">Personalize Item</ion-button>
+	  <ion-button *ngIf="!isEmptyObject(item.personalization)" (click)="personalize(item.stock_Item.stock_Item_ID,true)">Update Personalize Item</ion-button>
+	  
+      <ion-button *ngIf="!isEmptyObject(item.personalization)" (click)="view(item)">View Personalization</ion-button>
     </ion-item>
   </ion-list>
   <ion-button (click)="clearBasket()">Empty Basket</ion-button>
@@ -36,7 +38,6 @@
     <ion-row>
       <ion-col>Bill Details</ion-col>
     </ion-row>
-   <!---<ion-col>Personalisation cost:</ion-col>-->
     <ion-col></ion-col>
     <ion-row>
       <ion-col>Items Total (Excluding Delivery)</ion-col>
@@ -49,6 +50,7 @@
 
 
 <ion-footer>
+
 	<ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
 		<ng-template>
 			<ion-header>
@@ -58,15 +60,11 @@
 					</ion-buttons>
 					<ion-title id="addmodal">Add Personalization</ion-title>
 					<ion-buttons slot="end">
-						<ion-button (click)="confirmaddmodal()" >Confirm</ion-button>
+						<ion-button (click)="confirmaddmodal()" [disabled]="AddTextForm.invalid || UploadImageForm.invalid" >Confirm</ion-button>
 					</ion-buttons>
 				</ion-toolbar>
 			</ion-header>
 			<ion-content class="ion-padding">
-				 <!-- <p style="color: red;"> 
-					 [strong]="true" 
-					If you would like to not add a design text or image please enter none 
-				</p>  -->
 				<form [formGroup]="AddTextForm">
 					<ion-item>
 						<ion-label>Design Text</ion-label>
@@ -85,6 +83,7 @@
 					</ion-item>
 				</form>
 				<p>Please upload your inspiration photo for your design</p>
+				<img src="/assets/Smile.jpg" alt="smile icon" class="center" style="width: 100%; height: 80%;" />
 			</ion-content>
 		</ng-template>
 	</ion-modal>

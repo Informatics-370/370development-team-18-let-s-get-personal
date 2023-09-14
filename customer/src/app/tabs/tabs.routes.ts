@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 import { AuthGuard } from '../Guards/auth.guard';
+import { PersonalisationPage } from '../personalisation/personalisation.page';
+import { BasketPage } from '../basket/basket.page';
 
 export const routes: Routes = [
   {
@@ -39,6 +41,11 @@ export const routes: Routes = [
       {
         path: 'create-profile',
         loadComponent: () => import('../create-profile/create-profile.page').then( m => m.CreateProfilePage)
+      },
+      {
+        path: 'personalisation',
+        component:PersonalisationPage
+        //loadComponent: () => import('../personalisation/personalisation.page').then( m => m.PersonalisationPage)
       },
       {
         path: 'forgot-password',
@@ -85,6 +92,10 @@ export const routes: Routes = [
       {
         path: 'otp',
         loadComponent: () => import('../forgot-password/otp/otp.page').then( m => m.OTPPage)
+      },
+      {
+        path: 'change-password',
+        loadComponent: () => import('../change-password/change-password.page').then( m => m.ChangePasswordPage)
       },
       {
         path: '',

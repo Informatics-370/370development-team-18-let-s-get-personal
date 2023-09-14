@@ -35,18 +35,11 @@
   
       <ion-item>
         <ion-label position="stacked">Dwelling Type</ion-label><br>
-        <!--<ion-input type="text" labelPlacement="floating" placeholder="House/Apartment" formControlName="dwellingtype"></ion-input>-->
-        
         <ion-select formControlName="dwellingtype" interface="alert" placeholder="Example: House">
           <ion-select-option *ngFor="let dwellingtype of dwellingType" [value]="dwellingtype">{{ dwellingtype }}</ion-select-option>
         </ion-select>
       </ion-item>
   
-      <!-- <ion-item>
-        <ion-label position="stacked">Unit Number</ion-label><br>
-        <ion-input  type="number" labelPlacement="floating" placeholder="000" formControlName="Unit"></ion-input>
-      </ion-item> -->
-    
       <ion-item>
         <ion-label position="stacked">City</ion-label><br>
         <ion-input type="text" labelPlacement="floating" placeholder="Example: Pretoria" formControlName="city"
@@ -61,8 +54,6 @@
   
       <ion-item>
         <ion-label position="stacked">Province</ion-label><br>
-       <!--- <ion-input type="text" labelPlacement="floating" placeholder="Example: Gauteng" formControlName="province"></ion-input>-->
-
         <ion-select formControlName="province" interface="alert" placeholder="Example: Gauteng">
           <ion-select-option *ngFor="let province of validProvinces" [value]="province">{{ province }}</ion-select-option>
         </ion-select>

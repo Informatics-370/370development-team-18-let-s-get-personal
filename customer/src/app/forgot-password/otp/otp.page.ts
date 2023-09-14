@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, NavController, NavParams } from '@ionic/angular';
+import { AlertController, IonicModule, NavController, NavParams } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,35 +15,61 @@ export class OTPPage implements OnInit {
 
   verificationCode: string = '';
 
-  constructor(  private router:Router) { }//private navCtrl: NavController, private navParams: NavParams,
+  otp:any;
+
+  ionViewDidEnter() {
+   this.otp=localStorage.getItem("otp");
+
+  // console.log(this.otp);
+  }
+
+  constructor(  private router:Router,private alertController: AlertController) { }//private navCtrl: NavController, private navParams: NavParams,
 
   ngOnInit() {
-
   }
 
   verifyCode() {
-    // Check if the verification code matches the one sent to the user.
-    // You can make an API call to your backend to verify the code.
+    if(this.otp===this.verificationCode){
+      localStorage.removeItem('otp');
+      this.SuccessAlert()
+      this.router.navigate(['./tabs/change-password']);
+    }else{
+      this.ErrorAlert();
+    }
     const codeToVerify = this.verificationCode;
-
-    // Implement code to verify the code with your backend.
-    // Example:
-    // this.authService.verifyVerificationCode(codeToVerify)
-    //   .subscribe(
-    //     (response) => {
-    //       if (response.success) {
-    //         // Code is valid, navigate the user to the password reset page.
-    //         this.navCtrl.navigateForward('/password-reset');
-    //       } else {
-    //         // Code is invalid, show an error message.
-    //         // Handle the error appropriately.
-    //       }
-    //     },
-    //     (error) => {
-    //       // Handle the error appropriately.
-    //     }
-    //   );
   }
 
+  async SuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Validated!',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        /*handler: () => {
+          this.reloadPage();
+        }*/
+      }],
+    });
+    await alert.present();
+  }
+
+  async ErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Invalid!',
+      subHeader: 'OTP pin invalid!',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
+    });
+    await alert.present();
+  }
+  reloadPage() {
+    window.location.reload()
+  }
 
 }
