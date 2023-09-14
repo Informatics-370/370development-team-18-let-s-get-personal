@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators,ReactiveFormsModule } from '@angular/forms';
-import { AlertController, IonicModule, LoadingController } from '@ionic/angular';
+import { AlertController, IonicModule} from '@ionic/angular';
 import { ForgotPasswordViewModel } from '../ViewModels/forgotPasswordVM';
 import { AuthenticationService } from 'src/app/Services/authentication.service';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-forgot-password',
@@ -15,53 +16,55 @@ import { Router } from '@angular/router';
 })
 export class ForgotPasswordPage implements OnInit {
 
-  constructor(private service: AuthenticationService, public loadingController: LoadingController,private alertController: AlertController, private _router: Router) { }
+  //email:Email=new this.Email();
+  username = new ForgotPasswordViewModel();
+  message!:any;
+
+  constructor(private service: AuthenticationService,private alertController: AlertController, private _router: Router) { }
 
   ngOnInit() {
   }
+
   ForgotForm: FormGroup = new FormGroup({
-    Email: new FormControl('', Validators.compose([Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]))
+    Username: new FormControl('', [Validators.required])
+    //Email: new FormControl('', Validators.compose([Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]))
   })
 
   get f() { return this.ForgotForm.controls }
 
-  sendVerificationCode(){
+  isLoading: boolean = false;
 
-  }
+
   CheckEmail(){
-    // Use a service to send a verification code to the provided email.
-  // Implement code to send the code via email.
-
+    this.isLoading = true;
+    
     if (this.ForgotForm.valid) {
       const formData = this.ForgotForm.value;
       console.log(formData);
+      let username = new ForgotPasswordViewModel();
+      //this.emailcustomer=Object.assign(this.emailcustomer,this.ForgotForm.value);
+      username.UserName = this.ForgotForm.value.Username
+      
+      this.service.ForgotPassword(username).subscribe(result => {
 
-      let emailcustomer = new ForgotPasswordViewModel();
-      emailcustomer.email_Address = this.ForgotForm.value.Email
+      localStorage.setItem("otp",JSON.stringify(result));
+        this.message=result;
+        //Swal.fire({position:'center',icon:'success',title:'Successful',text:this.message.message,showConfirmButton: false,timer:1500})
+      localStorage.setItem('Username',this.username.UserName);
 
-      this.service.ForgotPassword(emailcustomer).subscribe(result => {
-       //FILL IN CODE TO CHECK EMAIL AND THEN SEND THE OTP PIN IS VALID
        this.SuccessAlert();
-        console.log(emailcustomer)
+        console.log('Customer',username)
         this._router.navigate(['./tabs/otp']);
       },
       (error) => {
         this.ErrorAlert();
-        console.error('Email verification error:', error);
-      }
-      );
-      this.presentLoading();
+        console.error('Username verification error:', error);
+      }).add(() => {
+        this.isLoading = false; // Stop loading
+      });
     }
   }
 
-  async presentLoading() {
-    const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
-      message: 'Veriffying email...',
-      duration: 3000,
-      backdropDismiss: true,
-    });
-  }
   async SuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Verified!',

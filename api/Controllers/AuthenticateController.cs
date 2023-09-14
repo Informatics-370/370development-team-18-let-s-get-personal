@@ -17,6 +17,7 @@ using System.Net.Mail;
 using System.Net;
 using IPKP___API.Controllers.Models.Repository;
 using static System.Net.WebRequestMethods;
+using System.Security.Cryptography;
 
 namespace IPKP___API.Controllers
 {
@@ -339,12 +340,14 @@ namespace IPKP___API.Controllers
         {
             var user = await _userManager.FindByNameAsync(uvm.UserName);
 
+            int otp = GenerateRandomNumer();
+
             if (user != null)
             {
                 try
                 {
 
-                    var principal = await _claimsPrincipalFactory.CreateAsync((AppUser)user);
+                    /*var principal = await _claimsPrincipalFactory.CreateAsync((AppUser)user);
 
                     await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
 
@@ -359,12 +362,32 @@ namespace IPKP___API.Controllers
                     // Sending email
                     await SendEmail(subject, message, toEmailAddress);
 
-                    //return GenerateJWTToken(user);
+                    //return GenerateJWTToken(user);*/
+
+                    //string userId = uvm.UserName;
+                    // string generatedOTP = GenerateOTP(6); // Generate OTP
+                    // DateTime expirationTime = DateTime.Now.AddMinutes(15); // Set expiration time (adjust as needed)
+
+                    // Store OTP and expiration time in the distributed cache
+                    // You'll need to use the appropriate caching library and configuration here
+
+                    var subject = "Your One-Time Password (OTP) Pin";
+                    var message = "Dear "+uvm.UserName+",<br><br>" +
+    "We hope this message finds you well.<br><br>"+
+    "Thank you for using our services. To ensure the security of your account, we have generated a One-Time Password (OTP) pin for you.<br><br>" +
+    "Your OTP Pin: "+otp+"<br><br>" +
+
+    "If you did not request this OTP or have any concerns about your account security, please contact our customer support immediately at <a href='mailto:ktlmamadi@gmail.com'>IPKP@gmail.com</a> <br>" +
+    "Thank you for choosing our services. We appreciate your trust in us.<br><br>"+
+   
+    "Best regards,<br>Let's Get Personal";
+
+                    _ = SendEmail(subject, message, user.Email);
 
                 }
                 catch (Exception)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal error12 occured. Please contact support");
                 }
             }
             else
@@ -375,7 +398,37 @@ namespace IPKP___API.Controllers
             //, Password = user.PasswordHash
             var loggedInUser = new ForgotPassword { UserName = user.UserName };
 
-            return Ok(loggedInUser);
+            return Ok(otp);
+        }
+
+        private int GenerateRandomNumer() {
+            int _min = 1000;
+            int _max = 9999;
+
+            Random _rdm = new Random();
+
+            return _rdm.Next(_min, _max);
+        }
+
+        public static string GenerateOTP(int length)
+        {
+            const string validChars = "0123456789";
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                var otp = new char[length];
+                var charsLength = validChars.Length;
+                var buffer = new byte[1];
+
+                for (int i = 0; i < length; i++)
+                {
+                    rng.GetBytes(buffer);
+                    var randomNumber = BitConverter.ToUInt32(buffer, 0);
+                    var randomIndex = (int)(randomNumber % charsLength);
+                    otp[i] = validChars[randomIndex];
+                }
+
+                return new string(otp);
+            }
         }
 
         private static string GenerateTwoFactorCodeFor(string username)
