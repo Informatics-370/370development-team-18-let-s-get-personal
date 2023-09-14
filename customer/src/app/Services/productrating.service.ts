@@ -20,23 +20,25 @@ import { Response } from '../Models/response';
     constructor(private httpClient: HttpClient) { 
     }
  
-    public getPreviousOrders(customerID:string){
-      return this.httpClient.get(`${this.apiUrl}ProductRating/GetPreviousOrders/${customerID}`)
+    public getPreviousOrders(customer_ID:string){
+      return this.httpClient.get(`${this.apiUrl}ProductRating/GetPreviousOrders/${customer_ID}`)
       .pipe(map(result => result))
+      
     }
+
     public AddProductRating(productRating:ProductRating){
       return this.httpClient.post<Response>(`${this.apiUrl}ProductRating/AddProductRating`, productRating)
       .pipe(map(result => result))
     }
   
-    public GetProductRating(productRatingId:string){ 
-      return this.httpClient.get(`${this.apiUrl}ProductRating/GetProductRating/${productRatingId}`)
+    public GetProductRating(product_Rating_ID:string){ 
+      return this.httpClient.get(`${this.apiUrl}ProductRating/GetProductRating/${product_Rating_ID}`)
       .pipe(map(result => result))
     }
 
-    public GetProductRatingByCustomerID(customerID:any){ 
+    public GetProductRatingByCustomerID(customerID:string){ 
       console.log(customerID)
-      return this.httpClient.get(`${this.apiUrl}ProductRating/GetProductRating/${customerID}`)
+      return this.httpClient.get(`${this.apiUrl}ProductRating/GetProductRatingByCustomerID/${customerID}`)
       .pipe(map(result => result))
     }
   

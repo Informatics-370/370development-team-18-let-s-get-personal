@@ -21,7 +21,7 @@ export class CheckOutPage implements OnInit {
   order = new OrderT();
   basketItems: BasketItems[] = [];
   address:DeliveryAddress= new DeliveryAddress();
-  deliveryvm: any;
+  deliveryvm: DeliveryVM[] = [];
   delprice: number = 0;
   totalprice: number = 0
   orderrequest!: Order_Request
@@ -43,18 +43,20 @@ export class CheckOutPage implements OnInit {
       this.service.GetDeliveryByID(delID).subscribe(result =>{
         this.deliveryvm = result as DeliveryVM[];
           console.log(this.deliveryvm)
-          this.deliveryvm.forEach((element: { "": any; }) => {
-            this.deliveryvm.delivery_Price += this.delprice
+          this.deliveryvm.forEach(element => {
+            let amount = element.delivery_Price 
+            this.delprice = amount + element.delivery_Price
           });
           //this.delprice = this.deliveryvm.delivery_Price
           console.log(this.delprice)
       })
       
-      this.culculate()
     }
     catch{
       //this.culculate()
     }
+    
+    this.culculate()
   }
 
   culculate(){

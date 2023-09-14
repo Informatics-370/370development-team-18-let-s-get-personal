@@ -169,8 +169,13 @@ namespace IPKP___API.Controllers.Models.Repository
                     {
                         Customer_ID = c.Customer_ID,
                         FirstName = c.FirstName,
+                        UserName = c.Username,
+
                         Stock_Item_Name = s.Stock_Item_Name,
                         Stock_Item_ID = s.Stock_Item_ID,
+                        
+                        Order_Line_Item_Quantity = o.Order_Quantity,
+                        Order_Completed_Date = o.Order_Completed_Date,
                     }
 
                 ).ToList();
@@ -369,6 +374,27 @@ namespace IPKP___API.Controllers.Models.Repository
                     .Where(u => u.Product_Rating_ID == product_Rating_ID);
           return await query.FirstOrDefaultAsync();
         }
+        public object GetProductRatingDetails(Guid product_Rating_ID)
+        {
+            List<ProductRatingViewModel> ratings = (
+
+                  from pr in _appDbContext.Product_Ratings.ToList()
+                  join s in _appDbContext.Stock_Items.ToList()
+                  on pr.Stock_Item_ID equals s.Stock_Item_ID
+
+                  select new ProductRatingViewModel
+                  {
+                      Stock_Item_Name = s.Stock_Item_Name,
+
+                      Product_Rating_ID = pr.Product_Rating_ID,
+                      Product_Rating_Comments = pr.Product_Rating_Comments,
+                      Product_Star_Rating = pr.Product_Star_Rating,
+                  }
+                  ).ToList();
+
+            IEnumerable<ProductRatingViewModel> query = ratings.Where(x => x.Product_Rating_ID == product_Rating_ID);
+            return query;
+        }
         public object GetRatingPerProduct()
         {
             List<ProductRatingViewModel> ratings = (
@@ -420,8 +446,12 @@ namespace IPKP___API.Controllers.Models.Repository
                 select new ProductRatingViewModel
                 {
                     Stock_Item_Name = s.Stock_Item_Name,
+                    Stock_Item_ID = s.Stock_Item_ID,
+
                     Product_Star_Rating = pr.Product_Star_Rating,
                     Product_Rating_Comments = pr.Product_Rating_Comments,
+                    Product_Rating_ID = pr.Product_Rating_ID,
+
                     Customer_UserName = c.Username,
                     Customer_ID = c.Customer_ID,
                 }
@@ -472,6 +502,7 @@ namespace IPKP___API.Controllers.Models.Repository
                 {
                     Experience_Star_Rating = e.Experience_Star_Rating,
                     Experience_Rating_Comments = e.Experience_Rating_Comments,
+                    Experience_Rating_ID = e.Experience_Rating_ID,
 
                     Customer_ID = c.Customer_ID,
                     Customer_Surname = c.Surname,

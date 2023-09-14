@@ -30,9 +30,15 @@ namespace IPKP___API.Controllers
             try
             {
                 var results =  _IPKPRepository.GetOrderByCustomerAsync(customer_ID);
-                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Customer" + customer_ID });
 
-                return Ok(results);
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Previous Orders for Customer" + customer_ID });
+                }
+                else
+                {
+                    return Ok(results);
+                }
             }
             catch (Exception)
             {
@@ -47,9 +53,14 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = _IPKPRepository.GetProductRatings();
-                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Any Product Ratings"  });
-
-                return Ok(results);
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Product Ratings were found." });
+                }
+                else
+                {
+                    return Ok(results);
+                }
             }
             catch (Exception)
             {
@@ -59,14 +70,20 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetProductRating/{product_Rating_ID}")]
-        public async Task<IActionResult> GetProductRatingDetailsAsync(Guid product_Rating_ID)
+        public object GetProductRatingDetailsAsync(Guid product_Rating_ID)
         {
             try
             {
-                var results = await _IPKPRepository.GetProductRatingDetailsAsync(product_Rating_ID);
-                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Product Rating" + product_Rating_ID });
+                var results =  _IPKPRepository.GetProductRatingDetails(product_Rating_ID);
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "Product Rating "+ product_Rating_ID + " was not found." });
+                }
+                else
+                {
+                    return Ok(results);
+                }
 
-                return Ok(results);
             }
             catch (Exception)
             {
@@ -81,9 +98,14 @@ namespace IPKP___API.Controllers
             try
             {
                 var results =  _IPKPRepository.GetProductRatingByCustomerAsync(customer_ID);
-                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Customer" + customer_ID });
-
-                return Ok(results);
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Previous Orders for Customer" + customer_ID });
+                }
+                else
+                {
+                    return Ok(results);
+                }
             }
             catch (Exception)
             {
@@ -123,10 +145,16 @@ namespace IPKP___API.Controllers
             {
               var existingProductRating = await _IPKPRepository.GetProductRatingDetailsAsync(product_Rating_ID);
 
-              if (existingProductRating == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Product Rating" + product_Rating_ID });
-
-              existingProductRating.Product_Star_Rating = prvm.Product_Star_Rating;
-              existingProductRating.Product_Rating_Comments = prvm.Product_Rating_Comments;
+                if (existingProductRating == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Product Rating" + product_Rating_ID });
+                }
+                else
+                {
+                    existingProductRating.Product_Star_Rating = prvm.Product_Star_Rating;
+                    existingProductRating.Product_Rating_Comments = prvm.Product_Rating_Comments;
+                }
+              
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {

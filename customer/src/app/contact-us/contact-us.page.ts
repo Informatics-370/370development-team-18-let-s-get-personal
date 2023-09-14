@@ -21,7 +21,7 @@ export class ContactUsPage implements OnInit {
   setOpen(isOpen: boolean) {
     this.isModalOpen = isOpen;
   }
-/*
+
   ContactForm: FormGroup = new FormGroup({
     Name: new FormControl('', [Validators.required]),
     Email: new FormControl('', Validators.compose([Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])),
@@ -30,6 +30,6 @@ export class ContactUsPage implements OnInit {
 
   get f() { return this.ContactForm.controls }
 
-  Submit() {}*/
+  Submit() {}
 
 }

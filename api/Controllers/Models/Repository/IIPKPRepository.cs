@@ -54,9 +54,10 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Order_Request> GetOrderRequestAsync(Guid order_Request_ID);
         Task<Order_Request[]> GetAllOrderRequestsAsync();
 
-        object GetRatingPerProduct();
+        object GetRatingPerProduct();        
         Task<Product_Rating> GetProductRatingDetailsAsync(Guid product_Rating_ID);
         Task<Product_Rating[]> GetAllProductRatingsAsync();
+        object GetProductRatingDetails(Guid product_Rating_ID);
         object GetProductRatingByCustomerAsync(Guid customer_ID);
         object GetProductRatings();
 

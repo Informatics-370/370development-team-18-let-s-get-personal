@@ -364,6 +364,32 @@ export class BasketPage implements OnInit {
     });
     await alert.present();
   }
+
+  async PersonalisationTip() {
+    const alert = await this.alertController.create({
+      header: 'Please note:',
+      subHeader: 'We do require a jpeg inspiration photo and text description to fulfil your order',
+      message:'If you are having issues with personalising your orderd please contact us on our contact us page.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      },{
+        text: 'Contact Us',
+        //role: 'cancel',
+        handler: () => {
+          this.ContactUs();
+        }
+      }],
+    });
+    await alert.present();
+  }
+  
+  public ContactUs() {
+    this._router.navigate(["/tabs/contact-us"])
+  }
   
 //confirm add modal
     // let items = JSON.parse(localStorage.getItem('cart') as string) || [];

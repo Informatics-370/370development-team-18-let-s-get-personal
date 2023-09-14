@@ -103,12 +103,12 @@ namespace IPKP___API.Controllers
                     existingRating.Experience_Star_Rating = exRating.Experience_Star_Rating;
                     existingRating.Experience_Rating_ID = exRating.Experience_Rating_ID;
                     existingRating.Experience_Rating_Comments = exRating.Experience_Rating_Comments;
-
-                    if (await _IPKPRepository.SaveChangesAsync())
-                    {
-                        return Ok(new Response { Status = "Success", Message = "Rating Updated Successfully" });
-                    }
-                }                      
+                    
+                }
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(new Response { Status = "Success", Message = "Rating Updated Successfully" });
+                }
             }
             catch (Exception)
             {

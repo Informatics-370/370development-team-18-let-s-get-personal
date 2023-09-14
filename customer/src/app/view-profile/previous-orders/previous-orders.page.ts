@@ -11,13 +11,8 @@ import { ModalController } from '@ionic/angular';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { SalesVM } from 'src/app/ViewModels/salesVM';
-import { SalesService } from 'src/app/Services/sales.service';
-enum COLORS {
-  GREY = "E0E0E0",
-  GREEN = "#76FF03",
-  YELLOW = "#FFCA28",
-  RED = "#DD2C00"
-}
+import { ProductRatingVM } from 'src/app/ViewModels/productratingVM';
+
 @Component({
   selector: 'app-previous-orders',
   templateUrl: './previous-orders.page.html',
@@ -25,56 +20,61 @@ enum COLORS {
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class PreviousOrdersPage implements OnInit {
-  customerUsername!: string;
-  orders: SalesVM [] = []
-  comment: any;
-  prodRatings: ProductRating[] = [];
-  results: any;
+export class PreviousOrdersPage implements OnInit { 
+  orders: SalesVM[] =[]
+  comment: any;  
   customerId: any;
   @ViewChild(IonModal) modal!: IonModal;
-  productRatings: ProductRating[] = [];
+  productRatings: ProductRatingVM[] = [];
   stockItems: Stock_Item[] = [];
 
   constructor(private _modalController: ModalController, private _router: Router, 
-    private alertController:AlertController, private ratingservice: ProductRatingDataService,
-    private service: SalesService) { }
+    private alertController:AlertController, private ratingservice: ProductRatingDataService) { }
 
 
   ngOnInit() {    
-    this.customerUsername = JSON.parse(JSON.stringify(localStorage.getItem('username')))// JSON.parse(localStorage.getItem('customerID') as string)
-    this.getPreviousOrders()
-    this.customerId = JSON.parse(JSON.stringify(localStorage.getItem('customerID'))) //localStorage.getItem("customerID");
+    // this.customerId = JSON.parse(JSON.stringify(localStorage.getItem('customerID'))) //localStorage.getItem("customerID");
+    // console.log(this.customerId);
+    this.customerId = localStorage.getItem("customerID");
+    this.getCustomerOrders() //this.customerId
+    this.getCustomerRatings(); //.replace(/"/g, '')
+  }
+
+  getCustomerOrders(){ 
+    this.customerId = localStorage.getItem("customerID"); 
     console.log(this.customerId);
-    this.getRatingByCustomerID(this.customerId.replace(/"/g, ''));
+
+    try
+    {
+      this.ratingservice.getPreviousOrders(this.customerId).subscribe(result =>{
+        this.orders = result as SalesVM[]
+        console.log(this.orders)
+      })
+    }
+    catch
+    {
+      this.getErrorAlert()
+    }
+    
   }
 
-  getPreviousOrders(){
-    this.service.getPreviousOrders(this.customerId).subscribe(result =>{
-      this.orders = result as SalesVM[]
-      console.log(this.orders)
-    })
-  }
 
-  private getRatingByCustomerID(customer_ID: any): void {
-
-    console.log(customer_ID);
-
-    this.ratingservice.GetProductRatingByCustomerID(customer_ID).subscribe(res => {
-      this.results = res;
-      this.prodRatings = this.results;
-    }, error => {
-      console.log(error);
+  private getCustomerRatings() {
+    this.ratingservice.GetProductRatingByCustomerID(this.customerId).subscribe(res => {
+      this.productRatings = res as ProductRatingVM[];
+      console.log(this.productRatings)
     })
   }
 
 //========== Add ==========
   isAddModalOpen = false;  
   stockitemName!: string
-  AddRating(stock_Item_ID: string, isAddOpen: boolean, stock_Item_Name:string){
-    localStorage.setItem('RatingStockID', stock_Item_ID);
-    console.log(stock_Item_ID)
-    this.stockitemName = stock_Item_Name;
+  stockitemid!: string
+  AddRating(isAddOpen: boolean){
+    //localStorage.setItem('RatingStockID', stock_Item_ID);    
+    // this.stockitemid = stock_Item_ID
+    // console.log(stock_Item_ID)
+    // this.stockitemName = stock_Item_Name;
     this.isAddModalOpen = isAddOpen;
   }
 
@@ -85,6 +85,7 @@ export class PreviousOrdersPage implements OnInit {
 
   AddForm: FormGroup = new FormGroup({
     comment: new FormControl('', [Validators.required]),
+    stockitemID: new FormControl('', [Validators.required]),
   });
 
   selectedRating: number = 0;
@@ -93,26 +94,27 @@ export class PreviousOrdersPage implements OnInit {
   rateExperience(rating: number): void {
     this.selectedRating = rating;
   }
-  
-  rating: ProductRating = new ProductRating();
+
   confirmaddmodal(/*Stock_Item_ID: string*/ ) {
     this.comment = this.AddForm.get('comment')?.value;
+    console.log(this.comment)
+    let rated = new ProductRating();
 
-    this.rating.stock_Item_ID = this.stockitemName //JSON.parse(JSON.stringify(localStorage.getItem('RatingStockID')));
-    this.rating.customer_ID = this.customerId //.replace(/"/g, '')
-    this.rating.product_Rating_Comments = this.comment;
-    this.rating.product_Star_Rating = this.selectedRating;
+    rated.stock_Item_ID = this.AddForm.value.stockitemID
+    rated.customer_ID = this.customerId
+    rated.product_Rating_Comments = this.AddForm.value.comment;
+    rated.product_Star_Rating = this.selectedRating;
 
     try {
-      this.ratingservice.AddProductRating(this.rating).subscribe(res => {
+      console.log(rated)
+      this.ratingservice.AddProductRating(rated).subscribe(res => {
        this.addProdRatingSuccessAlert();
       }, error => {
         console.log(error);
       })
-    } catch {
-      this.addProdRatingErrorAlert()
-    }
-    if (this.comment = null) {
+    } 
+    catch 
+    {
       this.addProdRatingErrorAlert()
     }
   }
@@ -123,17 +125,23 @@ export class PreviousOrdersPage implements OnInit {
 
 //========== Edit ==========
    isModalOpen = false;
+   prodratingID!: string
+   editProdRating: any;
    editForm: FormGroup = new FormGroup({
-     selectedRating: new FormControl('', [Validators.required]),
+     //selectedRating: new FormControl('', [Validators.required]),
      comment: new FormControl('', [Validators.required]),
-   })
-   editProdRating: ProductRating = new ProductRating();
- 
+   })   
+   
+   editStockName!: string
+   currentRating!: number
    EditExpRating(product_Rating_ID: string, isOpen: boolean) {
-     this.ratingservice.GetProductRating(product_Rating_ID).subscribe(response => {
- 
-       this.editProdRating = response as ProductRating;
-       this.editForm.controls['selectedRating'].setValue(this.editProdRating.product_Star_Rating);
+    this.prodratingID = product_Rating_ID
+     this.ratingservice.GetProductRating(product_Rating_ID).subscribe(response => {        
+       this.editProdRating = response as ProductRatingVM;
+       console.log(response)
+       this.editStockName = this.editProdRating.stock_Item_Name
+       this.currentRating = this.editProdRating.product_Star_Rating
+       //this.editForm.controls['selectedRating'].setValue(this.editProdRating.product_Star_Rating);
        this.editForm.controls['comment'].setValue(this.editProdRating.product_Rating_Comments);
      })
      this.isModalOpen = isOpen;
@@ -149,7 +157,7 @@ export class PreviousOrdersPage implements OnInit {
      editedProdRating.product_Rating_Comments = this.editForm.get('comment')?.value;
      console.log(editedProdRating)
      try {
-       this.ratingservice.UpdateProductRating(this.editProdRating.product_Rating_ID, editedProdRating).subscribe(result => {
+       this.ratingservice.UpdateProductRating(this.prodratingID, editedProdRating).subscribe(result => {
          this.editProdRatingSuccessAlert();
        })
      }
@@ -170,15 +178,60 @@ export class PreviousOrdersPage implements OnInit {
       })
    }
  
-   onWillDismiss(event: Event) {
+    onWillDismiss(event: Event) {
      const ev = event as CustomEvent<OverlayEventDetail<string>>;
-   }
+    }
 
+  public ProductRating() {
+    this._router.navigate(["/tabs/product-rating"])
+  }
+
+  public ContactUs() {
+    this._router.navigate(["/tabs/contact-us"])
+  }
+
+  reloadPage() {
+    window.location.reload()
+  }
 
 //========== Alerts ========== 
 
-reloadPage() {
-  window.location.reload()
+async getErrorAlert() {
+  const alert = await this.alertController.create({
+    header: 'We are sorry!',
+    subHeader: 'We Could not find your Order',
+    message: 'Please try again',
+    buttons: [{
+      text: 'OK',
+      role: 'cancel',
+      handler: () => {
+        this.reloadPage();
+      }
+    }],
+  });
+  await alert.present();
+}
+
+async CantSeeOrder() {
+  const alert = await this.alertController.create({
+    header: 'Please note:',
+    subHeader: 'We only show orders that have been delivered.',
+    message:'If you have your order and still can not see it please contact us on our contact us page.',
+    buttons: [{
+      text: 'OK',
+      role: 'cancel',
+      handler: () => {
+        this.reloadPage();
+      }
+    },{
+      text: 'Contact Us',
+      //role: 'cancel',
+      handler: () => {
+        this.ContactUs();
+      }
+    }],
+  });
+  await alert.present();
 }
 
 async addProdRatingSuccessAlert() {
@@ -272,8 +325,5 @@ async DeleteProdRatingErrorAlert() {
   });
   await alert.present();
 }
-  public ProductRating() {
-    this._router.navigate(["/tabs/product-rating"])
-  }
 
 }
