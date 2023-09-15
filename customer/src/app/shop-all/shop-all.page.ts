@@ -165,9 +165,9 @@ export class ShopAllPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler: () => {
+        /*handler: () => {
           this.reloadPage();
-        }
+        }*/
       }],
     });
     await alert.present();

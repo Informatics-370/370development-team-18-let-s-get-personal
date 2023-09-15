@@ -37,9 +37,9 @@ export class CreateProfilePage implements OnInit {
 
   get f() { return this.AddCustomerForm.controls }
 
-
+  isLoading: boolean = false;
   AddProfile() {
-
+    this.isLoading = true;
     if (this.AddCustomerForm.valid) {
       const formData = this.AddCustomerForm.value;
       console.log(formData);
@@ -60,9 +60,10 @@ export class CreateProfilePage implements OnInit {
       (error) => {
         this.AddCustomerErrorAlert();
         console.error('Registration error:', error);
-      }
-      );
-      this.presentLoading();
+      }).add(() => {
+        this.isLoading = false; // Stop loading
+      });
+      //this.presentLoading();
     }
   }
 

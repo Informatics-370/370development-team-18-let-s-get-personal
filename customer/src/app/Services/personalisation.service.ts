@@ -39,15 +39,60 @@ export class PersonalisationService {
     .pipe(map(result => result))
   }
 
-  // public DeletePersonalisation(personalisationId:string): Observable<any>{
-  //   return this.httpClient.delete<Response>(`${this.apiUrl}Personalisation/DeletePersonalisation/${personalisationId}`)
+  // public AddToDesignImageLineItem(designimagelineitem:Design_Image_Line_Item){
+  //   return this.httpClient.post(`${this.apiUrl}Personalisation/AddToDesignImageLineItem`, designimagelineitem)
   //   .pipe(map(result => result))
   // }
 
-  // public UpdatePersonalisation(personalisationId:number, personalisation:any): Observable<any>{
-  //   return this.httpClient.put<Response>(`${this.apiUrl}Personalisation/UpdatePersonalisation/${personalisationId}`, personalisation)
+   public DeletePersonalisation(personalisationId:string): Observable<any>{
+     return this.httpClient.delete<Response>(`${this.apiUrl}Personalisation/DeletePersonalisation/${personalisationId}`)
+     .pipe(map(result => result))
+   }
+
+  // public GetAllTextPrices(): Observable<any>{
+  //   return this.httpClient.get(`${this.apiUrl}Personalisation/GetAllTextPrices`)
   //   .pipe(map(result => result))
   // }
+ 
+  // public AddTextPrice(textprice:TextPrice){
+  //   return this.httpClient.post<Response>(`${this.apiUrl}Personalisation/AddTextPrice`, textprice)
+  //   .pipe(map(result => result))
+  // }
+
+  // public UpdateTextPrice(text_Price_ID:string, textprice:TextPrice){
+  //   return this.httpClient.put<Response>(`${this.apiUrl}Personalisation/UpdateTextPrice/${text_Price_ID}`, textprice)
+  // }
+
+  // public GetAllImagePrices(): Observable<any>{
+  //   return this.httpClient.get(`${this.apiUrl}Personalisation/GetAllImagePrices`)
+  //   .pipe(map(result => result))
+  // }
+
+  // public AddImagePrice(imageprice:Image_Price){
+  //   return this.httpClient.post<Response>(`${this.apiUrl}Personalisation/AddImagePrice`, imageprice)
+  //   .pipe(map(result => result))
+  // }
+
+  // public UpdateImagePrice(image_Price_ID:string, imageprice:Image_Price){
+  //   return this.httpClient.put<Response>(`${this.apiUrl}Personalisation/UpdateImagePrice/${image_Price_ID}`, imageprice)
+  // }
+  
+  public UpdatePersonalisation(personalisationId:number, personalisation:any): Observable<any>{
+     return this.httpClient.put<Response>(`${this.apiUrl}Personalisation/UpdatePersonalisation/${personalisationId}`, personalisation)
+     .pipe(map(result => result))
+   }
+   
 }
+
+
+  // public GetStockItemColours(): Observable<any>{
+  //   return this.httpClient.get(`${this.apiUrl}StockItemColour/GetAllStockItemColours`)
+  //   .pipe(map(result => result))
+  // }
+
+  // public AddPersonalisation(personalisation:any): Observable<any>{
+  //   return this.httpClient.post<Response>(`${this.apiUrl}Personalisation/AddPersonalisation`, personalisation, this.httpOptions)
+  //   .pipe(map(result => result))
+  // }
 
   

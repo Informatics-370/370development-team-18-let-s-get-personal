@@ -41,6 +41,7 @@
     "@angular/language-service": "^16.0.0",
     "@ionic/angular-toolkit": "^9.0.0",
     "@types/jasmine": "~4.3.0",
+    "@types/lodash": "^4.14.198",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",

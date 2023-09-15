@@ -9,10 +9,10 @@ export class PersonalisationDesignVM{
     // text_Price_Amount!: number
 
     stock_Item_Name!: string
-    stock_Item_Price!: number
+   /* stock_Item_Price!: number
     stock_Item_Size!: string
     stock_Colour_Name!: string
-    personalisation_Design_Price!: number
+    personalisation_Design_Price!: number*/
 
     design_Text_ID!: string
     design_Image_ID!: string
