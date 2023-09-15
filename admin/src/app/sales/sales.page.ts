@@ -98,6 +98,7 @@ export class SalesPage implements OnInit {
   Products: StockItemViewModel[] = [];
   GetAllStockItems(){
     this.stockitemservice.GetStockItems().subscribe(result =>{
+
       this.Products = result as StockItemViewModel[];
       
       this.Products.forEach(e => {
