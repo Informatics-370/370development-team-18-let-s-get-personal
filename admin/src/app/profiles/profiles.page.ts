@@ -10,6 +10,7 @@ import { UserProfileDataService } from '../Services/userprofile.service';
 import { Admin } from '../Models/admin';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { DatePipe } from '@angular/common';
 export type jsPDFDocument = any;
 type Opts = { [key: string]: string | number }
 @Component({
@@ -17,6 +18,7 @@ type Opts = { [key: string]: string | number }
   templateUrl: './profiles.page.html',
   styleUrls: ['./profiles.page.scss'],
   standalone: true,
+  providers: [DatePipe],
   imports: [IonicModule, CommonModule, FormsModule, RouterModule,ReactiveFormsModule]
 })
 export class ProfilesPage implements OnInit {

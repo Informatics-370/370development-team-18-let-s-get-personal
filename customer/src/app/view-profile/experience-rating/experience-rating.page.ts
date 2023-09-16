@@ -20,6 +20,7 @@ export class ExperienceRatingPage implements OnInit {
   rating: Experience_Rating = new Experience_Rating();
 
   customerId: any;
+  
   @ViewChild(IonModal) modal!: IonModal
   constructor(private ratingService: Experience_RatingService, private alertController: AlertController) { }
 
@@ -60,19 +61,16 @@ export class ExperienceRatingPage implements OnInit {
 
   confirmaddmodal() {
     this.comment = this.AddForm.get('comment')?.value;
-
     this.rating.customer_ID = this.customerId.replace(/"/g, '')
     this.rating.experience_Rating_Comments = this.comment;
     this.rating.experience_Star_Rating = this.selectedRating;
-    try {
       this.ratingService.AddExperienceRating(this.rating).subscribe(res => {
        this.addExpRatingSuccessAlert();
-      }, error => {
+      },(error) => {
+        this.addExpRatingErrorAlert()
         console.log(error);
-      })
-    } catch {
-      this.addExpRatingErrorAlert()
-    }
+      });
+    
     if (this.comment = null) {
       this.addExpRatingErrorAlert()
     }
