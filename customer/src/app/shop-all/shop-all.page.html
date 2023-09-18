@@ -14,12 +14,12 @@
     </ion-toolbar>
   </ion-header>
   <!--search-->
-    <!--<form [formGroup]="SearchForm">      
+    <form [formGroup]="SearchForm">      
       <ion-item>
-        <ion-input type="text" formControlName="stocktype" placeholder="Stock Type" required></ion-input>
+        <ion-input type="text" formControlName="name" placeholder="Search" required></ion-input>
         <ion-button (click)="searchStockType()">Search</ion-button>
       </ion-item> 
-    </form>-->
+    </form>
   <ion-grid>
     <ion-row>
       <ion-col sizeLg="1" sizeMd="2" sizeXs="4"><ion-button (click)="GetStockItems()">View All</ion-button></ion-col>

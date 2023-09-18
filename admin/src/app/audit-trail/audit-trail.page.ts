@@ -7,6 +7,9 @@ import { AuditTrailService } from '../Services/audittrail.service';
 import { AuditTrailVM } from '../ViewModels/audittrailVM';
 import { ExcelService } from '../Services/excel.service';
 import { ExcelViewModel } from '../ViewModels/excelVM';
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from "pdfmake/build/vfs_fonts"; 
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 @Component({
   selector: 'app-audit-trail',
   templateUrl: './audit-trail.page.html',
@@ -17,12 +20,17 @@ import { ExcelViewModel } from '../ViewModels/excelVM';
 export class AuditTrailPage implements OnInit {
   AdminAuditTrails: AuditTrailVM[] = []
   EmployeeAuditTrails: AuditTrailVM[] = []
+  CustomerAuditTrails: AuditTrailVM[] = []
 
-  constructor(private service:AuditTrailService, private excelservice: ExcelService ) { }
+  constructor(private service:AuditTrailService, private excelservice: ExcelService ) 
+  {
+    (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  }
 
   ngOnInit() {
     this.getAdminAuditTrails()
     this.getEmployeeAuditTrails()
+    this.getCustomerAuditTrails()
   }
 
   getAdminAuditTrails(){
@@ -37,16 +45,28 @@ export class AuditTrailPage implements OnInit {
     })
   }
 
+  getCustomerAuditTrails(){
+    this.service.GetEmployeeAuditTrails().subscribe(result => {
+      this.CustomerAuditTrails = result as AuditTrailVM[]
+    })
+  }
+
   getOnlyAdmins(){
     this.getAdminAuditTrails()
     this.EmployeeAuditTrails = [] 
-    //this.reloadPage()
+    this.CustomerAuditTrails = []
+  }
+
+  getOnlyCustomers(){
+    this.getCustomerAuditTrails()
+    this.EmployeeAuditTrails = [] 
+    this.AdminAuditTrails = []
   }
 
   getOnlyEmployees(){
     this.getEmployeeAuditTrails()
     this.AdminAuditTrails = []
-    //this.reloadPage()
+    this.CustomerAuditTrails = []
   }
 
   getAll(){
@@ -72,6 +92,36 @@ export class AuditTrailPage implements OnInit {
     {
       //this.ExcelDownloadErrorAlert()
     }    
+  }
+
+  generatePDF() {  
+    let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    let date = new Date
+    
+    let docDefinition = {  
+      fillColor: "White",
+      fillOpacity: "",
+      margin: [ 5, 10, 5, 5 ],
+      header: user+" - It's Personal Audit Trail",  
+      footer:'Downloaded by: '+ user + ' at: '+ date,        
+      content:[
+        {          
+          layout: 'lightHorizontalLines', // optional          
+          table: {
+            headerRows: 1,
+            widths: [ '30%', '40%', '30%' ],
+            // margin: [left, top, right, bottom]
+            margin: [ 5, 10, 5, 5 ],
+            
+            body: [
+              [ 'User', 'Action Description', 'Action Date and Time' ],
+              ...this.AdminAuditTrails.map(p => ([p.actionName, p.actionName, p.actionDate]))
+            ]
+          }          
+        }
+      ]      
+    };  
+    pdfMake.createPdf(docDefinition).download();      
   }
 
 

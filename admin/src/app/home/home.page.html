@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">home</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <p>Requested Messages</p>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <p>Remind me in: </p>
+          <!-- timedate picker -->
+          <!-- send email or show popup -->
+          <p (click)="observableTimer()">Start Observable timer</p> 
+          <p>{{subscribeTimer}}</p>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- new order requests -->
+  <!-- out deliveries -->
+</ion-content>

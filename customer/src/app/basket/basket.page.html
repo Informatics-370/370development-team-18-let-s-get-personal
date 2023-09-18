@@ -45,12 +45,17 @@
       <ion-button (click)="makepayment()">Checkout</ion-button>
     </ion-row>
   </ion-grid>
+  <!-- Discount -->
+  <ion-grid *ngFor="let item of discounts">
+	<ion-row>
+		<ion-col>Discount amount: R {{item.discount_Amount}}.00</ion-col>
+	</ion-row>
+  </ion-grid>
   <img src="/assets/Cart.PNG" alt="cart icon" class="center" style="width: 25%; height: 50%;" />
 </ion-content>
 
 
 <ion-footer>
-
 	<ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
 		<ng-template>
 			<ion-header>

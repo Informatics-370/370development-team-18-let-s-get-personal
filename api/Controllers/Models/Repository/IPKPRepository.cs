@@ -552,6 +552,12 @@ namespace IPKP___API.Controllers.Models.Repository
                     .Where(u => u.Discount_ID == discount_Id);
             return await query.FirstOrDefaultAsync();
         }
+        public async Task<Discount> GetDiscountByStockAsync(Guid stockItemID)
+        {
+            IQueryable<Discount> query = _appDbContext.Discounts
+                    .Where(u => u.Stock_Item_ID == stockItemID);
+            return await query.FirstOrDefaultAsync();
+        }
         public async Task<BestSellers[]> GetAllBestSellersAsync()
         {
             IQueryable<BestSellers> query = _appDbContext.BestSellers;
@@ -975,6 +981,25 @@ namespace IPKP___API.Controllers.Models.Repository
 
                     FirstName = e.FirstName,
                     Surname = e.Surname,
+                }
+                ).ToList();
+            return trail;
+        }
+
+        public object GetCustomerAuditTrailDetails()
+        {
+            List<AuditTrailVM> trail = (
+                from t in _appDbContext.AuditTrail.ToList()
+                join c in _appDbContext.Customers.ToList()
+                on t.Customer_ID equals c.Customer_ID
+
+                select new AuditTrailVM
+                {
+                    ActionDate = t.ActionDate,
+                    ActionName = t.ActionName,
+
+                    FirstName = c.FirstName,
+                    Surname = c.Surname,
                 }
                 ).ToList();
             return trail;

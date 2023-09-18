@@ -1,9 +1,8 @@
 
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Checkout
-    </ion-title>
+    <ion-title>Checkout</ion-title>
+    <ion-button slot="end" (click)="CheckOutTip()">Help</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -21,7 +20,7 @@
   <ion-list>
     <ion-item-divider>Delivery Address</ion-item-divider>
     <ion-item *ngFor="let d of deliveryvm">
-      <p>Delivery Price  - R{{d.delivery_Price}} <br>
+      <p>Delivery Price  - R{{d.delivery_Price}}.00 <br>
       Address: {{d.streetNumber}} {{d.streetName}}</p>
     </ion-item>
   </ion-list>
@@ -29,10 +28,18 @@
   <ion-list>
     <ion-item-divider>Total Price</ion-item-divider>
     <ion-item>
-      <p>{{totalprice}}</p>
-    </ion-item>
-    
+      <p>R {{totalprice}}.00</p>
+    </ion-item>    
   </ion-list>
+
+  <ion-list>
+    <ion-item-divider>Discount</ion-item-divider>
+    <ion-item>
+      <p>R {{discount}}.00</p>
+    </ion-item>    
+  </ion-list>
+
+
   <!-- Checkout Button -->
   <ion-button expand="full" (click)="AddOrderRequest()">Checkout</ion-button>
 </ion-content>

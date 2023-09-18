@@ -12,7 +12,11 @@
   </ion-header>
   <ion-button (click)="prodReportNav()" >View Product Trends</ion-button>
   <ion-button (click)="openPDF()">Download Sales Report</ion-button>
+  <!-- <ion-button (click)="openPDF()">Refund Policy</ion-button>-->
+  <ion-button (click)="RefundsRoute()">Refunds</ion-button> 
+  
   <div id="htmlData">
+    <!-- Replace with working control break -->
     <ion-grid>
       <ion-row>
         <ion-col style="font-weight: bold;"> Customer </ion-col>
@@ -28,6 +32,7 @@
       </ion-row>
     </ion-grid>
   </div>
+  <!-- Control break -->
   <div>
     <ion-grid>
       <ion-row>        

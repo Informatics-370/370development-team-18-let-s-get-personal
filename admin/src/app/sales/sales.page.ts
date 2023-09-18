@@ -30,11 +30,6 @@ export class SalesPage implements OnInit {
   constructor(private service: SalesService, private router: Router, public stockitemservice: StockItemDataService,
     public environmentInjector: EnvironmentInjector, private typeservice: StockTypeDataService) { }  
 
-  prodReportNav()
-  {
-    this.router.navigate(['./tabs/product-trends']);
-  }
-
   ngOnInit(): void {
     this.GetSalesList()
     this.GetStockTypes()
@@ -109,6 +104,21 @@ export class SalesPage implements OnInit {
     })    
   }
 
+//========= Navigations =========
+  prodReportNav()
+  {
+    this.router.navigate(['./tabs/product-trends']);
+  }
+
+  RefundsRoute()
+  {
+    this.router.navigate(['./tabs/refunds']);
+  }
+
+  RefundPolicyRoute()
+  {
+    this.router.navigate(['./tabs/refund-policies']);
+  }
   
 
 }

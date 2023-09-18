@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { SalesService } from 'src/app/Services/sales.service';
 import { OrderService } from 'src/app/Services/order.service';
 import { BasketItems, OrderT } from 'src/app/Models/basket';
 import { Order_Line_Item } from 'src/app/Models/orderlineitem';
 import { Payment } from 'src/app/Models/payment';
+import { AuditTrail } from 'src/app/Models/audittrail';
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
 
 @Component({
   selector: 'app-successful-payment',
@@ -21,7 +23,8 @@ export class SuccessfulPaymentPage implements OnInit {
   order = new OrderT();
   cartitems: any 
   basket = new BasketItems();
-  constructor(private router:Router, private orderService:OrderService, private saleService: SalesService) { }
+  constructor(private router:Router, private orderService:OrderService, private saleService: SalesService
+    ,private auditservice: AuditTrailService, private alertController:AlertController) { }
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)
@@ -83,6 +86,10 @@ export class SuccessfulPaymentPage implements OnInit {
   }
 
   private placeOrder(order:OrderT):void{
+    //Action Trail
+    this.action = "Paid For Order"
+    this.AddAuditTrail()
+
       localStorage.removeItem("order");
       localStorage.removeItem("cart");
       localStorage.removeItem("orderRequestID");
@@ -104,6 +111,45 @@ export class SuccessfulPaymentPage implements OnInit {
 
   redirectToShopping() {
     this.router.navigate(['/']); // Replace 'shopping' with your shopping page route
+  }
+
+//========= Audit Trail ========
+  action!: string
+  AddAuditTrail(){
+    let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')))
+    let audittrail = new AuditTrail()
+    audittrail.customer_ID = customer_ID
+    audittrail.actionName = this.action
+
+    this.auditservice.AddCustomerAuditTrail(audittrail).subscribe(result => {
+      console.log(result)
+    })
+  }
+
+  public ContactUs() {
+    this.router.navigate(["/tabs/contact-us"])
+  }
+
+  async SuccessPaymentTip() {
+    const alert = await this.alertController.create({
+      header: 'Congrats! You have placed an order with us',
+      subHeader: 'If you are have any issues or questions please contact us on our contact us page.',
+      message:'',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        // handler: () => {
+        //   this.reloadPage();
+        // }
+      },{
+        text: 'Contact Us',
+        //role: 'cancel',
+        handler: () => {
+          this.ContactUs();
+        }
+      }],
+    });
+    await alert.present();
   }
 
 }

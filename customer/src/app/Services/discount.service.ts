@@ -20,18 +20,21 @@ import { Response } from '../Models/response';
   
     constructor(private httpClient: HttpClient) { 
     }
-    
-  //get all
+
     public GetAllDiscounts(): Observable<any>{ 
-        return this.httpClient.get(`${this.apiUrl}Discount/GetAllDiscounts`)
-        .pipe(map(result => result))
+      return this.httpClient.get(`${this.apiUrl}Discount/GetAllDiscounts`)
+      .pipe(map(result => result))
     }
 
-  //get selected one
-    public GetDiscount(discount_ID:number){ 
-        return this.httpClient.get(`${this.apiUrl}Discount/GetDiscount/${discount_ID}`)
-        .pipe(map(result => result))
-      }
+    public GetDiscount(discount_ID:string){ 
+      return this.httpClient.get(`${this.apiUrl}Discount/GetDiscount/${discount_ID}`)
+      .pipe(map(result => result))
+    }
+
+    public GetDiscountByStock(stock_Item_ID:string){ 
+      return this.httpClient.get(`${this.apiUrl}Discount/GetDiscount/${stock_Item_ID}`)
+      .pipe(map(result => result))
+    }
   
   
   }

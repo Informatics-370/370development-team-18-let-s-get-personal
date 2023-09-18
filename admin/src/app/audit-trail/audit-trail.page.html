@@ -23,7 +23,9 @@
     <ion-label>  Filter By: 
       <ion-button (click)="getOnlyAdmins()">View Admins</ion-button>
       <ion-button (click)="getOnlyEmployees()">View Employees</ion-button>
+      <ion-button (click)="getOnlyCustomers()">View Customers</ion-button>
       <ion-button (click)="getAll()">View All</ion-button>
+      <ion-button (click)="generatePDF()">Download Admin PDF</ion-button>
     </ion-label> 
   </ion-item>
   
@@ -53,12 +55,12 @@
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
     </ion-row>
 
-    <!-- <ion-row *ngFor="let item of CustomerAuditTrails">
+    <ion-row *ngFor="let item of CustomerAuditTrails">
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
       <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;">{{item.actionName}}</ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate}}</ion-col>
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
-    </ion-row> -->
+    </ion-row>
   </ion-grid>
 </ion-content>

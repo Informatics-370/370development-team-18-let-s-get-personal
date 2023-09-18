@@ -59,6 +59,25 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetDiscountByStockID/{stock_Item_ID}")]
+        public async Task<IActionResult> GetDiscountByStockID(Guid stock_Item_ID)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetDiscountByStockAsync(stock_Item_ID);
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Discount" });
+                }
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
         [HttpPost]
         [Route("AddDiscount")]
         public async Task<IActionResult> AddDiscount(Discount dm)

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { BasketItems, OrderT } from 'src/app/Models/basket';
 import { DeliveryAddress } from 'src/app/Models/deliveryaddress';
 import { OrderService } from 'src/app/Services/order.service';
@@ -9,6 +9,10 @@ import { OrderRequestService } from 'src/app/Services/orderrequest.service';
 import { DeliveryVM } from 'src/app/ViewModels/deliveryVM';
 import { Order_Request } from 'src/app/Models/orderrequest';
 import { Delivery } from 'src/app/Models/delivery';
+import { AuditTrail } from 'src/app/Models/audittrail';
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
+import { RouterModule, Router } from '@angular/router';
+
 @Component({
   selector: 'app-check-out',
   templateUrl: './check-out.page.html',
@@ -17,7 +21,7 @@ import { Delivery } from 'src/app/Models/delivery';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class CheckOutPage implements OnInit {
-
+  discount!: number
   order = new OrderT();
   basketItems: BasketItems[] = [];
   address:DeliveryAddress= new DeliveryAddress();
@@ -25,11 +29,12 @@ export class CheckOutPage implements OnInit {
   delprice: number = 0;
   totalprice: number = 0
   orderrequest!: Order_Request
-  constructor(public service: OrderRequestService) { }
+  constructor(public service: OrderRequestService, private auditservice: AuditTrailService, private router: Router,
+    private alertController:AlertController) { }
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)
-
+    this.discount = JSON.parse(JSON.stringify(localStorage.getItem('discount')))
     this.basketItems=this.order.basketItems;
     console.log(this.basketItems);  
   
@@ -44,16 +49,16 @@ export class CheckOutPage implements OnInit {
         this.deliveryvm = result as DeliveryVM[];
           console.log(this.deliveryvm)
           this.deliveryvm.forEach(element => {
-            let amount = element.delivery_Price 
-            this.delprice = amount + element.delivery_Price
+            //let amount = element.delivery_Price 
+            this.delprice = element.delivery_Price
           });
-          //this.delprice = this.deliveryvm.delivery_Price
+          localStorage.setItem('delprice', JSON.stringify(this.delprice));
           console.log(this.delprice)
       })
       
     }
     catch{
-      //this.culculate()
+      //Error alert
     }
     
     this.culculate()
@@ -85,6 +90,12 @@ export class CheckOutPage implements OnInit {
         let orderRequestID = this.orderrequest.order_Request_ID
         localStorage.setItem('orderRequestID', JSON.stringify(orderRequestID));
       })
+
+      //Action Trail
+      this.action = "Confirmed Order Details"
+      this.AddAuditTrail()
+
+
       this.proceedToPayFast()
     // }
     // catch
@@ -93,6 +104,19 @@ export class CheckOutPage implements OnInit {
     // }
     
   } 
+
+//========= Audit Trail ========
+  action!: string
+  AddAuditTrail(){
+    let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')))
+    let audittrail = new AuditTrail()
+    audittrail.customer_ID = customer_ID
+    audittrail.actionName = this.action
+
+    this.auditservice.AddCustomerAuditTrail(audittrail).subscribe(result => {
+      console.log(result)
+    })
+  }
 
   proceedToPayFast() {
     const merchantId = '10030633';
@@ -106,6 +130,32 @@ export class CheckOutPage implements OnInit {
   
     // Redirect the user to the PayFast sandbox
     window.location.href = payFastUrl;
+  }
+
+  async CheckOutTip() {
+    const alert = await this.alertController.create({
+      header: 'Please note: ',
+      subHeader: 'We are currently only accepting Payfast payments. This is to keep your information as secure as possible.',
+      message:'If you are have any issues or questions please contact us on our contact us page.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        // handler: () => {
+        //   this.reloadPage();
+        // }
+      },{
+        text: 'Contact Us',
+        //role: 'cancel',
+        handler: () => {
+          this.ContactUs();
+        }
+      }],
+    });
+    await alert.present();
+  }
+
+  public ContactUs() {
+    this.router.navigate(["/tabs/contact-us"])
   }
 
 }

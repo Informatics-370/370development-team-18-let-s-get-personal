@@ -14,6 +14,8 @@ import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { OrderT } from 'src/app/Models/basket';
 import { Delivery } from 'src/app/Models/delivery';
+import { AuditTrail } from 'src/app/Models/audittrail';
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
 
 @Component({
   selector: 'app-make-payment',
@@ -36,7 +38,7 @@ export class MakePaymentPage implements OnInit {
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:OrderRequestService, private router: Router, public modalCtrl: ModalController,
-    private alertController:AlertController, public delservice: DeliveryDataService) { }
+    private alertController:AlertController, public delservice: DeliveryDataService, private auditservice: AuditTrailService) { }
 
 
     validProvinces = ['Limpopo', 'Gauteng', 'North West','Kwa-Zulu Natal','Eastern Cape','Mpumalanga','Western Cape','Free State','Northern Cape'];
@@ -111,13 +113,17 @@ export class MakePaymentPage implements OnInit {
         let added = res as Delivery;
         let deliveryID = added.delivery_ID
         localStorage.setItem('deliveryID', deliveryID);
+
+        //Action Trail
+        this.action = "Added Delivery Address"
+        this.AddAuditTrail()
+
         this.router.navigate(["/tabs/check-out"])
       },
       (error) => {
         this.confirmErrorAlert();
         console.error('add delivery error:', error);
       });
-    
   }
 
   reloadPage(){
@@ -134,6 +140,45 @@ export class MakePaymentPage implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }  
+
+//========= Audit Trail ========
+  action!: string
+  AddAuditTrail(){
+    let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')))
+    let audittrail = new AuditTrail()
+    audittrail.customer_ID = customer_ID
+    audittrail.actionName = this.action
+
+    this.auditservice.AddCustomerAuditTrail(audittrail).subscribe(result => {
+      console.log(result)
+    })
+  }
+
+  public ContactUs() {
+    this.router.navigate(["/tabs/contact-us"])
+  }
+
+  async DeliveryTip() {
+    const alert = await this.alertController.create({
+      header: 'Please note: We do require you to full out each of the details reflected below.',
+      subHeader: 'Each delivery company have their own prices. This price will reflect once you have confirmed your address',
+      message:'If you are having issues with adding your address please contact us on our contact us page.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        // handler: () => {
+        //   this.reloadPage();
+        // }
+      },{
+        text: 'Contact Us',
+        //role: 'cancel',
+        handler: () => {
+          this.ContactUs();
+        }
+      }],
+    });
+    await alert.present();
   }
 
   async addDeliverySuccessAlert() {

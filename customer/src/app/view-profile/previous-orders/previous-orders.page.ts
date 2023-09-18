@@ -12,6 +12,8 @@ import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { SalesVM } from 'src/app/ViewModels/salesVM';
 import { ProductRatingVM } from 'src/app/ViewModels/productratingVM';
+import { AuditTrail } from 'src/app/Models/audittrail';
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
 
 @Component({
   selector: 'app-previous-orders',
@@ -28,7 +30,7 @@ export class PreviousOrdersPage implements OnInit {
   productRatings: ProductRatingVM[] = [];
   stockItems: Stock_Item[] = [];
 
-  constructor(private _modalController: ModalController, private _router: Router, 
+  constructor(private _modalController: ModalController, private _router: Router, private auditservice: AuditTrailService,
     private alertController:AlertController, private ratingservice: ProductRatingDataService) { }
 
 
@@ -43,7 +45,6 @@ export class PreviousOrdersPage implements OnInit {
   getCustomerOrders(){ 
     this.customerId = localStorage.getItem("customerID"); 
     console.log(this.customerId);
-
     try
     {
       this.ratingservice.getPreviousOrders(this.customerId).subscribe(result =>{
@@ -54,10 +55,8 @@ export class PreviousOrdersPage implements OnInit {
     catch
     {
       this.getErrorAlert()
-    }
-    
+    }    
   }
-
 
   private getCustomerRatings() {
     this.ratingservice.GetProductRatingByCustomerID(this.customerId).subscribe(res => {
@@ -108,7 +107,11 @@ export class PreviousOrdersPage implements OnInit {
     try {
       console.log(rated)
       this.ratingservice.AddProductRating(rated).subscribe(res => {
-       this.addProdRatingSuccessAlert();
+        //Action Trail
+       this.action = "Added product rating: "+this.selectedRating+" comments: "+this.AddForm.value.comment+" Stock Item ID: "+this.AddForm.value.stockitemID
+       this.AddAuditTrail()
+
+       this.addProdRatingSuccessAlert();       
       }, error => {
         console.log(error);
       })
@@ -159,6 +162,9 @@ export class PreviousOrdersPage implements OnInit {
      try {
        this.ratingservice.UpdateProductRating(this.prodratingID, editedProdRating).subscribe(result => {
          this.editProdRatingSuccessAlert();
+         //Action Trail
+         this.action = "Updated product rating for: " + this.editStockName + "Rating comment: "+ editedProdRating.product_Rating_Comments  + "Rating: "+ this.selectedRating
+         this.AddAuditTrail()
        })
      }
      catch {
@@ -166,7 +172,7 @@ export class PreviousOrdersPage implements OnInit {
      }
    }
   
-   DeleteProductRating(product_Rating_ID: string) {
+   DeleteProductRating(product_Rating_ID: string, stock_Item_Name:string, comments: string, rating:number) {
       this.ratingservice.DeleteProductRating(product_Rating_ID).subscribe(result => {
         console.log(result);
         if (result.status == "Error") {
@@ -174,14 +180,33 @@ export class PreviousOrdersPage implements OnInit {
         }
         else if (result.status == "Success") {
           this.DeleteProdRatingSuccessAlert();
+
+          //Action Trail
+          this.action = "Deleted product rating for: " + stock_Item_Name + "Rating comment: "+ comments + "Rating: "+ rating
+          this.AddAuditTrail()
        }
       })
    }
  
-    onWillDismiss(event: Event) {
-     const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    }
+  onWillDismiss(event: Event) {
+   const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
 
+//========= Audit Trail ========
+  action!: string
+  AddAuditTrail(){
+    let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')))
+    let audittrail = new AuditTrail()
+    audittrail.customer_ID = customer_ID
+    audittrail.actionName = this.action
+
+    this.auditservice.AddCustomerAuditTrail(audittrail).subscribe(result => {
+      console.log(result)
+    })
+  }
+
+
+//========== Navigations ==========
   public ProductRating() {
     this._router.navigate(["/tabs/product-rating"])
   }

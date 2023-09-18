@@ -95,5 +95,44 @@ namespace IPKP___API.Controllers
             }
             return Ok(new Response { Status = "Success", Message = "Audit Trail Added Successfully" });
         }
+
+        [HttpGet]
+        [Route("GetCustomerAuditTrails")]
+        public object GetCustomerAuditTrails()
+        {
+            try
+            {
+                var results = _IPKPRepository.GetCustomerAuditTrailDetails();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+            }
+        }
+
+        [HttpPost]
+        [Route("AddCustomerAuditTrail")]
+        public async Task<IActionResult> AddCustomerAuditTrail(AuditTrail auditTrail)
+        {
+            try
+            {
+                var trail = new AuditTrail
+                {
+                    Audit_Trail_ID = new Guid(),
+                    Customer_ID = auditTrail.Customer_ID,
+                    ActionDate = DateTime.Now,
+                    ActionName = auditTrail.ActionName,
+                };
+
+                _IPKPRepository.Add(trail);
+                await _IPKPRepository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Audit Trail Added Successfully" });
+        }
     }
 }

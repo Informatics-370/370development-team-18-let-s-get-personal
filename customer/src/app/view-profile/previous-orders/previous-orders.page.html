@@ -39,7 +39,7 @@
 						<ion-col sizeLg="3" sizeMd="3" sizeXs="3"  style="text-align: center;"> <ion-icon name="star"></ion-icon>{{item.product_Star_Rating}}</ion-col>
 						<ion-col sizeLg="3" sizeMd="3" sizeXs="3"  style="text-align: center;">{{item.product_Rating_Comments}}</ion-col>
 						<ion-col sizeLg="3" sizeMd="3" sizeXs="3"  style="text-align: center;"> <ion-button (click)="EditExpRating(item.product_Rating_ID,true)">Update Rating</ion-button></ion-col>
-						<ion-col sizeLg="3" sizeMd="3" sizeXs="3"  style="text-align: center;"><ion-button (click)="DeleteProductRating(item.product_Rating_ID)">Delete Rating</ion-button></ion-col>
+						<ion-col sizeLg="3" sizeMd="3" sizeXs="3"  style="text-align: center;"><ion-button (click)="DeleteProductRating(item.product_Rating_ID, item.stock_Item_Name, item.product_Rating_Comments, item.product_Star_Rating)">Delete Rating</ion-button></ion-col>
 					</ion-row>
 				</ion-col>
 			</ion-row>	

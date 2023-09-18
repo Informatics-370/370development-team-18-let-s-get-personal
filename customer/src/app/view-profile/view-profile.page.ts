@@ -19,10 +19,9 @@ export class ViewProfilePage implements OnInit {
   customer: Customer = new Customer()
   @ViewChild(IonModal) modal!: IonModal
   public username: string = ""
-  constructor(private _modalController: ModalController, private _router: Router, 
-    private alertController:AlertController, private service: UserProfileDataService, public modalCtrl: ModalController) 
-  { }
-  
+
+  constructor(private _modalController: ModalController, private _router: Router, public modalCtrl: ModalController,
+    private alertController:AlertController, private service: UserProfileDataService, )  { }
 
   ngOnInit() {
     this.getUser()
@@ -132,6 +131,21 @@ export class ViewProfilePage implements OnInit {
     //this.reloadPage();
     this._router.navigate(["/tabs/login"])
   }
+
+  // async HelpAlert() {
+  //   const alert = await this.alertController.create({
+  //     header: 'Success!',
+  //     subHeader: 'Updated',
+  //     buttons: [{
+  //       text: 'OK',
+  //       role: 'cancel',
+  //       handler:() =>{
+  //         this.reloadPage(); 
+  //       }
+  //   }],
+  //   });
+  //   await alert.present();
+  // }
 
   async editSuccessAlert() {
     const alert = await this.alertController.create({

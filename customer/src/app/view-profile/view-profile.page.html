@@ -1,17 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    
-    <ion-buttons>
-      <ion-title>Profile</ion-title>
-      <ion-button (click)="updateProfile(customer.customer_ID, true)">Manage Profile</ion-button>  
-      <ion-button (click)="ExpRating()">Experience Rating</ion-button>
-      <ion-button (click)="PreviousOrders()">View Previous Orders</ion-button>
-      <ion-button slot="end" (click)="Logout()">Log out</ion-button>
-    </ion-buttons>
+      <ion-title>Profile</ion-title>      
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-toolbar>
+    <ion-button (click)="updateProfile(customer.customer_ID, true)">Manage Profile</ion-button>  
+    <ion-button (click)="ExpRating()">Experience Rating</ion-button>
+    <ion-button (click)="PreviousOrders()">View Previous Orders</ion-button>
+    <ion-button slot="end" (click)="Logout()">Log out</ion-button>
+  </ion-toolbar>
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>{{customer.firstName}}'s Details:</ion-card-title>
@@ -79,10 +79,10 @@
             <ion-label position="stacked">Cellphone number</ion-label><br>
             <ion-input type="text" formControlName="cell_Number" placeholder="" required></ion-input>
           </ion-item>
-          <ion-item>
+          <!-- <ion-item>
             <ion-label position="stacked">Customer Username</ion-label><br>
             <ion-input type="text" formControlName="username" placeholder="" required></ion-input>
-          </ion-item>   
+          </ion-item>    -->
       </form>
       <ion-toolbar>
         <ion-title slot="end"><ion-button (click)="deleteProfile(customer.customer_ID)">Delete Profile</ion-button></ion-title>

@@ -81,6 +81,22 @@ export class CreateProfilePage implements OnInit {
     console.log('Loading dismissed!');
   } 
 
+  async CreatProfileHint() {
+    const alert = await this.alertController.create({
+      header: 'Username and Password requirements:',
+      subHeader: "Your Username must be unique",
+      message:"Password must contain minimum of 8 characters,at least one uppercase letter,at least one lowercase letter, at least one number and at least one special character",
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        // handler:() =>{
+        //   this._router.navigate(['./tabs/login']);;
+        // }
+      }],
+    });
+    await alert.present();
+  }
+
   async AddCustomerSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',

@@ -69,6 +69,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Refund_Policy[]> GetAllPoliciesAsync();
         Task<Discount[]> GetAllDiscountsAsync();
         Task<Discount> GetDiscountAsync(Guid discount_Id);
+        Task<Discount> GetDiscountByStockAsync(Guid stockItemID);
         Task<Refund[]> GetAllPreviousRefunds();
         Task<Refund> GetPreviousRefund(Guid refund_Id);
         Task<Customer> GetUser(string username);
@@ -90,5 +91,6 @@ namespace IPKP___API.Controllers.Models.Repository
 
         object GetAdminAuditTrailDetails();
         object GetEmployeeAuditTrailDetails();
+        object GetCustomerAuditTrailDetails();
     }
 }

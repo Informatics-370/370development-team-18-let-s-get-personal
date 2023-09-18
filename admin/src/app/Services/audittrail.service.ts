@@ -36,4 +36,9 @@ export class AuditTrailService {
   public AddEmployeeAuditTrail(trail:AuditTrail){
     return this.httpClient.post<Response>(`${this.apiUrl}AuditTrail/AddEmployeeAuditTrail`, trail, this.httpOptions)
   }
+
+  public GetCustomerAuditTrails(): Observable<any>{ 
+    return this.httpClient.get(`${this.apiUrl}AuditTrail/GetCustomerAuditTrails`)
+    .pipe(map(result => result))
+  }
 }

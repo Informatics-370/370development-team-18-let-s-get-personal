@@ -124,7 +124,11 @@ export const routes: Routes = [
     path: 'audit-trail',
     loadComponent: () => import('./audit-trail/audit-trail.page').then( m => m.AuditTrailPage),
     canActivate:[AuthGuard],data:{roles:['Admin']}
+  },  {
+    path: 'home',
+    loadComponent: () => import('./home/home.page').then( m => m.HomePage)
   },
+
 
 
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule, ModalController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Stock_Item } from '../Models/stockitem';
@@ -17,13 +17,13 @@ import { StockTypes } from '../Models/stocktypes';
   templateUrl: './shop-all.page.html',
   styleUrls: ['./shop-all.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class ShopAllPage implements OnInit {
   menuType: string = 'overlay';
   Products: StockItemViewModel[] = [];
   stockItems: Stock_Item[] = [];
-  searchedStockType: StockTypes[]=[];
+  searchedStockItem: Stock_Item[]=[];
   searchString: string = "";
   stockType: StockTypes[]=[];
 
@@ -39,8 +39,8 @@ export class ShopAllPage implements OnInit {
     
   searchStockType(){
     this.searchString=this.SearchForm.get('name')?.value;
-    this.searchedStockType = this.stockType.filter(
-      f => f.stock_Type_Name.toLowerCase().includes(this.searchString.toLowerCase()));
+    this.searchedStockItem = this.stockItems.filter(
+      f => f.stock_Item_Name.toLowerCase().includes(this.searchString.toLowerCase()));
   }
 
   ngOnInit() {
@@ -48,7 +48,7 @@ export class ShopAllPage implements OnInit {
     this.GetTypes();
     if(this.searchString === "")
     {
-      this.searchedStockType = this.stockType;
+      this.searchedStockItem = this.stockItems;
     }
     
     // Retrieve the cart item count from localStorage
@@ -80,8 +80,19 @@ export class ShopAllPage implements OnInit {
     })
   }
 
-  public Help() {
-    this._router.navigate(["/help"])
+  async Help() {
+    const alert = await this.alertController.create({
+      header: 'Please note: ',
+      subHeader: 'We only allow orders less than 10 items. You can filter the shop items by category',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        /*handler: () => {
+          this.reloadPage();
+        }*/
+      }],
+    });
+    await alert.present();
   }
 
 //========= Search by Stock Type ===========

@@ -11,6 +11,9 @@ import html2canvas from 'html2canvas';
 import { LoadingController } from '@ionic/angular';
 export type jsPDFDocument = any;
 type Opts = { [key: string]: string | number }
+
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
 @Component({
   selector: 'app-order-requests',
   templateUrl: './order-requests.page.html',
@@ -23,7 +26,10 @@ export class OrderRequestsPage implements OnInit {
   orderRequests: OrderLineItemVM[] =[]
   constructor(public service: OrderService, public environmentInjector: EnvironmentInjector,
      private alertController:AlertController, public loadingController: LoadingController,
-     private trailservice: AuditTrailService ) { }
+     private trailservice: AuditTrailService ) 
+  { 
+    (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  }
 
   ngOnInit() {
     this.GetOrderRequests()
@@ -67,6 +73,46 @@ export class OrderRequestsPage implements OnInit {
     
   }
 
+//====== PDF download =========
+
+generatePDF() {  
+  let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+  let date = new Date
+  
+  let docDefinition = {  
+    fillColor: "White",
+    fillOpacity: "",
+    margin: [ 5, 10, 5, 5 ],
+    header: user+" - It's Personal Order Requests",  
+    footer:'Downloaded by: '+ user + ' at: '+ date,        
+    content:[
+      {          
+        layout: 'lightHorizontalLines', // optional          
+        table: {
+          headerRows: 1,
+          //widths: [ '30%', '40%', '30%' ],
+          // margin: [left, top, right, bottom]
+          margin: [ 5, 10, 5, 5 ],
+          
+          body: [
+            [ 'Customer Username', 'Street Number', 'Street Name', 'Delivery Company', 'Product', 
+            'Order Quantity', 'Product Size', 'Product Colour', 'Order Request Date' ],
+            ...this.orderRequests.map(p => 
+              ([
+                p.customer_UserName, p.streetNumber, p.streetName, p.delivery_Company_Name, 
+                p.stock_Item_Name, p.order_Line_Item_Quantity, p.stock_Item_Size,
+                p.stock_Colour_Name, p.order_Request_Date
+              ])
+            )
+          ]
+        }          
+      }
+    ]      
+  };  
+  pdfMake.createPdf(docDefinition).download();      
+}
+
+//====== Audit Trail =========
   AddTrail(){
     let audittrail = new AuditTrail()
     let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
@@ -88,27 +134,9 @@ export class OrderRequestsPage implements OnInit {
       })
     }
   }
- 
 
-  @ViewChild('htmlOrderRequestData') htmlOrderRequestData!: ElementRef;
-  
-  openPDF(): void {
-    let DATA: any = document.getElementById('htmlOrderRequestData');
-    html2canvas(DATA).then((canvas) => {       
-      //Initialize JSPDF
-      let PDF = new jsPDF('p', 'mm', 'a4');
-      //Converting canvas to Image
-      const FILEURI = canvas.toDataURL('image/png');
-      //Add image Canvas to PDF
-      let fileWidth = 208;
-      let fileHeight = (canvas.height * fileWidth) / canvas.width;      
-      let position = 10;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
-          
-      PDF.save('IPKP-OrderRequests.pdf');
-    });
-  }
 
+//====== Alerts =========
   async AcceptSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
@@ -145,3 +173,22 @@ export class OrderRequestsPage implements OnInit {
   }
 
 }
+
+// @ViewChild('htmlOrderRequestData') htmlOrderRequestData!: ElementRef;
+  
+// openPDF(): void {
+//   let DATA: any = document.getElementById('htmlOrderRequestData');
+//   html2canvas(DATA).then((canvas) => {       
+//     //Initialize JSPDF
+//     let PDF = new jsPDF('p', 'mm', 'a4');
+//     //Converting canvas to Image
+//     const FILEURI = canvas.toDataURL('image/png');
+//     //Add image Canvas to PDF
+//     let fileWidth = 208;
+//     let fileHeight = (canvas.height * fileWidth) / canvas.width;      
+//     let position = 10;
+//     PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
+        
+//     PDF.save('IPKP-OrderRequests.pdf');
+//   });
+// }
