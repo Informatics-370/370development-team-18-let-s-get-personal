@@ -7,9 +7,6 @@ import { Experience_Rating } from 'src/app/Models/experiencerating';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Experience_RatingService } from 'src/app/Services/experiencerating.service';
 import { ExperienceRatingVM } from 'src/app/ViewModels/experienceratingsVM';
-import { AuditTrail } from 'src/app/Models/audittrail';
-import { AuditTrailService } from 'src/app/Services/audittrail.service';
-
 @Component({
   selector: 'app-experience-rating',
   templateUrl: './experience-rating.page.html',
@@ -23,10 +20,9 @@ export class ExperienceRatingPage implements OnInit {
   rating: Experience_Rating = new Experience_Rating();
 
   customerId: any;
+  
   @ViewChild(IonModal) modal!: IonModal
-  constructor(private ratingService: Experience_RatingService, private alertController: AlertController,
-    private auditservice: AuditTrailService) 
-  { }
+  constructor(private ratingService: Experience_RatingService, private alertController: AlertController) { }
 
   ngOnInit(): void {
     //this.GetExpRatings();
@@ -65,23 +61,16 @@ export class ExperienceRatingPage implements OnInit {
 
   confirmaddmodal() {
     this.comment = this.AddForm.get('comment')?.value;
-
     this.rating.customer_ID = this.customerId.replace(/"/g, '')
     this.rating.experience_Rating_Comments = this.comment;
     this.rating.experience_Star_Rating = this.selectedRating;
-    try {
       this.ratingService.AddExperienceRating(this.rating).subscribe(res => {
-        //Action Trail
-        this.action = "Updated experience rating with new rating: "+this.selectedRating+"and comment: "+this.comment
-        this.AddAuditTrail()
-        
-        this.addExpRatingSuccessAlert();
-      }, error => {
+       this.addExpRatingSuccessAlert();
+      },(error) => {
+        this.addExpRatingErrorAlert()
         console.log(error);
-      })
-    } catch {
-      this.addExpRatingErrorAlert()
-    }
+      });
+    
     if (this.comment = null) {
       this.addExpRatingErrorAlert()
     }
@@ -131,9 +120,6 @@ export class ExperienceRatingPage implements OnInit {
     
       this.ratingService.UpdateExperienceRating(this.editExpRating.experience_Rating_ID, editedExpRating).subscribe(result => {
         this.editExpRatingSuccessAlert();
-        //Action Trail
-        this.action = "Updated experience rating with new rating: "+this.selectedRating+"and comment: "+this.editForm.get('comment')?.value
-        this.AddAuditTrail()
       },(error) => {
         this.editExpRatingErrorAlert();
         console.error('Update error:', error);
@@ -142,7 +128,7 @@ export class ExperienceRatingPage implements OnInit {
     }
   }
 
-  DeleteExperienceRating(experience_Rating_ID: string, comments: string, ratings:Number) {
+  DeleteExperienceRating(experience_Rating_ID: string) {
     this.ratingService.DeleteExperienceRating(experience_Rating_ID).subscribe(result => {
       console.log(result);
       if (result.status == "Error") {
@@ -150,23 +136,7 @@ export class ExperienceRatingPage implements OnInit {
       }
       else if (result.status == "Success") {
         this.DeleteExpRatingSuccessAlert();
-        //Action Trail
-        this.action = "Deleted experience rating with rating: "+ratings+" and comment: "+comments
-        this.AddAuditTrail()
       }
-    })
-  }
-
-//========= Audit Trail ========
-  action!: string
-  AddAuditTrail(){
-    let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')))
-    let audittrail = new AuditTrail()
-    audittrail.customer_ID = customer_ID
-    audittrail.actionName = this.action
-
-    this.auditservice.AddCustomerAuditTrail(audittrail).subscribe(result => {
-      console.log(result)
     })
   }
 
@@ -174,7 +144,7 @@ export class ExperienceRatingPage implements OnInit {
     window.location.reload()
   }
 
-//========= Alerts ========
+  
   async addExpRatingSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
