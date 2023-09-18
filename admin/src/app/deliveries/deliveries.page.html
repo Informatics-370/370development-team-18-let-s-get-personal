@@ -28,7 +28,7 @@
     <ion-searchbar [(ngModel)]="searchValue"  (ionInput)="updateSearchResults()" ></ion-searchbar>               
     <ion-grid>
       <ion-row>
-        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;"> Order ID </ion-col>
+        <!-- <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;"> Order ID </ion-col> -->
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;"> Customer </ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">Delivery Address</ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">Delivery Company</ion-col>
@@ -38,7 +38,7 @@
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;"></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of deliveries">
-        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.order_Line_Item_ID}} </ion-col>
+        <!-- <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.order_Line_Item_ID}} </ion-col> -->
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.customer_UserName}} </ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.streetNumber}} {{item.streetName}} <br> {{item.city}}  {{item.province}} <br> {{item.areaCode}}</ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.delivery_Company_Name}}</ion-col>

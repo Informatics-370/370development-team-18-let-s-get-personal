@@ -115,7 +115,9 @@ export class AuditTrailPage implements OnInit {
             
             body: [
               [ 'User', 'Action Description', 'Action Date and Time' ],
-              ...this.AdminAuditTrails.map(p => ([p.actionName, p.actionName, p.actionDate]))
+              ...this.AdminAuditTrails.map(p => ([p.actionName, p.actionName, p.actionDate])),
+              ...this.EmployeeAuditTrails.map(p => ([p.actionName, p.actionName, p.actionDate])),
+              ...this.CustomerAuditTrails.map(p => ([p.actionName, p.actionName, p.actionDate]))
             ]
           }          
         }

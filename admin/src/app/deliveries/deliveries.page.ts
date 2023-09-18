@@ -12,11 +12,9 @@ import { AuditTrailService } from '../Services/audittrail.service';
 import { AuditTrail } from '../Models/adittrail';
 import { OrderService } from '../Services/order.service';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from "pdfmake/build/vfs_fonts"; 
 import { Order } from '../Models/orders';
-export type jsPDFDocument = any;
-type Opts = { [key: string]: string | number }
 
 @Component({
   selector: 'app-deliveries',
@@ -26,7 +24,7 @@ type Opts = { [key: string]: string | number }
   imports: [IonicModule, CommonModule, FormsModule, RouterModule]
 })
 export class DeliveriesPage implements OnInit {
-  private readonly jsPDFDocument: jsPDFDocument
+  
   searchValue: string ='';
   deliveries:OrderLineItemVM[]=[];
   filteredDelivery:DeliveryViewModel[]=[];
@@ -45,7 +43,10 @@ export class DeliveriesPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DeliveryDataService, private router: Router, public modalCtrl: ModalController,
     private alertController:AlertController, public environmentInjector: EnvironmentInjector, 
-    public orderservice: OrderService, private trailservice: AuditTrailService) { }
+    public orderservice: OrderService, private trailservice: AuditTrailService) 
+  {
+    (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  }
   
   Routedeliverycompanies()
   {
@@ -188,24 +189,42 @@ export class DeliveriesPage implements OnInit {
   reloadPage(){
     window.location.reload()
   }
-  
-  @ViewChild('htmlData') htmlData!: ElementRef;
-  
-  openPDF(): void {
-    let DATA: any = document.getElementById('htmlData');
-    html2canvas(DATA).then((canvas) => {       
-      //Initialize JSPDF
-      let PDF = new jsPDF('p', 'mm', 'a4');
-      //Converting canvas to Image
-      const FILEURI = canvas.toDataURL('image/png');
-      //Add image Canvas to PDF
-      let fileWidth = 208;
-      let fileHeight = (canvas.height * fileWidth) / canvas.width;      
-      let position = 10;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
-          
-      PDF.save('IPKP-DeliveriesInProgress.pdf');
-    });
+
+  openPDF(){
+    let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    let date = new Date
+    
+    let docDefinition = {  
+      fillColor: "White",
+      fillOpacity: "",
+      margin: [ 5, 10, 5, 5 ],
+      header: user+" - It's Personal Audit Trail",  
+      footer:'Downloaded by: '+ user + ' at: '+ date,        
+      content:[
+        {          
+          layout: 'lightHorizontalLines', // optional          
+          table: {
+            headerRows: 1,
+            //widths: [ '30%', '40%', '30%' ],
+            // margin: [left, top, right, bottom]
+            margin: [ 5, 10, 5, 5 ],
+            
+            body: [
+              [ 
+                'Customer Username', 'Street Number', 'Street Name', 'City', 'Province', 'Area Code', 
+                'Delivery Company', 'Delivery Price', 'Order Requested Date'
+              ],
+              ...this.deliveries.map(p => 
+                ([
+                  p.customer_UserName, p.streetNumber, p.streetName, p.city, p.province, p.areaCode, 
+                  p.delivery_Company_Name, p.delivery_Price, p.order_Request_Date
+                ])),
+            ]
+          }          
+        }
+      ]      
+    };  
+    pdfMake.createPdf(docDefinition).download(); 
   }
 
   async ReceiveDeliverySuccessAlert() {
