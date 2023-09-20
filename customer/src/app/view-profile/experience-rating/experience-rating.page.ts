@@ -144,7 +144,7 @@ export class ExperienceRatingPage implements OnInit {
     window.location.reload()
   }
 
-  
+//============ Alerts ==============
   async addExpRatingSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',

@@ -8,6 +8,7 @@ import { UserProfileDataService } from '../Services/userprofile.service';
 import { Employee } from '../Models/employee';
 import { Admin } from '../Models/admin';
 import { OverlayEventDetail } from '@ionic/core/components';
+import{ChangePasswordVM} from '../ViewModels/changepasswordVM';
 @Component({
   selector: 'app-admin-profile',
   templateUrl: './admin-profile.page.html',
@@ -53,7 +54,21 @@ export class AdminProfilePage implements OnInit {
     this.AuthService.Logout();   
   }  
 
-  //=========== edits
+  ChangePassword(){
+    let newpassword = new ChangePasswordVM()
+    //change password form
+
+    this.AuthService.ChangeUserPassword(newpassword).subscribe(result =>{
+      if(result.status == "Success"){
+        //change status success popup
+      }
+      else{
+        //error alert
+      }
+    })
+  }
+
+  //=========== edits ===========
   isModalOpen = false;
   editadmin: Admin = new Admin();
 

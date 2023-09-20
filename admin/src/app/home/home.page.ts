@@ -18,7 +18,7 @@ export class HomePage implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
+    this.timeLeft = 5000
   }
 
   timerForm: FormGroup = new FormGroup({
@@ -31,6 +31,20 @@ export class HomePage implements OnInit {
       console.log(val, '-');
       this.subscribeTimer = this.timeLeft - val;
     });
+  }
+
+  handleChange(e: any) {
+    console.log('ionChange fired with value: ' + e.detail.value);
+    this.timeLeft = e.detail.value
+    this.observableTimer()
+  }
+
+  handleCancel() {
+    console.log('ionCancel fired');
+  }
+
+  handleDismiss() {
+    console.log('ionDismiss fired');
   }
 
 

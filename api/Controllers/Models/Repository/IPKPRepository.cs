@@ -256,7 +256,7 @@ namespace IPKP___API.Controllers.Models.Repository
                     Stock_Item_Quantity = s.Stock_Item_Quantity,
                     Inventory_Comments = s.Inventory_Comments,
                     Inventory_Date = s.Inventory_Date,
-
+                    Stock_Sale_Quantity = s.Stock_Sale_Quantity,
 
                     Stock_Item_Colour_ID = c.Stock_Item_Colour_ID,
                     StockColourName = c.Stock_Item_Colour_Name,
@@ -558,17 +558,42 @@ namespace IPKP___API.Controllers.Models.Repository
                     .Where(u => u.Stock_Item_ID == stockItemID);
             return await query.FirstOrDefaultAsync();
         }
-        public async Task<BestSellers[]> GetAllBestSellersAsync()
-        {
-            IQueryable<BestSellers> query = _appDbContext.BestSellers;
-            return await query.ToArrayAsync();
-        }
 
-       /* public async Task<Customer> GetUser(string username)
+//Best Sellers
+        public object GetAllBestSellersAsync()
         {
-            return await _appDbContext.Customers
-                .FirstOrDefaultAsync(x => x.Username == username);
-        }*/
+            List<BestSellersVM> stockitems = (
+                from c in _appDbContext.Stock_Item_Colours.ToList()
+                join s in _appDbContext.Stock_Items.ToList()
+                on c.Stock_Item_Colour_ID equals s.Stock_Item_Colour_ID
+                join t in _appDbContext.Stock_Types.ToList()
+                on s.Stock_Type_ID equals t.Stock_Type_ID
+                join i in _appDbContext.Stock_Images.ToList()
+                on s.Stock_Image_ID equals i.Stock_Image_ID
+                join b in _appDbContext.BestSellers.ToList()
+                on s.Stock_Item_ID equals b.Stock_Item_ID
+
+                select new BestSellersVM
+                {
+                    BestSeller_ID = b.BestSeller_ID, 
+
+                    Stock_Item_ID = s.Stock_Item_ID,
+                    Stock_Item_Name = s.Stock_Item_Name,
+                    Stock_Item_Price = s.Stock_Item_Price,
+                    Stock_Item_Size = s.Stock_Item_Size,
+                    Stock_Item_Quantity = s.Stock_Item_Quantity,
+
+                    Inventory_Comments = s.Inventory_Comments,
+                    Inventory_Date = s.Inventory_Date,
+
+                    Stock_Type_Name = t.Stock_Type_Name,
+                    Stock_Image_Name = i.Stock_Image_Name,
+                    Stock_Image_File = i.Stock_Image_File,
+                    Stock_Colour_Name = c.Stock_Item_Colour_Name,
+                }
+                ).ToList();
+            return stockitems;
+        }
 
         
 //deliveries
@@ -886,7 +911,7 @@ namespace IPKP___API.Controllers.Models.Repository
                     Order_Line_Item_Quantity = p.Sale_Quantity,
                     Payment_Amount = p.Payment_Amount,
                     Stock_Type_Name = t.Stock_Type_Name,
-                    Total_Amount = s.Stock_Sale_Quantity,
+                    Total_Amount = Math.Round(s.Stock_Sale_Quantity*p.Payment_Amount,2)
                 }
                 ).ToList();
 
@@ -1003,6 +1028,20 @@ namespace IPKP___API.Controllers.Models.Repository
                 }
                 ).ToList();
             return trail;
+        }
+
+ //contact us
+        public async Task<ContactUs[]> GetAllContactUsAsync()
+        {
+            IQueryable<ContactUs> query = _appDbContext.Contact_Us;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<ContactUs> GetContactUsByID(Guid contactusID)
+        {
+            IQueryable<ContactUs> query = _appDbContext.Contact_Us
+                    .Where(u => u.Contact_Us_ID == contactusID);
+            return await query.FirstOrDefaultAsync();
         }
 
     }

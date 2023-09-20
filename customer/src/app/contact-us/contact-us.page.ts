@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-
+import {ContactUs} from '../Models/contactus';
+import {ContactUsService} from 'src/app/Services/contactus.service';
 @Component({
   selector: 'app-contact-us',
   templateUrl: './contact-us.page.html',
@@ -14,14 +15,14 @@ import { Router } from '@angular/router';
 export class ContactUsPage implements OnInit {
   isModalOpen = false;
 
-  constructor(private router:Router, private alertController:AlertController) { }
+  constructor(private router:Router, private alertController:AlertController, private service: ContactUsService) { }
 
   ngOnInit() {
   }
 
-  setOpen(isOpen: boolean) {
-    this.isModalOpen = isOpen;
-  }
+  // setOpen(isOpen: boolean) {
+  //   this.isModalOpen = isOpen;
+  // }
 
   ContactForm: FormGroup = new FormGroup({
     Name: new FormControl('', [Validators.required]),
@@ -31,7 +32,21 @@ export class ContactUsPage implements OnInit {
 
   get f() { return this.ContactForm.controls }
 
-  Submit() {}
+  Submit() {
+    let contact = new ContactUs()
+    contact.contact_Us_Email = this.ContactForm.value.Email
+    contact.contact_Us_Name = this.ContactForm.value.Name
+    contact.contact_Us_Phone = this.ContactForm.value.Cell_Number
+
+    this.service.AddMessageRequest(contact).subscribe(result => {
+      if(result.status == "Success"){
+        this.SuccessAlert()
+      }
+      else{
+
+      }
+    })
+  }
 
   async ContactUsTip() {
     const alert = await this.alertController.create({
@@ -41,17 +56,29 @@ export class ContactUsPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        // handler: () => {
-        //   this.reloadPage();
-        // }
+      }],
+    });
+    await alert.present();
+  }
+
+  async SuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: " We have received you're message" ,
+      message:'',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
       }
-      // ,{text: 'Contact Us',
-      //   //role: 'cancel',
-      //   handler: () => {
-      //     this.ContactUs();
-      //   }}
       ],
     });
     await alert.present();
+  }
+
+  reloadPage() {
+    window.location.reload()
   }
 }

@@ -19,6 +19,8 @@ import { StockTypes } from 'src/app/Models/stocktypes';
 import { StockItemColours } from 'src/app/Models/stockitemcolour';
 import { Stock_Image } from 'src/app/Models/stockimage';
 import { ExcelViewModel } from '../ViewModels/excelVM';
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from "pdfmake/build/vfs_fonts"; 
 
 @Component({
   selector: 'app-inventory',
@@ -45,7 +47,10 @@ export class InventoryPage implements OnInit {
     public stockitemservice: StockItemDataService, public pservice: PersonalisationService, 
     public loadingController: LoadingController, private typeservice:StockTypeDataService,
     private imageservice:StockImageDataService, private colourservice:StockItemColourDataService,
-    private excelservice: ExcelService, private trailservice: AuditTrailService) { }
+    private excelservice: ExcelService, private trailservice: AuditTrailService) 
+  {
+    (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  }
 
   SearchStockForm: FormGroup = new FormGroup({
     /*startdate: new FormControl('',[Validators.required]),
@@ -80,7 +85,7 @@ export class InventoryPage implements OnInit {
     })    
   }
 
-  //========= Excel export ========
+//========= Excel export ========
   excelData: ExcelViewModel[] = []
   exportToExcel() 
   {
@@ -107,8 +112,44 @@ export class InventoryPage implements OnInit {
     })
   }
 
+//========= Download PDF ========
+generatePDF() {  
+  let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+  let date = new Date
+  
+  let docDefinition = {  
+    fillColor: "White",
+    fillOpacity: "",
+    margin: [ 5, 10, 5, 5 ],
+    header: user+" - It's Personal Inventory",  
+    footer:'Downloaded by: '+ user + ' at: '+ date,        
+    content:[
+      {          
+        layout: 'lightHorizontalLines', // optional          
+        table: {
+          headerRows: 1,
+          //widths: [ '30%', '40%', '30%' ],
+          // margin: [left, top, right, bottom]
+          margin: [ 5, 10, 5, 5 ],
+          
+          body: [
+            [ 'Product', 'Type', 'Colour', 'Image', 'Size', 'Quantity', 'Price', 'Inventory Comments' ],
+            ...this.Products.map(p => 
+              ([
+                p.stock_Item_Name, p.stockTypeName, p.stockColourName, p.stockImageName, p.stock_Item_Size,
+                p.stock_Item_Quantity, p.stock_Item_Price, p.inventory_Comments
+              ])),
+          ]
+        }          
+      }
+    ]      
+  };  
+  pdfMake.createPdf(docDefinition).download();      
+}
+
+  
+//========= add ========
   size= ['Small', 'Medium','Large'];
-  //========= add ========
   AddStockForm: FormGroup = new FormGroup({
     Stock_Item_Name: new FormControl('',[Validators.required]),
     Stock_Item_Price: new FormControl('',[Validators.required]),
@@ -211,7 +252,7 @@ export class InventoryPage implements OnInit {
   }
 
 
-  //============== Edit =======
+//============== Edit =======
   isModalOpen = false;
   editProduct: Stock_Item = new Stock_Item();
   editForm: FormGroup = new FormGroup({
@@ -352,8 +393,23 @@ export class InventoryPage implements OnInit {
   {
     this.router.navigate(['./tabs/stock-take']);
   }
+  bestellersnav()
+  {
+    this.router.navigate(['./tabs/best-sellers']);
+  }
 
   //============== Alerts =======
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: You are required to add the product image while adding a product',
+      subHeader: 'Each product will be automatically pulled through to the customers shop page',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  } 
 
   async AddStockImageSuccessAlert() {
     const alert = await this.alertController.create({

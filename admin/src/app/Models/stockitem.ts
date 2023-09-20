@@ -12,6 +12,7 @@ export class  Stock_Item{
     inventory_Date!: Date
     inventory_Comments!: String 
     stock_Item_Quantity!: number
+    stock_Sale_Quantity!: number
 
     stock_Type_ID!: string
     stock_Types!: StockTypes
