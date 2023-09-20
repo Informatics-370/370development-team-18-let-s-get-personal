@@ -50,7 +50,7 @@ export class CheckOutPage implements OnInit {
           console.log(this.deliveryvm)
           this.deliveryvm.forEach(element => {
             //let amount = element.delivery_Price 
-            this.delprice = element.delivery_Price
+            this.delprice += element.delivery_Price
           });
           localStorage.setItem('delprice', JSON.stringify(this.delprice));
           console.log(this.delprice)

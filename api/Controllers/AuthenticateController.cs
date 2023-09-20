@@ -390,14 +390,14 @@ namespace IPKP___API.Controllers
 
                     var subject = "Your One-Time Password (OTP) Pin";
                     var message = "Dear "+uvm.UserName+",<br><br>" +
-    "We hope this message finds you well.<br><br>"+
-    "Thank you for using our services. To ensure the security of your account, we have generated a One-Time Password (OTP) pin for you.<br><br>" +
-    "Your OTP Pin: "+otp+"<br><br>" +
+                    "We hope this message finds you well.<br><br>"+
+                    "Thank you for using our services. To ensure the security of your account, we have generated a One-Time Password (OTP) pin for you.<br><br>" +
+                    "Your OTP Pin: "+otp+"<br><br>" +
 
-    "If you did not request this OTP or have any concerns about your account security, please contact our customer support immediately at <a href='mailto:ktlmamadi@gmail.com'>IPKP@gmail.com</a> <br>" +
-    "Thank you for choosing our services. We appreciate your trust in us.<br><br>"+
+                    "If you did not request this OTP or have any concerns about your account security, please contact our customer support immediately at <a href='mailto:ktlmamadi@gmail.com'>IPKP@gmail.com</a> <br>" +
+                    "Thank you for choosing our services. We appreciate your trust in us.<br><br>"+
    
-    "Best regards,<br>Let's Get Personal";
+                    "Best regards,<br>Let's Get Personal";
 
                     _ = SendEmail(subject, message, user.Email);
 

@@ -176,6 +176,22 @@ export class ViewEmployeesPage implements OnInit {
   }
 
   //=========== alerts
+  async DeleteHelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note:!',
+      subHeader: 'Deleting an Employee will remove their login details but will not delete their details and audit trail from the system',
+      message: 'This is so you can still see previous employees information and the actions they performed while employed.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
   async editSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',

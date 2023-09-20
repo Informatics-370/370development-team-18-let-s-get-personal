@@ -156,6 +156,23 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAllDeliveriesByCompany/{companyname}")]
+        public object GetAllDeliveriesByCompany(string companyname)
+        {
+            try
+            {
+                var results = _IPKPRepository.GetDeliveryByCompany(companyname);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Any Deliveries" });
+
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
 
         //************* Delivery Companies *************\\
         [HttpGet]

@@ -41,7 +41,8 @@ namespace IPKP___API.Controllers
 
                 _IPKPRepository.Add(orderlineitem);
                 await _IPKPRepository.SaveChangesAsync();
-                return Ok(orderlineitem.Order_Line_Item_Quantity);
+
+                return Ok(orderlineitem); //.Order_Line_Item_Quantity
             }
             catch (Exception)
             {

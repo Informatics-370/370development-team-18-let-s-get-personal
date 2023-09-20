@@ -20,7 +20,7 @@ export class SalesService {
   constructor(private httpClient: HttpClient) { }
 
   public AddSale(payment:Payment){
-    return this.httpClient.post<Response>(`${this.apiUrl}Sales/AddSale`, payment)
+    return this.httpClient.post(`${this.apiUrl}Sales/AddSale`, payment)
     .pipe(map(result => result))
   }
 

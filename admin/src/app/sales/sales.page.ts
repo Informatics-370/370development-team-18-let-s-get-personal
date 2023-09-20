@@ -26,7 +26,7 @@ import { StockTypes } from '../Models/stocktypes';
 })
 export class SalesPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
-  sales: Payment[] =[]
+  
   constructor(private service: SalesService, private router: Router, public stockitemservice: StockItemDataService,
     public environmentInjector: EnvironmentInjector, private typeservice: StockTypeDataService) { }  
 
@@ -34,30 +34,12 @@ export class SalesPage implements OnInit {
     this.GetStockTypes()
   }
 
+  sales: Payment[] =[]
   GetSalesList()
   {
     this.service.GetAllSales().subscribe(res => {
       this.sales = res as Payment[]
     })
-  }
-
-  @ViewChild('htmlData') htmlData!: ElementRef;
-  
-  openPDF(): void {
-    let DATA: any = document.getElementById('htmlData');
-    html2canvas(DATA).then((canvas) => {       
-      //Initialize JSPDF
-      let PDF = new jsPDF('p', 'mm', 'a4');
-      //Converting canvas to Image
-      const FILEURI = canvas.toDataURL('image/png');
-      //Add image Canvas to PDF
-      let fileWidth = 208;
-      let fileHeight = (canvas.height * fileWidth) / canvas.width;      
-      let position = 10;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
-          
-      PDF.save('IPKP-Products.pdf');
-    });
   }
 
   controlbreak: SalesVM[] =[]
@@ -90,21 +72,27 @@ export class SalesPage implements OnInit {
         stockType.stock_Type_Total = stockType.stock_Type_Total + item.total_Amount;
       });
 
-
-
     });
   }
 
-  Products: StockItemViewModel[] = [];
-  GetAllStockItems(){
-    this.stockitemservice.GetStockItems().subscribe(result =>{
-
-    this.Products = result as StockItemViewModel[];
-      this.Products.forEach(e => {
-        this.stocktypename = e.stockTypeName
-        this.GetControlBreak(this.stocktypename)
-      });
-    })    
+  
+  @ViewChild('htmlData') htmlData!: ElementRef;
+  
+  openPDF(): void {
+    let DATA: any = document.getElementById('htmlData');
+    html2canvas(DATA).then((canvas) => {       
+      //Initialize JSPDF
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      //Converting canvas to Image
+      const FILEURI = canvas.toDataURL('image/png');
+      //Add image Canvas to PDF
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;      
+      let position = 10;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
+          
+      PDF.save('IPKP-Products.pdf');
+    });
   }
 
 //========= Navigations =========

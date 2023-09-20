@@ -77,6 +77,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Refund> GetPreviousRefund(Guid refund_Id);
         Task<Customer> GetUser(string username);
 
+        object GetDeliveryByCompany(string company);
         object GetDeliveryByID(Guid deliveryID);
         object GetAllDeliveries();
         object GetDeliveryBySatus(string status);
@@ -98,6 +99,10 @@ namespace IPKP___API.Controllers.Models.Repository
 
         Task<ContactUs[]> GetAllContactUsAsync();
         Task<ContactUs> GetContactUsByID(Guid contactusID);
+
+        Task<Stock_Item> GetStockItemByColour(Guid stock_Item_Colour_ID);
+        Task<Stock_Item> GetStockItemByImage(Guid stock_Item_Image_ID);
+        Task<Stock_Item> GetStockItemByType(Guid stock_Item_Type_ID);
 
     }
 }

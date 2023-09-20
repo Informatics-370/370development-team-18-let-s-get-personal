@@ -55,6 +55,11 @@ export class DeliveryDataService {
     .pipe(map(result => result))
   }
 
+  public GetAllDeliveriesByCompany(companyname: string): Observable<any>{ 
+    return this.httpClient.get(`${this.apiUrl}Deliveries/GetAllDeliveriesByCompany/${companyname}`)
+    .pipe(map(result => result))
+  }
+
   //************* Delivery Companies *************\\
   public GetDeliveryCompanies(): Observable<any>{ 
     return this.httpClient.get(`${this.apiUrl}Deliveries/GetAllDeliveryCompanies`)

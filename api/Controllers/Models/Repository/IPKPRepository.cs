@@ -594,7 +594,6 @@ namespace IPKP___API.Controllers.Models.Repository
                 ).ToList();
             return stockitems;
         }
-
         public async Task<BestSellers> GetBestSellerByID(Guid bestsellerID)
         {
             IQueryable<BestSellers> query = _appDbContext.BestSellers
@@ -604,6 +603,38 @@ namespace IPKP___API.Controllers.Models.Repository
 
 
         //deliveries
+        public object GetDeliveryByCompany(string company)
+        {
+            List<DeliveryVM> deliveries = (
+                from com in _appDbContext.Delivery_Companies.ToList()
+                join d in _appDbContext.Deliveries.ToList()
+                on com.Delivery_Company_ID equals d.Delivery_Company_ID
+                join a in _appDbContext.Delivery_Address.ToList()
+                on d.Delivery_Address_ID equals a.Delivery_Address_ID
+
+
+                select new DeliveryVM
+                {
+                    Delivery_Price = com.Delivery_Price,
+                    Delivery_Status = d.Delivery_Status,
+                    DateDelivered = d.DateDelivered,
+
+                    Delivery_Company_Name = com.Delivery_Company_Name,
+
+                    StreetName = a.StreetName,
+                    StreetNumber = a.StreetNumber,
+                    City = a.City,
+                    Dwelling_Type = a.Dwelling_Type,
+                    Unit_Number = a.Unit_Number,
+                    Province = a.Province,
+                    AreaCode = a.AreaCode,
+                }
+                ).ToList();
+
+            //return deliveries;
+            IEnumerable<DeliveryVM> query = deliveries.Where(x => x.Delivery_Company_Name == company);
+            return query;
+        }
         public object GetAllDeliveries()
         {
             List<DeliveryVM> deliveries = (
@@ -1050,6 +1081,27 @@ namespace IPKP___API.Controllers.Models.Repository
                     .Where(u => u.Contact_Us_ID == contactusID);
             return await query.FirstOrDefaultAsync();
         }
+
+//referential integrity checks
+        public async Task<Stock_Item> GetStockItemByColour(Guid stock_Item_Colour_ID)
+        {
+            IQueryable<Stock_Item> query = _appDbContext.Stock_Items
+              .Where(u => u.Stock_Item_Colour_ID == stock_Item_Colour_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+        public async Task<Stock_Item> GetStockItemByImage(Guid stock_Item_Image_ID)
+        {
+            IQueryable<Stock_Item> query = _appDbContext.Stock_Items
+              .Where(u => u.Stock_Image_ID == stock_Item_Image_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+        public async Task<Stock_Item> GetStockItemByType(Guid stock_Item_Type_ID)
+        {
+            IQueryable<Stock_Item> query = _appDbContext.Stock_Items
+              .Where(u => u.Stock_Type_ID == stock_Item_Type_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+
 
     }
 }
