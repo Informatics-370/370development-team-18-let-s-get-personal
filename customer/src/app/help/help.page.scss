@@ -31,3 +31,30 @@ ul {
   ion-card-title {
     font-weight: bold;
   }
+
+  /* Add this to your CSS or SCSS file */
+/*.search-results {
+    padding: 20px;
+    background-color: #f8f8f8;
+  }
+  
+  .search-results h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .search-results ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .search-results li {
+    margin-bottom: 5px;
+  }*/
+
+  /* Highlight search term */
+.highlighted-text {
+    background-color: yellow;
+    font-weight: bold;
+  }
+  

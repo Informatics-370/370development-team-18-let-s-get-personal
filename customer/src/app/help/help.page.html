@@ -13,6 +13,7 @@
   <div style="text-align: center;">
     <img src="/assets/team cover.png" alt="IPKP Team" />
   </div>
+
   <h2>Table of Contents</h2>
   <ul>
     <li><a [routerLink]="['/help']" fragment="section-introduction">Introduction</a></li>
@@ -24,7 +25,10 @@
     <li><a [routerLink]="['/help']" fragment="section-faqs">FAQs</a></li>
   </ul>
   <ion-card-content>
-    
+    <!-- Search bar -->
+<ion-searchbar [(ngModel)]="searchQuery" (ionChange)="searchDocument()"></ion-searchbar>
+
+    <div id="document-content" >
     <h1 id="section-introduction"><u>Introduction</u></h1>
     
       <h2>Welcome to the help documentation of "Let's Get Personal".</h2><br />
@@ -42,7 +46,7 @@
       get
       a head start.</p>
 
-    <div>
+    <div >
       <p><b>Step 1: Ensure you are using a web browser with.....</b></p>
     </div>
     <div>
@@ -50,7 +54,7 @@
           Personal.com</a></b></p>
     </div>
     <div>
-      <img src="/assets/" alt="Browser Screenshot" style="width: 75%; height: 75%;" /><!--Screen screenshot-->
+      <!--<img src="/assets/" alt="Browser Screenshot" style="width: 75%; height: 75%;" />-->
     </div>
     <br/><br/>
     <h1 id="section-usage">Usage</h1>
@@ -74,7 +78,7 @@
     <div>
       <p><b>Step 3: Insert all the required information such as your name, surname, cellphone number, email, username you'd
         like to use and your password.</b></p>
-      <img src="/assets/" alt="Register page screenshot" /><!--Screen screenshot-->
+      <!--<img src="/assets/" alt="Register page screenshot" />-->
     </div>
 <br/><br/>
     <h1 id="section-basket">Basket and Personalisation</h1>
@@ -86,15 +90,15 @@
 
     <div>
       <p><b>Step 1: Head to the Shop tab that looks like the following:</b></p>
-      <img src="/assets/" alt="Shop Tab screenshot" sizes="50vh" style="width: 75%; height: 75%;" />
+      <!--<img src="/assets/" alt="Shop Tab screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
     </div>
     <div>
       <p><b>Step 2: Click the "Add to basket" button</b></p>
-      <img src="/assets/" alt="Add button screenshot" sizes="50vh" style="width: 75%; height: 75%;" />
+      <!--<img src="/assets/" alt="Add button screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
     </div>
     <div>
       <p>Step 3: Click the cart icon to add personalization</p>
-      <img src="/assets/" alt="Basket screenshot" /><!--Screen screenshot-->
+      <!--<img src="/assets/" alt="Basket screenshot" />-->
     </div>
     <br/><br/>
     <h1 id="section-payment">Payment</h1>
@@ -104,15 +108,15 @@
 
     <div>
       <p><b>Step 1: </b></p>
-      <img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
     </div>
     <div>
       <p><b>Step 2:</b> </p>
-      <img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
     </div>
     <div>
       <p><b>Step 3: </b></p>
-      <img src="/assets/" alt="screenshot" /><!--Screen screenshot-->
+      <!--<img src="/assets/" alt="screenshot" />-->
     </div>
     <br/><br/>
     <h2 id="section-faqs">FAQs</h2>
@@ -120,5 +124,6 @@
       Find answers to frequently asked questions in the
       <a (click)="faq()">FAQ Page</a>
     </p>
+    </div>
   </ion-card-content>
 </ion-content>
