@@ -157,4 +157,8 @@ export class AdminProfilePage implements OnInit {
     window.location.reload()
   }
 
+  public Help() {
+    this.router.navigate(["/admin-help"])
+  }
+
 }

@@ -30,8 +30,10 @@ export class LoginPage implements OnInit {
 
   }
 
+  isLoading: boolean = false;
   login(form: NgForm) {
-    this.presentLoading()
+   // this.presentLoading()
+   this.isLoading = true;
       this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
 
         this.role = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
@@ -56,6 +58,8 @@ export class LoginPage implements OnInit {
         // Handle login incorrect details error
         this.Alert();
         console.error('Login error:', error);
+      }).add(() => {
+        this.isLoading = false; // Stop loading
       });
     
     

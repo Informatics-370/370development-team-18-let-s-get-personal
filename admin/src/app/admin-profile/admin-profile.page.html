@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Your Profile</ion-title>
+    <ion-button slot="end" (click)="Help()">Help</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -8,11 +9,13 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">admin-profile</ion-title>
+      
     </ion-toolbar>
   </ion-header>
   <ion-content id="content">
     <ion-button (click)="Logout()">Log out</ion-button>
     <ion-button (click)="EditAdmin(profile.admin_ID, true)">Update Profile</ion-button>
+    
     <ion-card>
       <ion-card-header>
         <ion-card-title>{{profile.firstName}}'s Details:</ion-card-title>

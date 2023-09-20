@@ -395,6 +395,7 @@ export class BasketPage implements OnInit {
     this.action = "Personalised Item:" + items.stock_Item.stock_Item_Name
     this.AddAuditTrail()
   }
+  
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;

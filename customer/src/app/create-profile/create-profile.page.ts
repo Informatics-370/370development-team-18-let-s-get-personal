@@ -101,11 +101,12 @@ export class CreateProfilePage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Success!',
       subHeader: "You've been Registered",
+      message:'Proceed to verify your email address.',
       buttons: [{
         text: 'OK',
         role: 'cancel',
         handler:() =>{
-          this._router.navigate(['./tabs/login']);;
+          this._router.navigate(['./tabs/register-otp']);;
         }
       }],
     });
