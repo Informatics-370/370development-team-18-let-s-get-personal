@@ -132,6 +132,10 @@ export const routes: Routes = [
     path: 'saleperproduct',
     loadComponent: () => import('./saleperproduct/saleperproduct.page').then( m => m.SaleperproductPage)
   },
+  {
+    path: 'admin-help',
+    loadComponent: () => import('./admin-help/admin-help.page').then( m => m.AdminHelpPage)
+  },
 
 
 

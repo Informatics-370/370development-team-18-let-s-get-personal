@@ -7,7 +7,7 @@
 <ion-content [fullscreen]="true">
   <div style="text-align: center;">
     <div class="heading-container">
-      <h1>Help Documentation "Let's Get Personal"</h1>
+      <h1>Admin Help Documentation</h1>
     </div>
   </div>
   <div style="text-align: center;">
@@ -16,21 +16,18 @@
 
   <h2>Table of Contents</h2>
   <ul>
-    <li><a [routerLink]="['/help']" fragment="section-introduction">Introduction</a></li>
-    <li><a [routerLink]="['/help']" fragment="section-getting-started">Getting Started</a></li>
-    <li><a [routerLink]="['/help']" fragment="section-usage">Usage</a></li>
-    <li><a [routerLink]="['/help']" fragment="section-registration">Registration and Login</a></li>
-    <li><a [routerLink]="['/help']" fragment="section-basket">Adding to basket and Personalization</a></li>
-    <li><a [routerLink]="['/help']" fragment="section-payment">Payment</a></li>
-    <li><a [routerLink]="['/help']" fragment="section-faqs">FAQs</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-introduction">Introduction</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-getting-started">Getting Started</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-usage">Usage</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-registration">Registration and Login</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-basket">Adding to basket and Personalization</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-payment">Payment</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-faqs">FAQs</a></li>
   </ul>
   <ion-card-content>
-    <!-- Search bar--> 
-<ion-searchbar [(ngModel)]="searchTerm" (ionChange)="findString()"></ion-searchbar>
-    <!--<ion-spinner *ngIf="isLoading"></ion-spinner>-->
+    <!-- Search bar-->
+<ion-searchbar [(ngModel)]="searchTerm" (ionChange)="findString()"></ion-searchbar> 
    
-      
-
     <h1 id="section-introduction"><u>Introduction</u></h1>
 
     <h2>Welcome to the help documentation of "Let's Get Personal".</h2><br />
@@ -125,7 +122,7 @@
     <h2 id="section-faqs">FAQs</h2>
     <p>
       Find answers to frequently asked questions in the
-      <a (click)="faq()">FAQ Page</a>
+      <a >FAQ Page</a>
     </p>
     <!--</div>-->
   </ion-card-content>

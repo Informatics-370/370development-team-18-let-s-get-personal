@@ -1,0 +1,14 @@
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+  #h2 {
+    font-size: 23px;
+    font-weight: 600;
+    background-image: linear-gradient(to left, #ef1ac5, #d820ad);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
