@@ -14,6 +14,8 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public string Contact_Us_Phone { get; set; }
 
+        public string Contact_Us_Message { get; set; }
+
         public bool replied { get; set; }
     }
 }
