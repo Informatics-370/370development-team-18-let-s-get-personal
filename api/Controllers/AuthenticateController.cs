@@ -18,6 +18,7 @@ using System.Net;
 using IPKP___API.Controllers.Models.Repository;
 using static System.Net.WebRequestMethods;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IPKP___API.Controllers
 {
@@ -48,6 +49,7 @@ namespace IPKP___API.Controllers
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+
         {
             var user = await _userManager.FindByNameAsync(model.Username);
 
@@ -362,6 +364,7 @@ namespace IPKP___API.Controllers
 
             if (user != null)
             {
+             
                 try
                 {
 
@@ -391,14 +394,14 @@ namespace IPKP___API.Controllers
 
                     var subject = "Your One-Time Password (OTP) Pin";
                     var message = "Dear "+uvm.UserName+",<br><br>" +
-    "We hope this message finds you well.<br><br>"+
-    "Thank you for using our services. To ensure the security of your account, we have generated a One-Time Password (OTP) pin for you.<br><br>" +
-    "Your OTP Pin: "+otp+"<br><br>" +
+                    "We hope this message finds you well.<br><br>"+
+                    "Thank you for using our services. To ensure the security of your account, we have generated a One-Time Password (OTP) pin for you.<br><br>" +
+                    "Your OTP Pin: "+otp+"<br><br>" +
 
-    "If you did not request this OTP or have any concerns about your account security, please contact our customer support immediately at <a href='mailto:ktlmamadi@gmail.com'>IPKP@gmail.com</a> <br>" +
-    "Thank you for choosing our services. We appreciate your trust in us.<br><br>"+
+                    "If you did not request this OTP or have any concerns about your account security, please contact our customer support immediately at <a href='mailto:ktlmamadi@gmail.com'>IPKP@gmail.com</a> <br>" +
+                    "Thank you for choosing our services. We appreciate your trust in us.<br><br>"+
    
-    "Best regards,<br>Let's Get Personal";
+                    "Best regards,<br>Let's Get Personal";
 
                     _ = SendEmail(subject, message, user.Email);
 
@@ -418,6 +421,41 @@ namespace IPKP___API.Controllers
 
             return Ok(otp);
         }
+        [HttpGet("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(string token, string email)
+        {
+            var model = new ResetPassword { Token = token, Email = email };
+            return Ok(new
+            {
+                model
+            });
+        }
+
+        /*[HttpPost]
+        [Route("ResetPassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPassword resetPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPassword.Email);
+            if (user != null)
+            {
+                var resetPassResult = await _userManager
+                  .ResetPasswordAsync(user, resetPassword.Token, resetPassword.ConfirmPassword);
+                if (!resetPassResult.Succeeded)
+                {
+                    foreach (var error in resetPassResult.Errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+                    return Ok(ModelState);
+                }
+                return StatusCode(StatusCodes.Status200OK,
+                  new Response { Status = "Success", Message = $"Password changed successfully!" });
+            }
+            return StatusCode(StatusCodes.Status400BadRequest,
+                new Response { Status = "Fail", Message = $"Password not changed! Please contact support." });
+
+        }*/
 
         private int GenerateRandomNumer() {
             int _min = 1000;
@@ -479,7 +517,7 @@ namespace IPKP___API.Controllers
             SmtpClient client = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
-                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "amojsldimzrbrtot"),
+                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "wauc crru pvma osvq"),
                 EnableSsl = true
             };
 
