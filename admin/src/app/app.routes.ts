@@ -128,6 +128,10 @@ export const routes: Routes = [
     path: 'home',
     loadComponent: () => import('./home/home.page').then( m => m.HomePage)
   },
+  {
+    path: 'saleperproduct',
+    loadComponent: () => import('./saleperproduct/saleperproduct.page').then( m => m.SaleperproductPage)
+  },
 
 
 

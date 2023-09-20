@@ -23,7 +23,20 @@
           <p>Remind me in: </p>
           <!-- timedate picker -->
           <!-- send email or show popup -->
-          <p (click)="observableTimer()">Start Observable timer</p> 
+          <ion-list>
+            <ion-item>
+              <ion-select aria-label="Time"
+              placeholder="Select Time"
+              (ionChange)="handleChange($event)"
+              (ionCancel)="handleCancel()"
+              (ionDismiss)="handleDismiss()">
+                <ion-select-option value= 5000> 5 min </ion-select-option>
+                <ion-select-option value= 10000> 10 min </ion-select-option>
+                <ion-select-option value= 15000> 15 min </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+          <!-- <ion-button (click)="observableTimer()">5 min</ion-button>  -->
           <p>{{subscribeTimer}}</p>
         </ion-item>
       </ion-col>

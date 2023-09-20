@@ -21,7 +21,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Employee> GetEmployee(string username);
         Task<Customer> GetCustomerDetailsAsync(Guid customer_ID);
         Task<Customer[]> GetAllCustomersAsync();
-        Task<BestSellers[]> GetAllBestSellersAsync();
+        object GetAllBestSellersAsync();
         Task<User> GetUserDetailsAsync(Guid user_ID);
         Task<User[]> GetAllUsersAsync();
         Task<User_Role> GetUserRoleDetailsAsync(int user_Role_ID);
@@ -92,5 +92,9 @@ namespace IPKP___API.Controllers.Models.Repository
         object GetAdminAuditTrailDetails();
         object GetEmployeeAuditTrailDetails();
         object GetCustomerAuditTrailDetails();
+
+        Task<ContactUs[]> GetAllContactUsAsync();
+        Task<ContactUs> GetContactUsByID(Guid contactusID);
+
     }
 }

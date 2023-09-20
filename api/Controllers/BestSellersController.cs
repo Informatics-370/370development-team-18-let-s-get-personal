@@ -23,11 +23,11 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetLastestBestSellers")]
-        public async Task<IActionResult> GetLastestBestSellers()
+        public object GetLastestBestSellers()
         {
             try
             {
-                var results = await _IPKPRepository.GetAllBestSellersAsync();
+                var results = _IPKPRepository.GetAllBestSellersAsync();
                 return Ok(results);
             }
             catch (Exception)

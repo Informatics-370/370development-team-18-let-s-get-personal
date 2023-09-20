@@ -92,7 +92,6 @@ namespace IPKP___API.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("RegisterCustomer")]
         public async Task<IActionResult> RegisterCustomer([FromBody] RegisterViewModel model)
@@ -519,25 +518,105 @@ namespace IPKP___API.Controllers
                 }
             }*/
         }
+
         //FOR CAPTURING RATINGS BY CUSTOMER
-[HttpPost]
-[Route("GetCustomerbyID")]
-public async Task<IActionResult> GetCustomerbyID([FromBody] LoginViewModel model)
-{
-    var user = await _userManager.FindByNameAsync(model.Username);
-    if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-    {
-        List<Customer> CustomerList = new List<Customer>();
+        [HttpPost]
+        [Route("GetCustomerbyID")]
+        public async Task<IActionResult> GetCustomerbyID([FromBody] LoginViewModel model)
+        {
+            var user = await _userManager.FindByNameAsync(model.Username);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                List<Customer> CustomerList = new List<Customer>();
 
-        var results = await _IPKPRepository.GetAllCustomersAsync();
+                var results = await _IPKPRepository.GetAllCustomersAsync();
 
-        return Ok(user);
-    }
-    else
-    {
-        return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
-    }
-}
+                return Ok(user);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
+            }
+        }
+
+        [HttpPost]
+        [Route("ChangeUserPassword")]
+        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangePasswordVM changepasswordVM)
+        {
+            var user = await _userManager.FindByNameAsync(changepasswordVM.UserName);
+
+            if (user != null)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, changepasswordVM.OldPassword, changepasswordVM.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    return Ok(new Response { Status = "Success", Message = "User Password Updated Successfully!" });
+                }
+                else
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "User Password Not Updated!" });
+                }
+
+            }
+            else
+            {
+                return NotFound(new Response { Status = "Error", Message = "User Not Found!" });                
+            }            
+
+        }
+
+        [HttpPost]
+        [Route("DeleteUser/{username}")]
+        public async Task<IActionResult> DeleteUser(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return NotFound(new Response { Status = "Error", Message = "User Not Found!" });
+            }
+            else
+            {
+                var result = await _userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return Ok(new Response { Status = "Success", Message = "User Password Updated Successfully!" });
+                }
+                else
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "User Password Not Updated!" });
+                }
+            }
+        }
+
+        //[HttpPost]
+        //[Route("ChangeUserName")]
+        //public async Task<IActionResult> ChangeUserName([FromBody] ChangePasswordVM changeVM)
+        //{
+        //    var user = await _userManager.FindByNameAsync(changeVM.UserName);
+
+        //    if (user != null)
+        //    {
+        //        var result = await _userManager.UpdateNormalizedUserNameAsync(user);
+
+        //        if (result.Succeeded)
+        //        {
+        //            return Ok(new Response { Status = "Success", Message = "User Password Updated Successfully!" });
+        //        }
+        //        else
+        //        {
+        //            return BadRequest(new Response { Status = "Error", Message = "User Password Not Updated!" });
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        return NotFound(new Response { Status = "Error", Message = "User Not Found!" });
+        //    }
+
+        //}
 
     }
 }

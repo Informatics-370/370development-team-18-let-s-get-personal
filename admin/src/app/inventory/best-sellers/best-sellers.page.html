@@ -4,29 +4,80 @@
   </ion-toolbar>
 </ion-header>
 
-<!--Noticed this and realized we dont have a View Best sellers UC-->
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Best Sellers</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content id="content">
-     <!-- <ion-button id="addmodal">Select Products</ion-button>
-  <ion-button id="addmodal">View Inventory?</ion-button>   --Narratives--
-  <ion-grid>
-    <ion-row>
-      <ion-col style="font-weight: bold;"><h3>Stock Item Name</h3></ion-col>
-      <ion-col style="font-weight: bold;"><h3>Stock Item Image</h3></ion-col>
-    </ion-row>
-    <ion-row *ngFor="let item of bestsellers">
-      <ion-col>{{item.Stock_Item_Name}}</ion-col>
-      <ion-col>{{item.Stock_Item_Image}}</ion-col>    
-    </ion-row>
-  </ion-grid>-->
+  <ion-button id="addStockmodal">Add a Product to Best Sellers</ion-button>
+  <ion-content *ngIf="bestsellers.length == 0">
+    <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
+      <p>No Current Best Sellers</p>
+    </div>
   </ion-content>
+    
+  <ion-content id="content">
+    <ion-grid>
+      <ion-row style="border-bottom-style: solid;">
+        <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="font-weight: bold; text-align: center;">Product Name</ion-col>
+        <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="font-weight: bold; text-align: center;">Product Price</ion-col>
+        <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="font-weight: bold; text-align: center;">Product Size</ion-col>
+        <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="font-weight: bold; text-align: center;">Product Type</ion-col>
+        <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="font-weight: bold; text-align: center;">Product Colour</ion-col>
+        <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="font-weight: bold; text-align: center;">Product Image</ion-col>
+        <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="font-weight: bold; text-align: center;">Quantity In Stock</ion-col>
+        <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="font-weight: bold; text-align: center;">Inventory Comments</ion-col>
+        <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" ></ion-col>
+      </ion-row>
 
-
+      <ion-row *ngFor="let item of bestsellers">
+        <ion-col>
+          <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="text-align: center;">{{item.stock_Item_Name}}</ion-col>
+          <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="text-align: center;">R {{item.stock_Item_Price}}.00</ion-col>
+          <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="text-align: center;">{{item.stock_Item_Size}}</ion-col>
+          <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="text-align: center;">{{item.stock_Type_Name}}</ion-col>
+          <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="text-align: center;">{{item.stock_Colour_Name}}</ion-col>
+          <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="text-align: center;"><img src='data:image/png;base64,{{item.stock_Image_File}}'></ion-col>
+          <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="text-align: center;">{{item.stock_Item_Quantity}}</ion-col>
+          <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="text-align: center;">{{item.inventory_Comments}}</ion-col>
+          <ion-col sizeLg="1.3" sizeMd="2.6" sizeXs="2.6" style="text-align: center;"><ion-button (click)="RemoveFromBestSellers(item.bestSeller_ID)">ERemove From Best Sellers</ion-button></ion-col>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+  </ion-content>
 </ion-content>
+
+<ion-footer>
+  <ion-modal trigger="addStockmodal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceladdmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Select Stock Item </ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmaddmodal()"  [strong]="true">Confirm</ion-button>
+            <!-- [disabled]="AddBestSellerForm.invalid" -->
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">      
+
+        <form [formGroup]="AddBestSellerForm">   
+          <ion-item>
+            <ion-select placeholder="Select a Stock Item Colour" formControlName="Stock_Item_Colour_ID">
+              <!-- <div slot="label">Product <ion-text color="danger">(Required)</ion-text></div> -->
+              <ion-select-option *ngFor="let items of Products" value="{{items.stock_Item_ID}}" >
+                {{items.stock_Item_Name}} - Sales: {{items.stock_Sale_Quantity}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>                   
+        </form><br>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-footer>
 

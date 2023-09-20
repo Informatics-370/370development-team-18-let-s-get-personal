@@ -17,6 +17,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
         public string Stock_Item_Name { get; set; }
         public decimal Stock_Item_Price { get; set; }
         public string Stock_Item_Size { get; set; }
+        public int Stock_Sale_Quantity { get; set; }
         public DateTime Inventory_Date { get; set; }
         public string Inventory_Comments { get; set; }
         public int Stock_Item_Quantity { get; set; }

@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
-
+import { AuthenticationService } from 'src/app/Services/authentication.service';
+import { ChangePasswordVM } from '../ViewModels/changepasswordVM';
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.page.html',
@@ -16,8 +17,9 @@ export class ChangePasswordPage implements OnInit {
   newPassword: any;
   confirmNewPassword: any;
   PasswordForm!:FormGroup;
-  constructor(private alertController: AlertController,private _FB:FormBuilder) { 
+  constructor(private alertController: AlertController,private _FB:FormBuilder, private authservice: AuthenticationService) { 
     this.PasswordForm= this._FB.group({
+      OldPassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
       Password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
       NewPassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')])
     },{validators:this.matchpassword('Password','NewPassword')})
@@ -32,7 +34,20 @@ export class ChangePasswordPage implements OnInit {
   changePassword(){
     this.newPassword=this.PasswordForm.get("Password")?.value;
 
+    let changedpassword = new ChangePasswordVM()
+    changedpassword.newPassword = this.newPassword
+    changedpassword.userName = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    changedpassword.oldPassword = this.PasswordForm.get("OldPassword")?.value
+
     //send request to backend
+    this.authservice.ChangeUserPassword(changedpassword).subscribe(result => {
+      if(result.status == "Success"){
+        this.SuccessAlert()
+      }
+      else{
+        this.ErrorAlert()
+      }
+    })
 
   }
 
@@ -51,6 +66,21 @@ export class ChangePasswordPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Success!',
       subHeader: 'Password updated!.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        /*handler: () => {
+          this.reloadPage();
+        }*/
+      }],
+    });
+    await alert.present();
+  }
+
+  async ErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Password not updated!.',
       buttons: [{
         text: 'OK',
         role: 'cancel',

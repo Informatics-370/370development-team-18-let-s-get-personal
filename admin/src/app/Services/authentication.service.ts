@@ -7,6 +7,7 @@ import { Response } from '../Models/response';
 import { Customer } from '../Models/customer';
 import { ForgotPasswordViewModel } from '../ViewModels/forgotPasswordVM';
 import { RegisterVM } from '../ViewModels/registerVM';
+import { ChangePasswordVM } from '../ViewModels/changepasswordVM';
 @Injectable({
   providedIn: 'root'
 })
@@ -104,6 +105,15 @@ export class AuthenticationService {
 
   public ForgotPassword(forgotpassword: ForgotPasswordViewModel){
     return this.httpClient.post(`${this.apiUrl}Authenticate/ForgotPassword`, forgotpassword, this.httpOptions)
+  }
+
+  public ChangeUserPassword(changepasswordVM: ChangePasswordVM){
+    return this.httpClient.post<Response>(`${this.apiUrl}Authenticate/ChangeUserPassword`, changepasswordVM, this.httpOptions)
+  }
+
+  public DeleteUser(username: string){
+    return this.httpClient.delete<Response>(`${this.apiUrl}Authenticate/DeleteUser/${username}`)
+      .pipe(map(result => result))
   }
 }
 

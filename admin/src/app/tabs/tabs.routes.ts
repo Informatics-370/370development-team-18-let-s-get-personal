@@ -127,6 +127,14 @@ export const routes: Routes = [
         canActivate:[AuthGuard],data:{roles:['Admin']}
       },
       {
+        path: 'home',
+        loadComponent: () => import('../home/home.page').then( m => m.HomePage)
+      },
+      {
+        path: 'saleperproduct',
+        loadComponent: () => import('../saleperproduct/saleperproduct.page').then( m => m.SaleperproductPage)
+      },
+      {
         path: '',
         redirectTo: '/tabs/login',
         pathMatch: 'full',
