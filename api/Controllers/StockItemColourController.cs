@@ -110,8 +110,8 @@ namespace IPKP___API.Controllers
         [Route("DeleteStockItemColour/{stock_Item_Colour_ID}")]
         public async Task<IActionResult> DeleteStockItemColourAsync(Guid stock_Item_Colour_ID)
         {
-              try
-              {
+            try
+            {
                 var existingStockItemColour = await _IPKPRepository.GetStockItemColourDetailsAsync(stock_Item_Colour_ID);
 
                 if (existingStockItemColour == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item Colour" + stock_Item_Colour_ID });
@@ -122,12 +122,13 @@ namespace IPKP___API.Controllers
                 {
                   return Ok(new Response { Status = "Success", Message = "Stock Item Colour Removed Successfully" });
                 }
-              }
-              catch (Exception)
-              {
+            }
+            catch (Exception)
+            {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-              }
-              return Ok(new Response { Status = "Success", Message = "Stock Item Colour Removed From Database." });
+            }
+              
+            return Ok(new Response { Status = "Success", Message = "Stock Item Colour Removed From Database." });
         }
   }
 }

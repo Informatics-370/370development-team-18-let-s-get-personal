@@ -96,6 +96,25 @@ export class DeliveriesPage implements OnInit {
     }
   }
 
+  FailedDelivery(DeliveryId: string, order_Line_Item_ID:string, stockItemID: string, customerID: string, qauntity: number){
+    try{
+      this.stockItemID = stockItemID
+      this.customerID = customerID
+      this.qauntity = qauntity
+      localStorage.setItem('order_Line_Item_ID', JSON.stringify(order_Line_Item_ID));
+
+      this.service.ChangeStatusToFailed(DeliveryId).subscribe(result =>{
+        if(result.status == "Success"){
+          console.log(result);          
+        }
+      })
+      this.getOrder()
+    }
+    catch{
+      this.ReceiveDeliveryErrorAlert
+    }
+  }
+
   orderlineitem: OrderLineItemVM = new OrderLineItemVM()
   getOrder(){
     try

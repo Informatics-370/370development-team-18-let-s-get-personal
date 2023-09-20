@@ -61,7 +61,15 @@ export class BestSellersPage implements OnInit {
   }
 
   AddToBestSellers(){
-
+    let stockitem = new Best_Sellers()
+    this.bestsellerservice.AddBestSeller(stockitem).subscribe(result => {
+      if(result.status ==""){
+        this.AddSuccessAlert();
+      }
+      else{
+        this.AddErrorAlert();
+      }
+    })
   }
 
   onWillDismiss(event: Event) {
@@ -71,7 +79,14 @@ export class BestSellersPage implements OnInit {
   
 //========= Delete ========
   RemoveFromBestSellers(best_Seller_ID: string){
-
+    this.bestsellerservice.RemoveBestSeller(best_Seller_ID).subscribe(result => {
+      if(result.status == "Success"){
+        this.DeleteSuccessAlert();
+      }
+      else{
+          this.DeleteErrorAlert();
+      }
+    })
   }
 
   //========= Trail ========
@@ -101,8 +116,9 @@ export class BestSellersPage implements OnInit {
 //========= Alerts ========
   async HelpAlert() {
     const alert = await this.alertController.create({
-      header: '',
-      subHeader: '',
+      header: 'Best Seller List will be pulled to the top of shop page for customers',
+      subHeader: 'Please select your chosen product from the dropdown list in the "Add a Product to Best Sellers" popup ',
+      message: 'Click the "Add a Product to Best Sellers" button at the top left of the page to add an item to this list',
       buttons: [{
           text: 'OK',
           role: 'cancel',
@@ -110,5 +126,54 @@ export class BestSellersPage implements OnInit {
     });
     await alert.present();
   }
+
+  async DeleteSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Best Seller Removed From List!',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
+
+  async DeleteErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are Sorry!',
+      subHeader: 'Best seller not removed. Please try again',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
+
+  async AddErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are Sorry!',
+      subHeader: 'Best seller not added. Please try again',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
+
+  async AddSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Best Seller Added!',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
+
 
 }

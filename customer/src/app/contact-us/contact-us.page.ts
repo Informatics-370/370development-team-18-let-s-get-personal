@@ -26,6 +26,7 @@ export class ContactUsPage implements OnInit {
 
   ContactForm: FormGroup = new FormGroup({
     Name: new FormControl('', [Validators.required]),
+    Message: new FormControl('', [Validators.required]),
     Email: new FormControl('', Validators.compose([Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])),
     Cell_Number: new FormControl('', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(12), Validators.pattern('[- +()0-9]{9,}')]))
   })
@@ -37,6 +38,7 @@ export class ContactUsPage implements OnInit {
     contact.contact_Us_Email = this.ContactForm.value.Email
     contact.contact_Us_Name = this.ContactForm.value.Name
     contact.contact_Us_Phone = this.ContactForm.value.Cell_Number
+    contact.contact_Us_Message = this.ContactForm.value.Message
 
     this.service.AddMessageRequest(contact).subscribe(result => {
       if(result.status == "Success"){

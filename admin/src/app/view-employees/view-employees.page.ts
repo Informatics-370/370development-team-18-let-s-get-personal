@@ -23,8 +23,8 @@ export class ViewEmployeesPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   
   constructor( private alertController:AlertController, public modalCtrl: ModalController,
-    private empservice: UserProfileDataService, 
-    public authservice: AuthenticationService, public router: Router) { } //private service:ProfileService,
+    private empservice: UserProfileDataService, public authservice: AuthenticationService, public router: Router) { } 
+    //private service:ProfileService,
 
   ngOnInit() {
     //  this.getProfle()
@@ -60,7 +60,17 @@ export class ViewEmployeesPage implements OnInit {
     })
   }
   
-  DeleteEmployee(employee_ID: string){
+  DeleteEmployee(employee_ID: string, username: string){
+    this.authservice.DeleteUser(username).subscribe(result => {
+      console.log(result);
+      if(result == null){
+        this.DeleteEmployeeErrorAlert();
+      }
+      else{
+        this.DeleteEmployeeSuccessAlert();
+      }
+    })    
+        
     this.empservice.DeleteEmployee(employee_ID).subscribe(result => {
       console.log(result);
       if(result == null){
@@ -70,6 +80,7 @@ export class ViewEmployeesPage implements OnInit {
         this.DeleteEmployeeSuccessAlert();
       }
     })    
+
   }
 
   AddEmployee() {

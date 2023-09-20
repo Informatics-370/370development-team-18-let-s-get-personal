@@ -266,7 +266,7 @@ generatePDF() {
     Stock_Item_Colour_ID: new FormControl('',[Validators.required]),
   })
 
-  EditDiscount(stock_Item_ID:string, isOpen: boolean)
+  EditProduct(stock_Item_ID:string, isOpen: boolean)
   {    
     this.stockitemservice.GetStockItem(stock_Item_ID).subscribe(response => {         
       this.editProduct = response as Stock_Item;
@@ -314,6 +314,20 @@ generatePDF() {
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
+
+//============== Delete =======
+
+DeleteStockItem(stockitemID: string){
+  this.stockitemservice.DeleteStockItem(stockitemID).subscribe(result =>{
+    if(result.status == "Success"){
+      this.DeleteStockItemSuccessAlert(); 
+    }
+    else{
+      this.DeleteStockItemErrorAlert();
+    }
+    
+  });
+}
 
 //============== Audit Trail =======
   action!: string
@@ -442,7 +456,7 @@ generatePDF() {
     await alert.present();
   }
 
-  async addToBestSellersSuccessAlert() {
+  async DeleteStockItemSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
       subHeader: 'Item Added To Best Seller List',
@@ -451,7 +465,7 @@ generatePDF() {
     await alert.present();
   }
 
-  async addToBestSellersErrorAlert() {
+  async DeleteStockItemErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
       subHeader: 'Item Was Not Added',

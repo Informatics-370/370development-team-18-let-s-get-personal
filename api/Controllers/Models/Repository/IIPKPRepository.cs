@@ -21,14 +21,17 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Employee> GetEmployee(string username);
         Task<Customer> GetCustomerDetailsAsync(Guid customer_ID);
         Task<Customer[]> GetAllCustomersAsync();
-        object GetAllBestSellersAsync();
+        
         Task<User> GetUserDetailsAsync(Guid user_ID);
         Task<User[]> GetAllUsersAsync();
         Task<User_Role> GetUserRoleDetailsAsync(int user_Role_ID);
         Task<User_Role[]> GetAllUserRolesAsync();
         Task<Delivery> GetDeliveryDetailsAsync(Guid delivery_ID);
         Task<Delivery[]> GetAllDeliveriesAsync();
-        
+
+        object GetAllBestSellersAsync();
+        Task<BestSellers> GetBestSellerByID(Guid bestsellerID);
+
         Task<Stock_Image> GetStockImageByID(Guid stock_image_id);
         Task<Stock_Image[]> GetAllStockItmagesAsync();
 

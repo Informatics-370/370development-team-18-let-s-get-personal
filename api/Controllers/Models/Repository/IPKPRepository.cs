@@ -595,8 +595,15 @@ namespace IPKP___API.Controllers.Models.Repository
             return stockitems;
         }
 
-        
-//deliveries
+        public async Task<BestSellers> GetBestSellerByID(Guid bestsellerID)
+        {
+            IQueryable<BestSellers> query = _appDbContext.BestSellers
+                    .Where(u => u.BestSeller_ID == bestsellerID);
+            return await query.FirstOrDefaultAsync();
+        }
+
+
+        //deliveries
         public object GetAllDeliveries()
         {
             List<DeliveryVM> deliveries = (
