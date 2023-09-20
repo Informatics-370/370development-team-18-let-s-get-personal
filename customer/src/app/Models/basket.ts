@@ -29,6 +29,7 @@ export class BasketItems{
 export class OrderT{
     basketItems!: BasketItems[];
     deliveryAddress:DeliveryAddress = new DeliveryAddress();
+    deliveryCompanyID:any;
     paid!:boolean;
     price!:number;
 }
