@@ -75,7 +75,8 @@ export class InventoryPage implements OnInit {
     this.searchString=this.SearchStockForm.get('name')?.value;
 
     this.searchedinventory = this.Products.filter(
-      f => f.stock_Item_Name.toLowerCase().includes(this.searchString.toLowerCase()));
+      f => f.stock_Item_Name.toLowerCase().includes(this.searchString.toLowerCase())
+    );
   }
 
   GetAllStockItems(){
@@ -308,22 +309,22 @@ export class InventoryPage implements OnInit {
 
 //============== Delete =======
 deletestockitemID!: string
-DeleteStockItem(){
-  this.stockitemservice.DeleteStockItem(this.deletestockitemID).subscribe(result =>{
-    if(result.status == "Success"){
-      this.DeleteStockItemSuccessAlert(); 
-    }
-    else{
+  DeleteStockItem(){
+    this.stockitemservice.DeleteStockItem(this.deletestockitemID).subscribe(result =>{
+      if(result.status == "Success"){
+        this.DeleteStockItemSuccessAlert(); 
+      }
+      else{
+        this.DeleteStockItemErrorAlert();
+      }
+      
+    },(error) => {
+      this.errormsg = error
       this.DeleteStockItemErrorAlert();
-    }
-    
-  },(error) => {
-    this.errormsg = error
-    this.DeleteStockItemErrorAlert();
-    
-    console.error('Delete stock item error:', error);
-  });
-}
+      
+      console.error('Delete stock item error:', error);
+    });
+  }
 
 //============== Audit Trail =======
   action!: string

@@ -705,7 +705,7 @@ namespace IPKP___API.Controllers.Models.Repository
                     Stock_Item_Price = s.Stock_Item_Price,
                     Stock_Item_Size = s.Stock_Item_Size,
                     Stock_Item_Quantity = s.Stock_Item_Quantity,
-
+                    Stock_Sale_Quantity = s.Stock_Sale_Quantity,
                     Inventory_Comments = s.Inventory_Comments,
                     Inventory_Date = s.Inventory_Date,
 

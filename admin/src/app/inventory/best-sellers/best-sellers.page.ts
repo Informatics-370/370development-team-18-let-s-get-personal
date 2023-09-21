@@ -32,6 +32,7 @@ export class BestSellersPage implements OnInit {
   { }
 
   ngOnInit() {
+    this.GetBestSellers()
     this.GetAllStockItems()
   }
 
@@ -62,13 +63,15 @@ export class BestSellersPage implements OnInit {
 
   AddToBestSellers(){
     let stockitem = new Best_Sellers()
+    stockitem.stock_Item_ID = this.AddBestSellerForm.value.Stock_Item_ID
+    console.log(stockitem)
+
     this.bestsellerservice.AddBestSeller(stockitem).subscribe(result => {
-      if(result.status ==""){
-        this.AddSuccessAlert();
-      }
-      else{
-        this.AddErrorAlert();
-      }
+      console.log(result)
+      this.AddSuccessAlert();
+    },(error) => {
+      this.AddErrorAlert()        
+      console.error('AddToBestSellers error:', error);
     })
   }
 
@@ -80,12 +83,10 @@ export class BestSellersPage implements OnInit {
 //========= Delete ========
   RemoveFromBestSellers(best_Seller_ID: string){
     this.bestsellerservice.RemoveBestSeller(best_Seller_ID).subscribe(result => {
-      if(result.status == "Success"){
-        this.DeleteSuccessAlert();
-      }
-      else{
-          this.DeleteErrorAlert();
-      }
+      this.DeleteSuccessAlert();
+    },(error) => {
+      this.DeleteErrorAlert();        
+      console.error('RemoveFromBestSellers error:', error);
     })
   }
 
@@ -134,6 +135,9 @@ export class BestSellersPage implements OnInit {
       buttons: [{
           text: 'OK',
           role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
       }],
     });
     await alert.present();
@@ -146,6 +150,9 @@ export class BestSellersPage implements OnInit {
       buttons: [{
           text: 'OK',
           role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
       }],
     });
     await alert.present();
@@ -158,6 +165,9 @@ export class BestSellersPage implements OnInit {
       buttons: [{
           text: 'OK',
           role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
       }],
     });
     await alert.present();
@@ -170,10 +180,16 @@ export class BestSellersPage implements OnInit {
       buttons: [{
           text: 'OK',
           role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
       }],
     });
     await alert.present();
   }
 
+  reloadPage(){
+    window.location.reload()
+  }
 
 }

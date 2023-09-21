@@ -54,6 +54,9 @@ export class DeliveryPricesPage implements OnInit {
       company.companycontrolbreak.forEach(item => {
         company.delivery_Company_Total = company.delivery_Company_Total + item.delivery_Price;
       });     
+    },(error) => {
+      //this.editErrorAlert();        
+      console.error('DeliveryChargeControlBreak error:', error);
     })
   }
 

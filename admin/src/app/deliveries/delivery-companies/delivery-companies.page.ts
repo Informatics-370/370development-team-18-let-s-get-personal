@@ -61,15 +61,13 @@ export class DeliveryCompaniesPage implements OnInit {
     AddDeliveryCompany.delivery_Company_Name = this.AddForm.value.deliverycompanyname;
 
     this.service.AddDeliveryCompany(AddDeliveryCompany).subscribe(response => {
-      if(response.status == "Error")
-      {
-        this.addDeliveryCompanyErrorAlert();
-      }
-      else{
-        this.addDeliveryCompanySuccessAlert();
-        this.action = "Added Delivery Company: " + this.AddForm.value.deliverycompanyname
-        this.AddTrail()
-      }
+      this.addDeliveryCompanySuccessAlert();
+      this.action = "Added Delivery Company: " + this.AddForm.value.deliverycompanyname
+      this.AddTrail()
+
+    },(error) => {
+      this.addDeliveryCompanyErrorAlert();        
+      console.error('Edit stock image error:', error);
     })
 
   }
@@ -79,15 +77,12 @@ export class DeliveryCompaniesPage implements OnInit {
   DeleteDeliveryCompany(delivery_Company_ID: string, delivery_Company_Name: string){
     this.service.DeleteDeliveryCompany(delivery_Company_ID).subscribe(result => {
       console.log(result);
-      if(result.status == "Error")
-      {
-        this.DeleteDeliveryCompanyErrorAlert();
-      }
-      else if(result.status == "Success"){
-        this.DeleteDeliveryCompanySuccessAlert();
-        this.action = "Deleted Delivery Company: " + delivery_Company_Name
-        this.AddTrail()
-      }
+      this.DeleteDeliveryCompanySuccessAlert();
+      this.action = "Deleted Delivery Company: " + delivery_Company_Name
+      this.AddTrail()
+    },(error) => {
+      this.DeleteDeliveryCompanyErrorAlert();        
+      console.error('DeleteDeliveryCompany error:', error);
     })
   }
 
@@ -116,15 +111,13 @@ export class DeliveryCompaniesPage implements OnInit {
       editedCompany.delivery_Price = this.editForm.value.Delivery_Price
 
       this.service.UpdateDeliveryCompany(this.editCompany.delivery_Company_ID, editedCompany).subscribe(result => {
-        if(result == null){
-          this.UpdateDeliveryCompanyErrorAlert()
-        }
-        else{
-          this.UpdateDeliveryCompanySuccessAlert()
-          this.action = "Updated discount from "+ this.editCompany.delivery_Company_Name + ", "+ this.editCompany.delivery_Price 
+        this.UpdateDeliveryCompanySuccessAlert()
+        this.action = "Updated discount from "+ this.editCompany.delivery_Company_Name + ", "+ this.editCompany.delivery_Price 
           + ", " + this.editForm.value.deliverycompanyname + ", "+ this.editForm.value.Delivery_Price 
-          this.AddTrail()
-        }        
+        this.AddTrail()       
+      },(error) => {
+        this.UpdateDeliveryCompanyErrorAlert();        
+        console.error('UpdateDeliveryCompany error:', error);
       })
     }
     catch{
@@ -176,6 +169,20 @@ export class DeliveryCompaniesPage implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+//====== Alerts =====
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'Delivery companies will be pulled through as delivery options when the customer checks out their order',
+      message: '',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
   }
 
   async addDeliveryCompanySuccessAlert() {

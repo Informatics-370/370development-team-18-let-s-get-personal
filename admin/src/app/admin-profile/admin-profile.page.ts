@@ -29,7 +29,6 @@ export class AdminProfilePage implements OnInit {
   ngOnInit() {
     this.getUser()
   }
-
  
   getUser(){
     this.username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
@@ -59,12 +58,10 @@ export class AdminProfilePage implements OnInit {
     //change password form
 
     this.AuthService.ChangeUserPassword(newpassword).subscribe(result =>{
-      if(result.status == "Success"){
-        //change status success popup
-      }
-      else{
-        //error alert
-      }
+      //success alert
+    },(error) => {
+      this.editErrorAlert();        
+      console.error('Edit stock image error:', error);
     })
   }
 
@@ -77,7 +74,7 @@ export class AdminProfilePage implements OnInit {
     surname: new FormControl('',[Validators.required]),
     email: new FormControl('',[Validators.required]),
     cell_Number: new FormControl(''),
-    username: new FormControl('',[Validators.required])
+    // username: new FormControl('',[Validators.required])
   })
 
   EditAdmin(admin_ID:string, isOpen: boolean)
@@ -89,7 +86,7 @@ export class AdminProfilePage implements OnInit {
       this.editForm.controls['surname'].setValue(this.editadmin.surname);
       this.editForm.controls['email'].setValue(this.editadmin.email);
       this.editForm.controls['cell_Number'].setValue(this.editadmin.cell_Number);
-      this.editForm.controls['username'].setValue(this.editadmin.username);
+      // this.editForm.controls['username'].setValue(this.editadmin.username);
     })
     
     this.isModalOpen = isOpen;
@@ -103,11 +100,14 @@ export class AdminProfilePage implements OnInit {
       editedAdmin.surname = this.editForm.value.surname;
       editedAdmin.email = this.editForm.value.email;
       editedAdmin.cell_Number = this.editForm.value.cell_Number;
-      editedAdmin.username = this.editForm.value.username;
+      // editedAdmin.username = this.editForm.value.username;
 
       this.service.UpdateAdmin(this.editadmin.admin_ID, editedAdmin).subscribe(result =>{
         this.editSuccessAlert();
-      })
+      },(error) => {
+      this.editErrorAlert();        
+      console.error('confirmeditmodal error:', error);
+    })
     }
     catch{      
       this.editErrorAlert();

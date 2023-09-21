@@ -21,22 +21,11 @@ import { AuditTrail } from 'src/app/Models/adittrail';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class StockItemColoursPage implements OnInit {
-  /*filterTerm: string = "";
-  stockitemcolours:any=StockItemColours;
-  filteredStockItemColour = this.stockitemcolours.filter((items: { Stock_Item_Colour_Name: string,Stock_Item_Colour_Image:string; }) => 
-  items.Stock_Item_Colour_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
-
-
-  updateSearchResults() {
-    this.filteredStockItemColour = this.stockitemcolours.filter((items: { Stock_Item_Colour_Name: string; }) =>
-     items.Stock_Item_Colour_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
-  }*/
-
   @ViewChild(IonModal) modal!: IonModal
   stockitemcolours: StockItemColours[] = [];
   colour: any;
   yourImageDataURL: any;
-  
+  errormsg: string = "";
 
   constructor(public modalCtrl: ModalController, private toast: ToastController, 
     private service:StockItemColourDataService, private trailservice: AuditTrailService,
@@ -69,30 +58,27 @@ export class StockItemColoursPage implements OnInit {
     addColour.stock_Item_Colour_Name = this.AddColourForm.value.name;
     this.service.AddStockItemColour(addColour).subscribe(result => {
       this.action = "Added Stock Item Colour: " + this.editForm.value.name
-        this.AddTrail()
+      this.AddTrail()
       this.AddColourSuccessAlert();
     },
     (error) => {
       this.AddColourErrorAlert();
       console.error('Add stock colour error:', error);
-    }
-    );
+    });
     //this.presentLoading();
   }
   }
 
   deletecolour(stock_Item_Colour_ID:string, stock_Item_Colour_Name:string){
     this.service.DeleteStockItemColour(stock_Item_Colour_ID).subscribe(result =>{
-      if(result.status == "Error")
-      {
-        this.DeleteColourErrorAlert();
-      }
-      else if(result.status == "Success"){
-        this.action = "Deleted Stock Item Colour:" + stock_Item_Colour_Name
-        this.AddTrail()
-        this.DeleteColourSuccessAlert();
-      }
-     });
+      this.action = "Deleted Stock Item Colour:" + stock_Item_Colour_Name
+      this.AddTrail()
+      this.DeleteColourSuccessAlert();
+    },(error) => {
+      this.errormsg = error
+      this.DeleteColourErrorAlert();        
+      console.error('Delete stock colour error:', error);
+    });
   }
 
   canceladdmodal() {
@@ -121,9 +107,7 @@ export class StockItemColoursPage implements OnInit {
   }
 
   confirmeditmodal(){
-    try
-    {
-      let editedColour = new StockItemColours();
+    let editedColour = new StockItemColours();
       editedColour.stock_Item_Colour_Name = this.editForm.value.name;
 
       this.service.UpdateStockItemColour(this.editColour.stock_Item_Colour_ID, editedColour).subscribe(result =>{
@@ -131,11 +115,10 @@ export class StockItemColoursPage implements OnInit {
         this.AddTrail()
 
         this.editSuccessAlert();
-      })      
-    }
-    catch{      
-      this.editErrorAlert();
-    }    
+      },(error) => {
+      this.editErrorAlert();        
+      console.error('Edit colour error:', error);
+    })  
   }
 
   canceleditmodal() {
@@ -170,6 +153,19 @@ export class StockItemColoursPage implements OnInit {
   }
 
   //=============== Alerts ====
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'When colours are updated the new colour name will populate the respective products. This will not update the images',
+      message: 'Colours cannot be deleted if they are being used in a product',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
+
   async editSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
@@ -220,7 +216,7 @@ export class StockItemColoursPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
       subHeader: 'Stock Colour was not deleted',
-      message: 'Please try again',
+      message: 'Please note we cannot delete colours that are being used in a product',
       buttons: [{
           text: 'OK',
           role: 'cancel',

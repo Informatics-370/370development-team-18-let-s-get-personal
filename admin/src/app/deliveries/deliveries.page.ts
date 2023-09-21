@@ -88,6 +88,9 @@ export class DeliveriesPage implements OnInit {
         if(result.status == "Success"){
           console.log(result);          
         }
+      },(error) => {
+        this.ReceiveDeliveryErrorAlert();        
+        console.error('ReceiveDelivery error:', error);
       }) 
       this.getOrder()
     }
@@ -107,6 +110,9 @@ export class DeliveriesPage implements OnInit {
         if(result.status == "Success"){
           console.log(result);          
         }
+      },(error) => {
+        this.ReceiveDeliveryErrorAlert();        
+        console.error('ReceiveDelivery error:', error);
       })
       this.getOrder()
     }
@@ -129,6 +135,9 @@ export class DeliveriesPage implements OnInit {
         localStorage.setItem('customer', JSON.stringify(customer));
         console.log(customer);
         this.addToOrder(); 
+      },(error) => {
+        this.AddOrderErrorAlert();        
+        console.error('getOrder error:', error);
       })        
     }
     catch{
@@ -154,6 +163,9 @@ export class DeliveriesPage implements OnInit {
           {
             this.AddOrderErrorAlert()
           }
+      },(error) => {
+        this.AddOrderErrorAlert();        
+        console.error('AddToOrder error:', error);
       })
     }
     catch{
@@ -168,6 +180,9 @@ export class DeliveriesPage implements OnInit {
       let order_Line_Item_ID = JSON.parse(localStorage.getItem('order_Line_Item_ID') as string)
       this.orderservice.ProcessOrder(order_Line_Item_ID).subscribe(result =>{
         console.log(result)
+      },(error) => {
+        this.DeleteOrderLineItemErrorAlert();        
+        console.error('proccessOrder error:', error);
       })
       this.ReceiveDeliverySuccessAlert()
       
@@ -181,7 +196,7 @@ export class DeliveriesPage implements OnInit {
     
   }
 
-  //=========== Audit trail ===========
+//=========== Audit trail ===========
   action!: string
   AddTrail(){
     let audittrail = new AuditTrail()
@@ -245,6 +260,20 @@ export class DeliveriesPage implements OnInit {
     };  
     pdfMake.createPdf(docDefinition).download(); 
   }
+
+//=========== Alerts ===========
+  // async HelpAlert() {
+  //   const alert = await this.alertController.create({
+  //     header: 'Please Note: ',
+  //     subHeader: 'Once a delivery is changed from In Progress to Failed or Succeeded the order ',
+  //     message: '',
+  //     buttons: [{
+  //         text: 'OK',
+  //         role: 'cancel',
+  //     }],
+  //   });
+  //   await alert.present();
+  // }
 
   async ReceiveDeliverySuccessAlert() {
     const alert = await this.alertController.create({

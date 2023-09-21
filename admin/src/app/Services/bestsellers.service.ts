@@ -20,8 +20,8 @@ export class BestsellersService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public AddBestSeller(bestseller: Best_Sellers){
-    return this.httpClient.post<Response>(`${this.apiUrl}BestSellers/AddBestSeller`, bestseller, this.httpOptions)
+  public AddBestSeller(selectedProducts: Best_Sellers){
+    return this.httpClient.post<Response>(`${this.apiUrl}BestSellers/AddBestSeller`, selectedProducts, this.httpOptions)
   }
 
   public GetBestSellers(): Observable<any>{ 

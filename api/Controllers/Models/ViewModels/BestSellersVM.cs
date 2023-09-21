@@ -12,6 +12,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
         public DateTime Inventory_Date { get; set; }
         public string Inventory_Comments { get; set; }
         public int Stock_Item_Quantity { get; set; }
+        public int Stock_Sale_Quantity { get; set; }
         public string Stock_Type_Name { get; set; }
         public string Stock_Image_Name { get; set; }
         public string Stock_Image_File { get; set; }

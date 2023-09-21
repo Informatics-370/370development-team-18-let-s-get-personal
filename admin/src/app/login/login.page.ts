@@ -139,18 +139,18 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
   
-async Alert() {
-  const alert = await this.alertController.create({
-    header: 'Oops!',
-    subHeader: 'Error',
-    message: 'Invalid username or password.',
-    buttons: [{
-      text: 'OK',
-      role: 'cancel'
-    }],
-  });
-  await alert.present();
-}
+  async Alert() {
+    const alert = await this.alertController.create({
+      header: 'Oops!',
+      subHeader: 'Error',
+      message: 'Invalid username or password.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel'
+      }],
+    });
+    await alert.present();
+  }
 
 }
 

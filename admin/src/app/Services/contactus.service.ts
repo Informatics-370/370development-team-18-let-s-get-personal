@@ -31,5 +31,9 @@ export class ContactUsService {
   public UpdateContactUsStatus(contact_Us_ID:string, contact:ContactUs){
     return this.httpClient.put<Response>(`${this.apiUrl}ContactUs/UpdateContactUsStatus/${contact_Us_ID}`, contact, this.httpOptions)
   }
+
+  public DeleteContactUs(contact_Us_ID:string){
+    return this.httpClient.delete<Response>(`${this.apiUrl}ContactUs/DeleteContactUs` + "/" + contact_Us_ID, this.httpOptions)
+  }
   
 }

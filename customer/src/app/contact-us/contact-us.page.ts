@@ -28,7 +28,7 @@ export class ContactUsPage implements OnInit {
     Cell_Number: new FormControl('', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(12), Validators.pattern('[- +()0-9]{9,}')]))
   })
 
-  get f() { return this.ContactForm.controls }
+  // get f() { return this.ContactForm.controls }
 
   Submit() {
     let contact = new ContactUs()
@@ -38,12 +38,10 @@ export class ContactUsPage implements OnInit {
     contact.contact_Us_Message = this.ContactForm.value.Message
 
     this.service.AddMessageRequest(contact).subscribe(result => {
-      if(result.status == "Success"){
-        this.SuccessAlert()
-      }
-      else{
-
-      }
+      this.SuccessAlert()      
+    },(error) => {
+      this.ErrorAlert();        
+      console.error('contact us error:', error);
     })
   }
 
@@ -65,6 +63,23 @@ export class ContactUsPage implements OnInit {
       header: 'Success!',
       subHeader: " We have received you're message" ,
       message:'',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }
+      ],
+    });
+    await alert.present();
+  }
+
+  async ErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: " We have not received you're message" ,
+      message:'Please try again or contact via email at: itspersonal@gmail.com',
       buttons: [{
         text: 'OK',
         role: 'cancel',

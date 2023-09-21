@@ -6,6 +6,7 @@ export class StockItemViewModel{
     inventory_Date!: Date
     inventory_Comments!: String 
     stock_Item_Quantity!: number
+    stock_Sale_Quantity!: number
     
     stock_Item_Colour_ID!: number
     stockColourName!: string

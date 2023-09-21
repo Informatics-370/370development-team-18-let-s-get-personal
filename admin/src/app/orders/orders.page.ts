@@ -37,6 +37,9 @@ export class OrdersPage implements OnInit {
     {
       this.service.SendOutDelivery(order_Line_Item_ID).subscribe(result =>{
         this.AcceptSuccessAlert()
+      },(error) => {
+        this.AcceptErrorAlert();        
+        console.error('OutForDelivery error:', error);
       })    
       this.AddTrail()
     }

@@ -420,15 +420,17 @@ namespace IPKP___API.Controllers
 
             return Ok(otp);
         }
-        [HttpGet("ResetPassword")]
-        public async Task<IActionResult> ResetPassword(string token, string email)
-        {
-            var model = new ResetPassword { Token = token, Email = email };
-            return Ok(new
-            {
-                model
-            });
-        }
+
+
+        //[HttpGet("ResetPassword")]
+        //public async Task<IActionResult> ResetPassword(string token, string email)
+        //{
+        //    var model = new ResetPassword { Token = token, Email = email };
+        //    return Ok(new
+        //    {
+        //        model
+        //    });
+        //}
 
         /*[HttpPost]
         [Route("ResetPassword")]
