@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Product Trends Report</ion-title>
+    <ion-title>Sales Per Product Type Report</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,43 +10,31 @@
       <ion-title size="large">Sales</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-button (click)="prodReportNav()" >View Product Trends</ion-button>
+  <ion-button (click)="prodReportNav()" >View Product Trends Graph</ion-button>
   <ion-button (click)="openPDF()">Download Sales Report</ion-button>
-  <!-- <ion-button (click)="openPDF()">Refund Policy</ion-button>-->
-  <ion-button (click)="RefundsRoute()">Refunds</ion-button> 
-  
-  <div id="htmlData">
-    <!-- Replace with working control break -->
-    <ion-grid>
-      <ion-row>
-        <ion-col style="font-weight: bold;"> Customer </ion-col>
-        <ion-col style="font-weight: bold;"> Amount Paid </ion-col>
-        <ion-col style="font-weight: bold;"> Quantity </ion-col>
-        <ion-col style="font-weight: bold;"> Date Paid </ion-col>
-      </ion-row>
-      <ion-row *ngFor="let item of sales">
-        <ion-col> {{item.customer_UserName}} </ion-col>
-        <ion-col> R {{item.payment_Amount}}.00 </ion-col>
-        <ion-col> {{item.sale_Quantity}} </ion-col>
-        <ion-col> {{item.sale_Date}} </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+  <ion-button (click)="RefundPolicyRoute()">Refund Policy</ion-button>
+  <!-- <ion-button (click)="RefundsRoute()">Refunds</ion-button>  -->
+  <!-- <ion-button (click)="bestellersnav()">Best Sellers</ion-button>  -->
+
   <!-- Control break -->
   <div>
     <ion-grid>
       <ion-row>        
-        <ion-card *ngFor="let t of stocktypes">
-          <ion-card-header >
-            {{t.stock_Type_Name}}: R {{total}}.00
+        <ion-card *ngFor="let type of stocktypes">
+          <ion-card-header style="font-weight: bold;">
+            {{type.stock_Type_Name}}: R {{type.stock_Type_Total | number }}
           </ion-card-header>
-    
-          <ion-card-content *ngFor="let c of controlbreak" >            
-            <label>{{c.stock_Item_Name}}: R {{c.payment_Amount}}.00</label>
-          </ion-card-content>   
+          <ng-container *ngIf="type.stock_Type_Total > 0 then Sales; else NoSales"></ng-container>
+          <ng-template #Sales>
+            <ion-card-content *ngFor="let control of type.controlbreak" >            
+              <label>{{control.stock_Item_Name}}: R {{control.total_Amount | number }}</label>
+            </ion-card-content>  
+          </ng-template>
+          <ng-template #NoSales style="text-align: center;">
+             <p style="text-align: center;">No sales</p> 
+          </ng-template>
         </ion-card>
       </ion-row>
     </ion-grid>
-    
   </div>
 </ion-content>

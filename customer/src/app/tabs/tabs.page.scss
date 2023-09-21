@@ -10,3 +10,13 @@ ion-tabs{
     //--ion-background-color: #FEE1E8;
     --toolbar-text-color: black;
 }
+
+/* Add this to your CSS */
+.logo-tab-button {
+    width: 32px;
+    //height: 32px;
+    background-image: url('../../assets/Logo.png'); /* Update the path */
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  

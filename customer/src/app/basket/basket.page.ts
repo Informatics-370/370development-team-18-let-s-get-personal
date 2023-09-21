@@ -34,6 +34,7 @@ export class BasketPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   order = new OrderT();
   storedData: any;
+  vatprice!: number
 
   ionViewDidEnter() {
     console.log("Reloaded");
@@ -149,11 +150,32 @@ export class BasketPage implements OnInit {
   public calculateTotalPrice(): any {
     let totalPrice = 0;
     for (const item of this.cartItems) {
-      totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;
+      totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;      
       //localStorage.setItem('quantity', JSON.stringify(item.basket_Quantity));
     }
+    let pureprice = totalPrice
+    localStorage.setItem('pureprice', JSON.stringify(pureprice));
+
+    this.vatprice = totalPrice * 0.15
+    localStorage.setItem('vatamount', JSON.stringify(this.vatprice));
+      
+    totalPrice = totalPrice + this.vatprice - this.discount_Amount
     this.order.price = totalPrice;
     return totalPrice;
+  }
+
+//======== Discount ==========
+  discounts: Discount[] = []
+  discount_Amount: number = 0
+  CheckDiscount(){
+    for (const item of this.cartItems) {
+      this.discountservice.GetDiscountByStock(item.stock_Item_ID).subscribe(result =>{
+        this.discounts = result as Discount[]
+        localStorage.setItem('discount', item.discount_Amount);
+        this.discount_Amount += item.discount_Amount
+      })      
+    }
+    localStorage.setItem('discountamount', JSON.stringify(this.discount_Amount));
   }
 
   public clearBasket() {
@@ -373,6 +395,7 @@ export class BasketPage implements OnInit {
     this.action = "Personalised Item:" + items.stock_Item.stock_Item_Name
     this.AddAuditTrail()
   }
+  
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
@@ -385,16 +408,6 @@ export class BasketPage implements OnInit {
     //this.uploadImage()
   }*/
 
-//======== Discount ==========
-  discounts: Discount[] = []
-  CheckDiscount(){
-    for (const item of this.cartItems) {
-      this.discountservice.GetDiscountByStock(item.stock_Item_ID).subscribe(result =>{
-        this.discounts = result as Discount[]
-        localStorage.setItem('discount', item.discount_Amount);
-      })
-    }
-  }
 
 //======== Audit Trail ==========
   action!: string

@@ -22,7 +22,7 @@ export class OrderService {
   constructor(private httpClient: HttpClient) { }
 
   public AddOrderLineItem(oli:Order_Line_Item){
-    return this.httpClient.post<Response>(`${this.apiUrl}Order/AddOrderLineItem`, oli)
+    return this.httpClient.post(`${this.apiUrl}Order/AddOrderLineItem`, oli)
     .pipe(map(result => result))
   } 
 

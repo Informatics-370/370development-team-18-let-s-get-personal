@@ -53,5 +53,6 @@ namespace IPKP___API.Controllers.Models.Repository
         public DbSet<BestSellers> BestSellers { get; set; }      
         public DbSet<Delivery_Address> Delivery_Address { get; set; }
         public DbSet<Order_Line_Item> Order_Line_Item { get; set; }
+        public DbSet<ContactUs> Contact_Us { get; set; }
     }
 }

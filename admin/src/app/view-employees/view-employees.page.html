@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>IPKP Employees</ion-title>
+    <ion-button slot="end" (click)="DeleteHelpAlert()">Deleting Employee Help</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -15,7 +16,7 @@
   <ion-content id="content">
     <ion-grid>
       <ion-row>
-        <ion-col style="font-weight: bold;">Employee Id</ion-col>
+        <ion-col style="font-weight: bold;">Employee Username</ion-col>
         <ion-col style="font-weight: bold;">Employee Name</ion-col>
         <ion-col style="font-weight: bold;">Phone Number</ion-col>
         <ion-col style="font-weight: bold;">Address</ion-col>
@@ -23,11 +24,11 @@
         <ion-col></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of employees">
-        <ion-col>{{item.employee_ID}}</ion-col>
+        <ion-col>{{item.username}}</ion-col>
         <ion-col> {{item.firstName}} {{item.surname}}</ion-col>
         <ion-col>{{item.email}}</ion-col>
         <ion-col>{{item.cell_Number}}</ion-col>
-        <ion-col><ion-button (click)="DeleteEmployee(item.employee_ID)">Delete Employee</ion-button></ion-col>
+        <ion-col><ion-button (click)="DeleteEmployee(item.employee_ID, item.username)">Delete Employee</ion-button></ion-col>
         <ion-col><ion-button (click)="EditEmployee(item.employee_ID, true)">Update Employee</ion-button></ion-col>
       </ion-row>
     </ion-grid>

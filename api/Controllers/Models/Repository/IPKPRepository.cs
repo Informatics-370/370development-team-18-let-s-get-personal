@@ -256,7 +256,7 @@ namespace IPKP___API.Controllers.Models.Repository
                     Stock_Item_Quantity = s.Stock_Item_Quantity,
                     Inventory_Comments = s.Inventory_Comments,
                     Inventory_Date = s.Inventory_Date,
-
+                    Stock_Sale_Quantity = s.Stock_Sale_Quantity,
 
                     Stock_Item_Colour_ID = c.Stock_Item_Colour_ID,
                     StockColourName = c.Stock_Item_Colour_Name,
@@ -558,20 +558,83 @@ namespace IPKP___API.Controllers.Models.Repository
                     .Where(u => u.Stock_Item_ID == stockItemID);
             return await query.FirstOrDefaultAsync();
         }
-        public async Task<BestSellers[]> GetAllBestSellersAsync()
+
+//Best Sellers
+        public object GetAllBestSellersAsync()
         {
-            IQueryable<BestSellers> query = _appDbContext.BestSellers;
-            return await query.ToArrayAsync();
+            List<BestSellersVM> stockitems = (
+                from c in _appDbContext.Stock_Item_Colours.ToList()
+                join s in _appDbContext.Stock_Items.ToList()
+                on c.Stock_Item_Colour_ID equals s.Stock_Item_Colour_ID
+                join t in _appDbContext.Stock_Types.ToList()
+                on s.Stock_Type_ID equals t.Stock_Type_ID
+                join i in _appDbContext.Stock_Images.ToList()
+                on s.Stock_Image_ID equals i.Stock_Image_ID
+                join b in _appDbContext.BestSellers.ToList()
+                on s.Stock_Item_ID equals b.Stock_Item_ID
+
+                select new BestSellersVM
+                {
+                    BestSeller_ID = b.BestSeller_ID, 
+
+                    Stock_Item_ID = s.Stock_Item_ID,
+                    Stock_Item_Name = s.Stock_Item_Name,
+                    Stock_Item_Price = s.Stock_Item_Price,
+                    Stock_Item_Size = s.Stock_Item_Size,
+                    Stock_Item_Quantity = s.Stock_Item_Quantity,
+
+                    Inventory_Comments = s.Inventory_Comments,
+                    Inventory_Date = s.Inventory_Date,
+
+                    Stock_Type_Name = t.Stock_Type_Name,
+                    Stock_Image_Name = i.Stock_Image_Name,
+                    Stock_Image_File = i.Stock_Image_File,
+                    Stock_Colour_Name = c.Stock_Item_Colour_Name,
+                }
+                ).ToList();
+            return stockitems;
+        }
+        public async Task<BestSellers> GetBestSellerByID(Guid bestsellerID)
+        {
+            IQueryable<BestSellers> query = _appDbContext.BestSellers
+                    .Where(u => u.BestSeller_ID == bestsellerID);
+            return await query.FirstOrDefaultAsync();
         }
 
-       /* public async Task<Customer> GetUser(string username)
-        {
-            return await _appDbContext.Customers
-                .FirstOrDefaultAsync(x => x.Username == username);
-        }*/
 
-        
-//deliveries
+        //deliveries
+        public object GetDeliveryByCompany(string company)
+        {
+            List<DeliveryVM> deliveries = (
+                from com in _appDbContext.Delivery_Companies.ToList()
+                join d in _appDbContext.Deliveries.ToList()
+                on com.Delivery_Company_ID equals d.Delivery_Company_ID
+                join a in _appDbContext.Delivery_Address.ToList()
+                on d.Delivery_Address_ID equals a.Delivery_Address_ID
+
+
+                select new DeliveryVM
+                {
+                    Delivery_Price = com.Delivery_Price,
+                    Delivery_Status = d.Delivery_Status,
+                    DateDelivered = d.DateDelivered,
+
+                    Delivery_Company_Name = com.Delivery_Company_Name,
+
+                    StreetName = a.StreetName,
+                    StreetNumber = a.StreetNumber,
+                    City = a.City,
+                    Dwelling_Type = a.Dwelling_Type,
+                    Unit_Number = a.Unit_Number,
+                    Province = a.Province,
+                    AreaCode = a.AreaCode,
+                }
+                ).ToList();
+
+            //return deliveries;
+            IEnumerable<DeliveryVM> query = deliveries.Where(x => x.Delivery_Company_Name == company);
+            return query;
+        }
         public object GetAllDeliveries()
         {
             List<DeliveryVM> deliveries = (
@@ -886,7 +949,7 @@ namespace IPKP___API.Controllers.Models.Repository
                     Order_Line_Item_Quantity = p.Sale_Quantity,
                     Payment_Amount = p.Payment_Amount,
                     Stock_Type_Name = t.Stock_Type_Name,
-                    Total_Amount = s.Stock_Sale_Quantity,
+                    Total_Amount = Math.Round(s.Stock_Sale_Quantity*p.Payment_Amount,2)
                 }
                 ).ToList();
 
@@ -1004,6 +1067,41 @@ namespace IPKP___API.Controllers.Models.Repository
                 ).ToList();
             return trail;
         }
+
+ //contact us
+        public async Task<ContactUs[]> GetAllContactUsAsync()
+        {
+            IQueryable<ContactUs> query = _appDbContext.Contact_Us;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<ContactUs> GetContactUsByID(Guid contactusID)
+        {
+            IQueryable<ContactUs> query = _appDbContext.Contact_Us
+                    .Where(u => u.Contact_Us_ID == contactusID);
+            return await query.FirstOrDefaultAsync();
+        }
+
+//referential integrity checks
+        public async Task<Stock_Item> GetStockItemByColour(Guid stock_Item_Colour_ID)
+        {
+            IQueryable<Stock_Item> query = _appDbContext.Stock_Items
+              .Where(u => u.Stock_Item_Colour_ID == stock_Item_Colour_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+        public async Task<Stock_Item> GetStockItemByImage(Guid stock_Item_Image_ID)
+        {
+            IQueryable<Stock_Item> query = _appDbContext.Stock_Items
+              .Where(u => u.Stock_Image_ID == stock_Item_Image_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+        public async Task<Stock_Item> GetStockItemByType(Guid stock_Item_Type_ID)
+        {
+            IQueryable<Stock_Item> query = _appDbContext.Stock_Items
+              .Where(u => u.Stock_Type_ID == stock_Item_Type_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+
 
     }
 }

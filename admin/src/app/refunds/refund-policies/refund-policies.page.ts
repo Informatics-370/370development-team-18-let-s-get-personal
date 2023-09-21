@@ -8,6 +8,7 @@ import { RefundService } from 'src/app/Services/refund.service';
 import { Refund } from 'src/app/Models/refund';
 import { Refund_Policy } from 'src/app/Models/refundpolicy';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 //for modal
 import { ModalController} from '@ionic/angular'; 
@@ -19,11 +20,13 @@ import { OverlayEventDetail } from '@ionic/core/components';
   templateUrl: './refund-policies.page.html',
   styleUrls: ['./refund-policies.page.scss'],
   standalone: true,
+  providers: [DatePipe],
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule]
 })
 export class RefundPoliciesPage implements OnInit {
 
   filterTerm: string = "";
+
   filteredpolicies:  Refund_Policy[] = [];
   refundPolicies: Refund_Policy[] =[]
   prevRefunds:Refund[]=[];
@@ -72,13 +75,11 @@ export class RefundPoliciesPage implements OnInit {
     addRefund.refund_Policy_Description = this.AddForm.value.description;
 
     this.service.AddRefundPolicy(addRefund).subscribe(response => {
-      if (response.status == "Error"){
-        this.addPolicyErrorAlert();
-      }
-      else{
         this.addPolicySuccessAlert();            
-      }
-    })
+    }, (error) => {
+       this.addPolicyErrorAlert();
+      console.error('Policy error:', error);
+    });
   }
 
   DeleteRefundPolicy(refund_Policy_ID: number){
@@ -112,7 +113,7 @@ export class RefundPoliciesPage implements OnInit {
   async addPolicySuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
-      subHeader: 'Policy Added',
+      subHeader: 'Policy Added!',
       buttons: [
         {
           text: 'OK',
@@ -128,7 +129,7 @@ export class RefundPoliciesPage implements OnInit {
   async addPolicyErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Policy Was Not Added',
+      subHeader: 'Policy Was Not Added.',
       message: 'Please try again',
       buttons: [{
         text: 'OK',

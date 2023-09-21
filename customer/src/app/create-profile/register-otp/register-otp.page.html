@@ -1,0 +1,17 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <!--<ion-title>Registration Verification code</ion-title>-->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <h2 id="h2" class="center">This is used to verify that the email you provided does belong to you.</h2>
+  <ion-item>
+    <ion-label position="floating">Verification Code</ion-label>
+    <ion-input [(ngModel)]="verificationCode" type="number"></ion-input>
+  </ion-item>
+  <ion-button expand="full" (click)="verifyCode()">Verify</ion-button>
+  <br>
+  <img src="/assets/otp.jpg" alt="security icon" class="center" style="width: 50%; height: 70%;" />
+</ion-content>
+

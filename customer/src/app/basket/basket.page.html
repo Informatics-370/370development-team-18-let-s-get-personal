@@ -41,6 +41,7 @@
     <ion-col></ion-col>
     <ion-row>
       <ion-col>Items Total (Excluding Delivery)</ion-col>
+	  <ion-col>Vat: R{{vatprice}}.00</ion-col>
       <ion-col><strong>R{{calculateTotalPrice()}}</strong></ion-col>
       <ion-button (click)="makepayment()">Checkout</ion-button>
     </ion-row>

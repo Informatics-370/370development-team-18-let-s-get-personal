@@ -11,8 +11,8 @@ import { Admin } from '../Models/admin';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { DatePipe } from '@angular/common';
-export type jsPDFDocument = any;
-type Opts = { [key: string]: string | number }
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
 @Component({
   selector: 'app-profiles',
   templateUrl: './profiles.page.html',
@@ -22,7 +22,6 @@ type Opts = { [key: string]: string | number }
   imports: [IonicModule, CommonModule, FormsModule, RouterModule,ReactiveFormsModule]
 })
 export class ProfilesPage implements OnInit {
-  private readonly jsPDFDocument: jsPDFDocument
   Profile: User[] = []
   admin: Admin [] = []
   searchedAdmin: Admin [] = []
@@ -35,7 +34,10 @@ export class ProfilesPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
 
   constructor( private alertController:AlertController, private service: UserProfileDataService, 
-    public modalCtrl: ModalController, public router: Router) { } 
+    public modalCtrl: ModalController, public router: Router) 
+  {
+    (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  } 
 
     SearchForm: FormGroup = new FormGroup({
       name:new FormControl('',[Validators.required])
@@ -103,23 +105,95 @@ export class ProfilesPage implements OnInit {
     })
   }
 
-  @ViewChild('userData') userData!: ElementRef;
-  
-  openPDF(): void {
-    let DATA: any = document.getElementById('userData');
-    html2canvas(DATA).then((canvas) => {       
-      //Initialize JSPDF
-      let PDF = new jsPDF('p', 'mm', 'a4');
-      //Converting canvas to Image
-      const FILEURI = canvas.toDataURL('image/png');
-      //Add image Canvas to PDF
-      let fileWidth = 208;
-      let fileHeight = (canvas.height * fileWidth) / canvas.width;      
-      let position = 10;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
-          
-      PDF.save('IPKP-Users.pdf');
-    });
+  generateCustomerPDF() {  
+    let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    let date = new Date
+    
+    let docDefinition = {  
+      fillColor: "White",
+      fillOpacity: "",
+      margin: [ 5, 10, 5, 5 ],
+      header: user+" - It's Personal Customer List",  
+      footer:'Downloaded by: '+ user + ' at: '+ date,        
+      content:[
+        {          
+          layout: 'lightHorizontalLines', // optional          
+          table: {
+            headerRows: 1,
+            //widths: [ '30%', '40%', '30%' ],
+            // margin: [left, top, right, bottom]
+            margin: [ 5, 10, 5, 5 ],
+            
+            body: [
+              [ 'Username', 'First Name', 'Last Name', 'Email Address', 'Cell Number', 'Date Registered' ],
+              ...this.customers.map(p => ([p.username, p.firstName, p.surname, p.email, p.cell_Number, p.date_Registered]))
+            ]
+          }          
+        }
+      ]      
+    };  
+    pdfMake.createPdf(docDefinition).download();      
   }
+
+  generateEmployeePDF(){
+    let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    let date = new Date
+    
+    let docDefinition = {  
+      fillColor: "White",
+      fillOpacity: "",
+      margin: [ 5, 10, 5, 5 ],
+      header: user+" - It's Personal Employee List",  
+      footer:'Downloaded by: '+ user + ' at: '+ date,        
+      content:[
+        {          
+          layout: 'lightHorizontalLines', // optional          
+          table: {
+            headerRows: 1,
+            //widths: [ '30%', '40%', '30%' ],
+            // margin: [left, top, right, bottom]
+            margin: [ 5, 10, 5, 5 ],
+            
+            body: [
+              [ 'Username', 'First Name', 'Last Name', 'Email Address', 'Cell Number', 'Date Registered' ],
+              ...this.employees.map(p => ([p.username, p.firstName, p.surname, p.email, p.cell_Number, p.date_Registered]))
+            ]
+          }          
+        }
+      ]      
+    };  
+    pdfMake.createPdf(docDefinition).download(); 
+  }
+
+  generateAdminPDF(){
+    let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    let date = new Date
+    
+    let docDefinition = {  
+      fillColor: "White",
+      fillOpacity: "",
+      margin: [ 5, 10, 5, 5 ],
+      header: user+" - It's Personal Admin List",  
+      footer:'Downloaded by: '+ user + ' at: '+ date,        
+      content:[
+        {          
+          layout: 'lightHorizontalLines', // optional          
+          table: {
+            headerRows: 1,
+            //widths: [ '30%', '40%', '30%' ],
+            // margin: [left, top, right, bottom]
+            margin: [ 5, 10, 5, 5 ],
+            
+            body: [
+              [ 'Username', 'First Name', 'Last Name', 'Email Address', 'Cell Number', 'Date Registered' ],
+              ...this.admin.map(p => ([p.username, p.firstName, p.surname, p.email, p.cell_Number, p.date_Registered]))
+            ]
+          }          
+        }
+      ]      
+    };  
+    pdfMake.createPdf(docDefinition).download(); 
+  }
+
 
 }

@@ -14,12 +14,16 @@ import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { StockItemViewModel } from '../ViewModels/stockitemsVM';
 import { Stock_Item } from '../Models/stockitem';
+import { DatePipe } from '@angular/common';
+
+
 
 @Component({
   selector: 'app-discounts',
   templateUrl: './discounts.page.html',
   styleUrls: ['./discounts.page.scss'],
   standalone: true,
+  providers: [DatePipe],
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class DiscountsPage implements OnInit {
@@ -30,15 +34,15 @@ export class DiscountsPage implements OnInit {
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service: DiscountService, private thisroute: Router, public modalCtrl: ModalController,
-    private alertController: AlertController, private _service: StockItemDataService, private formBuilder: FormBuilder, 
+    private alertController: AlertController, private _service: StockItemDataService, private formBuilder: FormBuilder,
     private trailservice: AuditTrailService) { }
 
   AddForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     amount: new FormControl('', [Validators.required]),
-    effectiveFromdate: new FormControl('', [Validators.required, this.dateValidator]),
+    effectiveFromdate: new FormControl('', [Validators.required, this.dateValidator.bind(this)]),
     effectiveTodate: new FormControl('', [Validators.required, this.dateValidator.bind(this)]),
-    productID: new FormControl('', Validators.required)
+    productID: new FormControl('', [Validators.required])
   })
 
   dateValidator(control: FormControl): { [key: string]: boolean } | null {
@@ -51,7 +55,7 @@ export class DiscountsPage implements OnInit {
     else if (control.parent) {
       const effectiveFromdate = control.parent.get('effectiveFromdate')?.value;
       const effectiveTodate = control.parent.get('effectiveTodate')?.value;
-  
+
       if (effectiveTodate < effectiveFromdate) {
         return { notValid: true };
       }
@@ -81,8 +85,18 @@ export class DiscountsPage implements OnInit {
     })
   }
 
-//=========== Add ===========
+  getProductName(stockId: string): string {
+    const product = this.Products.find(product => product.stock_Item_ID === stockId);
+    return product ? product.stock_Item_Name : '';
+
+  }
+
+
+  //=========== Add ===========
   AddDiscount() {
+    console.log('Form error',this.AddForm.errors)
+   // if(this.AddForm.valid){
+
     let addDiscount = new Discount();
 
     addDiscount.discount_Name = this.AddForm.value.name;
@@ -91,20 +105,28 @@ export class DiscountsPage implements OnInit {
     addDiscount.effective_To_Date = this.AddForm.value.effectiveTodate;
     addDiscount.stock_Id = this.AddForm.value.productID;
 
+    console.log('Discount Name', addDiscount.discount_Name);
+    console.log('Discount Amount', addDiscount.discount_Amount);
+    console.log('Effective From Date', addDiscount.effective_From_Date);
+    console.log('Effective To Date', addDiscount.effective_To_Date);
+    console.log('Stock ID', addDiscount.stock_Id);
+    const productName=this.getProductName(addDiscount.stock_Id)
+    console.log('productName', productName)
 
     this.service.AddDiscount(addDiscount).subscribe(response => {
 
-        this.addDiscountSuccessAlert();
-        this.action = "Added discount: " + this.AddForm.value.name
-        this.AddTrail()
-       
-    },(error) => {
+      this.addDiscountSuccessAlert();
+      this.action = "Added discount: " + this.AddForm.value.name
+      this.AddTrail()
+
+    }, (error) => {
       this.addDiscountErrorAlert
       console.error('Discount error:', error);
     });
+  //}
   }
 
-//=========== Edit ===========
+  //=========== Edit ===========
   isModalOpen = false;
   editDiscount: Discount = new Discount();
   editForm: FormGroup = new FormGroup({
@@ -138,8 +160,8 @@ export class DiscountsPage implements OnInit {
       this.service.UpdateDiscount(this.editDiscount.discount_ID, editedDiscount).subscribe(result => {
         this.editDiscountSuccessAlert();
 
-        this.action = "Updated discount from "+ this.editDiscount.discount_Name + "," + this.editDiscount.discount_Amount + "," + this.editDiscount.effective_From_Date  + "," + this.editDiscount.effective_To_Date
-         + " to: " + this.editForm.value.name + "," +this.editForm.value.amount + "," +this.editForm.value.effectiveFromdate + "," + this.editForm.value.effectiveTodate
+        this.action = "Updated discount from " + this.editDiscount.discount_Name + "," + this.editDiscount.discount_Amount + "," + this.editDiscount.effective_From_Date + "," + this.editDiscount.effective_To_Date
+          + " to: " + this.editForm.value.name + "," + this.editForm.value.amount + "," + this.editForm.value.effectiveFromdate + "," + this.editForm.value.effectiveTodate
         this.AddTrail()
       })
     }
@@ -153,8 +175,8 @@ export class DiscountsPage implements OnInit {
     //this.modal.dismiss(null, 'cancel');
   }
 
-//=========== Delete ===========
-  DeleteDiscount(discount_ID: string, discount_Name:string) {
+  //=========== Delete ===========
+  DeleteDiscount(discount_ID: string, discount_Name: string) {
     this.service.DeleteDiscount(discount_ID).subscribe(result => {
       console.log(result);
       if (result.status == "Error") {
@@ -169,25 +191,25 @@ export class DiscountsPage implements OnInit {
     })
   }
 
-//=========== Audit trail ===========
+  //=========== Audit trail ===========
   action!: string
-  AddTrail(){
+  AddTrail() {
     let audittrail = new AuditTrail()
     let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
     let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
 
-    
-    if(roles == "Admin"){
+
+    if (roles == "Admin") {
       audittrail.admin_ID = userID
       audittrail.actionName = this.action
-      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result => {
         console.log(result)
       })
     }
-    else{
+    else {
       audittrail.employee_ID = userID
       audittrail.actionName = this.action
-      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result => {
         console.log(result)
       })
     }

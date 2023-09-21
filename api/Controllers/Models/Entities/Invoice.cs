@@ -13,17 +13,17 @@ namespace IPKP___API.Controllers.Models.Entities
         public Guid Invoice_ID { get; set; }
 
         //foreign keys
-        [ForeignKey(nameof(Order_ID))]
-        public Guid Order_ID { get; set; }
+        [ForeignKey(nameof(Order_Line_Item_ID))]
+        public Guid Order_Line_Item_ID { get; set; }
         
 
         [ForeignKey(nameof(Payment_ID))]
         public Guid Payment_ID { get; set; }
-       
 
-        [ForeignKey(nameof(Invoice_Discount_ID))]
-        public Guid Invoice_Discount_ID { get; set; }
-        
+        public Customer customer { get; set; }
+
+        public double Discount_Amount { get; set; }
+
 
         public double Delivery_Price { get; set; }
         public double Invoice_Total_exclVAT { get; set; }

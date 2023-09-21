@@ -26,15 +26,15 @@ import { StockTypes } from '../Models/stocktypes';
 })
 export class SalesPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
-  sales: Payment[] =[]
+  
   constructor(private service: SalesService, private router: Router, public stockitemservice: StockItemDataService,
     public environmentInjector: EnvironmentInjector, private typeservice: StockTypeDataService) { }  
 
-  ngOnInit(): void {
-    this.GetSalesList()
+  ngOnInit(): void {    
     this.GetStockTypes()
   }
 
+  sales: Payment[] =[]
   GetSalesList()
   {
     this.service.GetAllSales().subscribe(res => {
@@ -42,6 +42,40 @@ export class SalesPage implements OnInit {
     })
   }
 
+  controlbreak: SalesVM[] =[]
+  total:any
+  stocktypename: any
+  stocktypes: StockTypes[] =[];
+
+  //Get stock Types 
+  GetStockTypes(){
+    this.typeservice.GetStockTypes().subscribe(result =>{
+      this.stocktypes = result as StockTypes[]; 
+      this.stocktypes.forEach(stockType => {
+    
+        //Fetch Total per type
+        this.GetControlBreak(stockType)
+      });
+    })
+  }
+
+  GetControlBreak(stockType: StockTypes)
+  {
+    this.service.GetSalesControlBreak(stockType.stock_Type_Name).subscribe(result => {
+      // Set Items Control break list
+      stockType.controlbreak = result;
+      
+
+      // Set Items Total by looping through Items
+      stockType.stock_Type_Total = 0
+      stockType.controlbreak.forEach(item => {
+        stockType.stock_Type_Total = stockType.stock_Type_Total + item.total_Amount;
+      });
+
+    });
+  }
+
+  
   @ViewChild('htmlData') htmlData!: ElementRef;
   
   openPDF(): void {
@@ -61,49 +95,6 @@ export class SalesPage implements OnInit {
     });
   }
 
-  controlbreak: SalesVM[] =[]
-  total:any
-  stocktypename: any
-  stocktypes: StockTypes[] =[];
-  GetStockTypes(){
-    this.typeservice.GetStockTypes().subscribe(result =>{
-      this.stocktypes = result as StockTypes[];
-      console.log(this.stocktypes);
-
-      this.stocktypes.forEach(e => {
-        this.stocktypename = e.stock_Type_Name
-        console.log(this.stocktypename)
-        this.GetControlBreak(this.stocktypename)
-      });
-    })
-  }
-
-  GetControlBreak(typename: string){
-    console.log(typename)
-    this.service.GetSalesControlBreak(typename).subscribe(result => {
-      this.controlbreak = this.controlbreak.concat(result)
-      console.log(this.controlbreak)
-      this.controlbreak.forEach(element => {
-        let amount = element.payment_Amount
-        this.total = amount + element.payment_Amount
-      });
-    }) 
-  }
-
-  Products: StockItemViewModel[] = [];
-  GetAllStockItems(){
-    this.stockitemservice.GetStockItems().subscribe(result =>{
-
-      this.Products = result as StockItemViewModel[];
-      
-      this.Products.forEach(e => {
-        this.stocktypename = e.stockTypeName
-        console.log(this.stocktypename)
-        this.GetControlBreak(this.stocktypename)
-      });
-    })    
-  }
-
 //========= Navigations =========
   prodReportNav()
   {
@@ -118,6 +109,11 @@ export class SalesPage implements OnInit {
   RefundPolicyRoute()
   {
     this.router.navigate(['./tabs/refund-policies']);
+  }
+
+  bestellersnav()
+  {
+    this.router.navigate(['./tabs/best-sellers']);
   }
   
 

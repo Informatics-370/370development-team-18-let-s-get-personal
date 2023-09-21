@@ -98,6 +98,10 @@ export const routes: Routes = [
         loadComponent: () => import('../change-password/change-password.page').then( m => m.ChangePasswordPage)
       },
       {
+        path: 'register-otp',
+        loadComponent: () => import('../create-profile/register-otp/register-otp.page').then( m => m.RegisterOtpPage)
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full',

@@ -1,13 +1,14 @@
-import { Order_Request } from "./orderrequest";
-import { Invoice_Discount } from "./invoicediscount";
-
+import { Customer } from '../Models/customer';
 export class Invoice{
-    invoice_ID!: number   
+    invoice_ID!: string  
+
+    customer!: Customer
+    order_Line_Item_ID!: string
+    payment_ID!: string
+
+    discount_Amount!: number
     delivery_Price!: Number
     invoice_Total_exclVAT!: Number
     invoice_Total_VAT!: Number
     invoice_Total_inclVAT!: Number
-
-    order_Request!: Order_Request
-    invoice_Discount!: Invoice_Discount
 }

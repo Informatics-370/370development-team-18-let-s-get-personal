@@ -7,7 +7,9 @@ import { UserProfileDataService } from '../Services/userprofile.service';
 import { Customer } from '../Models/customer';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { AuthenticationService } from 'src/app/Services/authentication.service';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-view-profile',
   templateUrl: './view-profile.page.html',
@@ -21,7 +23,7 @@ export class ViewProfilePage implements OnInit {
   public username: string = ""
 
   constructor(private _modalController: ModalController, private _router: Router, public modalCtrl: ModalController,
-    private alertController:AlertController, private service: UserProfileDataService, )  { }
+    private alertController:AlertController, private service: UserProfileDataService, private authservice: AuthenticationService)  { }
 
   ngOnInit() {
     this.getUser()
@@ -39,8 +41,7 @@ export class ViewProfilePage implements OnInit {
 
   }
 
-  //========== edit =====
-
+//========== edit =====
   isModalOpen = false;
   editCustomer: Customer = new Customer();
   editForm: FormGroup = new FormGroup({
@@ -93,11 +94,40 @@ export class ViewProfilePage implements OnInit {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
+//==========Delete ===========
+  customerID!: string
+  async DeleteConfirmAlert(customer_ID: string) {
+    this.customerID = customer_ID
+    const alert = await this.alertController.create({
+      header: 'Are you sure you want to delete your profile?',
+      buttons: [{
+        text: 'Cancel',
+        role: 'cancel',
+        // handler:() =>{
+        //   this.reloadPage(); 
+        // }
+    }, {
+      text: 'Continue',
+      role: 'cancel',
+      handler:() =>{
+        this.deleteProfile(this.customerID); 
+      }
+  }],
+    });
+    await alert.present();
+  }
+
   public deleteProfile(customer_ID: string) {
     try{
-      this.service.DeleteCustomer(customer_ID).subscribe(result =>{
+      // this.service.DeleteCustomer(customer_ID).subscribe(result =>{
+      //   console.log(result);
+      // })
+
+      this.authservice.DeleteUser(this.username).subscribe(result =>{
         console.log(result);
       })
+
+      this.Logout()
     }
     catch{
 
