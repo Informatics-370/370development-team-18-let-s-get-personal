@@ -35,5 +35,11 @@
         
         </div>
       </form>
+      <div *ngIf="isLoading" class="overlay">
+        <div class="loading-popup">
+          <div class="spinner"></div>
+          <p>Logging in...</p>
+        </div>
+      </div>
     </ion-card>  
 </ion-content>

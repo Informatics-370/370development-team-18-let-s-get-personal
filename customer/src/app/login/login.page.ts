@@ -29,8 +29,10 @@ export class LoginPage implements OnInit {
   // ngAfterViewInit(): void{
   //   this.CheckUser()
   // }
+  isLoading: boolean = false;
 
   login(form: NgForm) {
+    this.isLoading = true;
     this.authService.Login(form.value.username, form.value.password).subscribe((res) => {
       let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles')));
       console.log(roles);
@@ -47,6 +49,8 @@ export class LoginPage implements OnInit {
       // Handle registration error
       this.ErrorAlert();
       console.error('Login error:', error);
+    }).add(() => {
+      this.isLoading = false; // Stop loading
     });
       /*if (error.status === 401) {
         this.showToast('Invalid username or password');

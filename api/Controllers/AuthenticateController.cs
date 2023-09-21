@@ -18,6 +18,7 @@ using System.Net;
 using IPKP___API.Controllers.Models.Repository;
 using static System.Net.WebRequestMethods;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IPKP___API.Controllers
 {
@@ -48,6 +49,7 @@ namespace IPKP___API.Controllers
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+
         {
             var user = await _userManager.FindByNameAsync(model.Username);
 
@@ -361,6 +363,7 @@ namespace IPKP___API.Controllers
 
             if (user != null)
             {
+             
                 try
                 {
 
@@ -417,6 +420,41 @@ namespace IPKP___API.Controllers
 
             return Ok(otp);
         }
+        [HttpGet("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(string token, string email)
+        {
+            var model = new ResetPassword { Token = token, Email = email };
+            return Ok(new
+            {
+                model
+            });
+        }
+
+        /*[HttpPost]
+        [Route("ResetPassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPassword resetPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPassword.Email);
+            if (user != null)
+            {
+                var resetPassResult = await _userManager
+                  .ResetPasswordAsync(user, resetPassword.Token, resetPassword.ConfirmPassword);
+                if (!resetPassResult.Succeeded)
+                {
+                    foreach (var error in resetPassResult.Errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+                    return Ok(ModelState);
+                }
+                return StatusCode(StatusCodes.Status200OK,
+                  new Response { Status = "Success", Message = $"Password changed successfully!" });
+            }
+            return StatusCode(StatusCodes.Status400BadRequest,
+                new Response { Status = "Fail", Message = $"Password not changed! Please contact support." });
+
+        }*/
 
         private int GenerateRandomNumer() {
             int _min = 1000;
@@ -478,7 +516,7 @@ namespace IPKP___API.Controllers
             SmtpClient client = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
-                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "amojsldimzrbrtot"),
+                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "wauc crru pvma osvq"),
                 EnableSsl = true
             };
 

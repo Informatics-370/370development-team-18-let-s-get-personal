@@ -4,15 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
-
 @Component({
-  selector: 'app-help',
-  templateUrl: './help.page.html',
-  styleUrls: ['./help.page.scss'],
+  selector: 'app-admin-help',
+  templateUrl: './admin-help.page.html',
+  styleUrls: ['./admin-help.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterModule]
+  imports: [IonicModule, CommonModule, FormsModule,RouterModule]
 })
-export class HelpPage implements OnInit {
+export class AdminHelpPage implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router,private alertController: AlertController) { }
 
@@ -32,10 +31,8 @@ export class HelpPage implements OnInit {
 
   }
 
-
   findString() {
     if (this.searchTerm && this.searchTerm.trim() !== '') {
-      
       const found = this.findText(this.searchTerm);
       console.log('word',found)
       if (!found) {
@@ -70,7 +67,6 @@ export class HelpPage implements OnInit {
 
         // Scroll to the selected range
         node.parentElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
 
         found = true;
         }
@@ -91,7 +87,6 @@ export class HelpPage implements OnInit {
       });
     }
     return textNodes;
-    
   }
 
   public faq() {

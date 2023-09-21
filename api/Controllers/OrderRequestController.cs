@@ -67,9 +67,11 @@ namespace IPKP___API.Controllers
                     Delivery_ID = d.Delivery_ID,
                     Delivery_Address_ID = d.Delivery_Address_ID,
                     Delivery_Company_ID = d.Delivery_Company_ID,
-                    //Delivery_Price = d.Delivery_Price,
+                   // Delivery_Price = d.Delivery_Price,
                     Delivery_Status = "Requested",
                 };
+
+        
 
                 _IPKPRepository.Add(deliveryrequest);
                 //await _IPKPRepository.SaveChangesAsync();
