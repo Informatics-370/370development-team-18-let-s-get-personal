@@ -202,6 +202,7 @@ namespace IPKP___API.Controllers
                     Customer_ID = o.Customer_ID,
                     Order_Quantity = o.Order_Quantity,
                     Order_Completed_Date = DateTime.Now,
+                    Stock_Item_Name = o.Stock_Item_Name,
                 };
 
                 _IPKPRepository.Add(order);

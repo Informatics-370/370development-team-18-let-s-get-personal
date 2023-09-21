@@ -129,6 +129,129 @@ namespace IPKP___API.Controllers.Models.Repository
                       .Where(u => u.Delivery_ID == delivery_ID);
             return await query.FirstOrDefaultAsync();
         }
+        public object GetDeliveryByCompany(string company)
+        {
+            List<DeliveryVM> deliveries = (
+                from com in _appDbContext.Delivery_Companies.ToList()
+                join d in _appDbContext.Deliveries.ToList()
+                on com.Delivery_Company_ID equals d.Delivery_Company_ID
+                join a in _appDbContext.Delivery_Address.ToList()
+                on d.Delivery_Address_ID equals a.Delivery_Address_ID
+
+
+                select new DeliveryVM
+                {
+                    Delivery_Price = com.Delivery_Price,
+                    Delivery_Status = d.Delivery_Status,
+                    DateDelivered = d.DateDelivered,
+
+                    Delivery_Company_Name = com.Delivery_Company_Name,
+
+                    StreetName = a.StreetName,
+                    StreetNumber = a.StreetNumber,
+                    City = a.City,
+                    Dwelling_Type = a.Dwelling_Type,
+                    Unit_Number = a.Unit_Number,
+                    Province = a.Province,
+                    AreaCode = a.AreaCode,
+                }
+                ).ToList();
+
+            //return deliveries;
+            IEnumerable<DeliveryVM> query = deliveries.Where(x => x.Delivery_Company_Name == company);
+            return query;
+        }
+        public object GetAllDeliveries()
+        {
+            List<DeliveryVM> deliveries = (
+                from com in _appDbContext.Delivery_Companies.ToList()
+                join d in _appDbContext.Deliveries.ToList()
+                on com.Delivery_Company_ID equals d.Delivery_Company_ID
+                join a in _appDbContext.Delivery_Address.ToList()
+                on d.Delivery_Address_ID equals a.Delivery_Address_ID
+
+                select new DeliveryVM
+                {
+                    Delivery_Price = com.Delivery_Price,
+                    Delivery_Status = d.Delivery_Status,
+
+                    Delivery_Company_Name = com.Delivery_Company_Name,
+
+                    StreetName = a.StreetName,
+                    StreetNumber = a.StreetNumber,
+                    City = a.City,
+                    Dwelling_Type = a.Dwelling_Type,
+                    Unit_Number = a.Unit_Number,
+                    Province = a.Province,
+                    AreaCode = a.AreaCode,
+                }
+                ).ToList();
+
+            return deliveries;
+        }
+        public object GetDeliveryBySatus(string status)
+        {
+            List<DeliveryVM> deliveries = (
+                from com in _appDbContext.Delivery_Companies.ToList()
+                join d in _appDbContext.Deliveries.ToList()
+                on com.Delivery_Company_ID equals d.Delivery_Company_ID
+                join a in _appDbContext.Delivery_Address.ToList()
+                on d.Delivery_Address_ID equals a.Delivery_Address_ID
+
+
+                select new DeliveryVM
+                {
+                    Delivery_Price = com.Delivery_Price,
+                    Delivery_Status = d.Delivery_Status,
+                    DateDelivered = d.DateDelivered,
+
+                    Delivery_Company_Name = com.Delivery_Company_Name,
+
+                    StreetName = a.StreetName,
+                    StreetNumber = a.StreetNumber,
+                    City = a.City,
+                    Dwelling_Type = a.Dwelling_Type,
+                    Unit_Number = a.Unit_Number,
+                    Province = a.Province,
+                    AreaCode = a.AreaCode,
+                }
+                ).ToList();
+
+            //return deliveries;
+            IEnumerable<DeliveryVM> query = deliveries.Where(x => x.Delivery_Status == status);
+            return query;
+        }
+        public object GetDeliveryByID(Guid deliveryID)
+        {
+            List<DeliveryVM> deliveries = (
+                from com in _appDbContext.Delivery_Companies.ToList()
+                join d in _appDbContext.Deliveries.ToList()
+                on com.Delivery_Company_ID equals d.Delivery_Company_ID
+                join a in _appDbContext.Delivery_Address.ToList()
+                on d.Delivery_Address_ID equals a.Delivery_Address_ID
+
+                select new DeliveryVM
+                {
+                    Delivery_ID = d.Delivery_ID,
+                    Delivery_Price = com.Delivery_Price,
+                    Delivery_Status = d.Delivery_Status,
+
+                    Delivery_Company_Name = com.Delivery_Company_Name,
+
+                    StreetName = a.StreetName,
+                    StreetNumber = a.StreetNumber,
+                    City = a.City,
+                    Dwelling_Type = a.Dwelling_Type,
+                    Unit_Number = a.Unit_Number,
+                    Province = a.Province,
+                    AreaCode = a.AreaCode,
+                }
+                ).ToList();
+
+            //return deliveries;
+            IEnumerable<DeliveryVM> query = deliveries.Where(x => x.Delivery_ID == deliveryID);
+            return query;
+        }
 
 //delivery company
         public async Task<Delivery_Company[]> GetAllDeliveryCompaniesAsync()
@@ -602,131 +725,6 @@ namespace IPKP___API.Controllers.Models.Repository
         }
 
 
-        //deliveries
-        public object GetDeliveryByCompany(string company)
-        {
-            List<DeliveryVM> deliveries = (
-                from com in _appDbContext.Delivery_Companies.ToList()
-                join d in _appDbContext.Deliveries.ToList()
-                on com.Delivery_Company_ID equals d.Delivery_Company_ID
-                join a in _appDbContext.Delivery_Address.ToList()
-                on d.Delivery_Address_ID equals a.Delivery_Address_ID
-
-
-                select new DeliveryVM
-                {
-                    Delivery_Price = com.Delivery_Price,
-                    Delivery_Status = d.Delivery_Status,
-                    DateDelivered = d.DateDelivered,
-
-                    Delivery_Company_Name = com.Delivery_Company_Name,
-
-                    StreetName = a.StreetName,
-                    StreetNumber = a.StreetNumber,
-                    City = a.City,
-                    Dwelling_Type = a.Dwelling_Type,
-                    Unit_Number = a.Unit_Number,
-                    Province = a.Province,
-                    AreaCode = a.AreaCode,
-                }
-                ).ToList();
-
-            //return deliveries;
-            IEnumerable<DeliveryVM> query = deliveries.Where(x => x.Delivery_Company_Name == company);
-            return query;
-        }
-        public object GetAllDeliveries()
-        {
-            List<DeliveryVM> deliveries = (
-                from com in _appDbContext.Delivery_Companies.ToList()
-                join d in _appDbContext.Deliveries.ToList()
-                on com.Delivery_Company_ID equals d.Delivery_Company_ID
-                join a in _appDbContext.Delivery_Address.ToList()
-                on d.Delivery_Address_ID equals a.Delivery_Address_ID
-
-                select new DeliveryVM
-                {
-                    Delivery_Price = com.Delivery_Price,
-                    Delivery_Status = d.Delivery_Status,
-
-                    Delivery_Company_Name = com.Delivery_Company_Name,
-
-                    StreetName = a.StreetName,
-                    StreetNumber = a.StreetNumber,
-                    City = a.City,
-                    Dwelling_Type = a.Dwelling_Type,
-                    Unit_Number = a.Unit_Number,
-                    Province = a.Province,
-                    AreaCode = a.AreaCode,
-                }
-                ).ToList();
-
-            return deliveries;
-        }
-        public object GetDeliveryBySatus(string status)
-        {
-            List<DeliveryVM> deliveries = (
-                from com in _appDbContext.Delivery_Companies.ToList()
-                join d in _appDbContext.Deliveries.ToList()
-                on com.Delivery_Company_ID equals d.Delivery_Company_ID
-                join a in _appDbContext.Delivery_Address.ToList()
-                on d.Delivery_Address_ID equals a.Delivery_Address_ID
-                
-
-                select new DeliveryVM
-                {
-                    Delivery_Price = com.Delivery_Price,
-                    Delivery_Status = d.Delivery_Status,
-                    DateDelivered = d.DateDelivered,
-
-                    Delivery_Company_Name = com.Delivery_Company_Name,
-
-                    StreetName = a.StreetName,
-                    StreetNumber = a.StreetNumber,
-                    City = a.City,
-                    Dwelling_Type = a.Dwelling_Type,
-                    Unit_Number = a.Unit_Number,
-                    Province = a.Province,
-                    AreaCode = a.AreaCode,
-                }
-                ).ToList();
-
-            //return deliveries;
-            IEnumerable<DeliveryVM> query = deliveries.Where(x => x.Delivery_Status == status);
-            return query;
-        }
-        public object GetDeliveryByID(Guid deliveryID)
-        {
-            List<DeliveryVM> deliveries = (
-                from com in _appDbContext.Delivery_Companies.ToList()
-                join d in _appDbContext.Deliveries.ToList()
-                on com.Delivery_Company_ID equals d.Delivery_Company_ID
-                join a in _appDbContext.Delivery_Address.ToList()
-                on d.Delivery_Address_ID equals a.Delivery_Address_ID
-
-                select new DeliveryVM
-                {
-                    Delivery_ID = d.Delivery_ID,
-                    Delivery_Price = com.Delivery_Price,
-                    Delivery_Status = d.Delivery_Status,
-
-                    Delivery_Company_Name = com.Delivery_Company_Name,
-
-                    StreetName = a.StreetName,
-                    StreetNumber = a.StreetNumber,
-                    City = a.City,
-                    Dwelling_Type = a.Dwelling_Type,
-                    Unit_Number = a.Unit_Number,
-                    Province = a.Province,
-                    AreaCode = a.AreaCode,
-                }
-                ).ToList();
-
-            //return deliveries;
-            IEnumerable<DeliveryVM> query = deliveries.Where(x => x.Delivery_ID == deliveryID);
-            return query;
-        }
-
  //Order line items       
         public async Task<Order_Line_Item> GetOrderLineItemByID(Guid orderlineitemID)
         {
@@ -1100,6 +1098,32 @@ namespace IPKP___API.Controllers.Models.Repository
             IQueryable<Stock_Item> query = _appDbContext.Stock_Items
               .Where(u => u.Stock_Type_ID == stock_Item_Type_ID);
             return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Delivery> GetInProgressDeliveriesByCompany(Guid delivery_Company_ID)
+        {
+            IQueryable<Delivery> query = _appDbContext.Deliveries
+                      .Where(u => u.Delivery_Company_ID == delivery_Company_ID && u.Delivery_Status == "Out");
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public object GetOrderLineItemByStockItem(Guid stock_Item_ID)
+        {
+            List<OrderLineItemVM> orderlineitem = (
+                from orli in _appDbContext.Order_Line_Item.ToList()
+                join pd in _appDbContext.Personalisation_Designs.ToList()
+                on orli.Personalisation_ID equals pd.Personalisation_Design_ID
+                join s in _appDbContext.Stock_Items.ToList()
+                on pd.Stock_Item_ID equals s.Stock_Item_ID
+
+                select new OrderLineItemVM
+                {
+                    Stock_Item_ID = s.Stock_Item_ID,
+                }
+                ).ToList();
+
+            IEnumerable<OrderLineItemVM> query = orderlineitem.Where(x => x.Stock_Item_ID == stock_Item_ID);
+            return query;
         }
 
 

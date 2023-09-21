@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EnvironmentInjector, inject, OnInit  } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators, NgForm, ReactiveFormsModule  } from '@angular/forms';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import {ContactUs} from '../Models/contactus';
-import {ContactUsService} from 'src/app/Services/contactus.service';
+import { ContactUs } from '../Models/contactus';
+import { ContactUsService } from 'src/app/Services/contactus.service';
 @Component({
   selector: 'app-contact-us',
   templateUrl: './contact-us.page.html',
   styleUrls: ['./contact-us.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class ContactUsPage implements OnInit {
   isModalOpen = false;
@@ -18,11 +18,8 @@ export class ContactUsPage implements OnInit {
   constructor(private router:Router, private alertController:AlertController, private service: ContactUsService) { }
 
   ngOnInit() {
-  }
 
-  // setOpen(isOpen: boolean) {
-  //   this.isModalOpen = isOpen;
-  // }
+  }
 
   ContactForm: FormGroup = new FormGroup({
     Name: new FormControl('', [Validators.required]),

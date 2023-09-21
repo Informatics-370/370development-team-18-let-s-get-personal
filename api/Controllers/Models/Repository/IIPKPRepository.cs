@@ -103,6 +103,8 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Stock_Item> GetStockItemByColour(Guid stock_Item_Colour_ID);
         Task<Stock_Item> GetStockItemByImage(Guid stock_Item_Image_ID);
         Task<Stock_Item> GetStockItemByType(Guid stock_Item_Type_ID);
+        Task<Delivery> GetInProgressDeliveriesByCompany(Guid delivery_Company_ID);
+        object GetOrderLineItemByStockItem(Guid stock_Item_ID);
 
     }
 }

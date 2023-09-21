@@ -113,39 +113,39 @@ export class InventoryPage implements OnInit {
   }
 
 //========= Download PDF ========
-generatePDF() {  
-  let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
-  let date = new Date
-  
-  let docDefinition = {  
-    fillColor: "White",
-    fillOpacity: "",
-    margin: [ 5, 10, 5, 5 ],
-    header: user+" - It's Personal Inventory",  
-    footer:'Downloaded by: '+ user + ' at: '+ date,        
-    content:[
-      {          
-        layout: 'lightHorizontalLines', // optional          
-        table: {
-          headerRows: 1,
-          //widths: [ '30%', '40%', '30%' ],
-          // margin: [left, top, right, bottom]
-          margin: [ 5, 10, 5, 5 ],
-          
-          body: [
-            [ 'Product', 'Type', 'Colour', 'Image', 'Size', 'Quantity', 'Price', 'Inventory Comments' ],
-            ...this.Products.map(p => 
-              ([
-                p.stock_Item_Name, p.stockTypeName, p.stockColourName, p.stockImageName, p.stock_Item_Size,
-                p.stock_Item_Quantity, p.stock_Item_Price, p.inventory_Comments
-              ])),
-          ]
-        }          
-      }
-    ]      
-  };  
-  pdfMake.createPdf(docDefinition).download();      
-}
+  generatePDF() {  
+    let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    let date = new Date
+    
+    let docDefinition = {  
+      fillColor: "White",
+      fillOpacity: "",
+      margin: [ 5, 10, 5, 5 ],
+      header: user+" - It's Personal Inventory",  
+      footer:'Downloaded by: '+ user + ' at: '+ date,        
+      content:[
+        {          
+          layout: 'lightHorizontalLines', // optional          
+          table: {
+            headerRows: 1,
+            //widths: [ '30%', '40%', '30%' ],
+            // margin: [left, top, right, bottom]
+            margin: [ 5, 10, 5, 5 ],
+            
+            body: [
+              [ 'Product', 'Type', 'Colour', 'Image', 'Size', 'Quantity', 'Price', 'Inventory Comments' ],
+              ...this.Products.map(p => 
+                ([
+                  p.stock_Item_Name, p.stockTypeName, p.stockColourName, p.stockImageName, p.stock_Item_Size,
+                  p.stock_Item_Quantity, p.stock_Item_Price, p.inventory_Comments
+                ])),
+            ]
+          }          
+        }
+      ]      
+    };  
+    pdfMake.createPdf(docDefinition).download();      
+  }
 
   
 //========= add ========
@@ -222,33 +222,26 @@ generatePDF() {
   }
 
   addStockImage(){
-    //if(this.AddImageForm.valid)
-    //{
-      this.formData.append('name', this.AddImageForm.get('name')!.value);
-      this.imageservice.AddStockImage(this.formData).subscribe(result => {
-        let stockimage = result as Stock_Image
-        this.addedimageID = stockimage.stock_Image_ID
-        let imageName = stockimage.stock_Image_Name
-        console.log(this.addedimageID)
+    this.formData.append('name', this.AddImageForm.get('name')!.value);
+    this.imageservice.AddStockImage(this.formData).subscribe(result => {
+      let stockimage = result as Stock_Image
+      this.addedimageID = stockimage.stock_Image_ID
+      let imageName = stockimage.stock_Image_Name
+      console.log(this.addedimageID)
 
-        if(this.addedimageID == null){
-          this.AddStockImageErrorAlert()
-        }
-        else{
-          this.AddStockItem()
-
-          this.action = "Uploaded Image: " + imageName
-          this.AddTrail()
-        }
-        
-        // if(result.status == "Error"){        
-        //   this.AddStockImageSuccessAlert();
-        // }
-        // else if(result.status == "Success"){
-        //   this.AddStockImageSuccessAlert();
-        // }
-      })
-    //}          
+      if(this.addedimageID == null){
+        this.AddStockImageErrorAlert()
+      }
+      else{
+        this.AddStockItem()
+        this.action = "Uploaded Image: " + imageName
+        this.AddTrail()
+      }
+    },(error) => {
+      this.errormsg = error
+      this.AddStockImageErrorAlert();        
+      console.error('Add stock image error:', error);
+    })         
   }
 
 
@@ -284,27 +277,25 @@ generatePDF() {
   }
 
   confirmeditmodal(){
-    try
-    {
-      let editedProduct = new Stock_Item();
-      editedProduct.stock_Item_Name = this.editForm.value.Stock_Item_Name;
-      editedProduct.stock_Item_Price = this.editForm.value.Stock_Item_Price;
-      editedProduct.stock_Item_Size = this.editForm.value.Stock_Item_Size;
-      editedProduct.inventory_Comments = this.editForm.value.Inventory_Comments;
-      editedProduct.stock_Type_ID = this.editForm.value.Stock_Type_ID;
-      editedProduct.stock_Image_ID = this.editForm.value.Stock_Image_ID;
-      editedProduct.stock_Item_Colour_ID = this.editForm.value.Stock_Item_Colour_ID;
+    let editedProduct = new Stock_Item();
+    editedProduct.stock_Item_Name = this.editForm.value.Stock_Item_Name;
+    editedProduct.stock_Item_Price = this.editForm.value.Stock_Item_Price;
+    editedProduct.stock_Item_Size = this.editForm.value.Stock_Item_Size;
+    editedProduct.inventory_Comments = this.editForm.value.Inventory_Comments;
+    editedProduct.stock_Type_ID = this.editForm.value.Stock_Type_ID;
+    editedProduct.stock_Image_ID = this.editForm.value.Stock_Image_ID;
+    editedProduct.stock_Item_Colour_ID = this.editForm.value.Stock_Item_Colour_ID;
 
-      this.stockitemservice.UpdateStockItem(this.editProduct.stock_Item_ID, editedProduct).subscribe(result =>{
-        this.editSuccessAlert();
+    this.stockitemservice.UpdateStockItem(this.editProduct.stock_Item_ID, editedProduct).subscribe(result =>{
+      this.editSuccessAlert();
 
-        this.action = "Updated Product " + this.editForm.value.Stock_Item_Name 
-        this.AddTrail()
-      })
-    }
-    catch{      
-      this.editErrorAlert();
-    }    
+      this.action = "Updated Product " + this.editForm.value.Stock_Item_Name 
+      this.AddTrail()
+    },(error) => {
+      this.errormsg = error
+      this.editErrorAlert();        
+      console.error('Update stock item error:', error);
+    })   
   }
 
   canceleditmodal() {
@@ -316,9 +307,9 @@ generatePDF() {
   }
 
 //============== Delete =======
-
-DeleteStockItem(stockitemID: string){
-  this.stockitemservice.DeleteStockItem(stockitemID).subscribe(result =>{
+deletestockitemID!: string
+DeleteStockItem(){
+  this.stockitemservice.DeleteStockItem(this.deletestockitemID).subscribe(result =>{
     if(result.status == "Success"){
       this.DeleteStockItemSuccessAlert(); 
     }
@@ -326,6 +317,11 @@ DeleteStockItem(stockitemID: string){
       this.DeleteStockItemErrorAlert();
     }
     
+  },(error) => {
+    this.errormsg = error
+    this.DeleteStockItemErrorAlert();
+    
+    console.error('Delete stock item error:', error);
   });
 }
 
@@ -376,7 +372,7 @@ DeleteStockItem(stockitemID: string){
     })   
   }
 
-  //============== Loading =======
+//============== Loading =======
   async presentLoading() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
@@ -390,7 +386,7 @@ DeleteStockItem(stockitemID: string){
     console.log('Loading dismissed!');
   }
 
-  //============== Routes =======
+//============== Routes =======
   stocktypesnav()
   {
     this.router.navigate(['./tabs/stock-types']);
@@ -412,7 +408,7 @@ DeleteStockItem(stockitemID: string){
     this.router.navigate(['./tabs/best-sellers']);
   }
 
-  //============== Alerts =======
+//============== Alerts =======
   async HelpAlert() {
     const alert = await this.alertController.create({
       header: 'Please Note: You are required to add the product image while adding a product',
@@ -443,8 +439,8 @@ DeleteStockItem(stockitemID: string){
   async AddStockImageErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Stock Image was not added',
-      message: 'Please try again',
+      subHeader: 'Error details:',
+      message: this.errormsg ,
       buttons: [{
           text: 'OK',
           role: 'cancel',
@@ -456,10 +452,30 @@ DeleteStockItem(stockitemID: string){
     await alert.present();
   }
 
+  async ConfirmDeleteStockItemSuccessAlert(stockitemID: string) {
+    this.deletestockitemID = stockitemID
+    const alert = await this.alertController.create({
+      header: 'Are you sure?',
+      subHeader: 'This action will remove item from transactional reports and customers will no longer be able to order it',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.DeleteStockItem();
+        }
+      },
+      {
+        text: 'Cancel',
+        role: 'cancel'
+      }],
+    });
+    await alert.present();
+  }
+
   async DeleteStockItemSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
-      subHeader: 'Item Added To Best Seller List',
+      subHeader: 'Product deleted',
       buttons: ['OK'],
     });
     await alert.present();
@@ -468,13 +484,12 @@ DeleteStockItem(stockitemID: string){
   async DeleteStockItemErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Item Was Not Added',
-      message: 'Please try again',
+      subHeader: 'Error details:',
+      message: this.errormsg ,
       buttons: ['OK'],
     });
     await alert.present();
   }
-
   
   async editSuccessAlert() {
     const alert = await this.alertController.create({
@@ -494,8 +509,8 @@ DeleteStockItem(stockitemID: string){
   async editErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Product Was Not Updated',
-      message: 'Please try again',
+      subHeader: 'Error details:',
+      message: this.errormsg ,
       buttons: [{
         text: 'OK',
         role: 'cancel',

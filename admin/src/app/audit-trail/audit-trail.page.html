@@ -31,6 +31,17 @@
   
 
   <ion-grid>
+    <ion-row>
+      <ion-col size="3.5">
+        <form [formGroup]="SearchForm">      
+          <ion-item>
+            <ion-input label="Search by Name" type="text" formControlName="name" placeholder="Product Name" required></ion-input><br>
+            <ion-button (click)="search()">Search</ion-button>
+          </ion-item> 
+        </form>
+      </ion-col>
+    </ion-row>
+
     <ion-row style="border-bottom-style: solid;">
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="font-weight: bold; text-align: center;">User</ion-col>
@@ -56,6 +67,15 @@
     </ion-row>
 
     <ion-row *ngFor="let item of CustomerAuditTrails">
+      <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
+      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
+      <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;">{{item.actionName}}</ion-col>
+      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate}}</ion-col>
+      <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
+    </ion-row>
+
+    
+    <ion-row *ngFor="let item of searchedtrail">
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
       <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;">{{item.actionName}}</ion-col>

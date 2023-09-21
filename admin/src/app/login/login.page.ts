@@ -30,6 +30,10 @@ export class LoginPage implements OnInit {
 
   }
 
+  logMeOutIn(){
+
+  }
+
   login(form: NgForm) {
     this.presentLoading()
       this.authService.Login(form.value.username, form.value.password).subscribe((res) => {

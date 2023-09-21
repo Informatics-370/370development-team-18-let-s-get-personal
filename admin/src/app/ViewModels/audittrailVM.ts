@@ -4,6 +4,6 @@ export class AuditTrailVM{
     employee_ID!: string
     actionDate!: Date
     actionName!: string
-    firstName!: Date
+    firstName!: string
     surname!: string
 }
