@@ -4,19 +4,21 @@
   </ion-toolbar>
 </ion-header>
 
-
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">order-requests</ion-title>
     </ion-toolbar>
   </ion-header>
+
   <ion-content *ngIf="orderRequests.length == 0">
     <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
-      <p>No New Order Requests</p>
+      <p style="text-align: center;">No New Order Requests</p><br>
+     <img src="/assets/no-results.png" alt="empty icon" class="center"  id="icon" />
     </div>
   </ion-content>
+
+  <ion-content *ngIf="orderRequests.length>0">
   <ion-button (click)="generatePDF()" >Download Order Request PDF</ion-button>
   <div id="htmlOrderRequestData">
     <ion-grid>
@@ -48,5 +50,6 @@
       </ion-row>
     </ion-grid>
   </div>
+</ion-content>
   
 </ion-content>

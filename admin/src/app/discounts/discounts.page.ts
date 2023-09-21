@@ -30,12 +30,24 @@ export class DiscountsPage implements OnInit {
   discounts: Discount[] = [];
   Products: StockItemViewModel[] = [];
   stockItems: Stock_Item[] = [];
+  searchedDiscount: Discount[]=[];
+  searchString: string = "";
 
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service: DiscountService, private thisroute: Router, public modalCtrl: ModalController,
     private alertController: AlertController, private _service: StockItemDataService, private formBuilder: FormBuilder,
     private trailservice: AuditTrailService) { }
+
+    SearchForm: FormGroup = new FormGroup({
+      name:new FormControl('',[Validators.required])
+    })
+
+    searchDiscount(){
+      this.searchString=this.SearchForm.get('name')?.value;
+      this.searchedDiscount = this.discounts.filter(
+        f => f.discount_Name.toLowerCase().includes(this.searchString.toLowerCase()));
+    }
 
   AddForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -73,6 +85,7 @@ export class DiscountsPage implements OnInit {
   getDiscounts() {
     this.service.GetAllDiscounts().subscribe(result => {
       this.discounts = result;
+      this.searchedDiscount=this.discounts;
       console.log(this.discounts)
 
     })

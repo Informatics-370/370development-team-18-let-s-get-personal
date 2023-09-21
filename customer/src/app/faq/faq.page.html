@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title> Frequently Asked Questions (FAQ) </ion-title>
+    <!--<ion-title> Frequently Asked Questions (FAQ) </ion-title>-->
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" class="ion-padding">
@@ -52,6 +52,7 @@
             </ion-card-header>
           <!--</div>-->
           <ion-grid [fixed]="true">
+            <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="findString()" style="width: 25%;text-align: center;" class="center"></ion-searchbar>
             <ion-row>
               <ion-col>
                 <h5><b>How do I Personalize my order?</b></h5>
