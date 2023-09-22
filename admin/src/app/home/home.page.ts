@@ -1,8 +1,15 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { timer } from 'rxjs';
+import {ContactUs} from '../Models/contactus';
+import {ContactUsService} from 'src/app/Services/contactus.service';
+import { AuditTrailService } from '../Services/audittrail.service';
+import { AuditTrail } from '../Models/adittrail';
+import { OrderService } from '../Services/order.service';
+import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -12,30 +19,73 @@ import { timer } from 'rxjs';
 })
 export class HomePage implements OnInit {
   subscribeTimer:any
-  timeLeft!: number;
+  timeLeft: number =0;
   interval:any;
+  messages: ContactUs[] = []
+  orderRequests: OrderLineItemVM[] =[]
 
-  constructor() { }
+  constructor(private router:Router, private alertController:AlertController, private service: ContactUsService
+    , private trailservice: AuditTrailService, public orderservice: OrderService,) 
+  { }
 
-  ngOnInit() {
-    this.timeLeft = 5000
+  public Help() {
+    this.router.navigate(["/admin-help"])
   }
 
+  ngOnInit() {
+    this.getMessages()
+    this.GetOrdersInProgress()
+    //this.timeLeft = 5000
+  }
+
+//============== Gets =======
+  getMessages(){
+    this.service.GetAllMessageRequests().subscribe(data =>{
+      this.messages = data as ContactUs[]
+    })
+  }
+
+  GetOrdersInProgress(){
+    //this.presentLoading()
+    this.orderservice.GetOrdersInProgress().subscribe(result =>{
+      this.orderRequests = result as OrderLineItemVM[]
+    })
+  }
+
+//============== Replied status update =======
+  markAsReplied(contactusID: string){
+    this.service.DeleteContactUs(contactusID).subscribe(data =>{
+      this.DeleteSuccessAlert()
+    },(error) => {
+      this.DeleteErrorAlert();        
+      console.error('Edit stock image error:', error);
+    })
+  }
+
+//============== Timer =======
   timerForm: FormGroup = new FormGroup({
     time: new FormControl('',[Validators.required])
   })
 
   observableTimer() {
+    this.timeLeft = JSON.parse(localStorage.getItem('timeleft') as string)
     const source = timer(1000, this.timeLeft);
     const abc = source.subscribe(val => {
       console.log(val, '-');
       this.subscribeTimer = this.timeLeft - val;
+
+      if(this.timeLeft == 0){
+        this.ReminderAlert()
+      }
     });
   }
 
-  handleChange(e: any) {
+  Name!: string
+  handleChange(e: any, name:string) {
     console.log('ionChange fired with value: ' + e.detail.value);
     this.timeLeft = e.detail.value
+    localStorage.setItem('timeleft', JSON.stringify(this.timeLeft))
+    this.Name = name
     this.observableTimer()
   }
 
@@ -47,6 +97,93 @@ export class HomePage implements OnInit {
     console.log('ionDismiss fired');
   }
 
+
+//============== Audit Trail =======
+  action!: string
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+  }
+
+//============== Alerts =======
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: '',
+      subHeader: '',
+      message: '',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
+
+  async DeleteSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Contact Us Message Marked as Replied',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
+
+  async DeleteErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are Sorry!',
+      subHeader: 'Status not updated please try again',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
+
+  async ReminderAlert() {
+    const alert = await this.alertController.create({
+      header: 'Reminder!',
+      subHeader: 'Remember to reply to ' + this.Name,
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
+
+  reloadPage(){
+    window.location.reload()
+  }
 
   // startTimer() {
   //   this.timeLeft = this.timerForm.value.time

@@ -4,4 +4,5 @@ export class ContactUs{
     contact_Us_Name!: string
     contact_Us_Phone!: string
     contact_Us_Message!: string
+    replied!: boolean
 }

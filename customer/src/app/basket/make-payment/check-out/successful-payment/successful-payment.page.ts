@@ -10,6 +10,10 @@ import { Order_Line_Item } from 'src/app/Models/orderlineitem';
 import { Payment } from 'src/app/Models/payment';
 import { AuditTrail } from 'src/app/Models/audittrail';
 import { AuditTrailService } from 'src/app/Services/audittrail.service';
+import { Invoice } from 'src/app/Models/invoice'
+import { UserProfileDataService } from 'src/app/Services/userprofile.service';
+import { Customer } from 'src/app/Models/customer';
+import { InvoiceService } from 'src/app/Services/invoice.service';
 
 @Component({
   selector: 'app-successful-payment',
@@ -21,21 +25,30 @@ import { AuditTrailService } from 'src/app/Services/audittrail.service';
 export class SuccessfulPaymentPage implements OnInit {
   showAnimation = false;
   order = new OrderT();
-  cartitems: any 
+  cartitems: any [] = []
   basket = new BasketItems();
-  constructor(private router:Router, private orderService:OrderService, private saleService: SalesService
-    ,private auditservice: AuditTrailService, private alertController:AlertController) { }
+  customer: Customer = new Customer()
+  public username: string = ""
+  constructor(private router:Router, private orderService:OrderService, private saleService: SalesService,
+    private auditservice: AuditTrailService, private alertController:AlertController, private profileservice: UserProfileDataService,
+    private invoiceservice: InvoiceService) 
+  { }
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)
     this.order.paid=true;
     this.cartitems = JSON.parse(localStorage.getItem('cart') as string)
+    this.getUser()
     this.AddOrderLineItem()
   }
 
+  //Process: 1. Add to orderline, 2. add to payment, 3. add and send invoice, 
+  //4. remove info from local storage, 5. add audit trail
+
+  orderlineitemid!: string
   AddOrderLineItem(){
     try
-    {
+    {      
       let addedOrder = new Order_Line_Item
       let orderRequestID = JSON.parse(localStorage.getItem('orderRequestID') as string)
       let personalisedID = JSON.parse(localStorage.getItem('personalisedID') as string)
@@ -47,7 +60,22 @@ export class SuccessfulPaymentPage implements OnInit {
       addedOrder.order_request_ID = orderRequestID
       addedOrder.personalisation_ID = personalisedID
 
+      // this.cartitems.forEach(item => {
+      //   //getpersonalisationid in cart array
+      //   item.BasketItems.basket_Quantity
+
+      //   this.orderService.AddOrderLineItem(addedOrder).subscribe(result => {
+      //     let orderlineitem = result as Order_Line_Item
+      //     this.orderlineitemid = orderlineitem.order_Line_Item_ID
+      //     console.log(result)
+      //   })
+  
+      //   this.addSale()
+      // });
+
       this.orderService.AddOrderLineItem(addedOrder).subscribe(result => {
+        let orderlineitem = result as Order_Line_Item
+        this.orderlineitemid = orderlineitem.order_Line_Item_ID
         console.log(result)
       })
 
@@ -55,12 +83,12 @@ export class SuccessfulPaymentPage implements OnInit {
     }
     catch
     {
-      /// ============== Error alert
+      
     }
   }
 
-  addSale(){
-    
+  paymentID!: string
+  addSale(){    
     let addedSale = new Payment();
     let price = JSON.parse(localStorage.getItem('totalprice') as string)
     let username = JSON.parse(JSON.stringify(localStorage.getItem('username')))
@@ -73,8 +101,47 @@ export class SuccessfulPaymentPage implements OnInit {
     addedSale.stock_Item_ID = stockitem
 
     try{
-
+//foreach item in cart: 
       this.saleService.AddSale(addedSale).subscribe(result =>{
+        let sale = result as Payment;
+        this.paymentID = sale.payment_ID
+        console.log(result)
+      })
+
+      this.addInvoice()
+      //this.placeOrder(this.order);
+    }
+    catch{
+
+    }
+  }
+
+  addInvoice(){
+    let inclvatprice = JSON.parse(localStorage.getItem('totalprice') as string)
+    let excvatprice = JSON.parse(localStorage.getItem('pureprice') as string)
+    let delprice = JSON.parse(localStorage.getItem('delprice') as string)
+    let vatamount = JSON.parse(localStorage.getItem('vatamount') as string)
+    let discountamount = JSON.parse(localStorage.getItem('discountamount') as string)
+
+    let invoice = new Invoice()
+    invoice.delivery_Price = delprice
+    invoice.invoice_Total_exclVAT = excvatprice
+    invoice.invoice_Total_VAT = vatamount
+    invoice.invoice_Total_inclVAT = inclvatprice
+    invoice.discount_Amount = discountamount
+    invoice.payment_ID = this.paymentID
+    invoice.order_Line_Item_ID = this.orderlineitemid
+
+    invoice.customer.customer_ID = this.customer.customer_ID
+    invoice.customer.email = this.customer.email
+    invoice.customer.firstName = this.customer.firstName
+    invoice.customer.surname = this.customer.surname
+    invoice.customer.username = this.customer.username
+    invoice.customer.cell_Number = this.customer.cell_Number
+
+
+    try{
+      this.invoiceservice.AddInvoice(invoice).subscribe(result => {
         console.log(result)
       })
 
@@ -83,6 +150,18 @@ export class SuccessfulPaymentPage implements OnInit {
     catch{
 
     }
+  }
+
+  getUser()
+  {
+    this.username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
+    let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')));
+
+    this.profileservice.GetCustomer(customer_ID).subscribe(result => {
+      this.customer = result as Customer;
+      console.log(this.customer)
+    })
+
   }
 
   private placeOrder(order:OrderT):void{

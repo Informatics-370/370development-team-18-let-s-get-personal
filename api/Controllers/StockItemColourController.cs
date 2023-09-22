@@ -110,24 +110,38 @@ namespace IPKP___API.Controllers
         [Route("DeleteStockItemColour/{stock_Item_Colour_ID}")]
         public async Task<IActionResult> DeleteStockItemColourAsync(Guid stock_Item_Colour_ID)
         {
-              try
-              {
+            try
+            {
                 var existingStockItemColour = await _IPKPRepository.GetStockItemColourDetailsAsync(stock_Item_Colour_ID);
+                var results = await _IPKPRepository.GetStockItemByColour(stock_Item_Colour_ID);
 
-                if (existingStockItemColour == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item Colour" + stock_Item_Colour_ID });
 
-                _IPKPRepository.Delete(existingStockItemColour);
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                if (existingStockItemColour == null)
                 {
-                  return Ok(new Response { Status = "Success", Message = "Stock Item Colour Removed Successfully" });
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item Colour" + stock_Item_Colour_ID });
+                    
                 }
-              }
-              catch (Exception)
-              {
+                else if (results == null)
+                {
+                    _IPKPRepository.Delete(existingStockItemColour);
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Stock Item Colour Removed Successfully" });
+                    }
+                }
+                else
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "Cannot delete colour while being used by a stock item." });
+                }
+                
+            }
+            catch (Exception)
+            {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
-              }
-              return Ok(new Response { Status = "Success", Message = "Stock Item Colour Removed From Database." });
+            }
+              
+            return Ok(new Response { Status = "Success", Message = "Stock Item Colour Removed From Database." });
         }
   }
 }

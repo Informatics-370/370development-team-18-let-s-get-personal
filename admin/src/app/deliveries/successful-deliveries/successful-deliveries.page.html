@@ -21,20 +21,45 @@
   </ion-content>
 
   <ion-grid>
-    <ion-row>
-      <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">Delivery Company Name</ion-col>
-      <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">Street</ion-col>
-      <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">City</ion-col>
-      <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8"style="font-weight: bold; text-align: center;">Province</ion-col>
-      <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">Date Delivered</ion-col>
-    </ion-row>
-    <ion-row *ngFor="let item of deliveries">
-      <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.delivery_Company_Name}}</ion-col>
-      <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.streetNumber}} {{item.streetName}}</ion-col>
-      <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.city}}</ion-col>
-      <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.province}}</ion-col>
-      <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.dateDelivered}}</ion-col>
-    </ion-row>
+    <ion-col size="6">
+      <ion-row>
+        <ion-col style="font-weight: bold; text-align: center;">Successful Deliveries</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">Delivery Company Name</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">Street</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">City</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8"style="font-weight: bold; text-align: center;">Province</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">Date Delivered</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of deliveries">
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.delivery_Company_Name}}</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.streetNumber}} {{item.streetName}}</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.city}}</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.province}}</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.dateDelivered}}</ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-col size="6">
+      <ion-row>
+        <ion-col style="font-weight: bold; text-align: center;">Failed Deliveries</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">Delivery Company Name</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">Street</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">City</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8"style="font-weight: bold; text-align: center;">Province</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="font-weight: bold; text-align: center;">Date Delivered</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of faileddeliveries">
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.delivery_Company_Name}}</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.streetNumber}} {{item.streetName}}</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.city}}</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.province}}</ion-col>
+        <ion-col sizeLg="2.4" sizeMd="2.8" sizeXs="2.8" style="text-align: center;">{{item.dateDelivered}}</ion-col>
+      </ion-row>
+    </ion-col>
+    
   </ion-grid>
 
 </ion-content>

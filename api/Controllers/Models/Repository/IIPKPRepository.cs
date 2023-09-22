@@ -21,14 +21,17 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Employee> GetEmployee(string username);
         Task<Customer> GetCustomerDetailsAsync(Guid customer_ID);
         Task<Customer[]> GetAllCustomersAsync();
-        object GetAllBestSellersAsync();
+        
         Task<User> GetUserDetailsAsync(Guid user_ID);
         Task<User[]> GetAllUsersAsync();
         Task<User_Role> GetUserRoleDetailsAsync(int user_Role_ID);
         Task<User_Role[]> GetAllUserRolesAsync();
         Task<Delivery> GetDeliveryDetailsAsync(Guid delivery_ID);
         Task<Delivery[]> GetAllDeliveriesAsync();
-        
+
+        object GetAllBestSellersAsync();
+        Task<BestSellers> GetBestSellerByID(Guid bestsellerID);
+
         Task<Stock_Image> GetStockImageByID(Guid stock_image_id);
         Task<Stock_Image[]> GetAllStockItmagesAsync();
 
@@ -74,6 +77,7 @@ namespace IPKP___API.Controllers.Models.Repository
         Task<Refund> GetPreviousRefund(Guid refund_Id);
         Task<Customer> GetUser(string username);
 
+        object GetDeliveryByCompany(string company);
         object GetDeliveryByID(Guid deliveryID);
         object GetAllDeliveries();
         object GetDeliveryBySatus(string status);
@@ -95,6 +99,12 @@ namespace IPKP___API.Controllers.Models.Repository
 
         Task<ContactUs[]> GetAllContactUsAsync();
         Task<ContactUs> GetContactUsByID(Guid contactusID);
+
+        Task<Stock_Item> GetStockItemByColour(Guid stock_Item_Colour_ID);
+        Task<Stock_Item> GetStockItemByImage(Guid stock_Item_Image_ID);
+        Task<Stock_Item> GetStockItemByType(Guid stock_Item_Type_ID);
+        Task<Delivery> GetInProgressDeliveriesByCompany(Guid delivery_Company_ID);
+        object GetOrderLineItemByStockItem(Guid stock_Item_ID);
 
     }
 }

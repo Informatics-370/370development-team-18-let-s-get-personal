@@ -31,6 +31,8 @@ namespace IPKP___API.Controllers
                     Contact_Us_Email = contactus.Contact_Us_Email,
                     Contact_Us_Name = contactus.Contact_Us_Name,
                     Contact_Us_Phone = contactus.Contact_Us_Phone,
+                    Contact_Us_Message = contactus.Contact_Us_Message,
+                    replied = false,
                 };
                 _IPKPRepository.Add(message);
                 await _IPKPRepository.SaveChangesAsync();
@@ -62,7 +64,7 @@ namespace IPKP___API.Controllers
 
         [HttpGet]
         [Route("GetMessageRequest/{contact_Us_ID}")]
-        public async Task<IActionResult> GetStockTypeDetailsAsync(Guid contact_Us_ID)
+        public async Task<IActionResult> GetMessageRequest(Guid contact_Us_ID)
         {
             try
             {
@@ -82,6 +84,67 @@ namespace IPKP___API.Controllers
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
         }
+
+        [HttpPut]
+        [Route("UpdateContactUsStatus/{contact_Us_ID}")]
+        public async Task<IActionResult> UpdateContactUsStatusAsync(Guid contact_Us_ID, ContactUs contact)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetContactUsByID(contact_Us_ID);
+
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Message " + contact_Us_ID });
+                }
+                else
+                {
+                    results.replied = true;
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Message Was Replied To" });
+                    }
+
+                }
+                
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Message Was Replied To" });
+        }
+
+        [HttpDelete]
+        [Route("DeleteContactUs/{contact_Us_ID}")]
+        public async Task<IActionResult> DeleteContactUsAsync(Guid contact_Us_ID)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetContactUsByID(contact_Us_ID);
+
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "Could Not Find Stock Type" + contact_Us_ID });
+                }
+                else
+                {
+                    _IPKPRepository.Delete(results);
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Stock Type Removed Successfully" });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok(new Response { Status = "Success", Message = "Stock Type Removed From Database." });
+        }
+
 
 
     }

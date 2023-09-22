@@ -24,5 +24,6 @@ namespace IPKP___API.Controllers.Models.Entities
         [ForeignKey(nameof(Stock_Item_ID))]
         public Guid Stock_Item_ID { get; set; }
 
+        public string Stock_Item_Name { get; set; }
     }
 }

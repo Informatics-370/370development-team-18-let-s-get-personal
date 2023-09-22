@@ -16,8 +16,6 @@ import { StockItemViewModel } from '../ViewModels/stockitemsVM';
 import { Stock_Item } from '../Models/stockitem';
 import { DatePipe } from '@angular/common';
 
-
-
 @Component({
   selector: 'app-discounts',
   templateUrl: './discounts.page.html',
@@ -75,8 +73,6 @@ export class DiscountsPage implements OnInit {
     return null; // Validation passed
   }
 
-
-
   ngOnInit(): void {
     this.getDiscounts();
     this.GetStockItems();
@@ -87,7 +83,6 @@ export class DiscountsPage implements OnInit {
       this.discounts = result;
       this.searchedDiscount=this.discounts;
       console.log(this.discounts)
-
     })
   }
 
@@ -101,11 +96,9 @@ export class DiscountsPage implements OnInit {
   getProductName(stockId: string): string {
     const product = this.Products.find(product => product.stock_Item_ID === stockId);
     return product ? product.stock_Item_Name : '';
-
   }
 
-
-  //=========== Add ===========
+//=========== Add ===========
   AddDiscount() {
     console.log('Form error',this.AddForm.errors)
    // if(this.AddForm.valid){
@@ -149,7 +142,6 @@ export class DiscountsPage implements OnInit {
     effectiveTodate: new FormControl('', [Validators.required])
   })
 
-
   EditDiscount(discount_ID: string, isOpen: boolean) {
     this.service.GetDiscount(discount_ID).subscribe(response => {
       this.editDiscount = response as Discount;
@@ -176,7 +168,10 @@ export class DiscountsPage implements OnInit {
         this.action = "Updated discount from " + this.editDiscount.discount_Name + "," + this.editDiscount.discount_Amount + "," + this.editDiscount.effective_From_Date + "," + this.editDiscount.effective_To_Date
           + " to: " + this.editForm.value.name + "," + this.editForm.value.amount + "," + this.editForm.value.effectiveFromdate + "," + this.editForm.value.effectiveTodate
         this.AddTrail()
-      })
+      },(error) => {
+      this.editDiscountErrorAlert();        
+      console.error('Edit discount error:', error);
+    })
     }
     catch {
       this.editDiscountErrorAlert();
@@ -188,23 +183,22 @@ export class DiscountsPage implements OnInit {
     //this.modal.dismiss(null, 'cancel');
   }
 
-  //=========== Delete ===========
+//=========== Delete ===========
   DeleteDiscount(discount_ID: string, discount_Name: string) {
     this.service.DeleteDiscount(discount_ID).subscribe(result => {
       console.log(result);
-      if (result.status == "Error") {
-        this.DeleteDiscountErrorAlert();
-      }
-      else if (result.status == "Success") {
-        this.DeleteDiscountSuccessAlert();
+      this.DeleteDiscountSuccessAlert();
 
-        this.action = "Deleted Discount" + discount_Name
-        this.AddTrail()
-      }
+      this.action = "Deleted Discount" + discount_Name
+      this.AddTrail()
+
+    },(error) => {
+      this.DeleteDiscountErrorAlert();        
+      console.error('Edit stock image error:', error);
     })
   }
 
-  //=========== Audit trail ===========
+//=========== Audit trail ===========
   action!: string
   AddTrail() {
     let audittrail = new AuditTrail()
@@ -228,7 +222,6 @@ export class DiscountsPage implements OnInit {
     }
   }
 
-
   reloadPage() {
     window.location.reload()
   }
@@ -243,6 +236,20 @@ export class DiscountsPage implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+//=========== Delete ===========
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'Discounts will be automatically applied to the Product in a customers basket',
+      message: '',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
   }
 
   async editDiscountSuccessAlert() {

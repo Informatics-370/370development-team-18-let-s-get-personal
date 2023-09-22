@@ -37,8 +37,8 @@ namespace IPKP___API.Controllers
         }
 
         [HttpPost]
-        [Route("SaveBestSellersList")]
-        public async Task<IActionResult> SaveBestSellersListAsync(BestSellers selectedProducts)
+        [Route("AddBestSeller")]
+        public async Task<IActionResult> AddBestSellerAsync(BestSellers selectedProducts)
         {          
             try
             {
@@ -57,5 +57,32 @@ namespace IPKP___API.Controllers
             }
             return Ok("Best Sellers List Added To Database.");
         }
+
+        [HttpDelete]
+        [Route("RemoveBestSeller/{bestsellerId}")]
+        public async Task<IActionResult> RemoveBestSellerAsync(Guid bestsellerId)
+        {
+            try
+            {
+                var bestseller = await _IPKPRepository.GetBestSellerByID(bestsellerId);
+
+                if (bestseller == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Best Seller" + bestsellerId });
+
+                _IPKPRepository.Delete(bestseller);
+
+                if (await _IPKPRepository.SaveChangesAsync())
+                {
+                    return Ok(new Response { Status = "Success", Message = "Best Seller Removed Successfully" });
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+
+            return Ok(new Response { Status = "Success", Message = "Best Seller Removed From Best Seller List." });
+        }
+
+
     }
 }

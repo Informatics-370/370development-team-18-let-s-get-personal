@@ -1,4 +1,3 @@
-
 export class DeliveryViewModel{
     Delivery_ID!: Number
     delivery_Price!: number

@@ -42,7 +42,7 @@ export class LoginPage implements OnInit {
           this.ErrorAlert();
         }
         else { //if(roles.includes('Admin'))
-          this.router.navigateByUrl('/tabs/order-requests', {replaceUrl: true});
+          this.router.navigateByUrl('/tabs/home', {replaceUrl: true});
           localStorage.setItem('username', form.value.username,);
           this.FindID()
         }
@@ -139,18 +139,18 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
   
-async Alert() {
-  const alert = await this.alertController.create({
-    header: 'Oops!',
-    subHeader: 'Error',
-    message: 'Invalid username or password.',
-    buttons: [{
-      text: 'OK',
-      role: 'cancel'
-    }],
-  });
-  await alert.present();
-}
+  async Alert() {
+    const alert = await this.alertController.create({
+      header: 'Oops!',
+      subHeader: 'Error',
+      message: 'Invalid username or password.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel'
+      }],
+    });
+    await alert.present();
+  }
 
 }
 

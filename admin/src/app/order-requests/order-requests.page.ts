@@ -6,6 +6,7 @@ import { OrderService } from '../Services/order.service';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 import { AuditTrailService } from '../Services/audittrail.service';
 import { AuditTrail } from '../Models/adittrail';
+import { RouterModule, Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { LoadingController } from '@ionic/angular';
@@ -19,14 +20,14 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts";
   templateUrl: './order-requests.page.html',
   styleUrls: ['./order-requests.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule]
 })
 export class OrderRequestsPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
   orderRequests: OrderLineItemVM[] =[]
   constructor(public service: OrderService, public environmentInjector: EnvironmentInjector,
      private alertController:AlertController, public loadingController: LoadingController,
-     private trailservice: AuditTrailService ) 
+     private trailservice: AuditTrailService, private router: Router ) 
   { 
     (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
   }
@@ -61,7 +62,11 @@ export class OrderRequestsPage implements OnInit {
     try
     {
       this.service.AcceptOrder(order_Line_Item_ID).subscribe(res =>{
-        
+        console.log(res)
+
+      },(error) => {
+      this.AcceptErrorAlert();        
+      console.error('AcceptOrder error:', error);
       })
       this.AcceptSuccessAlert()
       this.AddTrail()
@@ -137,6 +142,23 @@ generatePDF() {
 
 
 //====== Alerts =========
+async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'Once an order request is changed to in progress it will show on the Orders in Progress page',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      },{
+        text: 'Orders In Progress',
+        role: 'cancel',
+        handler: () => {
+          this.ordersinprogressnav();
+        }
+      }],
+    });
+    await alert.present();
+  }
   async AcceptSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
@@ -170,6 +192,10 @@ generatePDF() {
 
   reloadPage() {
     window.location.reload()
+  }
+
+  ordersinprogressnav(){
+    this.router.navigate(['./tabs/orders']);
   }
 
 }

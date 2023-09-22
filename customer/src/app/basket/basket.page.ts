@@ -34,6 +34,7 @@ export class BasketPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   order = new OrderT();
   storedData: any;
+  vatprice!: number
 
   ionViewDidEnter() {
     console.log("Reloaded");
@@ -56,10 +57,10 @@ export class BasketPage implements OnInit {
 
   constructor(public modalCtrl: ModalController, private _router: Router, private cdr: ChangeDetectorRef,
     private service: PersonalisationService, private alertController: AlertController, 
-    private discountservice: DiscountService, private auditservice:AuditTrailService  ) {
+    private discountservice: DiscountService, private auditservice:AuditTrailService  ) 
+  {
     this.counter = document.querySelector("#counter");
     const storedQuantity = localStorage.getItem('basketQuantity');
-
   }
 
   cartItems: any[] = [];
@@ -149,11 +150,32 @@ export class BasketPage implements OnInit {
   public calculateTotalPrice(): any {
     let totalPrice = 0;
     for (const item of this.cartItems) {
-      totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;
+      totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;      
       //localStorage.setItem('quantity', JSON.stringify(item.basket_Quantity));
     }
+    let pureprice = totalPrice
+    localStorage.setItem('pureprice', JSON.stringify(pureprice));
+
+    this.vatprice = totalPrice * 0.15
+    localStorage.setItem('vatamount', JSON.stringify(this.vatprice));
+      
+    totalPrice = totalPrice + this.vatprice - this.discount_Amount
     this.order.price = totalPrice;
     return totalPrice;
+  }
+
+//======== Discount ==========
+  discounts: Discount[] = []
+  discount_Amount: number = 0
+  CheckDiscount(){
+    for (const item of this.cartItems) {
+      this.discountservice.GetDiscountByStock(item.stock_Item_ID).subscribe(result =>{
+        this.discounts = result as Discount[]
+        localStorage.setItem('discount', item.discount_Amount);
+        this.discount_Amount += item.discount_Amount
+      })      
+    }
+    localStorage.setItem('discountamount', JSON.stringify(this.discount_Amount));
   }
 
   public clearBasket() {
@@ -178,10 +200,12 @@ export class BasketPage implements OnInit {
 
     this.CheckPersonalised();
 
-    if (!this.CheckPersonalised()) {
-      try {
+    // if (!this.CheckPersonalised()) {
+    //   try {
 
-      } catch {
+    //   } 
+    //   catch 
+    //   {
         const existingItem = localStorage.getItem('cart');
         let items = JSON.parse(localStorage.getItem('cart') as string)
         /*to make space in the local storage
@@ -202,8 +226,8 @@ export class BasketPage implements OnInit {
         //this.AddImageToImageLineItem() 
         // this.AddPersonalisation()
         //this._router.navigate(["/tabs/make-payment"])
-      }
-    }
+      // }
+    // }
   }
 
 //======== Checks =======
@@ -386,16 +410,6 @@ export class BasketPage implements OnInit {
     //this.uploadImage()
   }*/
 
-//======== Discount ==========
-  discounts: Discount[] = []
-  CheckDiscount(){
-    for (const item of this.cartItems) {
-      this.discountservice.GetDiscountByStock(item.stock_Item_ID).subscribe(result =>{
-        this.discounts = result as Discount[]
-        localStorage.setItem('discount', item.discount_Amount);
-      })
-    }
-  }
 
 //======== Audit Trail ==========
   action!: string

@@ -18,19 +18,27 @@ import { AuditTrail } from 'src/app/Models/adittrail';
   imports: [IonicModule, CommonModule, FormsModule, RouterModule]
 })
 export class SuccessfulDeliveriesPage implements OnInit {
-
+  faileddeliveries: DeliveryViewModel[] =[]
   deliveries: DeliveryViewModel[] =[]
   date: any
   constructor(private service: DeliveryDataService, private router: Router, private trailservice: AuditTrailService) { }
 
   ngOnInit() {
     this.getSuccessfulDeliveries()
+    this.getFailedDeliveries()
   }
 
   getSuccessfulDeliveries()
   {
     this.service.GetSuccessfulDeliveries().subscribe(result =>{
       this.deliveries = result as DeliveryViewModel[]
+      console.log(this.deliveries)      
+    })
+  }
+
+  getFailedDeliveries(){
+    this.service.GetFailedDeliveries().subscribe(result =>{
+      this.faileddeliveries = result as DeliveryViewModel[]
       console.log(this.deliveries)      
     })
   }

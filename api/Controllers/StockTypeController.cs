@@ -112,12 +112,13 @@ namespace IPKP___API.Controllers
             try
             {
                 var existingStockType = await _IPKPRepository.GetStockTypeDetailsAsync(stock_Type_ID);
+                var results = await _IPKPRepository.GetStockItemByType(stock_Type_ID);
 
                 if (existingStockType == null)
                 {
                     return NotFound(new Response { Status = "Success", Message = "Could Not Find Stock Type" + stock_Type_ID });
                 }
-                else
+                else if (results == null)
                 {
                     _IPKPRepository.Delete(existingStockType);
 
@@ -125,6 +126,10 @@ namespace IPKP___API.Controllers
                     {
                         return Ok(new Response { Status = "Success", Message = "Stock Type Removed Successfully" });
                     }
+                }
+                else
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "Cannot delete colour while being used by a stock item." });
                 }
             }
             catch (Exception)

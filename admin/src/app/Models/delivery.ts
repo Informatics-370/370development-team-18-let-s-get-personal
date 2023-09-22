@@ -3,8 +3,8 @@ import { DeliveryAddress } from "./deliveryaddress"
 
 export class Delivery{
     delivery_ID!: string
-    delivery_Price!: Number
-    tracking_Number!: Number
+    delivery_Price!: number
+    tracking_Number!: number
 
     dateDelivered!: Date
 

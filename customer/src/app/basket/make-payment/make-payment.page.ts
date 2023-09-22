@@ -52,9 +52,8 @@ export class MakePaymentPage implements OnInit {
   constructor(private service:OrderRequestService, private router: Router, public modalCtrl: ModalController,
     private alertController:AlertController, public delservice: DeliveryDataService, private auditservice: AuditTrailService,public navCtrl: NavController,private placesService: PlacesService) { }
 
-
-    validProvinces = ['Limpopo', 'Gauteng', 'North West','Kwa-Zulu Natal','Eastern Cape','Mpumalanga','Western Cape','Free State','Northern Cape'];
-    dwellingType = ['House', 'Apartment','Estate'];
+  validProvinces = ['Limpopo', 'Gauteng', 'North West','Kwa-Zulu Natal','Eastern Cape','Mpumalanga','Western Cape','Free State','Northern Cape'];
+  dwellingType = ['House', 'Apartment','Estate'];
 
 
   AddDelAddressForm: FormGroup = new FormGroup({
@@ -70,7 +69,7 @@ export class MakePaymentPage implements OnInit {
 
   get f(){return this.AddDelAddressForm.controls}
   
-  //order = new OrderT();
+  order = new OrderT();
   
   getDeliveryCompany(){
     this.delservice.GetDeliveryCompanies().subscribe(result =>{
@@ -95,7 +94,7 @@ export class MakePaymentPage implements OnInit {
       console.log('Address',this.addedaddres)
         let addressID = this.addedaddres.delivery_Address_ID
         localStorage.setItem('addressID', JSON.stringify(addressID));
-        
+        localStorage.setItem("order",JSON.stringify(this.order));
       /*try
       {
         console.log(this.addedaddres)
@@ -212,12 +211,38 @@ updateSearchResults() {
         this.action = "Added Delivery Address"
         this.AddAuditTrail()
 
-        this.router.navigate(["/tabs/check-out"])
+        this.checkOut()
+        //this.router.navigate(["/tabs/check-out"])
       },
       (error) => {
         this.confirmErrorAlert();
         console.error('add delivery error:', error);
       });
+  }
+
+  checkOut(){
+    //change to delivery request 
+    let streetName =this.AddDelAddressForm.get("streetName")?.value
+    let streetNumber =this.AddDelAddressForm.get("streetNumber")?.value
+    let city =this.AddDelAddressForm.get("city")?.value
+    let province =this.AddDelAddressForm.get("province")?.value
+    let areaCode =this.AddDelAddressForm.get("areaCode")?.value;
+    let dwellingtype =this.AddDelAddressForm.get("dwellingtype")?.value;
+    let delivery_Company_ID =this.AddDelAddressForm.get("delivery_Company_ID")?.value;
+
+    this.order = JSON.parse(localStorage.getItem('order') as string);
+    this.order.deliveryAddress.streetName=streetName;
+    this.order.deliveryAddress.streetNumber=streetNumber;
+    this.order.deliveryAddress.city=city;
+    this.order.deliveryAddress.province=province;
+    this.order.deliveryAddress.areaCode=areaCode;
+    this.order.deliveryAddress.dwelling_Type=dwellingtype;
+    this.order.deliveryCompanyID = delivery_Company_ID;
+
+    localStorage.setItem("order",JSON.stringify(this.order));
+
+    this.router.navigate(["/tabs/check-out"])
+   
   }
 
   reloadPage(){
@@ -339,27 +364,3 @@ updateSearchResults() {
   }
 }
 
-//checkOut(){
-  //   //change to delivery request 
-  //   let streetName =this.AddDelAddressForm.get("streetName")?.value
-  //   let streetNumber =this.AddDelAddressForm.get("streetNumber")?.value
-  //   let city =this.AddDelAddressForm.get("city")?.value
-  //   let province =this.AddDelAddressForm.get("province")?.value
-  //   let areaCode =this.AddDelAddressForm.get("areaCode")?.value;
-  //   let dwellingtype =this.AddDelAddressForm.get("dwellingtype")?.value;
-  //   //let delivery_Company_ID =this.AddDelAddressForm.get("delivery_Company_ID")?.value;
-
-  //   this.order = JSON.parse(localStorage.getItem('order') as string);
-  //   this.order.deliveryAddress.streetName=streetName;
-  //   this.order.deliveryAddress.streetNumber=streetNumber;
-  //   this.order.deliveryAddress.city=city;
-  //   this.order.deliveryAddress.province=province;
-  //   this.order.deliveryAddress.areaCode=areaCode;
-  //   this.order.deliveryAddress.dwelling_Type=dwellingtype;
-  //   //this.order.deliveryAddress.delivery_Company_ID = delivery_Company_ID;
-
-  //   localStorage.setItem("order",JSON.stringify(this.order));
-
-  //   this.router.navigate(["/tabs/check-out"])
-   
-  // }

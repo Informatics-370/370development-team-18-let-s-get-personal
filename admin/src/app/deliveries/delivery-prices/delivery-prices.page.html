@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>delivery-prices</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">delivery-prices</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div>
+    <ion-grid>
+      <ion-row>        
+        <ion-card *ngFor="let company of deliverycompanies">
+          <ion-card-header style="font-weight: bold;">
+            {{company.delivery_Company_Name}}: R {{company.delivery_Price | number }}
+          </ion-card-header>
+          <ng-container *ngIf="company.delivery_Company_Total > 0 then Sales; else NoSales"></ng-container>
+          <ng-template #Sales>
+            <ion-card-content *ngFor="let control of company.companycontrolbreak" >            
+              <label>{{control.streetNumber}} {{control.streetName}}: R {{control.delivery_Price | number }}</label>
+            </ion-card-content>  
+          </ng-template>
+          <ng-template #NoSales style="text-align: center;">
+             <p style="text-align: center;">No Deliveries</p> 
+          </ng-template>
+        </ion-card>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

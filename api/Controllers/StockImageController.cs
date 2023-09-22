@@ -154,18 +154,24 @@ namespace IPKP___API.Controllers
             try
             {
                 var existingStockItemColour = await _IPKPRepository.GetStockImageByID(stock_Image_ID);
+                var results = await _IPKPRepository.GetStockItemByImage(stock_Image_ID);
 
                 if (existingStockItemColour == null)
                 {
-                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Image" + stock_Image_ID });
-
+                    return NotFound(new Response { Status = "Success", Message = "Could Not Find Stock Image " + stock_Image_ID });
                 }
-
-                _IPKPRepository.Delete(existingStockItemColour);
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                else if (results == null)
                 {
-                    return Ok(new Response { Status = "Success", Message = "Stock Image Removed Successfully" });
+                    _IPKPRepository.Delete(existingStockItemColour);
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Stock Type Removed Successfully" });
+                    }
+                }
+                else
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "Cannot delete image while being used by a stock item." });
                 }
             }
             catch (Exception)

@@ -23,8 +23,8 @@ export class ViewEmployeesPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   
   constructor( private alertController:AlertController, public modalCtrl: ModalController,
-    private empservice: UserProfileDataService, 
-    public authservice: AuthenticationService, public router: Router) { } //private service:ProfileService,
+    private empservice: UserProfileDataService, public authservice: AuthenticationService, public router: Router) { } 
+    //private service:ProfileService,
 
   ngOnInit() {
     //  this.getProfle()
@@ -60,16 +60,23 @@ export class ViewEmployeesPage implements OnInit {
     })
   }
   
-  DeleteEmployee(employee_ID: string){
-    this.empservice.DeleteEmployee(employee_ID).subscribe(result => {
+  DeleteEmployee(employee_ID: string, username: string){
+    this.authservice.DeleteUser(username).subscribe(result => {
       console.log(result);
-      if(result == null){
-        this.DeleteEmployeeErrorAlert();
-      }
-      else{
-        this.DeleteEmployeeSuccessAlert();
-      }
+      this.DeleteEmployeeSuccessAlert();
+    },(error) => {
+      this.DeleteEmployeeErrorAlert();        
+      console.error('DeleteEmployee error:', error);
     })    
+        
+    // this.empservice.DeleteEmployee(employee_ID).subscribe(result => {
+    //   console.log(result);
+    //   this.DeleteEmployeeSuccessAlert();
+    // },(error) => {
+    //   this.DeleteEmployeeErrorAlert();        
+    //   console.error('Edit stock image error:', error);
+    // })    
+
   }
 
   AddEmployee() {
@@ -153,6 +160,9 @@ export class ViewEmployeesPage implements OnInit {
 
       this.empservice.UpdateEmployee(this.editEmployee.employee_ID, editedEmployee).subscribe(result =>{
         this.editSuccessAlert();
+      },(error) => {
+        this.editErrorAlert();        
+        console.error('Edit employee error:', error);
       })
     }
     catch{      
@@ -165,6 +175,22 @@ export class ViewEmployeesPage implements OnInit {
   }
 
   //=========== alerts
+  async DeleteHelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note:!',
+      subHeader: 'Deleting an Employee will remove their login details but will not delete their details and audit trail from the system',
+      message: 'This is so you can still see previous employees information and the actions they performed while employed.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        // handler:() =>{
+        //   this.reloadPage();
+        // }
+    }],
+    });
+    await alert.present();
+  }
+
   async editSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',

@@ -12,6 +12,7 @@
   </ion-header>
   <ion-button (click)="routeAudit()">View Audit Trail</ion-button>
   <ion-button (click)="routeEmployees()">Manage Employees</ion-button>
+  <ion-button (click)="generateUserPDF()">Download Users Report</ion-button>
  <!----<ion-item>
     <ion-label position="stacked">User Role</ion-label><br>
     <ion-select placeholder="Select a User Role" formControlName="UserId">
@@ -75,7 +76,6 @@
           <ion-col>{{e.cell_Number}}</ion-col>
           <ion-col>{{e.date_Registered| date: 'yyyy-MM-dd'}}</ion-col>
         </ion-row>
-      </ion-col>
       
       <ion-col>
         
@@ -101,7 +101,6 @@
           <ion-col>{{c.cell_Number}}</ion-col>
           <ion-col>{{c.date_Registered| date: 'yyyy-MM-dd'}}</ion-col>
         </ion-row>
-      </ion-col>
 
     </ion-grid>
   </div>

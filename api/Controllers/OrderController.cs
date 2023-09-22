@@ -41,7 +41,8 @@ namespace IPKP___API.Controllers
 
                 _IPKPRepository.Add(orderlineitem);
                 await _IPKPRepository.SaveChangesAsync();
-                return Ok(orderlineitem.Order_Line_Item_Quantity);
+
+                return Ok(orderlineitem); //.Order_Line_Item_Quantity
             }
             catch (Exception)
             {
@@ -201,6 +202,7 @@ namespace IPKP___API.Controllers
                     Customer_ID = o.Customer_ID,
                     Order_Quantity = o.Order_Quantity,
                     Order_Completed_Date = DateTime.Now,
+                    Stock_Item_Name = o.Stock_Item_Name,
                 };
 
                 _IPKPRepository.Add(order);

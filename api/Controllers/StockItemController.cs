@@ -164,15 +164,26 @@ namespace IPKP___API.Controllers
             try
             {
                 var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(StockItemId);
+                var results = _IPKPRepository.GetOrderLineItemByStockItem(StockItemId);
 
-                if (existingStockItem == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item " + StockItemId });
-
-                _IPKPRepository.Delete(existingStockItem);
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                if (existingStockItem == null)
                 {
-                    return Ok(new Response { Status = "Success", Message = "Stock Item  Removed Successfully" });
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item " + StockItemId });
                 }
+                else if(results == null)
+                {
+                    _IPKPRepository.Delete(existingStockItem);
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Stock Item  Removed Successfully" });
+                    }
+                }
+                else
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "Cannot delete stock item while it is being used in an order in progress." });
+                }
+                
             }
             catch (Exception)
             {
