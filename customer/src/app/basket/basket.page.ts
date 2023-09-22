@@ -57,10 +57,10 @@ export class BasketPage implements OnInit {
 
   constructor(public modalCtrl: ModalController, private _router: Router, private cdr: ChangeDetectorRef,
     private service: PersonalisationService, private alertController: AlertController, 
-    private discountservice: DiscountService, private auditservice:AuditTrailService  ) {
+    private discountservice: DiscountService, private auditservice:AuditTrailService  ) 
+  {
     this.counter = document.querySelector("#counter");
     const storedQuantity = localStorage.getItem('basketQuantity');
-
   }
 
   cartItems: any[] = [];
@@ -200,10 +200,12 @@ export class BasketPage implements OnInit {
 
     this.CheckPersonalised();
 
-    if (!this.CheckPersonalised()) {
-      try {
+    // if (!this.CheckPersonalised()) {
+    //   try {
 
-      } catch {
+    //   } 
+    //   catch 
+    //   {
         const existingItem = localStorage.getItem('cart');
         let items = JSON.parse(localStorage.getItem('cart') as string)
         /*to make space in the local storage
@@ -224,8 +226,8 @@ export class BasketPage implements OnInit {
         //this.AddImageToImageLineItem() 
         // this.AddPersonalisation()
         //this._router.navigate(["/tabs/make-payment"])
-      }
-    }
+      // }
+    // }
   }
 
 //======== Checks =======

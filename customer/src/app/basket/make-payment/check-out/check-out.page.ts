@@ -35,6 +35,7 @@ export class CheckOutPage implements OnInit {
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)
     this.discount = JSON.parse(JSON.stringify(localStorage.getItem('discount')))
+    let items = JSON.parse(localStorage.getItem('cart') as string)
     this.basketItems=this.order.basketItems;
     console.log(this.basketItems);  
   
@@ -83,6 +84,7 @@ export class CheckOutPage implements OnInit {
       addorderRequest.delivery_ID = delID
       addorderRequest.customer_ID = customerID      
       addorderRequest.order_Request_Total_Price = ortprice
+
 
       this.service.AddOrderRequest(addorderRequest).subscribe(result => {
         this.orderrequest = result as Order_Request

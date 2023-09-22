@@ -27,7 +27,7 @@
         <form [formGroup]="SearchStockForm">      
           <ion-item>
             <!-- <ion-label>Search by Name</ion-label> -->
-            <ion-input label="Search by Name" type="text" formControlName="name" placeholder="Product Name" required></ion-input><br>
+            <ion-input label="Search by Name" type="text" formControlName="name" placeholder="Product Name" required></ion-input>
             <ion-button (click)="search()">Search</ion-button>
           </ion-item> 
         </form>
@@ -46,8 +46,8 @@
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Product Image</ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Quantity In Stock</ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Inventory Comments</ion-col>
-        <ion-col sizeLg="1.5" sizeMd="2" sizeXs="2" ></ion-col>
-        <ion-col sizeLg="1.5" sizeMd="2" sizeXs="2" ></ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" ></ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" ></ion-col>
       </ion-row><br>
 
       <ion-row *ngFor="let item of searchedinventory" class="cell-class">
@@ -59,8 +59,8 @@
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"><img src='data:image/png;base64,{{item.stockImageFile}}'></ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.stock_Item_Quantity}}</ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.inventory_Comments}}</ion-col>
-        <ion-col sizeLg="1.5" sizeMd="2" sizeXs="2" style="text-align: center;"><ion-button (click)="EditProduct(item.stock_Item_ID, true)">Edit Product</ion-button></ion-col>
-        <ion-col sizeLg="1.5" sizeMd="2" sizeXs="2" ><ion-button (click)="ConfirmDeleteStockItemSuccessAlert(item.stock_Item_ID)">Remove Product</ion-button></ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"><ion-button (click)="EditProduct(item.stock_Item_ID, true)">Edit Product</ion-button></ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3"><ion-button (click)="ConfirmDeleteStockItemSuccessAlert(item.stock_Item_ID)">Remove Product</ion-button></ion-col>
       </ion-row>
     </ion-grid>
   </div>

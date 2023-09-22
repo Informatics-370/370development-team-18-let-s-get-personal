@@ -42,7 +42,7 @@ export class LoginPage implements OnInit {
           this.ErrorAlert();
         }
         else { //if(roles.includes('Admin'))
-          this.router.navigateByUrl('/tabs/order-requests', {replaceUrl: true});
+          this.router.navigateByUrl('/tabs/home', {replaceUrl: true});
           localStorage.setItem('username', form.value.username,);
           this.FindID()
         }

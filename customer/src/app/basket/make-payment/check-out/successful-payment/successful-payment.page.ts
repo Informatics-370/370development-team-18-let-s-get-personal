@@ -25,7 +25,7 @@ import { InvoiceService } from 'src/app/Services/invoice.service';
 export class SuccessfulPaymentPage implements OnInit {
   showAnimation = false;
   order = new OrderT();
-  cartitems: any 
+  cartitems: any [] = []
   basket = new BasketItems();
   customer: Customer = new Customer()
   public username: string = ""
@@ -48,7 +48,7 @@ export class SuccessfulPaymentPage implements OnInit {
   orderlineitemid!: string
   AddOrderLineItem(){
     try
-    {
+    {      
       let addedOrder = new Order_Line_Item
       let orderRequestID = JSON.parse(localStorage.getItem('orderRequestID') as string)
       let personalisedID = JSON.parse(localStorage.getItem('personalisedID') as string)
@@ -59,6 +59,19 @@ export class SuccessfulPaymentPage implements OnInit {
       addedOrder.order_Line_Item_Quantity = quantity
       addedOrder.order_request_ID = orderRequestID
       addedOrder.personalisation_ID = personalisedID
+
+      // this.cartitems.forEach(item => {
+      //   //getpersonalisationid in cart array
+      //   item.BasketItems.basket_Quantity
+
+      //   this.orderService.AddOrderLineItem(addedOrder).subscribe(result => {
+      //     let orderlineitem = result as Order_Line_Item
+      //     this.orderlineitemid = orderlineitem.order_Line_Item_ID
+      //     console.log(result)
+      //   })
+  
+      //   this.addSale()
+      // });
 
       this.orderService.AddOrderLineItem(addedOrder).subscribe(result => {
         let orderlineitem = result as Order_Line_Item
@@ -88,7 +101,7 @@ export class SuccessfulPaymentPage implements OnInit {
     addedSale.stock_Item_ID = stockitem
 
     try{
-
+//foreach item in cart: 
       this.saleService.AddSale(addedSale).subscribe(result =>{
         let sale = result as Payment;
         this.paymentID = sale.payment_ID

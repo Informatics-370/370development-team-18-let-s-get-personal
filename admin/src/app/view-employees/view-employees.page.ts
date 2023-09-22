@@ -183,9 +183,9 @@ export class ViewEmployeesPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler:() =>{
-          this.reloadPage();
-        }
+        // handler:() =>{
+        //   this.reloadPage();
+        // }
     }],
     });
     await alert.present();
