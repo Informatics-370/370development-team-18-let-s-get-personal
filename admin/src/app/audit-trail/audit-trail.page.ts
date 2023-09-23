@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { AuditTrail } from '../Models/adittrail';
 import { AuditTrailService } from '../Services/audittrail.service';
 import { AuditTrailVM } from '../ViewModels/audittrailVM';
@@ -24,7 +24,7 @@ export class AuditTrailPage implements OnInit {
   searchString: string = "";
   searchedtrail: AuditTrailVM[] = [];
 
-  constructor(private service:AuditTrailService, private excelservice: ExcelService ) 
+  constructor(private service:AuditTrailService, private excelservice: ExcelService, private alertController:AlertController ) 
   {
     (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
   }
@@ -148,5 +148,16 @@ export class AuditTrailPage implements OnInit {
     pdfMake.createPdf(docDefinition).download();      
   }
 
-
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'Audit trails are immedietely added when a user performs an action.',
+      message: 'They cannot be manually added',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
 }

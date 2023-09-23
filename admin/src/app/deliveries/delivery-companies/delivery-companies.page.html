@@ -35,7 +35,7 @@
 </ion-content>
 
 <ion-footer> 
-  <ion-modal trigger="addCompanymodal" (willDismiss)="onWillDismiss($event)">
+  <ion-modal [isOpen]="isAddModalOpen" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
         <ion-toolbar>

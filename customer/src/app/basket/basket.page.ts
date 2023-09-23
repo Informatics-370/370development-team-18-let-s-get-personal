@@ -72,6 +72,7 @@ export class BasketPage implements OnInit {
     // this.token=localStorage.getItem("token");
     //let decode=jwt_decode(this.token);
     //console.log(this.token);
+    this.SetOrder()
     this.CheckDiscount()
     /* Retrieve the cart item count from localStorage*/
     const cartItemCount = localStorage.getItem('cartItemCount');
@@ -154,10 +155,12 @@ export class BasketPage implements OnInit {
       //localStorage.setItem('quantity', JSON.stringify(item.basket_Quantity));
     }
     let pureprice = totalPrice
-    localStorage.setItem('pureprice', JSON.stringify(pureprice));
+    //localStorage.setItem('pureprice', JSON.stringify(pureprice));
+    localStorage.setItem('pureprice', pureprice.toString());
 
     this.vatprice = totalPrice * 0.15
-    localStorage.setItem('vatamount', JSON.stringify(this.vatprice));
+    //localStorage.setItem('vatamount', JSON.stringify(this.vatprice));
+    localStorage.setItem('vatamount', this.vatprice.toString());
       
     totalPrice = totalPrice + this.vatprice - this.discount_Amount
     this.order.price = totalPrice;
@@ -171,11 +174,11 @@ export class BasketPage implements OnInit {
     for (const item of this.cartItems) {
       this.discountservice.GetDiscountByStock(item.stock_Item_ID).subscribe(result =>{
         this.discounts = result as Discount[]
-        localStorage.setItem('discount', item.discount_Amount);
-        this.discount_Amount += item.discount_Amount
-      })      
-    }
-    localStorage.setItem('discountamount', JSON.stringify(this.discount_Amount));
+        console.log(item.discount_Amount)
+        this.discount_Amount = this.discount_Amount + item.discount_Amount
+      })
+    }      
+    localStorage.setItem('discount', JSON.stringify(this.discount_Amount));
   }
 
   public clearBasket() {
@@ -196,9 +199,40 @@ export class BasketPage implements OnInit {
     this._router.navigate(["/tabs/shop-all"])
   }
 
-  public makepayment() {
+  SetOrder(){
+    let items = JSON.parse(localStorage.getItem('cart') as string)
+  
+    console.log('items parsed', items)
+    this.order.basketItems = items;
+    this.order.paid = false;
+  
+    localStorage.setItem("order", JSON.stringify(this.order));
+    console.log('order', items);
 
-    this.CheckPersonalised();
+  }
+
+  public makepayment() {
+    try{
+      //const existingItem = localStorage.getItem('cart');
+      let items = JSON.parse(localStorage.getItem('cart') as string)
+          /*to make space in the local storage
+          localStorage.removeItem("stockId")
+          localStorage.removeItem("stockId")
+          localStorage.removeItem("stockId")*/
+  
+      console.log('items parsed', items)
+      this.order.basketItems = items;
+      this.order.paid = false;
+  
+      localStorage.setItem("order", JSON.stringify(this.order));
+      console.log('order', items);
+  
+      this.CheckPersonalised();
+    }
+    catch{
+
+    }
+    
 
     // if (!this.CheckPersonalised()) {
     //   try {
@@ -206,21 +240,9 @@ export class BasketPage implements OnInit {
     //   } 
     //   catch 
     //   {
-        const existingItem = localStorage.getItem('cart');
-        let items = JSON.parse(localStorage.getItem('cart') as string)
-        /*to make space in the local storage
-        localStorage.removeItem("stockId")
-        localStorage.removeItem("stockId")
-        localStorage.removeItem("stockId")*/
+        
 
-        console.log('items parsed', items)
-        this.order.basketItems = items;
-        this.order.paid = false;
-
-        localStorage.setItem("order", JSON.stringify(this.order));
-        console.log('order', items);
-
-        this.uploadImage();
+        //this.uploadImage();
         //this.UploadPersonalisation();
         //change to checkout and go to deliveries then make payment 
         //this.AddImageToImageLineItem() 
@@ -306,12 +328,20 @@ export class BasketPage implements OnInit {
     }
   }
 
+  textID!: string
+  imageID!: string
   uploadImage() {
     this.service.UploadDesignImage(this.formData).subscribe(result => {
       this.uploadedImage = result as Design_Image
+      this.imageID = this.uploadedImage.design_Image_ID
       console.log('Image API', this.uploadedImage)
-      this.uploadText()
+      
+    },
+    (error) => {
+        this.addPersonalizationErrorAlert()
+        console.error('Upload error:', error);
     })
+    this.uploadText()
   }
 
   uploadText() {
@@ -319,8 +349,14 @@ export class BasketPage implements OnInit {
     addedtext.design_Text_Description = this.AddTextForm.value.designText
     this.service.UploadDesignText(addedtext).subscribe(res => {
       this.uploadedText = res as Design_Text
+      this.textID = this.uploadedText.design_Text_ID
       console.log('Text API', this.uploadedText)
+    },
+    (error) => {
+        this.addPersonalizationErrorAlert()
+        console.error('Upload error:', error);
     })
+    this.UploadPersonalisation()
   }
 
   UploadPersonalisation() {
@@ -328,8 +364,8 @@ export class BasketPage implements OnInit {
     let personalisation = new PersonalisationDesignVM()
     if (personalisation) {
       //let stockId=localStorage.getItem("stockId");
-      personalisation.design_Text_ID = this.uploadedText.design_Text_ID
-      personalisation.design_Image_ID = this.uploadedImage.design_Image_ID
+      personalisation.design_Text_ID = this.textID
+      personalisation.design_Image_ID = this.imageID
       //personalisation.design_Text = this.AddTextForm.get("designText")?.value;
       //personalisation.image_File = this.UploadImageForm.get("designImage")?.value;
       personalisation.stock_Item_ID = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
@@ -341,10 +377,10 @@ export class BasketPage implements OnInit {
         console.log('Both', personalisation);
         this.addPersonalizationSuccessAlert()
       },
-        (error) => {
+      (error) => {
           this.addPersonalizationErrorAlert()
           console.error('Upload error:', error);
-        })
+      })
     }
 
   }
@@ -359,14 +395,14 @@ export class BasketPage implements OnInit {
     designImage: new FormControl('', [Validators.required])
   });
 
-  addPersonalization() {
-    let personalisation = new PersonalisationDesignVM()
-    //let stockId=localStorage.getItem("stockId");
-    personalisation.design_Text = this.AddForm.get("designText")?.value;
-    personalisation.image_File = this.AddForm.get("designImage")?.value;
-    //personalisation.stock_Item_Name = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
-    console.log('addPers', personalisation)
-  }
+  // addPersonalization() {
+  //   let personalisation = new PersonalisationDesignVM()
+  //   //let stockId=localStorage.getItem("stockId");
+  //   personalisation.design_Text = this.AddForm.get("designText")?.value;
+  //   personalisation.image_File = this.AddForm.get("designImage")?.value;
+  //   //personalisation.stock_Item_Name = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
+  //   console.log('addPers', personalisation)
+  // }
 
   isEmptyObject(obj: any) {
     return Object.keys(obj).length === 0;
@@ -389,9 +425,9 @@ export class BasketPage implements OnInit {
       console.log('LocalStorage cart', existingItem)
     }
     localStorage.setItem('cart', JSON.stringify(items));
-    //this.uploadImage();
+    this.uploadImage();
     //this.UploadPersonalisation();
-    this.addPersonalizationSuccessAlert();
+    //this.addPersonalizationSuccessAlert();
 
     //Action Trail
     this.action = "Personalised Item:" + items.stock_Item.stock_Item_Name

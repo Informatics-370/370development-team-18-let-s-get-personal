@@ -47,6 +47,9 @@ export class DeliveryCompaniesPage implements OnInit {
     this.service.GetDeliveryCompanies().subscribe(result =>{
       this.deliverycompanies = result as Delivery_Company[];
       console.log(this.deliverycompanies)
+    },(error) => {
+      this.ErrorAlert();        
+      console.error(error);
     })
   }
 
@@ -55,7 +58,17 @@ export class DeliveryCompaniesPage implements OnInit {
     this.thisroute.navigate(['./tabs/deliveries']);
   }
 
-  AddDeliveryCompany(){
+//========== Delete ===========
+  isAddModalOpen = false;
+  OpenAddModal(isOpen: boolean){
+    this.isAddModalOpen = isOpen;
+  }
+
+  canceladdmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirmaddmodal() {
     let AddDeliveryCompany = new Delivery_Company();
     AddDeliveryCompany.delivery_Price = this.AddForm.value.Delivery_Price;
     AddDeliveryCompany.delivery_Company_Name = this.AddForm.value.deliverycompanyname;
@@ -68,8 +81,7 @@ export class DeliveryCompaniesPage implements OnInit {
     },(error) => {
       this.addDeliveryCompanyErrorAlert();        
       console.error('Edit stock image error:', error);
-    })
-
+    })    
   }
 
 
@@ -86,7 +98,7 @@ export class DeliveryCompaniesPage implements OnInit {
     })
   }
 
-  //========== Edit ===========
+//========== Edit ===========
   isModalOpen = false;
   editCompany: Delivery_Company = new Delivery_Company();
   editForm: FormGroup = new FormGroup({
@@ -159,13 +171,7 @@ export class DeliveryCompaniesPage implements OnInit {
     window.location.reload()
   }
   
-  canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
 
-  confirmaddmodal() {
-    this.AddDeliveryCompany();    
-  }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
@@ -273,6 +279,22 @@ export class DeliveryCompaniesPage implements OnInit {
         role: 'cancel',
         handler:() =>{
           this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async ErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Something went wrong',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
         }
     }],
     });

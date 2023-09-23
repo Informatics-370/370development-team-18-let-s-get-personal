@@ -15,6 +15,7 @@
   <ion-content id="content">
     <ion-button (click)="Logout()">Log out</ion-button>
     <ion-button (click)="EditAdmin(profile.admin_ID, true)">Update Profile</ion-button>
+    <ion-button (click)="ChangePassword(true)">Change Passsword</ion-button>
     
     <ion-card>
       <ion-card-header>
@@ -85,6 +86,38 @@
             <ion-label position="stacked">Username</ion-label><br>
             <ion-input type="text" formControlName="username" placeholder="" required></ion-input>
           </ion-item>   -->
+      </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isPassModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancelpassmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <!-- <ion-title>Add Discount Policy Details</ion-title> -->
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmpassmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="passwordform" >
+          <ion-item>
+            <ion-label position="stacked">Enter current password</ion-label><br>
+            <ion-input type="text" formControlName="oldpassword" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Enter new password</ion-label><br>
+            <ion-input type="text" formControlName="newpassword" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Confirm new password</ion-label><br>
+            <ion-input type="text" formControlName="confirmpassword" placeholder="" required></ion-input>
+          </ion-item>  
       </form>
       </ion-content>
     </ng-template>
