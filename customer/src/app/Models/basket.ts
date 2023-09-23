@@ -15,6 +15,7 @@ import { DeliveryAddress } from './deliveryaddress';
 }*/
 
 export class Personalization{
+    personalisation_ID!: string
     personalizationText!:string;
     img!:string;
 }

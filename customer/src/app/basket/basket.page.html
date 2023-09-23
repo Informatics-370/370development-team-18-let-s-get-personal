@@ -9,7 +9,7 @@
 	<div class="col-12 text-center" ><!--style="padding-top: 3cm; margin-left: 2.5cm;"-->
 	  <p style="text-align: center;">Your basket is empty.</p>
 	  <p style="text-align: center;">Add something to make me happy!!</p>
-	  <img src="/assets/EmptyCart.PNG" alt="empty icon" class="center" width="100" height="500"/>
+	  <img src="/assets/EmptyCart.PNG" alt="empty icon" class="center" width="100%" height="100%"/>
 	  <ion-button class="center" (click)="shopall()">Return to shop</ion-button>
 	</div>
 </ion-content>
@@ -41,7 +41,7 @@
     <ion-col></ion-col>
     <ion-row>
       <ion-col>Items Total (Excluding Delivery)</ion-col>
-	  <ion-col>Vat: R{{vatprice}}.00</ion-col>
+	  <ion-col>Vat: R{{vatprice}}</ion-col>
       <ion-col><strong>R{{calculateTotalPrice()}}</strong></ion-col>
       <ion-button (click)="makepayment()">Checkout</ion-button>
     </ion-row>
