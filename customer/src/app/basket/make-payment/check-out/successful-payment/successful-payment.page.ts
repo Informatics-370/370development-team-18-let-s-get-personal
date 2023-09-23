@@ -48,38 +48,32 @@ export class SuccessfulPaymentPage implements OnInit {
   orderlineitemid!: string
   AddOrderLineItem(){
     try
-    {      
-      let addedOrder = new Order_Line_Item
-      let orderRequestID = JSON.parse(localStorage.getItem('orderRequestID') as string)
-      let personalisedID = JSON.parse(localStorage.getItem('personalisedID') as string)
-      let quantity = JSON.parse(localStorage.getItem('quantity') as string) //this.basket.basket_Quantity
-      let price = JSON.parse(localStorage.getItem('totalprice') as string)
+    {
+      const storedTotalPrice: string | null = localStorage.getItem('totalprice');
+      const storedQuantity: string | null = localStorage.getItem('totalprice');
+      if (storedTotalPrice !== null && storedQuantity !== null) {
 
-      addedOrder.order_Line_Item_Price = price
-      addedOrder.order_Line_Item_Quantity = quantity
-      addedOrder.order_request_ID = orderRequestID
-      addedOrder.personalisation_ID = personalisedID
+        let orderRequestID = JSON.parse(localStorage.getItem('orderRequestID') as string)
+        let price = parseInt(storedTotalPrice, 10)//JSON.parse(localStorage.getItem('totalprice') as string)
 
-      // this.cartitems.forEach(item => {
-      //   //getpersonalisationid in cart array
-      //   item.BasketItems.basket_Quantity
 
-      //   this.orderService.AddOrderLineItem(addedOrder).subscribe(result => {
-      //     let orderlineitem = result as Order_Line_Item
-      //     this.orderlineitemid = orderlineitem.order_Line_Item_ID
-      //     console.log(result)
-      //   })
-  
-      //   this.addSale()
-      // });
+        this.cartitems.forEach(item => {
+          let addedOrder = new Order_Line_Item
+          addedOrder.order_Line_Item_Price = price
+          addedOrder.order_Line_Item_Quantity = item.basket_Quantity
+          addedOrder.order_request_ID = orderRequestID
+          addedOrder.personalisation_ID = item.personalization.personalisation_ID
+          item.BasketItems.basket_Quantity
 
-      this.orderService.AddOrderLineItem(addedOrder).subscribe(result => {
-        let orderlineitem = result as Order_Line_Item
-        this.orderlineitemid = orderlineitem.order_Line_Item_ID
-        console.log(result)
-      })
-
-      this.addSale()      
+          this.orderService.AddOrderLineItem(addedOrder).subscribe(result => {
+            let orderlineitem = result as Order_Line_Item
+            this.orderlineitemid = orderlineitem.order_Line_Item_ID
+            console.log(result)
+          })
+    
+          this.addSale()
+        });
+      }          
     }
     catch
     {
@@ -139,17 +133,14 @@ export class SuccessfulPaymentPage implements OnInit {
     invoice.customer.username = this.customer.username
     invoice.customer.cell_Number = this.customer.cell_Number
 
-
-    try{
-      this.invoiceservice.AddInvoice(invoice).subscribe(result => {
+    this.invoiceservice.AddInvoice(invoice).subscribe(result => {
         console.log(result)
-      })
+    },(error) => {
+      //this.editErrorAlert();        
+      console.error( error);
+    })
 
-      this.placeOrder(this.order);
-    }
-    catch{
-
-    }
+    this.placeOrder(this.order);
   }
 
   getUser()
@@ -232,3 +223,23 @@ export class SuccessfulPaymentPage implements OnInit {
   }
 
 }
+
+//old add
+      
+// addedOrder.order_Line_Item_Price = price
+// addedOrder.order_Line_Item_Quantity = quantity
+// addedOrder.order_request_ID = orderRequestID
+// addedOrder.personalisation_ID = personalisedID
+
+// let personalisedID = JSON.parse(localStorage.getItem('personalisedID') as string)
+//         let quantity = parseInt(storedQuantity, 10) //JSON.parse(localStorage.getItem('quantity') as string) //this.basket.basket_Quantity
+
+// let addedOrder = new Order_Line_Item
+
+// this.orderService.AddOrderLineItem(addedOrder).subscribe(result => {
+//   let orderlineitem = result as Order_Line_Item
+//   this.orderlineitemid = orderlineitem.order_Line_Item_ID
+//   console.log(result)
+// })      
+// this.addSale() 
+// } 

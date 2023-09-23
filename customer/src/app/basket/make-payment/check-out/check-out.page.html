@@ -20,23 +20,35 @@
   <ion-list>
     <ion-item-divider>Delivery Address</ion-item-divider>
     <ion-item *ngFor="let d of deliveryvm">
-      <p>Delivery Price  - R{{d.delivery_Price}}.00 <br>
+      <p>Delivery Price: R{{d.delivery_Price}}.00 <br>
       Address: {{d.streetNumber}} {{d.streetName}}</p>
+    </ion-item>
+
+    <ion-item-divider>Vat</ion-item-divider>
+    <ion-item>
+      <!-- <ion-label></ion-label> -->
+      <p>R {{vatprice}}</p>
+    </ion-item>
+    
+    <ion-item *ngIf="discount>0">
+      <ion-item-divider>Discount</ion-item-divider>
+      <p>R {{discount}}.00</p>
     </ion-item>
   </ion-list>
 
   <ion-list>
     <ion-item-divider>Total Price</ion-item-divider>
     <ion-item>
-      <p>R {{totalprice}}.00</p>
+      <p>R {{totalprice}}</p>
     </ion-item>    
   </ion-list>
 
   <ion-list>
-    <ion-item-divider>Discount</ion-item-divider>
-    <ion-item>
-      <p>R {{discount}}.00</p>
-    </ion-item>    
+        
+  </ion-list>
+
+  <ion-list>
+        
   </ion-list>
 
 
