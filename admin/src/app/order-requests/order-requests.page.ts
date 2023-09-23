@@ -52,7 +52,12 @@ export class OrderRequestsPage implements OnInit {
       backdropDismiss: true,
     });
     
-    await loading.present();
+    if(this.orderRequests.length == 0){
+      await loading.present();      
+    }
+    else{
+      await loading.dismiss();
+    } 
   
     const { role, data } = await loading.onDidDismiss();
     console.log('Loading dismissed!');

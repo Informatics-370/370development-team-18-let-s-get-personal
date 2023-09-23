@@ -58,7 +58,7 @@ export class DeliveryCompaniesPage implements OnInit {
     this.thisroute.navigate(['./tabs/deliveries']);
   }
 
-//========== Delete ===========
+//========== Add ===========
   isAddModalOpen = false;
   OpenAddModal(isOpen: boolean){
     this.isAddModalOpen = isOpen;

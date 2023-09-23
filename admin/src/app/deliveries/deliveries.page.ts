@@ -57,6 +57,11 @@ export class DeliveriesPage implements OnInit {
   {
     this.router.navigate(['./tabs/successful-deliveries']);
   }
+
+  RouteDeliveriesControlBreak()
+  {
+    this.router.navigate(['./tabs/delivery-prices']);
+  }
   
 
   GetRequestedDeliveries(){

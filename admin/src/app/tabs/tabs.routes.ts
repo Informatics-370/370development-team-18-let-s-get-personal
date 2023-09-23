@@ -135,6 +135,14 @@ export const routes: Routes = [
         loadComponent: () => import('../saleperproduct/saleperproduct.page').then( m => m.SaleperproductPage)
       },
       {
+        path: 'delivery-prices',
+        loadComponent: () => import('../deliveries/delivery-prices/delivery-prices.page').then( m => m.DeliveryPricesPage)
+      },
+      {
+        path: 'admin-help',
+        loadComponent: () => import('../admin-help/admin-help.page').then( m => m.AdminHelpPage)
+      },
+      {
         path: '',
         redirectTo: '/tabs/login',
         pathMatch: 'full',

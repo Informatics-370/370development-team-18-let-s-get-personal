@@ -26,9 +26,14 @@ export class SuccessfulPaymentPage implements OnInit {
   showAnimation = false;
   order = new OrderT();
   cartitems: any [] = []
-  basket = new BasketItems();
+  //basket = new BasketItems();
   customer: Customer = new Customer()
   public username: string = ""
+
+  price: number = 0
+  quantity: number = 0
+  orderlineitemid!: string
+
   constructor(private router:Router, private orderService:OrderService, private saleService: SalesService,
     private auditservice: AuditTrailService, private alertController:AlertController, private profileservice: UserProfileDataService,
     private invoiceservice: InvoiceService) 
@@ -36,7 +41,7 @@ export class SuccessfulPaymentPage implements OnInit {
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)
-    this.order.paid=true;
+    //this.order.paid = true;
     this.cartitems = JSON.parse(localStorage.getItem('cart') as string)
     this.getUser()
     this.AddOrderLineItem()
@@ -44,105 +49,7 @@ export class SuccessfulPaymentPage implements OnInit {
 
   //Process: 1. Add to orderline, 2. add to payment, 3. add and send invoice, 
   //4. remove info from local storage, 5. add audit trail
-
-  orderlineitemid!: string
-  AddOrderLineItem(){
-    try
-    {
-      const storedTotalPrice: string | null = localStorage.getItem('totalprice');
-      const storedQuantity: string | null = localStorage.getItem('totalprice');
-      if (storedTotalPrice !== null && storedQuantity !== null) {
-
-        let orderRequestID = JSON.parse(localStorage.getItem('orderRequestID') as string)
-        let price = parseInt(storedTotalPrice, 10)//JSON.parse(localStorage.getItem('totalprice') as string)
-
-
-        this.cartitems.forEach(item => {
-          let addedOrder = new Order_Line_Item
-          addedOrder.order_Line_Item_Price = price
-          addedOrder.order_Line_Item_Quantity = item.basket_Quantity
-          addedOrder.order_request_ID = orderRequestID
-          addedOrder.personalisation_ID = item.personalization.personalisation_ID
-          item.BasketItems.basket_Quantity
-
-          this.orderService.AddOrderLineItem(addedOrder).subscribe(result => {
-            let orderlineitem = result as Order_Line_Item
-            this.orderlineitemid = orderlineitem.order_Line_Item_ID
-            console.log(result)
-          })
-    
-          this.addSale()
-        });
-      }          
-    }
-    catch
-    {
-      
-    }
-  }
-
-  paymentID!: string
-  addSale(){    
-    let addedSale = new Payment();
-    let price = JSON.parse(localStorage.getItem('totalprice') as string)
-    let username = JSON.parse(JSON.stringify(localStorage.getItem('username')))
-    let quantity = JSON.parse(localStorage.getItem('quantity') as string)
-    let stockitem = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
-
-    addedSale.payment_Amount = price
-    addedSale.customer_UserName = username
-    addedSale.sale_Quantity = quantity
-    addedSale.stock_Item_ID = stockitem
-
-    try{
-//foreach item in cart: 
-      this.saleService.AddSale(addedSale).subscribe(result =>{
-        let sale = result as Payment;
-        this.paymentID = sale.payment_ID
-        console.log(result)
-      })
-
-      this.addInvoice()
-      //this.placeOrder(this.order);
-    }
-    catch{
-
-    }
-  }
-
-  addInvoice(){
-    let inclvatprice = JSON.parse(localStorage.getItem('totalprice') as string)
-    let excvatprice = JSON.parse(localStorage.getItem('pureprice') as string)
-    let delprice = JSON.parse(localStorage.getItem('delprice') as string)
-    let vatamount = JSON.parse(localStorage.getItem('vatamount') as string)
-    let discountamount = JSON.parse(localStorage.getItem('discountamount') as string)
-
-    let invoice = new Invoice()
-    invoice.delivery_Price = delprice
-    invoice.invoice_Total_exclVAT = excvatprice
-    invoice.invoice_Total_VAT = vatamount
-    invoice.invoice_Total_inclVAT = inclvatprice
-    invoice.discount_Amount = discountamount
-    invoice.payment_ID = this.paymentID
-    invoice.order_Line_Item_ID = this.orderlineitemid
-
-    invoice.customer.customer_ID = this.customer.customer_ID
-    invoice.customer.email = this.customer.email
-    invoice.customer.firstName = this.customer.firstName
-    invoice.customer.surname = this.customer.surname
-    invoice.customer.username = this.customer.username
-    invoice.customer.cell_Number = this.customer.cell_Number
-
-    this.invoiceservice.AddInvoice(invoice).subscribe(result => {
-        console.log(result)
-    },(error) => {
-      //this.editErrorAlert();        
-      console.error( error);
-    })
-
-    this.placeOrder(this.order);
-  }
-
+  
   getUser()
   {
     this.username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
@@ -155,7 +62,131 @@ export class SuccessfulPaymentPage implements OnInit {
 
   }
 
-  private placeOrder(order:OrderT):void{
+  uploadedOrderLine!: Order_Line_Item;
+  AddOrderLineItem(){
+    // try
+    // {
+      const storedTotalPrice: string | null = localStorage.getItem('totalprice');
+      const storedQuantity: string | null = localStorage.getItem('cartItemCount');
+      console.log(storedTotalPrice)
+      console.log(storedQuantity)
+
+      if (storedTotalPrice !== null && storedQuantity !== null) {
+        let personalisationID = JSON.parse(localStorage.getItem('personalisedID') as string)
+        let orderRequestID = JSON.parse(localStorage.getItem('orderRequestID') as string)
+        this.price = parseInt(storedTotalPrice, 10)//JSON.parse(localStorage.getItem('totalprice') as string)
+        this.quantity = parseInt(storedQuantity, 10)
+        console.log(orderRequestID)
+        console.log(this.price)
+
+        // this.cartitems.forEach(item => {
+          let addedOrder = new Order_Line_Item()
+          addedOrder.order_Line_Item_Price = this.price
+          addedOrder.order_Line_Item_Quantity = this.quantity //item.BasketItems.basket_Quantity
+          addedOrder.order_request_ID = orderRequestID
+          addedOrder.personalisation_ID = personalisationID
+          //item.BasketItems.basket_Quantity
+
+          console.log(addedOrder)
+          this.orderService.AddOrderLineItem(addedOrder).subscribe(result => {
+            this.uploadedOrderLine = result as Order_Line_Item
+            this.orderlineitemid = this.uploadedOrderLine.order_Line_Item_ID
+            console.log(result)
+          },(error) => {
+            this.ErrorAlert();        
+            console.error(error);
+          })
+    
+          this.addSale()
+        // });
+      }          
+    // }
+    // catch
+    // {
+    //   this.ErrorAlert();
+    // }
+  }
+
+  paymentID!: string
+  uploadedPayment!: Payment;
+  addSale(){    
+    const storedPurePrice: string | null = localStorage.getItem('pureprice');
+    if (storedPurePrice !== null ){
+      let totalsaleprice = parseInt(storedPurePrice, 10)
+      let addedSale = new Payment();
+      let username = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+      let stockitem = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
+
+      addedSale.payment_Amount = totalsaleprice
+      addedSale.customer_UserName = username
+      addedSale.sale_Quantity = this.quantity
+      addedSale.stock_Item_ID = stockitem
+ 
+      this.saleService.AddSale(addedSale).subscribe(result =>{
+        this.uploadedPayment = result as Payment;
+        this.paymentID = this.uploadedPayment.payment_ID
+        console.log(result)
+        console.log(this.paymentID)
+      },(error) => {
+        this.ErrorAlert();        
+        console.error(error);
+      })
+
+      this.addInvoice()
+    }
+    
+
+  }
+
+  addInvoice(){
+    const storedinclvatprice: string | null = localStorage.getItem('totalprice');
+    const storedexcvatprice: string | null = localStorage.getItem('pureprice');
+    const storeddelprice: string | null = localStorage.getItem('delprice');
+    const storedvatamount: string | null = localStorage.getItem('vatamount');
+    const storeddiscountamount: string | null = localStorage.getItem('discount');
+
+    if (storedinclvatprice !== null && storedexcvatprice !== null && storeddelprice !== null && storedvatamount !== null && storeddiscountamount !== null) {
+      //this.price = parseInt(storedTotalPrice, 10)
+      let inclvatprice = parseInt(storedinclvatprice, 10)
+      let excvatprice = parseInt(storedexcvatprice, 10)
+      let delprice = parseInt(storeddelprice, 10)
+      let vatamount = parseInt(storedvatamount, 10)
+      let discountamount = parseInt(storeddiscountamount, 10)
+
+      let invoice = new Invoice()
+      invoice.delivery_Price = delprice
+      invoice.invoice_Total_exclVAT = excvatprice
+      invoice.invoice_Total_VAT = vatamount
+      invoice.invoice_Total_inclVAT = inclvatprice
+      invoice.discount_Amount = discountamount
+      invoice.payment_ID = this.uploadedPayment.payment_ID //this.paymentID
+      invoice.order_Line_Item_ID = this.uploadedOrderLine.order_Line_Item_ID //this.orderlineitemid
+
+      let customer = new Customer()
+      let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')));
+      customer.customer_ID = this.customer.customer_ID
+      customer.email = this.customer.email
+      customer.firstName = this.customer.firstName
+      customer.surname = this.customer.surname
+      customer.username = this.customer.username
+      customer.cell_Number = this.customer.cell_Number
+
+      invoice.customer = customer
+
+      console.log(invoice)
+
+      this.invoiceservice.AddInvoice(invoice).subscribe(result => {
+          console.log(result)
+      },(error) => {
+        //this.editErrorAlert();        
+        console.error( error);
+      })
+
+      this.placeOrder(); //this.order
+    }
+  }
+
+  private placeOrder():void{ //order:OrderT
     //Action Trail
     this.action = "Paid For Order"
     this.AddAuditTrail()
@@ -183,19 +214,7 @@ export class SuccessfulPaymentPage implements OnInit {
     this.router.navigate(['/']); // Replace 'shopping' with your shopping page route
   }
 
-//========= Audit Trail ========
-  action!: string
-  AddAuditTrail(){
-    let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')))
-    let audittrail = new AuditTrail()
-    audittrail.customer_ID = customer_ID
-    audittrail.actionName = this.action
-
-    this.auditservice.AddCustomerAuditTrail(audittrail).subscribe(result => {
-      console.log(result)
-    })
-  }
-
+//==================== Alerts ====================
   public ContactUs() {
     this.router.navigate(["/tabs/contact-us"])
   }
@@ -220,6 +239,41 @@ export class SuccessfulPaymentPage implements OnInit {
       }],
     });
     await alert.present();
+  }
+
+  async ErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry! ',
+      subHeader: '',
+      message:'',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        // handler: () => {
+        //   this.reloadPage();
+        // }
+      },{
+        text: 'Contact Us',
+        //role: 'cancel',
+        handler: () => {
+          this.ContactUs();
+        }
+      }],
+    });
+    await alert.present();
+  }
+
+  //==================== Audit Trail ====================
+  action!: string
+  AddAuditTrail(){
+    let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')))
+    let audittrail = new AuditTrail()
+    audittrail.customer_ID = customer_ID
+    audittrail.actionName = this.action
+
+    this.auditservice.AddCustomerAuditTrail(audittrail).subscribe(result => {
+      console.log(result)
+    })
   }
 
 }
