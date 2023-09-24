@@ -14,12 +14,22 @@
 
   <!-- deliveriesnav() -->
 
-  <ion-content *ngIf="deliveries.length == 0">
+  <!--<ion-content *ngIf="deliveries.length == 0">
     <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
       <p>No Successful Deliveries</p>
     </div>
+  </ion-content>-->
+
+  <ion-content *ngIf="deliveries.length == 0">
+    <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
+      <p style="text-align: center;">No Success Deliveries</p><br>
+     <img src="/assets/no-results.png" alt="empty icon" class="center"  id="icon" style="width: 25%; height: 25%;"
+     sizes="50vh" />
+    </div>
   </ion-content>
 
+
+  <ion-content *ngIf="deliveries.length> 0">
   <ion-grid>
     <ion-col size="6">
       <ion-row>
@@ -61,5 +71,6 @@
     </ion-col>
     
   </ion-grid>
+  </ion-content>
 
 </ion-content>

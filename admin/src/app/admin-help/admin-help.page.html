@@ -7,34 +7,46 @@
 <ion-content [fullscreen]="true">
   <div style="text-align: center;">
     <div class="heading-container">
-      <h1>Admin Help Documentation</h1>
+      <h1>Admin Help Documentation "Let's Get Personal"</h1>
     </div>
   </div>
   <div style="text-align: center;">
     <img src="/assets/team cover.png" alt="IPKP Team" />
   </div>
 
-  <h2>Table of Contents</h2>
-  <ul>
+  <h2 class="center" style="width: 25%;text-align: center;">Table of Contents</h2>
+  <ul class="center" style="width: 25%;text-align: center;">
     <li><a [routerLink]="['/admin-help']" fragment="section-introduction">Introduction</a></li>
     <li><a [routerLink]="['/admin-help']" fragment="section-getting-started">Getting Started</a></li>
     <li><a [routerLink]="['/admin-help']" fragment="section-usage">Usage</a></li>
-    <li><a [routerLink]="['/admin-help']" fragment="section-registration">Registration and Login</a></li>
-    <li><a [routerLink]="['/admin-help']" fragment="section-basket">Adding to basket and Personalization</a></li>
-    <li><a [routerLink]="['/admin-help']" fragment="section-payment">Payment</a></li>
-    <li><a [routerLink]="['/admin-help']" fragment="section-faqs">FAQs</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-registration">Login</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-basket">Order Management</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-address">Employee Management</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-payment">Discounts</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-logout">Log Out</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-forgotPassword">Forgot Password</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-expRating">Ratings</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-ProdRating">Refund Policy</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-profile">Profile</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-faqs">Messages</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-faqs">Delivery Management</a></li>
+    <li><a [routerLink]="['/admin-help']" fragment="section-tech">Technical information</a></li>
   </ul>
   <ion-card-content>
     <!-- Search bar-->
-<ion-searchbar [(ngModel)]="searchTerm" (ionChange)="findString()"></ion-searchbar> 
-   
+    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="findString()" style="width: 25%;text-align: center;"
+      class="center"></ion-searchbar>
+    <!--<ion-spinner *ngIf="isLoading"></ion-spinner>-->
+
+
+
     <h1 id="section-introduction"><u>Introduction</u></h1>
 
     <h2>Welcome to the help documentation of "Let's Get Personal".</h2><br />
     <p> The primary purpose of this documentation is to serve as a comprehensive guide to customers.
       It is designed to provide clarity, context, and instruction on how to use the system,
-      ensuring that you can access information with ease and utilize it effectively.<br />
-      It is intended for potential partners also known as customers.<br />
+      ensuring that you can access information with ease and utilize it effectively.
+      It is intended for potential partners also known as customers.
       This help document comprises several sections, each forming the entire functionality of the system.
       We hope you get the full understanding of our system and have a smooth experience while using it.
     </p>
@@ -46,7 +58,8 @@
       a head start.</p>
 
     <div>
-      <p><b>Step 1: Ensure you are using a web browser with.....</b></p>
+      <p><b> Registration Step 1: Ensure you are using an operating systems from Windows or macOS on desktop
+          computers</b></p>
     </div>
     <div>
       <p><b>Step 2: Visit <a href="###" class="link-fancy" target="_blank">It's
@@ -56,16 +69,17 @@
       <!--<img src="/assets/" alt="Browser Screenshot" style="width: 75%; height: 75%;" />-->
     </div>
     <br /><br />
-    <h1 id="section-usage">Usage</h1>
+    <h1 id="section-usage"><u>Usage</u></h1>
     <p>
-      Learn how to use your application effectively by following the instructions in the "Usage" section.
+      This point of sale system is used to add personalization to certain items and get them ordered by your preferred
+      delivery company.
     </p>
     <br />
-    <h1 id="section-registration">Registration and Login</h1>
+    <h1 id="section-registration"><u>Registration and Login</u></h1>
     <p>
-      Welcome to the "Registration and Login" section of this documentation.<br />
+      Welcome to the "Registration and Login" section of this documentation.
       Here you will see how and where to register and also where you can login and the information required.</p>
-
+    <br />
     <div>
       <p><b>Step 1: Head to the Profile tab that looks like the following:</b></p>
       <img src="/assets/profileTab.png" alt="Profile Tab" sizes="50vh" style="width: 75%; height: 75%;" />
@@ -80,8 +94,31 @@
           like to use and your password.</b></p>
       <!--<img src="/assets/" alt="Register page screenshot" />-->
     </div>
+    <div>
+      <p><b>Success Notification</b></p>
+      <!--<img src="/assets/" alt="success noti screenshot" />-->
+      <p>This will be displayed once your profile has been created succefully.</p>
+      <p><b>Error Notification</b></p>
+      <!--<img src="/assets/" alt="erreo notification screenshot" />-->
+      <p>This will be displayed if ever there was an issue with creating your profile. Try again and if the issue
+        persists then proceeed to email us at
+        <a href="mailto:ktlmamadi@gmail.com">IPKP@gmail.com.</a>
+      </p>
+    </div><br /><br />
+    <div>
+      <p><b>Login Step 1: Enter your profile username and password at the provided spaces and click the "login"
+          button.</b></p>
+      <!--<img src="/assets/" alt="error notification screenshot" />-->
+      <p>Once your the system has successfully verified the information you provided, it will then redirect you to the
+        basket page.</p>
+      <p><b>Error Notification</b></p>
+      <!--<img src="/assets/" alt="error notification screenshot" />-->
+      <p>This will be displayed if ever you enter an incorrect username or password. Try again to login and proceed.
+      </p>
+    </div>
+
     <br /><br />
-    <h1 id="section-basket">Basket and Personalisation</h1>
+    <h1 id="section-basket"><u>Basket and Personalisation</u></h1>
 
     <h2> Welcome to the "Basket and Personalization" section of this documentation.</h2><br />
     <p> Here you will see how to add a product to your basket and also how you will add the personalization of your
@@ -89,7 +126,7 @@
     </p>
 
     <div>
-      <p><b>Step 1: Head to the Shop tab that looks like the following:</b></p>
+      <p><b>Basket Step 1: Head to the Shop tab that looks like the following:</b></p>
       <!--<img src="/assets/" alt="Shop Tab screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
     </div>
     <div>
@@ -97,38 +134,486 @@
       <!--<img src="/assets/" alt="Add button screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
     </div>
     <div>
-      <p>Step 3: Click the cart icon to add personalization</p>
+      <p><b>Step 3: Click the cart icon to add personalization</b></p>
+      <!--<img src="/assets/" alt="Basket screenshot" />-->
+      <p>You can also increase or decrease the quantity of the item here:</p>
+      <!--<img src="/assets/" alt="Basket screenshot" />-->
+    </div><br />
+    <div>
+      <p><b>Personalization Step 1: Click the add personalisation button:</b></p>
+      <!--<img src="/assets/" alt="Basket screenshot" />-->
+      <p><b>You can view your personalization to ensure its correct:</b></p>
+      <!--<img src="/assets/" alt="Basket screenshot" />-->
+      <p><b>You can also update and replace your added personalization here by clicking the update personalization
+          button:</b></p>
       <!--<img src="/assets/" alt="Basket screenshot" />-->
     </div>
+
     <br /><br />
-    <h1 id="section-payment">Payment</h1>
+    <h1 id="section-address"><u>Address</u></h1>
+
+    <h2> Welcome to the "Address" section of this documentation.</h2><br />
+    <p> Here you will see how to go about to add your address details</p>
+
+    <div>
+      <p><b>Step 1: Enter your address details at the provided spaces: </b></p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 2: Enter your full address here for us to calculate the distance to charge according</b> </p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 3:Click the Confirm button </b></p>
+      <!--<img src="/assets/" alt="screenshot" />-->
+    </div>
+
+    <br /><br />
+    <h1 id="section-payment"><u>Payment</u></h1>
 
     <h2> Welcome to the "Payment" section of this documentation.</h2><br />
     <p> Here you will see how to go about before making your payment.</p>
 
     <div>
-      <p><b>Step 1: </b></p>
+      <p><b>Step 1: View your order and address details here first before proceeding to payment. </b></p>
       <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
     </div>
     <div>
-      <p><b>Step 2:</b> </p>
+      <p><b>Step 2: Click the 'Checkout" button if you are happy and the informtaion displayed is correct</b> </p>
       <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
     </div>
     <div>
-      <p><b>Step 3: </b></p>
+      <p><b>Step 3: Pay here. Eg Payfast</b></p>
       <!--<img src="/assets/" alt="screenshot" />-->
     </div>
     <br /><br />
-    <h2 id="section-faqs">FAQs</h2>
+    <h1 id="section-logout"><u>LogOut</u></h1>
+
+    <h2> Welcome to the "LogOut" section of this documentation.</h2><br />
+    <p> Here you will see how to go about before making your payment.</p>
+
+    <div>
+      <p><b>Step 1: View your order and address details here first before proceeding to payment. </b></p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 2: Click the 'Checkout" button if you are happy and the informtaion displayed is correct</b> </p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 3: Pay here. Eg Payfast</b></p>
+      <!--<img src="/assets/" alt="screenshot" />-->
+    </div>
+    <br /><br />
+    <h1 id="section-forgotPassword"><u>Forgot Password</u></h1>
+
+    <h2> Welcome to the "Forgot Password" section of this documentation.</h2><br />
+    <p> Here you will see how to go about before making your payment.</p>
+
+    <div>
+      <p><b>Step 1: View your order and address details here first before proceeding to payment. </b></p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 2: Click the 'Checkout" button if you are happy and the informtaion displayed is correct</b> </p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 3: Pay here. Eg Payfast</b></p>
+      <!--<img src="/assets/" alt="screenshot" />-->
+    </div>
+    <br /><br />
+    <h1 id="section-expRating"><u>Experience Rating</u></h1>
+
+    <h2> Welcome to the "Experience rating" section of this documentation.</h2><br />
+    <p> Here you will see how to go about before making your payment.</p>
+
+    <div>
+      <p><b>Step 1: View your order and address details here first before proceeding to payment. </b></p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 2: Click the 'Checkout" button if you are happy and the informtaion displayed is correct</b> </p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 3: Pay here. Eg Payfast</b></p>
+      <!--<img src="/assets/" alt="screenshot" />-->
+    </div>
+    <br /><br />
+    <h1 id="section-ProdRating"><u>Product Rating</u></h1>
+
+    <h2> Welcome to the "Product Rating" section of this documentation.</h2><br />
+    <p> Here you will see how to go about before making your payment.</p>
+
+    <div>
+      <p><b>Step 1: View your order and address details here first before proceeding to payment. </b></p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 2: Click the 'Checkout" button if you are happy and the informtaion displayed is correct</b> </p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 3: Pay here. Eg Payfast</b></p>
+      <!--<img src="/assets/" alt="screenshot" />-->
+    </div>
+    <br /><br />
+    <h1 id="section-profile"><u>Profile</u></h1>
+
+    <h2> Welcome to the "Product Rating" section of this documentation.</h2><br />
+    <p> Here you will see how to go about before making your payment.</p>
+
+    <div>
+      <p><b>Step 1: View your order and address details here first before proceeding to payment. </b></p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 2: Click the 'Checkout" button if you are happy and the informtaion displayed is correct</b> </p>
+      <!--<img src="/assets/" alt="screenshot" sizes="50vh" style="width: 75%; height: 75%;" />-->
+    </div>
+    <div>
+      <p><b>Step 3: Pay here. Eg Payfast</b></p>
+      <!--<img src="/assets/" alt="screenshot" />-->
+    </div>
+    <br /><br />
+    <h1 id="section-faqs"><u>FAQs</u></h1>
+    
+    <br /><br />
+    <h1 id="section-tech"><u>Technical information</u></h1>
+    <h2><u>Software Requirements:</u></h2><br>
+    <b>Operating systems</b>
+    <h2>What is an Operating system:</h2>
+    <p>An operating system is software that is used to control and manage the functionality of a computer. It functions
+      as an interface for the computer’s hardware components together with some software for a user. This includes
+      things like the CPU, RAM, and storage devices. The operating system ensures that each program gets access to the
+      resources it needs to run, while also preventing any one program from hogging all the resources and causing the
+      system to crash.
+      Operating systems come in many different varieties, from Windows and macOS on desktop computers, to Android and
+      iOS on mobile devices. Each operating system has its own unique set of features and capabilities, but they all
+      share some basic functions.</p>
+
+    <h2>How we set it up:</h2>
+    <p>Once we have created and built our application system, we will make use of the most widely used computer
+      operating systems, Microsoft Windows or iOS. This will allow almost anyone to make use of the system as our
+      application will be compatible with most devices which mainly use either Microsoft Windows or iOS.</p><br />
+
+    <h2>How it will work within the system:</h2>
+    <p>Windows devices and Mac devices make use of these operating systems, therefore this will incorporate it with our
+      system when it is used. It will support our web application.
+      User interface: The user interface allows users to interact with the computer, either through a graphical user
+      interface (GUI) or a command-line interface (CLI). The GUI provides a visual interface with icons, windows, and
+      menus, while the CLI uses text-based commands to interact with the system
+      Device drivers: Device drivers are software components that provide an interface between the operating system and
+      hardware devices, such as printers, keyboards etc.. They allow the operating system to communicate with and
+      control the hardware devices.
+      File system: The file system organises and manages the computer's files and directories. It will allow users and
+      our application to access and store data on the computer's storage devices, such as hard drives, solid-state
+      drives, or network drives.
+      Security features: Operating systems provide various security features to protect the computer and its data. These
+      features include user accounts and permissions, firewalls, antivirus software, and encryption tools</p>
+
+    <h2>Why we think this is best:</h2>
+    <p>Compatibility:- With a wide range of software applications, making it the best for businesses and individuals who
+      want to use our application.
+      User-friendly interface:-Windows has a user-friendly interface that is easy to navigate, even for users who are
+      not familiar with computers.
+      Security features: -includes built-in security features, such as antivirus software, a firewall, and regular
+      updates.</p><br />
+
+
+    <b>Coding Frameworks:</b>
+    <h2>What is a Framework:</h2>
+    <p>A framework is a pre-built software system that provides a set of tools, libraries, and best practices to help
+      developers build applications more quickly and efficiently. Frameworks are designed to simplify the development
+      process by providing a standardised structure and set of conventions that developers can follow. This makes it
+      easier to build complex applications, as developers can focus on the unique aspects of their project, rather than
+      spending time on repetitive, boilerplate code. We will be using the following frameworks to build our application:
+      Visual Studio 2022, Microsoft SQL Server Management Studio 2019 and Angular version 15.</p>
+    <h2>How we set it up:</h2>
+    <p>In Visual Studio
+      We will build our API which will allow our application system to communicate with other applications.(.Net Core
+      Web API C#). In this software we will mainly code the functions of our application system. Collecting data,
+      storing data, sending messages and so on.
+      SQL server
+      Will mainly generate and store data into the created database. All operations with data manipulation and
+      management will be operated within here. This will work in conjunction with the API thus connecting it to our
+      system.
+      Angular (v15)
+      In order to install angular, we need to follow the following steps:
+      Ensure the correct Node.js file has been created and run locally.
+      Ensure the correct npm is configured.
+      Run the following command in the command terminal:
+      “Npm install -g @angular/cli”
+      Set the execution policy with the following command to enable PowerShell scripts to run:
+      “Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned”</p>
+
+    <p>How it will work within the system:<br/>
+    In Visual Studio we will build our API which will allow our application system to communicate with other
+      applications.(.Net Core Web API C#). In this software we will mainly code the functions of our application system.
+      Collecting data, storing data, sending messages and so on.
+      SQL server will mainly generate and store data into the created database. All operations with data manipulation
+      and management will be operated within here. This will work in conjunction with the API thus connecting it to our
+      system.
+      In Visual Studio code, the interfaces of the system application will be designed here. Users will interact with
+      what has been created and produced in this software for the application system.
+      Why we think this is best:
+      Familiarity:- We are well educated with the use of these frameworks therefore developing in these frameworks will
+      be sufficient.
+      Time-Saving: They provide us with pre-built components and tools that can help speed up the development process,
+      saving time and effort.
+      Consistency: They help maintain consistency in code structure and organisation, making it </p><br />
+
+
+
+    <h2><b>Interface design: TypeScript, Javascript, HTML and CSS</b></h2>
+    <p> What is Interface Design:
+      User interface (UI) design is the process designers use to build interfaces in software or computerised devices,
+      focusing on looks or style. The General screen design of our application makes use of 1.)Typescript, 2.)
+      Javascript, 3.)HTML and 4.) CSS. These will be used to develop and design the systems’ user interface as well
+      contribute to some functions that may occur. Eg Responsive web design, which enables the responsiveness of the
+      websites’ interface to screen size changes. Angular Material and Angular CLI will be used as well.
+      How we set it up:<br />
+      Typescript will be used within Visual Studio Code to build the application. It will be installed using the npm and
+      its files will end with “.ts” Eg.npm install -g typescript
+      Javascript files will end with “.js”. Visual Studio Code knows what type of file we will be creating when ending
+      the file name with this prefix.
+      To use Angular material it will first be installed into our angular project. Eg: “npm install --save
+      @angular/material @angular/cdk @angular/animations”. Next the required Angular Material modules will be imported
+      into our app module file which is usually named ‘app.module.ts’ The components of Angular Material will be able to
+      be used in our app’s templates.
+      To use Angular CLI we will run the command “content_copy cd my-app ng serve open”
+      How it will work within the system:<br />
+      Typescript will be used to support JavaScript features such as async/await, destructuring, and arrow functions.
+      Javascript wil be used to add interactivity and animation to web pages, creating dynamic user interfaces, and
+      implementing complex features such as form validation, image sliders, and chatbots.
+      Hypertext Markup Language (HTML) is the standard markup language for creating web pages.
+      CSS will be used to style HTML. For responsive web design we make use of Bootstrap, Angular Material and Angular
+      CLI to make the web pages responsive. This will increase our users' satisfaction with the use of our application
+      system.
+      Why we think this is best:<br />
+      TypeScript helps catch errors and bugs during development by enforcing strict type checking
+      Angular Material offers us reusable and beautiful UI components like Cards, Inputs, Data Tables, Datepickers, and
+      much more.</p><br/>
+
+    <h2><b>Responsive Web Design: Bootstrap</b></h2>
+    <h2>What is Bootstrap:</h2>
+    <p>Bootstrap is the most popular CSS Framework for developing responsive and mobile-first websites. It is a
+      powerful, extensible, and feature-packed frontend toolkit. Build and customise with Sass, utilise prebuilt grid
+      systems and components, and bring projects to life with powerful JavaScript plugins.
+      How we set it up:<br />
+      When importing Angular and Ionic to our workspace in Visual Studio Code the packages include a link to bootstrap.
+      How it will work within the system:<br />
+      Bootstrap will allow the user to view the interface in a multitude of screen sizes while keeping the integrity of
+      how the overall layout of the interface should look. For example the nav-bar will toggle to a button when in a
+      small screen and take up the whole row at the top of a screen when in a larger screen, such as a desktop screen.
+      We will be coding in ionic and angular languages on the Visual Studio Code application. We will be using bootstrap
+      in combination with CSS to design a responsive and appealing user interface.
+      Why we think this is best:<br />
+      We think using Bootstrap is best as the team is familiar with coding in this language and have been using it for
+      over a year now.
+    </p><br />
+
+
+    <h2><b>Database Access: SQL </b></h2>
+    <p>What is SQL:<br />
+      Structured Query Language also known as SQL for short is a domain-specific programming language used to manage
+      relational databases.
+      SQL allows users to interact with a database by providing commands for creating , modifying and querying the data
+      that is stored in the database. Its syntax and structure are standardised , making it a universal language for
+      working with databases.
+
+      How we set it up:<br />
+      We Will open up our Visual Studio and create a new or an existing project.
+      In the Solution Explorer , we will right-click on the project name and select “ Add “ followed by “New Item”.
+      In the “Add New Item” dialog box , select “Data” and then “ SQL Server Database”
+      In the “New SQL Server Database “ dialog box , enter a name for the database that we will use and select a
+      location for it.
+      We will then Proceed to Click the “Add” button to create the database.
+      In the “Server Explorer” window , right-click on the database name and select “Properties”
+      In the “Database Properties” dialog box, select the “Connection “ tab.
+      Here we will specify the server name , database name , and authentication method for accessing the database.
+      We will then proceed to click the “Test Connection” button to verify that the connection is working.
+      We will then click the “OK” to close the “Database Properties” dialog box.
+      How it will work within the system:<br />
+      SQL will allow our client's to add Data into their Database. The Database will hold and store all the information
+      relating to the system.
+      Why we think this is best:<br />
+      SQL has many benefits Such as being easy to learn as well as Scalability as it is able to handle large amounts of
+      data without compromising performance.
+      SQL also implements strict rules to ensure data integrity as well as offering security features.
+      <br />
+    </p><br/>
+
+    <h2><b>Search Facility:</b></h2>
     <p>
-      Find answers to frequently asked questions in the
-      <a >FAQ Page</a>
+      What is Search Facility:<br />
+      A search facility will allow the user to find aspects within the system and help the users to find pages and
+      information that they haven't been able to find straight away just by viewing the screens.
+      How we set it up:<br />
+      We will create a new component or use an existing one that will contain the search functionality.
+      We will then define a search term variable in the component class. This will store the value entered by the user
+      in the search input field.
+      After that we will create an input field in the template where the user can enter the search term. Then we will
+      bind this input field to the search term variable using the [(ngModel)] directive.
+      Then we will add a filter function to the component class that will filter the list of items based on the search
+      term. This function should take the list of items as an input and return a filtered list based on the search term.
+      The filtered list will then be binded to the template using the *ngFor directive to display the results.
+      We will have to create an extensive list of search options and hints in the list of items for the nav-bar search
+      bar.
+      How it will work within the system:<br />
+      Location of the search facility: <br />The search facility will be located on the header of the page.
+      Identify the scope of the search:<br /> Depending on the page the customer is on, they will be able to search a
+      list of certain entities. For example: A customer can search for a list of orders they made to be able to track
+      their progress in terms of delivery.
+      Enter search terms: <br />The customer will type the keywords they want to search for in the search box. To
+      generalise the search a user can just type one letter and all items that begin with that specific letter will be
+      taken from the database and displayed to the user.
+      Review search results:<br /> After entering your search terms, the system will display the results. The user will
+      skim through the results to see which ones are relevant to their search. The system will display the results,
+      helping the user to quickly determine which ones are relevant.
+      Refining the search:<br /> If there are too many results, the user can refine their search by adding more specific
+      keywords or using additional search operators.
+      Click on the result:<br /> The user will click on the result that they think is relevant to their search to view
+      more details.
+      Repeat the process:<br /> If the user cannot find what they are looking for, they can refine the search and use
+      different keywords.
+      Why we think this is best:<br />
+      Saves time: A search facility will help us find information quickly and easily, without having to manually go
+      through each page or document.It will also enhance our user experience. It will make it easy for users to navigate
+      through our system, improving their overall experience. It can also help users find information that they might
+      not have been able to find otherwise.
+    </p><br/>
+
+
+    <h2><b>Exporting from excel: SSIS</b></h2>
+    <p>
+      What is SSIS:<br />
+      Exporting data from a system using SQL Server Integration Services (SSIS) is a powerful and flexible way to
+      transfer data between different sources and destinations. SSIS is a data integration tool that is part of
+      Microsoft's SQL Server suite of tools, and it allows you to extract, transform, and load (ETL) data from various
+      sources into a destination system.
+      How we set it up:<br />
+      To export data from a source system using SSIS, we first need to create an SSIS package. This package typically
+      contains one or more data flow tasks, which define the data flow from the source system to the destination system.
+      Each data flow task contains one or more data flow components, such as sources, transformations, and destinations,
+      that perform specific data transformation and manipulation operations.
+      To create the SSIS package, we will use SQL Server Data Tools (SSDT), which is a free integrated development
+      environment (IDE) for building SSIS packages. Once we have created the package in Visual Studio, we can configure
+      the data flow tasks and components according to the system's specific requirements.
+      How it will work within the system:<br />
+      To export data from a SQL Server database, we will use the SQL Server Source component, which allows us to specify
+      the SQL query that selects the data to be exported. We will then use various transformations, i.e., Data
+      Conversion/Derived Column transformations, to transform and manipulate the data as needed. Finally, we will use
+      the destination component (SQL Server) to write the data to the database.
+      Once we have configured the SSIS package, we will deploy it to the SSIS catalog, which is a central repository for
+      storing and executing SSIS packages. We can then execute the package manually or schedule it to run at specific
+      times using SQL Server Agent, which is a built-in job scheduling and automation tool in SQL Server.
+      In this system the client can export product details to an excel sheet. They can choose what tables and attributes
+      from the database they would like to export and in what order the columns should be displayed.
+      Why we think this is best:<br />
+      Overall, exporting data from a system using SSIS is a powerful and flexible way to transfer data between different
+      sources and destinations and it is already available in Visual Studio, which is one of the applications we will be
+      using to create our system. With its rich set of data flow components and transformations, SSIS allows us to
+      manipulate and transform data in many ways, and its scheduling and automation features make it easy to run the
+      data export process on a regular basis.
+    </p><br/>
+
+    <h2><b>External Application/Services: PayFast</b></h2>
+    <p>What is Payfast:<br />
+      PayFast is a popular payment gateway that enables online businesses to securely accept payments from customers
+      using a wide range of payment methods, including credit cards, instant EFT, and digital wallets. It is a trusted
+      and reliable payment processor in South Africa and provides a range of payment solutions that cater to businesses
+      of all sizes.
+      How we set it up:<br />
+      Integrating PayFast into our system would involve creating an account with PayFast and setting up the necessary
+      API keys and configurations to enable payment processing. This involves integrating PayFast's payment gateway API
+      into our system's checkout process in Visual Studio, allowing customers to make payments seamlessly without
+      leaving our system.
+      When we sign up with payfast we will specify what credentials we will be passing to and from our system. In our
+      angular application we will submit the customers order details as form data.
+      How it will work within the system:<br />
+      By using the payfast link that we can add to our own code , we will pass through the invoice id, and price of the
+      order from the Invoice table as well as the name, email and cell phone number of the customer from the customer
+      table. We will then create a unique security signature that will be passed as a hidden input and send the customer
+      to PayFast for payment.
+      Once a payment has been successfully completed Payfast will then return the payfast unique ID, payment ID and
+      payment status to the Payment table, invoice ID to the invoice table and the order id and order status to the
+      Order table.
+      Why we think this is best:<br />
+      Overall, integrating PayFast into your system can provide a secure and convenient payment processing solution for
+      your customers, which can help to increase customer satisfaction and streamline your business operations.
+      Payfast also only charges transaction fees, which means that the client only has to pay small fees relating to
+      each purchase.
+    </p><br/>
+
+
+    <h2><b>Dynamic views on an alternative platform: Ionic and Bootstrap</b></h2>
+    <p>
+      What is a Ionic:<br />
+      Ionic is a popular open-source framework used for building mobile and web applications using web technologies like
+      HTML, CSS, and JavaScript. The framework provides a comprehensive set of pre-built UI components and tools for
+      developing high-quality, interactive, and performant mobile applications that can be deployed on multiple
+      platforms including iOS, Android, and web browsers.
+      Ionic is built on top of Angular, a popular JavaScript framework, and also supports other frameworks like React
+      and Vue.js. It uses Apache Cordova or Capacitor to access native device functionalities like camera, geolocation,
+      and sensors, allowing developers to create native-like experiences.
+      What is Bootstrap:<br />
+      Bootstrap is the most popular CSS Framework for developing responsive and mobile-first websites. It is a powerful,
+      extensible, and feature-packed frontend toolkit. Build and customize with Sass, utilize prebuilt grid systems and
+      components, and bring projects to life with powerful JavaScript plugins.
+      How we set it up:<br />
+      In order to create a mobile app with dynamic views we will be writing our system in angular and ionic language
+      using bootstrap to create a responsive design. We will be using Visual Studio Code to code our front end which
+      will dynamically access our API’s and database.
+      How it will work within the system:<br />
+      The ionic application will allow us to create a mobile application for the customer. Because Ionic code is written
+      in HTML, CSS, and JavaScript, and follows the Model-View-Controller (MVC) architectural pattern we are able to
+      access and update the database.
+      It also utilizes Angular's two-way data binding and dependency injection features to simplify code development and
+      maintenance.
+      Why we think this is best:<br />
+      In summary, Ionic code is a robust, versatile, and easy-to-use framework for developing cross-platform mobile and
+      web applications using web technologies. Its wide range of pre-built components, powerful CLI, and native device
+      access features make it an excellent choice for building high-quality mobile applications.
+    </p><br />
+
+    <h2><b>Data layer:</b></h2>
+    <p>
+      What is a data layer:<br />
+      In a system that uses API .NET Core and Angular workspace, a data layer plays a crucial role in managing the data
+      flow between the client-side Angular application and the server-side .NET Core API. The data layer is a design
+      pattern that separates the data access logic from the rest of the application, making it easier to manage and
+      maintain data-related code.
+      How we set it up:<br />
+      To implement a data layer in a system that uses API .NET Core and Angular workspace, you can create a separate
+      project for the data access logic. This project can include models for data entities, data access code using
+      Entity Framework, caching code, and other related functionality. You can then use dependency injection to inject
+      the data layer into your Angular service or .NET Core controller as needed.
+      How it will work within the system:
+      Abstraction of data access: <br />
+      With a data layer, we can abstract the data access logic from the rest of the application. This means that the
+      Angular application can interact with the data layer without worrying about the underlying data storage
+      technology. The data layer can handle the specifics of interacting with the database, caching data, and other
+      related tasks.
+      Improved maintainability: <br />
+      By separating data access logic into a separate layer, we can make the code easier to maintain and debug. Changes
+      to the data access logic can be made in one place, without affecting the rest of the application. This makes it
+      easier to test and update the application over time.
+      Reduced duplication of code: <br />
+      With a data layer, we can reuse data access code across multiple parts of the application. This can save
+      development time and reduce the likelihood of errors in the code. The data layer can also help with code
+      organisation, making it easier to find and reuse code.
+      Improved performance: <br />
+      By using a data layer, we can implement caching and other performance optimizations. The data layer can cache
+      frequently accessed data, reducing the number of database queries needed to retrieve the data.
+
+      Why we think this is best:<br />
+      Overall, using a data layer in a system that uses API .NET Core and Angular workspace can improve maintainability,
+      reduce duplication of code, and improve performance. By abstracting data access logic into a separate layer, you
+      can make the application easier to manage and maintain over time
     </p>
+
     <!--</div>-->
   </ion-card-content>
 </ion-content>
-<!--<ion-spinner *ngIf="isLoading"></ion-spinner>
-  <div *ngIf="results.length > 0">
-    <p>Found {{results.length}} results:</p>
-    <ul>
-      <li *ngFor="let result of results">{{result}}</li>-->
