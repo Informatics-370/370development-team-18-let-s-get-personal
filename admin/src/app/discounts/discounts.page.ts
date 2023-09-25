@@ -109,14 +109,14 @@ export class DiscountsPage implements OnInit {
     addDiscount.discount_Amount = this.AddForm.value.amount;
     addDiscount.effective_From_Date = this.AddForm.value.effectiveFromdate;
     addDiscount.effective_To_Date = this.AddForm.value.effectiveTodate;
-    addDiscount.stock_Id = this.AddForm.value.productID;
+    addDiscount.stock_Item_ID = this.AddForm.value.productID;
 
     console.log('Discount Name', addDiscount.discount_Name);
     console.log('Discount Amount', addDiscount.discount_Amount);
     console.log('Effective From Date', addDiscount.effective_From_Date);
     console.log('Effective To Date', addDiscount.effective_To_Date);
-    console.log('Stock ID', addDiscount.stock_Id);
-    const productName=this.getProductName(addDiscount.stock_Id)
+    console.log('Stock ID', addDiscount.stock_Item_ID);
+    const productName=this.getProductName(addDiscount.stock_Item_ID)
     console.log('productName', productName)
 
     this.service.AddDiscount(addDiscount).subscribe(response => {

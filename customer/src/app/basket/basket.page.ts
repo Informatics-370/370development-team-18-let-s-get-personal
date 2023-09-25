@@ -45,7 +45,7 @@ export class BasketPage implements OnInit {
 
   ionViewDidEnter() {
     console.log("Reloaded");
-
+    
     try {
       this.storedData = localStorage.getItem('cart') as string;
       if (this.storedData) {
@@ -55,6 +55,8 @@ export class BasketPage implements OnInit {
       }
       console.log('cartItems', this.cartItems);
       this.cdr.detectChanges(); // Trigger change detection
+
+      this.CheckDiscount()
     } catch (error) {
       console.error('Error parsing data from localStorage:', error);
       this.cartItems = []; // Set a default value or handle the error as needed.
@@ -104,7 +106,7 @@ export class BasketPage implements OnInit {
     this.cartItems = this.cartItems.filter((cartItem) => cartItem.stock_Item.stock_Item_ID !== id);
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
     //update the quantity cartItemCount
-    //!!!!!!!!!!!!!
+    this.storeCartItemCountInLocalStorage();
   }
 
   public async incrementQuantity(item: any) {
@@ -175,36 +177,42 @@ export class BasketPage implements OnInit {
   }
 
 //==================== Culculations ====================
+  pureprice!: number
+  roundedvat: any
+  roundedtotal:any
   public calculateTotalPrice(): any {
     let totalPrice = 0;
     for (const item of this.cartItems) {
       totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;      
       //localStorage.setItem('quantity', JSON.stringify(item.basket_Quantity));
     }
-    let pureprice = totalPrice
+    this.pureprice = totalPrice
     //localStorage.setItem('pureprice', JSON.stringify(pureprice));
-    localStorage.setItem('pureprice', pureprice.toString());
+    localStorage.setItem('pureprice', this.pureprice.toString());
 
-    this.vatprice = totalPrice * 0.15
+    this.vatprice = (totalPrice * 0.15)
+    this.roundedvat = this.vatprice.toFixed(2)
     //localStorage.setItem('vatamount', JSON.stringify(this.vatprice));
     localStorage.setItem('vatamount', this.vatprice.toString());
       
     totalPrice = totalPrice + this.vatprice - this.discount_Amount
+    this.roundedtotal = totalPrice.toFixed(2)
     this.order.price = totalPrice;
-    return totalPrice;
+    return this.roundedtotal;
   }
   //Discount 
-  discounts: Discount[] = []
+  discounts: Discount = new Discount()
   discount_Amount: number = 0
   CheckDiscount(){
-    for (const item of this.cartItems) {
-      this.discountservice.GetDiscountByStock(item.stock_Item_ID).subscribe(result =>{
-        this.discounts = result as Discount[]
-        console.log(item.discount_Amount)
-        this.discount_Amount = this.discount_Amount + item.discount_Amount
+    this.cartItems.forEach(item => {
+      this.discountservice.GetDiscountByStock(item.stock_Item.stock_Item_ID).subscribe(result =>{
+        this.discounts = result as Discount
+          this.discount_Amount += this.discounts.discount_Amount
+          console.log(this.discount_Amount)    
+          localStorage.setItem('discount', JSON.stringify(this.discount_Amount));    
       })
-    }      
-    localStorage.setItem('discount', JSON.stringify(this.discount_Amount));
+      
+    });        
   }
 
 //==================== Make Payment ====================
@@ -306,23 +314,7 @@ export class BasketPage implements OnInit {
   }
 
   confirmaddmodal() {
-    try{
-      let stockId = localStorage.getItem("stockId");
-
-      let items = JSON.parse(localStorage.getItem('cart') as string) || [];
-      let existingItem: BasketItems = items.find((cartItem: any) => cartItem.stock_Item.stock_Item_ID === stockId);
-  
-      let design_Text = this.AddTextForm.get('designText')?.value;
-      let image_File = this.UploadImageForm.get("designImage")?.value;
-      //let image_File = localStorage.getItem("Image-URL") ?? "";
-      if (existingItem) {
-        //items.push({ ...existingItem, personalization. : 1 });
-        existingItem.personalization.personalizationText = design_Text;
-        existingItem.personalization.img = image_File;
-        //localStorage.removeItem("stockId");
-        console.log('LocalStorage cart', existingItem)
-      }
-      localStorage.setItem('cart', JSON.stringify(items));
+    try{     
 
       //Upload to backend
       this.uploadImage();
@@ -382,7 +374,7 @@ export class BasketPage implements OnInit {
   UploadPersonalisation() {
     let personalisation = new PersonalisationDesignVM()
     //if (personalisation) {
-      //let stockId=localStorage.getItem("stockId");      
+      let stockId=localStorage.getItem("stockId");      
       //personalisation.design_Text = this.AddTextForm.get("designText")?.value;
       //personalisation.image_File = this.UploadImageForm.get("designImage")?.value;
 
@@ -395,8 +387,10 @@ export class BasketPage implements OnInit {
         this.personalizations = res as Personalisation_Design
         let personalisedID = this.personalizations.personalisation_Design_ID
         localStorage.setItem('personalisedID', JSON.stringify(personalisedID));
+
         console.log('Both', personalisation);
-        this.addPersonalizationSuccessAlert()
+        this.AddPersonalisationToCart()
+        //this.addPersonalizationSuccessAlert()
 
         //Action Trail
         this.action = "Personalised Item:" //+ items.stock_Item.stock_Item_Name
@@ -407,6 +401,33 @@ export class BasketPage implements OnInit {
           console.error('Upload error:', error);
       })
     //}
+  }
+
+  AddPersonalisationToCart() {
+    try{
+      let stockId = localStorage.getItem("stockId");
+
+      let items = JSON.parse(localStorage.getItem('cart') as string) || [];
+      let existingItem: BasketItems = items.find((cartItem: any) => cartItem.stock_Item.stock_Item_ID === stockId);
+  
+      let design_Text = this.AddTextForm.get('designText')?.value;
+      let image_File = this.UploadImageForm.get("designImage")?.value;
+      let personalisatioID = this.personalizations.personalisation_Design_ID
+      if (existingItem) {
+        //items.push({ ...existingItem, personalization. : 1 });
+        existingItem.personalization.personalizationText = design_Text;
+        existingItem.personalization.img = image_File;
+        existingItem.personalization.personalisation_ID = personalisatioID;
+        console.log('LocalStorage cart', existingItem)
+      }
+      localStorage.setItem('cart', JSON.stringify(items));
+
+      this.addPersonalizationSuccessAlert()
+    }
+    catch{
+      this.addPersonalizationErrorAlert()
+    }
+    
   }
 
   isEmptyObject(obj: any) {

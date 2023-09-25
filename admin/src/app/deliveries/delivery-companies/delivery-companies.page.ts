@@ -58,6 +58,11 @@ export class DeliveryCompaniesPage implements OnInit {
     this.thisroute.navigate(['./tabs/deliveries']);
   }
 
+  RouteDeliveriesControlBreak()
+  {
+    this.thisroute.navigate(['./tabs/delivery-prices']);
+  }
+
 //========== Add ===========
   isAddModalOpen = false;
   OpenAddModal(isOpen: boolean){

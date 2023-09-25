@@ -79,12 +79,13 @@ export class SuccessfulPaymentPage implements OnInit {
         console.log(orderRequestID)
         console.log(this.price)
 
-        // this.cartitems.forEach(item => {
+        this.cartitems.forEach(item => {
           let addedOrder = new Order_Line_Item()
           addedOrder.order_Line_Item_Price = this.price
-          addedOrder.order_Line_Item_Quantity = this.quantity //item.BasketItems.basket_Quantity
+          addedOrder.order_Line_Item_Quantity = item.basket_Quantity
           addedOrder.order_request_ID = orderRequestID
-          addedOrder.personalisation_ID = personalisationID
+          addedOrder.personalisation_ID = item.personalization.personalisation_ID
+          console.log(addedOrder.personalisation_ID)
           //item.BasketItems.basket_Quantity
 
           console.log(addedOrder)
@@ -98,7 +99,7 @@ export class SuccessfulPaymentPage implements OnInit {
           })
     
           this.addSale()
-        // });
+        });
       }          
     // }
     // catch
@@ -117,22 +118,23 @@ export class SuccessfulPaymentPage implements OnInit {
       let username = JSON.parse(JSON.stringify(localStorage.getItem('username')))
       let stockitem = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
 
-      addedSale.payment_Amount = totalsaleprice
-      addedSale.customer_UserName = username
-      addedSale.sale_Quantity = this.quantity
-      addedSale.stock_Item_ID = stockitem
- 
-      this.saleService.AddSale(addedSale).subscribe(result =>{
-        this.uploadedPayment = result as Payment;
-        this.paymentID = this.uploadedPayment.payment_ID
-        console.log(result)
-        console.log(this.paymentID)
-      },(error) => {
-        this.ErrorAlert();        
-        console.error(error);
-      })
-
-      this.addInvoice()
+      this.cartitems.forEach(item => {
+        addedSale.payment_Amount = totalsaleprice
+        addedSale.customer_UserName = username
+        addedSale.sale_Quantity = item.basket_Quantity
+        addedSale.stock_Item_ID = item.stock_Item.stock_Item_ID
+   
+        this.saleService.AddSale(addedSale).subscribe(result =>{
+          this.uploadedPayment = result as Payment;
+          this.paymentID = this.uploadedPayment.payment_ID
+          console.log(result)
+          console.log(this.paymentID)
+          this.addInvoice()
+        },(error) => {
+          this.ErrorAlert();        
+          console.error(error);
+        })
+      })     
     }
     
 
@@ -159,19 +161,20 @@ export class SuccessfulPaymentPage implements OnInit {
       invoice.invoice_Total_VAT = vatamount
       invoice.invoice_Total_inclVAT = inclvatprice
       invoice.discount_Amount = discountamount
-      invoice.payment_ID = this.uploadedPayment.payment_ID //this.paymentID
+      invoice.payment_ID = this.paymentID //this.uploadedPayment.payment_ID //
       invoice.order_Line_Item_ID = this.uploadedOrderLine.order_Line_Item_ID //this.orderlineitemid
-
-      let customer = new Customer()
       let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')));
-      customer.customer_ID = this.customer.customer_ID
-      customer.email = this.customer.email
-      customer.firstName = this.customer.firstName
-      customer.surname = this.customer.surname
-      customer.username = this.customer.username
-      customer.cell_Number = this.customer.cell_Number
+      
+      // let customer = new Customer()
+      // 
+      // customer.customer_ID = this.customer.customer_ID
+      // customer.email = this.customer.email
+      // customer.firstName = this.customer.firstName
+      // customer.surname = this.customer.surname
+      // customer.username = this.customer.username
+      // customer.cell_Number = this.customer.cell_Number
 
-      invoice.customer = customer
+      // invoice.customer = customer
 
       console.log(invoice)
 

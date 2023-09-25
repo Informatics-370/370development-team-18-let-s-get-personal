@@ -8,7 +8,7 @@ namespace IPKP___API.Controllers.Models.ViewModels
         public Guid Stock_Item_ID { get; set; }
         public string Stock_Type_Name { get; set; }
 
-        public double Total_Amount { get; set; }
+        public decimal Total_Amount { get; set; }
         public double Payment_Amount { get; set; }
 
         public int Order_Line_Item_Quantity { get; set; }

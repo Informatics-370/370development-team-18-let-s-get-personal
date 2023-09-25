@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
@@ -68,6 +68,23 @@ export class DeliveryPricesPage implements OnInit {
     })
   }
 
-
+  @ViewChild('htmlData') htmlData!: ElementRef;
+  
+  openPDF(): void {
+    let DATA: any = document.getElementById('htmlData');
+    html2canvas(DATA).then((canvas) => {       
+      //Initialize JSPDF
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      //Converting canvas to Image
+      const FILEURI = canvas.toDataURL('image/png');
+      //Add image Canvas to PDF
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;      
+      let position = 10;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
+          
+      PDF.save('IPKP-Products.pdf');
+    });
+  }
 
 }

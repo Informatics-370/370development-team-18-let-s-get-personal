@@ -140,7 +140,11 @@ export const routes: Routes = [
   {
     path: 'admin-help',
     loadComponent: () => import('./admin-help/admin-help.page').then( m => m.AdminHelpPage)
+  },  {
+    path: 'price-history',
+    loadComponent: () => import('./inventory/price-history/price-history.page').then( m => m.PriceHistoryPage)
   },
+
 
 
 

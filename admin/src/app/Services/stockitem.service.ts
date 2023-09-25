@@ -43,5 +43,10 @@ import { Response } from '../Models/response';
     public DeleteStockItem(stock_Item_ID:string){
       return this.httpClient.delete<Response>(`${this.apiUrl}StockItem/DeleteStockItem/${stock_Item_ID}`)
     }
+
+    public GetStockItemPriceHistory(): Observable<any>{ 
+      return this.httpClient.get(`${this.apiUrl}StockItem/GetStockItemsWithPriceHistory`)
+      .pipe(map(result => result))
+    }
   
   }

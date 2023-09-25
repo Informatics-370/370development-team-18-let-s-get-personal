@@ -11,8 +11,8 @@
     </ion-toolbar>
   </ion-header>
   <p style="cursor:pointer;" (click)="backNav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
-  <ion-button>Download report</ion-button>
-  <div>
+  <ion-button (click)="openPDF()">Download report</ion-button>
+  <div id="htmlData">
     <ion-grid>
       <ion-row>        
         <ion-card *ngFor="let company of deliverycompanies">

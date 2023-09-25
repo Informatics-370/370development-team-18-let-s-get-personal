@@ -39,7 +39,7 @@
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.discount_Name}}</ion-col>
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">R {{item.discount_Amount}}.00</ion-col>
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2"
-          style="text-align: center;">{{getProductName(item.stock_Id)}}</ion-col>
+          style="text-align: center;">{{getProductName(item.stock_Item_ID)}}</ion-col>
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.effective_From_Date| date:
           'yyyy-MM-dd'}}</ion-col>
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.effective_To_Date| date:
@@ -81,15 +81,16 @@
           <ion-item>
             <ion-label position="stacked">Product</ion-label><br>
             <ion-select formControlName="productID">
-              <ion-select-option *ngFor="let product of Products" [value]="product.stock_Item_ID">{{
-                product.stock_Item_Name}}</ion-select-option>
+              <ion-select-option *ngFor="let product of Products" value="{{product.stock_Item_ID}}">
+                {{product.stock_Item_Name}}
+              </ion-select-option>
             </ion-select>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Effective From Date</ion-label><br>
             <!--<ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
             <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime>-->
-            <input type="date" formControlName="effectiveFromdate" placeholder="" required>
+            <ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
           </ion-item>
           <div *ngIf="AddForm.get('effectiveFromdate')?.hasError('required')" class="error-message">
             <p style="color: crimson;">Date is required.</p>
@@ -101,7 +102,7 @@
             <ion-label position="stacked">Effective To Date</ion-label><br>
             <!--<ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input
               <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime>-->
-            <input type="date" formControlName="effectiveTodate" placeholder="" required>
+            <ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input>
           </ion-item>
           <div *ngIf="AddForm.get('effectiveTodate')?.hasError('required')" class="error-message">
             <p style="color: crimson;">Date is required.</p>

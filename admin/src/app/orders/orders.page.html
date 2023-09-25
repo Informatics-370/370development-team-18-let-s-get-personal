@@ -41,7 +41,8 @@
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.stock_Colour_Name}} </ion-col>      
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> <img src='data:image/png;base64,{{item.image_File}}'> </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.design_Text}} </ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.order_Request_Date}} </ion-col>
+        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> 
+          {{item.order_Request_Date | date: 'yyyy-MM-dd'}} </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"><ion-button (click)="OutForDelivery(item.order_Line_Item_ID)">Out For Delivery</ion-button></ion-col>
       </ion-row>
     </ion-grid>

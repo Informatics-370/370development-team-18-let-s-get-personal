@@ -8,13 +8,13 @@ export class StockItemViewModel{
     stock_Item_Quantity!: number
     stock_Sale_Quantity!: number
     
-    stock_Item_Colour_ID!: number
+    stock_Item_Colour_ID!: string
     stockColourName!: string
 
-    stock_Type_ID!: number
+    stock_Type_ID!: string
     stockTypeName!: string
 
-    stock_Image_ID!: number
+    stock_Image_ID!: string
     stockImageName!: string
     stockImageFile!: string
 }
