@@ -97,10 +97,12 @@ export class CheckOutPage implements OnInit {
     localStorage.setItem('totalprice', JSON.stringify(this.totalprice));
   }
 
-  AddOrderRequest(){
+  AddOrderRequest(totalPrice:any){
+
+    this.proceedToPayFast(totalPrice.toFixed(2));
     // try
     // {
-      let addorderRequest = new Order_Request();
+      /*let addorderRequest = new Order_Request();
       let delID = JSON.parse(JSON.stringify(localStorage.getItem('deliveryID'))) //JSON.parse(localStorage.getItem('deliveryID') as string)
       let customerID = JSON.parse(JSON.stringify(localStorage.getItem('customerID'))) //JSON.parse(localStorage.getItem('customerID') as string)
 
@@ -128,7 +130,7 @@ export class CheckOutPage implements OnInit {
     // catch
     // {
 
-    // }
+    // }*/
     
   } 
 
@@ -145,11 +147,14 @@ export class CheckOutPage implements OnInit {
     })
   }
 
-  proceedToPayFast() {
+  proceedToPayFast(price:any) {
+    //localStorage.setItem("order", JSON.stringify(this.order));
     const merchantId = '10030633';
     const merchantKey = 'azvaw7rrloy1e';
     const returnUrl = 'http://localhost:8100/tabs/successful-payment';
-    const totalPrice = this.totalprice 
+    const totalPrice = price; 
+
+    localStorage.setItem("totalPrice",totalPrice);
 
     const itemNamesList = "Order"+new Date();
   

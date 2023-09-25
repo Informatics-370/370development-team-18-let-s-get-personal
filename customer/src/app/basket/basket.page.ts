@@ -162,7 +162,8 @@ export class BasketPage implements OnInit {
     //localStorage.setItem('vatamount', JSON.stringify(this.vatprice));
     localStorage.setItem('vatamount', this.vatprice.toString());
       
-    totalPrice = totalPrice + this.vatprice - this.discount_Amount
+    //totalPrice = totalPrice + this.vatprice - this.discount_Amount
+    totalPrice = totalPrice  - this.discount_Amount
     this.order.price = totalPrice;
     return totalPrice;
   }
@@ -225,7 +226,7 @@ export class BasketPage implements OnInit {
       this.order.paid = false;
   
       localStorage.setItem("order", JSON.stringify(this.order));
-      console.log('order', items);
+      
   
       this.CheckPersonalised();
     }
@@ -255,7 +256,24 @@ export class BasketPage implements OnInit {
 //======== Checks =======
   CheckPersonalised() {
     //let personalised = JSON.parse(JSON.stringify(localStorage.getItem('personalisedID')));
-    let personalised = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
+
+    let cartItems = JSON.parse(localStorage.getItem('cart') as string);
+
+    console.log("Items "+cartItems.length)
+
+    let total=0;
+
+    for(let i=0;i<cartItems.length;i++){
+      if(this.isEmptyObject(cartItems[i].personalization)){
+        this.PleasePersonalizeAlert();
+        total+=1;
+      }
+    }
+
+    if(total==0){
+      this.CheckUser();
+    }
+    /*let personalised = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
 
     if (personalised == null) {  //  [==="User"]
       this.PleasePersonalizeAlert()
@@ -264,7 +282,7 @@ export class BasketPage implements OnInit {
     else {
       this.CheckUser()
       return true;
-    }
+    }*/
   }
 
   CheckUser() {
@@ -421,13 +439,13 @@ export class BasketPage implements OnInit {
       //items.push({ ...existingItem, personalization. : 1 });
       existingItem.personalization.personalizationText = design_Text;
       existingItem.personalization.img = image_File;
-      //localStorage.removeItem("stockId");
-      console.log('LocalStorage cart', existingItem)
+      localStorage.removeItem("stockId");
+      //console.log('LocalStorage cart', existingItem)
     }
     localStorage.setItem('cart', JSON.stringify(items));
-    this.uploadImage();
+    //this.uploadImage();
     //this.UploadPersonalisation();
-    //this.addPersonalizationSuccessAlert();
+    this.addPersonalizationSuccessAlert();
 
     //Action Trail
     this.action = "Personalised Item:" + items.stock_Item.stock_Item_Name
@@ -503,7 +521,7 @@ export class BasketPage implements OnInit {
 
   async PleasePersonalizeAlert() {
     const alert = await this.alertController.create({
-      header: 'Please Add Your Personalisation!',
+      header: 'Please make sure all items are personalized!',
       // subHeader: 'Your personalization was captured.',
       buttons: [{
         text: 'OK',

@@ -35,12 +35,36 @@ export class SuccessfulPaymentPage implements OnInit {
   { }
 
   ngOnInit() {
+
+    const orderString = localStorage.getItem("order");
+
+    // Parse the JSON string back to an object
+    this.order = JSON.parse(orderString as string);
+    const price=localStorage.getItem("totalPrice") as string;
+
+    this.order.price=parseFloat(price);
+    this.order.customerID=localStorage.getItem("customerID");
+    localStorage.removeItem("totalPrice")
+
+    this.placeOrderT(this.order);
+
+  }
+
+  placeOrderT(order:OrderT):void{
+    this.orderService.placeOrder(order).subscribe(res=>{
+      console.log(res);
+    },error=>{
+      console.log(error)
+    })
+  }
+
+  /*ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)
     this.order.paid=true;
     this.cartitems = JSON.parse(localStorage.getItem('cart') as string)
     this.getUser()
     this.AddOrderLineItem()
-  }
+  }*/
 
   //Process: 1. Add to orderline, 2. add to payment, 3. add and send invoice, 
   //4. remove info from local storage, 5. add audit trail

@@ -21,7 +21,124 @@ namespace IPKP___API.Controllers
         {
           _IPKPRepository = iPKPRepository;
         }
-  
+
+
+        [HttpPost]
+        [Route("PlaceOrder")]
+        public async Task<IActionResult> PlaceOrderT(OrderT d)
+        {
+            try {
+
+                var deladdress = new Delivery_Address
+                {
+                    Delivery_Address_ID = new Guid(),
+                    StreetName = d.deliveryAddress.StreetName,
+                    StreetNumber = d.deliveryAddress.StreetNumber,
+                    Dwelling_Type = d.deliveryAddress.Dwelling_Type,
+                    Unit_Number = d.deliveryAddress.Unit_Number,
+                    City = d.deliveryAddress.City,
+                    Province = d.deliveryAddress.Province,
+                    AreaCode = d.deliveryAddress.AreaCode,
+                };
+
+                _IPKPRepository.Add(deladdress);
+                Boolean results = await _IPKPRepository.SaveChangesAsync();
+                
+
+                var deliveryrequest = new Delivery
+                {
+                    Delivery_ID = new Guid(),
+                    Delivery_Address_ID = deladdress.Delivery_Address_ID,
+                    Delivery_Company_ID = new Guid(d.deliveryCompanyID),
+                    // Delivery_Price = d.Delivery_Price,
+                    Delivery_Status = "Requested",
+                };
+
+                _IPKPRepository.Add(deliveryrequest);
+                Boolean results1 = await _IPKPRepository.SaveChangesAsync();
+
+                var newOrderRequest = new Order_Request
+                {
+                    Order_Request_ID = new Guid(),
+                    Customer_ID = new Guid(d.customerID),
+                    Delivery_ID =deliveryrequest.Delivery_ID,
+                    Order_Request_Date = DateTime.Now,
+                    Order_Request_Total_Price = d.price,
+
+                };
+
+                _IPKPRepository.Add(newOrderRequest);
+                Boolean results2 = await _IPKPRepository.SaveChangesAsync();
+
+                
+                await _IPKPRepository.SaveChangesAsync();
+
+                var newdesigntext = new Design_Text();
+                var newdesignimage = new Design_Image();
+                var orderlineitem = new Order_Line_Item();
+                var personalisationDesign = new Personalisation_Design();
+
+                for (var i = 0; i < d.basketItems.Count; i++) {
+
+                    newdesigntext = new Design_Text
+                    {
+                        Design_Text_ID = new Guid(),
+                        Design_Text_Description = d.basketItems[i].personalization.personalizationText
+                    };
+
+                   _IPKPRepository.Add(newdesigntext);
+                    await _IPKPRepository.SaveChangesAsync();
+
+                    newdesignimage = new Design_Image
+                    {
+                        Design_Image_ID = new Guid(),
+                        Image_File = d.basketItems[i].personalization.img,
+                    };
+                    _IPKPRepository.Add(newdesignimage);
+                    await _IPKPRepository.SaveChangesAsync();
+
+
+                    personalisationDesign = new Personalisation_Design
+                    {
+                        Personalisation_Design_ID = new Guid(),
+                        //Personalisation_Design_Price = personalisation.Personalisation_Design_Price,
+                        Stock_Item_ID = d.basketItems[i].stock_Item.Stock_Item_ID,
+                        Design_Text_ID = newdesigntext.Design_Text_ID,
+                        Design_Image_ID = newdesignimage.Design_Image_ID,
+                    };
+                    _IPKPRepository.Add(personalisationDesign);
+                    await _IPKPRepository.SaveChangesAsync();
+
+                    orderlineitem = new Order_Line_Item
+                    {
+                        Order_Line_Item_ID = new Guid(),
+                        Order_Request_ID = newOrderRequest.Order_Request_ID,
+                        Personalisation_ID = personalisationDesign.Personalisation_Design_ID,
+                        Order_Line_Item_Quantity = d.basketItems.Count,
+                        Order_Line_Item_Total_Price = d.price,
+                        Order_Status = "Requested",
+                    };
+
+                    _IPKPRepository.Add(orderlineitem);
+                    await _IPKPRepository.SaveChangesAsync();
+
+
+                }
+
+                await _IPKPRepository.SaveChangesAsync();
+
+                //_IPKPRepository.Add(orderlineitem);
+                await _IPKPRepository.SaveChangesAsync();
+                return Ok(new Response { Status = "Success", Message = "Order Added Successfully." }); 
+
+            }
+            catch (Exception) {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            
+        }
+
+
         //add to order line item 
         [HttpPost]
         [Route("AddOrderLineItem")]
@@ -59,7 +176,8 @@ namespace IPKP___API.Controllers
             try
             {
                 string orderStatus = "Requested";
-                var requests = _IPKPRepository.GetOrderLineItembyStatus(orderStatus); //GetOrderRequests();
+                //var requests = _IPKPRepository.GetOrderLineItembyStatus(orderStatus); //GetOrderRequests();
+                var requests = _IPKPRepository.GetAllOrderLineItems();
 
                 if (requests == null)
                 {

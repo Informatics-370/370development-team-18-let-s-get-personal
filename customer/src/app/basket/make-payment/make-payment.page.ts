@@ -18,6 +18,7 @@ import { AuditTrail } from 'src/app/Models/audittrail';
 import { AuditTrailService } from 'src/app/Services/audittrail.service';
 import { NavController } from '@ionic/angular';
 import { PlacesService } from 'src/app/Services/PlacesService ';
+import { Order } from 'src/app/Models/orders';
 
 @Component({
   selector: 'app-make-payment',
@@ -34,6 +35,8 @@ export class MakePaymentPage implements OnInit {
   addedaddres!: DeliveryAddress;
   addeddeliveryrequest!: Delivery;
 
+  order = new OrderT();
+
 
   oLong:number=28.2310411;
   oLat:number=-25.756598;;
@@ -46,6 +49,8 @@ export class MakePaymentPage implements OnInit {
 
   ngOnInit() {
     this.getDeliveryCompany();
+    this.order = JSON.parse(localStorage.getItem('order') as string)
+    
   }
 
   @ViewChild(IonModal) modal!: IonModal
@@ -69,7 +74,7 @@ export class MakePaymentPage implements OnInit {
 
   get f(){return this.AddDelAddressForm.controls}
   
-  order = new OrderT();
+  
   
   getDeliveryCompany(){
     this.delservice.GetDeliveryCompanies().subscribe(result =>{
@@ -85,9 +90,16 @@ export class MakePaymentPage implements OnInit {
     addDelivery.dwelling_Type = this.AddDelAddressForm.value.dwellingtype; 
     addDelivery.streetNumber = this.AddDelAddressForm.value.streetNumber;
     addDelivery.streetName = this.AddDelAddressForm.value.streetName;
-    addDelivery.province = this.AddDelAddressForm.value.province;    
+    addDelivery.province = this.AddDelAddressForm.value.province;  
+    
+    this.order.deliveryAddress=addDelivery;
+    this.order.deliveryCompanyID=this.AddDelAddressForm.value.deliveryCompanyID;
 
-    this.service.AddDeliveryAdress(addDelivery).subscribe(response => {
+    localStorage.setItem("order",JSON.stringify(this.order));
+
+    this.router.navigate(["/tabs/check-out"])
+
+    /*this.service.AddDeliveryAdress(addDelivery).subscribe(response => {
       this.addedaddres = response as DeliveryAddress;
       //this.AddDeliveryRequest();
       this.confirmAlert();
@@ -105,11 +117,11 @@ export class MakePaymentPage implements OnInit {
       catch
       {
         this.addDeliveryErrorAlert()
-      }*/
+      }
     },(error) => {
       this.addDeliveryErrorAlert();
       console.error('add address error:', error);
-    });
+    });*/
   }
 
   @Output() predictionSelected = new EventEmitter<string>();
@@ -137,6 +149,11 @@ updateSearchResults() {
     }
   }
 
+  streetAddress: string = '';
+  suburb: string = '';
+  city: string = '';
+  country: string = '';
+
   selectPrediction(prediction: any) {
     this.searchControl.setValue(prediction.description);
     this.showPredictions = false;
@@ -145,6 +162,16 @@ updateSearchResults() {
     this.getCordinate(prediction.description)
 
     console.log("Distacnce:" +this.distanceInKm)
+
+    const addressComponents = prediction.description.split(', ');
+
+    // Assign components to respective variables
+    if (addressComponents.length >= 4) {
+      this.streetAddress = addressComponents[0];
+      this.suburb = addressComponents[1];
+      this.city = addressComponents[2];
+      this.country = addressComponents[3];
+    }
 
      //this.calculateDistance(this.oLat,this.oLong,this.Lat,this.Long);
   }
@@ -164,7 +191,8 @@ updateSearchResults() {
         console.log(this.distanceInKm)
         const charge = (this.distanceInKm *this.chargeRatePerKm).toFixed(2); // Round to the nearest 100
         this.deliveryPrice=charge;
-        console.log("Price based on distance "+charge)
+        this.order.deliveryPrice=parseFloat(charge);
+        localStorage.setItem("order",JSON.stringify(this.order));
     
     }else{
       console.error("Something is wrong");
@@ -244,6 +272,9 @@ updateSearchResults() {
     this.router.navigate(["/tabs/check-out"])
    
   }
+
+  
+
 
   reloadPage(){
     window.location.reload()
