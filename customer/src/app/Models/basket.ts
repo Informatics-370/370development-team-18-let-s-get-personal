@@ -12,12 +12,17 @@ import { DeliveryAddress } from './deliveryaddress';
 
     customer!: Customer
     customer_ID!: number;
-}*/
+}
 
 export class Personalization{
     personalisation_ID!: string
     personalizationText!:string;
     img!:string;
+}*/
+
+export class Personalization{
+    img!: string | null;
+    personalizationText!: string
 }
 
 
@@ -31,7 +36,9 @@ export class OrderT{
     basketItems!: BasketItems[];
     deliveryAddress:DeliveryAddress = new DeliveryAddress();
     deliveryCompanyID:any;
+    customerID!:any;
     paid!:boolean;
+    deliveryPrice!:any;
     price!:number;
 }
 

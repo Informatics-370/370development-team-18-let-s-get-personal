@@ -79,81 +79,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
-          </ion-buttons>
-          <ion-title>Add New Stock Item Details</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding">
-       
-        <form [formGroup]="editForm" >
-          <ion-item>
-            <ion-label position="stacked">Stock Item Name</ion-label><br>
-            <ion-input type="text" formControlName="Stock_Item_Name" placeholder="" required></ion-input>
-          </ion-item> 
-      
-          <ion-item>
-            <ion-label position="stacked">Stock Item Price</ion-label><br>
-            <ion-input type="text" formControlName="Stock_Item_Price" placeholder="" required></ion-input>
-          </ion-item> 
-      
-          <ion-item>
-            <ion-label position="stacked">Stock Item Size</ion-label><br>
-            <ion-input type="text" formControlName="Stock_Item_Size" placeholder="" required></ion-input>
-          </ion-item> 
-
-          <!-- Stock Type -->
-          <ion-item>
-            <ion-label position="stacked">Stock Item Type</ion-label><br>
-            <ion-select placeholder="Select a Stock Type" formControlName="Stock_Type_ID">
-              <div slot="label">Stock Types <ion-text color="danger">(Required)</ion-text></div>
-              <ion-select-option *ngFor="let types of stocktypes" value="{{types.stock_Type_ID}}" >
-                {{types.stock_Type_Name}}
-              </ion-select-option>
-            </ion-select>
-          </ion-item>
-    
-          <!-- Stock Colour -->
-          <ion-item>
-            <ion-label position="stacked">Stock Item Colour</ion-label><br>
-            <ion-select placeholder="Select a Stock Item Colour" formControlName="Stock_Item_Colour_ID">
-              <div slot="label">Stock Item Colour <ion-text color="danger">(Required)</ion-text></div>
-              <ion-select-option *ngFor="let colours of stockitemcolours" value="{{colours.stock_Item_Colour_ID}}" >
-                {{colours.stock_Item_Colour_Name}}
-              </ion-select-option>
-            </ion-select>
-          </ion-item> 
-
-            <!-- Stock Image -->
-            <ion-item>
-              <ion-label position="stacked">Stock Item Image</ion-label><br>
-              <ion-select placeholder="Select a Stock Item Image" formControlName="Stock_Image_ID">
-                <div slot="label">Stock Item Image<ion-text color="danger">(Required)</ion-text></div>
-                <ion-select-option *ngFor="let image of stockimages" value="{{image.stock_Image_ID}}" >
-                  {{image.stock_Image_Name}}
-                </ion-select-option>
-              </ion-select>
-            </ion-item>          
-            
-            <ion-item>
-              <ion-label position="stacked">Inventory_Comments</ion-label><br>
-              <ion-input type="text" formControlName="Inventory_Comments" placeholder="" ></ion-input>
-            </ion-item> 
-
-      </form>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
-
-    <ion-modal trigger="addStockmodal" (willDismiss)="onWillDismiss($event)">
+  <ion-modal trigger="addStockmodal" (willDismiss)="onWillDismiss($event)">
       <ng-template>
         <ion-header>
           <ion-toolbar>
@@ -250,5 +176,80 @@
         </ion-content>
       </ng-template>
     </ion-modal>
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Add New Stock Item Details</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+       
+        <form [formGroup]="editForm" >
+          <ion-item>
+            <ion-label position="stacked">Stock Item Name</ion-label><br>
+            <ion-input type="text" formControlName="Stock_Item_Name" placeholder="" required></ion-input>
+          </ion-item> 
+      
+          <ion-item>
+            <ion-label position="stacked">Stock Item Price</ion-label><br>
+            <ion-input type="text" formControlName="Stock_Item_Price" placeholder="" required></ion-input>
+          </ion-item> 
+      
+          <ion-item>
+            <ion-label position="stacked">Stock Item Size</ion-label><br>
+            <ion-input type="text" formControlName="Stock_Item_Size" placeholder="" required></ion-input>
+          </ion-item> 
+
+          <!-- Stock Type -->
+          <ion-item>
+            <ion-label position="stacked">Stock Item Type</ion-label><br>
+            <ion-select placeholder="Select a Stock Type" formControlName="Stock_Type_ID">
+              <div slot="label">Stock Types <ion-text color="danger">(Required)</ion-text></div>
+              <ion-select-option *ngFor="let types of stocktypes" value="{{types.stock_Type_ID}}" >
+                {{types.stock_Type_Name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+    
+          <!-- Stock Colour -->
+          <ion-item>
+            <ion-label position="stacked">Stock Item Colour</ion-label><br>
+            <ion-select placeholder="Select a Stock Item Colour" formControlName="Stock_Item_Colour_ID">
+              <div slot="label">Stock Item Colour <ion-text color="danger">(Required)</ion-text></div>
+              <ion-select-option *ngFor="let colours of stockitemcolours" value="{{colours.stock_Item_Colour_ID}}" >
+                {{colours.stock_Item_Colour_Name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item> 
+
+            <!-- Stock Image -->
+            <ion-item>
+              <ion-label position="stacked">Stock Item Image</ion-label><br>
+              <ion-select placeholder="Select a Stock Item Image" formControlName="Stock_Image_ID">
+                <div slot="label">Stock Item Image<ion-text color="danger">(Required)</ion-text></div>
+                <ion-select-option *ngFor="let image of stockimages" value="{{image.stock_Image_ID}}" >
+                  {{image.stock_Image_Name}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>          
+            
+            <ion-item>
+              <ion-label position="stacked">Inventory_Comments</ion-label><br>
+              <ion-input type="text" formControlName="Inventory_Comments" placeholder="" ></ion-input>
+            </ion-item> 
+
+      </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+    
   
 </ion-footer>

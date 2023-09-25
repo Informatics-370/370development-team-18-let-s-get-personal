@@ -34,6 +34,7 @@ export class OrderRequestsPage implements OnInit {
 
   ngOnInit() {
     this.GetOrderRequests()
+    console.log('r',this.GetOrderRequests)
   }
 
   GetOrderRequests(){
@@ -42,6 +43,7 @@ export class OrderRequestsPage implements OnInit {
       this.orderRequests = result as OrderLineItemVM[]
       var date = result.order_Request_Date
       console.log(this.orderRequests)
+      console.log('results',result)
     })
   }
 

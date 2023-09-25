@@ -20,7 +20,7 @@ export class OTPPage implements OnInit {
   ionViewDidEnter() {
    this.otp=localStorage.getItem("otp");
 
-  // console.log(this.otp);
+   console.log(this.otp);
   }
 
   constructor(  private router:Router,private alertController: AlertController) { }//private navCtrl: NavController, private navParams: NavParams,
@@ -37,6 +37,7 @@ export class OTPPage implements OnInit {
       this.ErrorAlert();
     }
     const codeToVerify = this.verificationCode;
+    console.log('code',this.verificationCode)
   }
 
   async SuccessAlert() {

@@ -25,6 +25,7 @@ export class FaqPage implements OnInit {
   ngOnInit() {
     this.getDeliveryCompany()
     this.GetTypes()
+    this.GetAllRefundPolicies()
   }
   public ViewRefundPolicy() {
     this._router.navigate(["/tabs/view-refund-policy"])

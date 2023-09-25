@@ -43,11 +43,11 @@ export class PersonalisationPage implements OnInit {
     const itemParam = this.route.snapshot.queryParamMap.get('item');
     if (itemParam) {
       this.selectedItem = JSON.parse(itemParam);
-      try {
+      /*try {
         localStorage.setItem('selectedItem', JSON.stringify(this.selectedItem));
       } catch {
         console.log('error', Error)
-      }
+      }*/
 
     }
 
