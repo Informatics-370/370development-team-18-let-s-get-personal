@@ -38,7 +38,7 @@ export class SuccessfulPaymentPage implements OnInit {
     private auditservice: AuditTrailService, private alertController:AlertController, private profileservice: UserProfileDataService,
     private invoiceservice: InvoiceService) 
   { }
-
+//========= get orderT working on backed
   ngOnInit() {
 
     const orderString = localStorage.getItem("order");
@@ -51,17 +51,17 @@ export class SuccessfulPaymentPage implements OnInit {
     this.order.customerID=localStorage.getItem("customerID");
     localStorage.removeItem("totalPrice")
 
-    this.placeOrderT(this.order);
+    //this.placeOrderT(this.order);
 
   }
 
-  placeOrderT(order:OrderT):void{
-    this.orderService.placeOrder(order).subscribe(res=>{
-      console.log(res);
-    },error=>{
-      console.log(error)
-    })
-  }
+  // placeOrderT(order:OrderT):void{
+  //   this.orderService.placeOrder(order).subscribe(res=>{
+  //     console.log(res);
+  //   },error=>{
+  //     console.log(error)
+  //   })
+  // }
 
   /*ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)

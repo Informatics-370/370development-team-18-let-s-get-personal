@@ -12,13 +12,14 @@
     </ion-toolbar>
   </ion-header>
   <ion-toolbar>
+    <ion-button (click)="stocktakenav()">Stock Take</ion-button> 
     <ion-button (click)="pricehistorynav()">View Stock Price History</ion-button> 
     <ion-button (click)="stockcoloursnav()"> Stock Colours</ion-button> 
-    <ion-button (click)="stocktakenav()">Stock Take</ion-button>      
+         
     <ion-button (click)="stocktypesnav()"> Stock Types</ion-button>   
-    <ion-button id="addStockmodal">Add Product</ion-button>
+    <ion-button id="addStockmodal">Add Product</ion-button> <br>
     
-    <ion-button  (click)="generatePDF()">Download Report Pdf </ion-button> <br>
+    <ion-button  (click)="generatePDF()">Download Report Pdf </ion-button> 
     <ion-button  (click)="exportToExcel()">Download Report Excel</ion-button>
      <!-- <ion-button (click)="stockimagesnav()"> Stock Images</ion-button> -->
     <!-- <ion-button (click)="bestellersnav()">Manage Best Sellers</ion-button>     -->

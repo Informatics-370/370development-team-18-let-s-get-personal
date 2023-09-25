@@ -19,10 +19,10 @@
       <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">Date Ended</ion-col>
     </ion-row>
     <ion-row *ngFor="let item of stockitems">
-      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.Stock_Price_History.stock_Item_Name}}</ion-col>
-      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.Stock_Price_History.stock_Price_Amount}}</ion-col>
-      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.Stock_Price_History.effective_From_Date}}</ion-col>
-      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.Stock_Price_History.effective_To_Date}}</ion-col>
+      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.stock_Item_Name}}</ion-col>
+      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.stock_Price_Amount}}</ion-col>
+      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.effective_From_Date | date: 'yyyy-MM-dd'}}</ion-col>
+      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.effective_To_Date | date: 'yyyy-MM-dd'}}</ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

@@ -347,12 +347,10 @@ namespace IPKP___API.Controllers.Models.Repository
             IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
             return await query.ToArrayAsync();
         }
-        public async Task<IEnumerable<Stock_Item>> GetAllStockItemsIncludingPriceHistoryAsync()
+        public async Task<Stock_Price_History[]> GetAllStockItemsIncludingPriceHistoryAsync()
         {
-            //IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
-            return await _appDbContext.Stock_Items
-                .Include(x => x.StockPriceHistory)
-                .ToListAsync();
+            IQueryable<Stock_Price_History> query = _appDbContext.Stock_Price_Histories;
+            return await query.ToArrayAsync();
         }
 
         public async Task<Stock_Item> GetStockItemByName(string stock_Item_Name)

@@ -58,6 +58,19 @@ export class SuccessfulDeliveriesPage implements OnInit {
     this.AddTrail()
   }
 
+  selectedFile!: File;
+
+  onFileSelected(event: any, deliveryid: string) {    
+    this.selectedFile = event.target.files[0];
+
+    const formData = new FormData();
+    formData.append('pdf', this.selectedFile);
+    formData.append('fileName', deliveryid);
+    this.service.UploadWaybill(formData, deliveryid).subscribe(data => {
+
+    });
+  }
+
   action!: string
   AddTrail(){
     let audittrail = new AuditTrail()

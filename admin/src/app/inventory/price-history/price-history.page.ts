@@ -7,6 +7,7 @@ import { AuditTrailService } from 'src/app/Services/audittrail.service';
 import { AuditTrail } from 'src/app/Models/adittrail';
 import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { Stock_Item } from 'src/app/Models/stockitem';
+import { StockPriceHistory } from 'src/app/Models/stockpricehistory';
 @Component({
   selector: 'app-price-history',
   templateUrl: './price-history.page.html',
@@ -15,7 +16,7 @@ import { Stock_Item } from 'src/app/Models/stockitem';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class PriceHistoryPage implements OnInit {
-  stockitems!: Stock_Item[];
+  stockitems: StockPriceHistory[] = [];
   action!: string
   constructor(public environmentInjector: EnvironmentInjector, private router: Router, private alertController:AlertController,
     public stockitemservice: StockItemDataService, private trailservice: AuditTrailService) { }
@@ -26,7 +27,7 @@ export class PriceHistoryPage implements OnInit {
 
   GetAllStockItems(){
     this.stockitemservice.GetStockItemPriceHistory().subscribe(result =>{
-      this.stockitems = result as Stock_Item[];
+      this.stockitems = result as StockPriceHistory[];
     })    
   }
 

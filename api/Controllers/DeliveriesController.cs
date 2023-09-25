@@ -5,10 +5,15 @@ using IPKP___API.Controllers.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Bcpg.Sig;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace IPKP___API.Controllers
 {
@@ -171,6 +176,49 @@ namespace IPKP___API.Controllers
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
+        }
+
+        [HttpPost("UploadWaybill/{delivery_ID}")]
+        public async Task<IActionResult> UploadWaybillAsync (IFormFile file, Guid deliveryid)
+        {
+            var requests = await _IPKPRepository.GetDeliveryDetailsAsync(deliveryid);
+            try
+            {                
+                if (file == null || file.Length == 0)
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "No file uploaded." });
+                }
+                else if (requests == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery Id: " + deliveryid });
+                }
+                else
+                {
+                    // Specify the directory where you want to save the uploaded file
+                    var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+                    Directory.CreateDirectory(uploadPath);
+
+                    var filePath = Path.Combine(uploadPath, file.FileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    requests.Way_Bill_File = filePath;
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "File uploaded successfully" });
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error" });
+            }
+                       
+
+            return Ok(new Response { Status = "Success", Message = "File uploaded successfully" });
         }
 
 

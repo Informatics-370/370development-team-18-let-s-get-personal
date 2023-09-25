@@ -60,6 +60,10 @@ export class DeliveryDataService {
     .pipe(map(result => result))
   }
 
+  public UploadWaybill(file:FormData, delivery_ID: string){
+    return this.httpClient.post(`${this.apiUrl}Deliveries/UploadWaybill/${delivery_ID}`, file, this.httpOptions)
+  }
+
   //************* Delivery Companies *************\\
   public GetDeliveryCompanies(): Observable<any>{ 
     return this.httpClient.get(`${this.apiUrl}Deliveries/GetAllDeliveryCompanies`)
