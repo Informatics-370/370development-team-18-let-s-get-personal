@@ -26,10 +26,8 @@ export class CheckOutPage implements OnInit {
   basketItems: BasketItems[] = [];
   address:DeliveryAddress= new DeliveryAddress();
   deliveryvm: DeliveryVM[] = [];
-  delprice: number = 0;
-  totalprice: number = 0
   orderrequest!: Order_Request
-  vatprice!: number
+  
   constructor(public service: OrderRequestService, private auditservice: AuditTrailService, private router: Router,
     private alertController:AlertController) { }
 
@@ -53,7 +51,7 @@ export class CheckOutPage implements OnInit {
           console.log(this.deliveryvm)
           this.deliveryvm.forEach(element => {
             //let amount = element.delivery_Price 
-            this.delprice += element.delivery_Price
+            this.delprice = element.delivery_Price
           });
 
         localStorage.setItem('delprice', JSON.stringify(this.delprice));
@@ -68,10 +66,12 @@ export class CheckOutPage implements OnInit {
     catch{
       this.ErrorAlert()
     }    
-    
   }
 
-  pureprice: number =0
+  delprice: number = 0
+  totalprice: number = 0
+  pureprice: number = 0
+  vatprice: number = 0
   culculate(){    
     let orderprice = this.order.price
     const storedVat: string | null = localStorage.getItem('vatamount');
@@ -89,6 +89,7 @@ export class CheckOutPage implements OnInit {
     // this.delprice = JSON.parse(localStorage.getItem('delprice') as string)
 
     console.log(orderprice)
+    console.log(this.pureprice)
     console.log(this.vatprice)
     console.log(this.delprice)
 
@@ -118,19 +119,27 @@ export class CheckOutPage implements OnInit {
         console.log(this.orderrequest)
         let orderRequestID = this.orderrequest.order_Request_ID
         localStorage.setItem('orderRequestID', JSON.stringify(orderRequestID));
+      },(error) => {
+        this.ErrorAlert();        
+        console.error(error);
       })
-
-      //Action Trail
-      this.action = "Confirmed Order Details"
-      this.AddAuditTrail()
-
-
-      this.proceedToPayFast()
-    // }
+      let orderrequestID = JSON.parse(JSON.stringify(localStorage.getItem('orderRequestID')))
+      if(orderrequestID == null){
+        this.ErrorAlert();
+      }     
+      else{
+        //Action Trail
+        this.action = "Confirmed Order Details"
+        this.AddAuditTrail()
+        this.proceedToPayFast()        
+      }
+    //}
     // catch
     // {
 
     // }*/
+    //   this.ErrorAlert();
+    // }
     
   } 
 

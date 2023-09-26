@@ -347,6 +347,14 @@ namespace IPKP___API.Controllers.Models.Repository
             IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
             return await query.ToArrayAsync();
         }
+        public async Task<IEnumerable<Stock_Item>> GetAllStockItemsIncludingPriceHistoryAsync()
+        {
+            //IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
+            return await _appDbContext.Stock_Items
+                .Include(x => x.StockPriceHistory)
+                .ToListAsync();
+        }
+
         public async Task<Stock_Item> GetStockItemByName(string stock_Item_Name)
         {
             IQueryable<Stock_Item> query = _appDbContext.Stock_Items
@@ -936,18 +944,15 @@ namespace IPKP___API.Controllers.Models.Repository
         public object GetSalesReport(string stocktypename)
         {
             List<SalesVM> sales = (
-                from s in _appDbContext.Stock_Items.ToList() 
-                join p in _appDbContext.Payments.ToList()
-                on s.Stock_Item_ID equals p.Stock_Item_ID
+                from s in _appDbContext.Stock_Items.ToList()
                 join t in _appDbContext.Stock_Types.ToList()
                 on s.Stock_Type_ID equals t.Stock_Type_ID
                 select new SalesVM
                 {
                     Stock_Item_Name = s.Stock_Item_Name,
-                    Order_Line_Item_Quantity = p.Sale_Quantity,
-                    Payment_Amount = p.Payment_Amount,
                     Stock_Type_Name = t.Stock_Type_Name,
-                    Total_Amount = Math.Round(s.Stock_Sale_Quantity*p.Payment_Amount,2)
+                    Order_Line_Item_Quantity = s.Stock_Sale_Quantity,
+                    Total_Amount = s.Stock_Sale_Quantity * s.Stock_Item_Price,
                 }
                 ).ToList();
 

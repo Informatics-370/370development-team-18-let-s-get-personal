@@ -38,7 +38,7 @@
       </ion-row>
       <ion-row *ngFor="let item of orderRequests">
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.customer_UserName}} </ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
+        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.streetNumber}} {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.delivery_Company_Name}} </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.stock_Item_Name}} </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.order_Line_Item_Quantity}} </ion-col>
@@ -46,7 +46,8 @@
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.stock_Colour_Name}} </ion-col>      
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> <img src='{{item.image_File}}'> </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.design_Text}} </ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.order_Request_Date}}  </ion-col>
+        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> 
+          {{item.order_Request_Date | date: 'yyyy-MM-dd'}}  </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"><ion-button (click)="AcceptOrder(item.order_Line_Item_ID)">In Progress</ion-button></ion-col>
       </ion-row>
     </ion-grid>

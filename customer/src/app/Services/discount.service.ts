@@ -32,7 +32,7 @@ import { Response } from '../Models/response';
     }
 
     public GetDiscountByStock(stock_Item_ID:string){ 
-      return this.httpClient.get(`${this.apiUrl}Discount/GetDiscount/${stock_Item_ID}`)
+      return this.httpClient.get(`${this.apiUrl}Discount/GetDiscountByStockID/${stock_Item_ID}`)
       .pipe(map(result => result))
     }
   

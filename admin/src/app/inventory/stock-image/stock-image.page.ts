@@ -60,7 +60,7 @@ export class StockImagePage implements OnInit {
       this.AddTrail()
       this.DeleteStockImageSuccessAlert()
     },(error) => {
-      this.DeleteStockImageSuccessAlert();        
+      this.DeleteStockImageErrorAlert();        
       console.error('Delete stock image error:', error);
     });
   }

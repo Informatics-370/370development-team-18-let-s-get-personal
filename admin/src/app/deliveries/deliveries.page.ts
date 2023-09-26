@@ -57,6 +57,8 @@ export class DeliveriesPage implements OnInit {
   {
     this.router.navigate(['./tabs/successful-deliveries']);
   }
+
+  
   
 
   GetRequestedDeliveries(){

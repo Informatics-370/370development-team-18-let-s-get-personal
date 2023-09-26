@@ -11,33 +11,44 @@
     <ion-toolbar>
     </ion-toolbar>
   </ion-header>
+  <ion-toolbar>
+    <ion-button (click)="pricehistorynav()">View Stock Price History</ion-button> 
+    <ion-button (click)="stockcoloursnav()"> Stock Colours</ion-button> 
+    <ion-button (click)="stocktakenav()">Stock Take</ion-button>      
+    <ion-button (click)="stocktypesnav()"> Stock Types</ion-button>   
+    <ion-button id="addStockmodal">Add Product</ion-button>
+    
+    <ion-button  (click)="generatePDF()">Download Report Pdf </ion-button> <br>
+    <ion-button  (click)="exportToExcel()">Download Report Excel</ion-button>
+     <!-- <ion-button (click)="stockimagesnav()"> Stock Images</ion-button> -->
+    <!-- <ion-button (click)="bestellersnav()">Manage Best Sellers</ion-button>     -->
+  </ion-toolbar>  
+  <ion-toolbar>
+    
+    <form [formGroup]="SearchStockForm">      
+      <ion-item>
+        <!-- <ion-label>Search by Name</ion-label> -->
+        <ion-input label="Search by Name" type="text" formControlName="name" placeholder="Product Name" required></ion-input> 
+        <ion-button (click)="search()">Search</ion-button>
+      </ion-item>           
+    </form>
+  </ion-toolbar>
 
-  <ion-button (click)="stocktakenav()">Stock Take</ion-button>       
-  <ion-button (click)="stocktypesnav()"> Stock Types</ion-button>
-  <ion-button (click)="stockcoloursnav()"> Stock Colours</ion-button>
-  <ion-button (click)="stockimagesnav()"> Stock Images</ion-button>
-  <ion-button id="addStockmodal">Add Product</ion-button>        
-  <ion-button (click)="exportToExcel()">Download Excel Report</ion-button> 
-  <ion-button (click)="generatePDF()">Download Pdf Report</ion-button> 
-  <ion-button (click)="bestellersnav()">Manage Best Sellers</ion-button> 
-
-  <ion-grid>
+  <!-- <ion-grid>
     <ion-row>
       <ion-col size="3.5">
-        <form [formGroup]="SearchStockForm">      
-          <ion-item>
-            <!-- <ion-label>Search by Name</ion-label> -->
-            <ion-input label="Search by Name" type="text" formControlName="name" placeholder="Product Name" required></ion-input>
-            <ion-button (click)="search()">Search</ion-button>
-          </ion-item> 
-        </form>
+               
+      </ion-col>
+      <ion-col>
+        
       </ion-col>
     </ion-row>    
-  </ion-grid>
+  </ion-grid> -->
   
   <div id="htmlData">
     <ion-grid>
-      <ion-row style="border-bottom-style: solid;">
+      <ion-row style="border-bottom-style: solid; border-color: rgb(161, 160, 160);">
+        <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5" ></ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Product Name</ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Product Price</ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Product Size</ion-col>
@@ -51,6 +62,7 @@
       </ion-row><br>
 
       <ion-row *ngFor="let item of searchedinventory" class="cell-class">
+        <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5" ></ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.stock_Item_Name}}</ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;">R {{item.stock_Item_Price}}.00</ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.stock_Item_Size}}</ion-col>
@@ -60,7 +72,7 @@
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.stock_Item_Quantity}}</ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.inventory_Comments}}</ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"><ion-button (click)="EditProduct(item.stock_Item_ID, true)">Edit Product</ion-button></ion-col>
-        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3"><ion-button (click)="ConfirmDeleteStockItemSuccessAlert(item.stock_Item_ID)">Remove Product</ion-button></ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3"><ion-button (click)="ConfirmDeleteStockItemSuccessAlert(item.stock_Item_ID, item.stock_Image_ID, item.stock_Item_Name)">Remove Product</ion-button></ion-col>
       </ion-row>
     </ion-grid>
   </div>

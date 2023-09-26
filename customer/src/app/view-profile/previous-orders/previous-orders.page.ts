@@ -129,7 +129,7 @@ export class PreviousOrdersPage implements OnInit {
 //========== Edit ==========
    isModalOpen = false;
    prodratingID!: string
-   editProdRating: any;
+   editProdRating: any //ProductRatingVM = new ProductRatingVM();
    editForm: FormGroup = new FormGroup({
      //selectedRating: new FormControl('', [Validators.required]),
      comment: new FormControl('', [Validators.required]),
@@ -157,19 +157,18 @@ export class PreviousOrdersPage implements OnInit {
    confirmEditmodal() {    
      let editedProdRating = new ProductRating();
      editedProdRating.product_Star_Rating = this.selectedRating;
-     editedProdRating.product_Rating_Comments = this.editForm.get('comment')?.value;
+     editedProdRating.product_Rating_Comments = this.editForm.value.comment;
      console.log(editedProdRating)
-     try {
+
        this.ratingservice.UpdateProductRating(this.prodratingID, editedProdRating).subscribe(result => {
          this.editProdRatingSuccessAlert();
          //Action Trail
          this.action = "Updated product rating for: " + this.editStockName + "Rating comment: "+ editedProdRating.product_Rating_Comments  + "Rating: "+ this.selectedRating
          this.AddAuditTrail()
-       })
-     }
-     catch {
-       this.editProdRatingErrorAlert();
-     }
+       },(error) => {
+        this.editProdRatingErrorAlert();        
+        console.error(error);
+      })
    }
   
    DeleteProductRating(product_Rating_ID: string, stock_Item_Name:string, comments: string, rating:number) {
@@ -220,135 +219,135 @@ export class PreviousOrdersPage implements OnInit {
   }
 
 //========== Alerts ========== 
+  async getErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'We Could not find your Order',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
+    });
+    await alert.present();
+  }
 
-async getErrorAlert() {
-  const alert = await this.alertController.create({
-    header: 'We are sorry!',
-    subHeader: 'We Could not find your Order',
-    message: 'Please try again',
-    buttons: [{
-      text: 'OK',
-      role: 'cancel',
-      handler: () => {
-        this.reloadPage();
-      }
-    }],
-  });
-  await alert.present();
-}
+  async CantSeeOrder() {
+    const alert = await this.alertController.create({
+      header: 'Please note:',
+      subHeader: 'We only show orders that have been delivered.',
+      message:'If you have your order and still can not see it please contact us on our contact us page.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      },{
+        text: 'Contact Us',
+        //role: 'cancel',
+        handler: () => {
+          this.ContactUs();
+        }
+      }],
+    });
+    await alert.present();
+  }
 
-async CantSeeOrder() {
-  const alert = await this.alertController.create({
-    header: 'Please note:',
-    subHeader: 'We only show orders that have been delivered.',
-    message:'If you have your order and still can not see it please contact us on our contact us page.',
-    buttons: [{
-      text: 'OK',
-      role: 'cancel',
-      handler: () => {
-        this.reloadPage();
-      }
-    },{
-      text: 'Contact Us',
-      //role: 'cancel',
-      handler: () => {
-        this.ContactUs();
-      }
-    }],
-  });
-  await alert.present();
-}
+  async addProdRatingSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Your product rating was captured.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
+    });
+    await alert.present();
+  }
 
-async addProdRatingSuccessAlert() {
-  const alert = await this.alertController.create({
-    header: 'Success!',
-    subHeader: 'Your product rating was captured.',
-    buttons: [{
-      text: 'OK',
-      role: 'cancel',
-      handler: () => {
-        this.reloadPage();
-      }
-    }],
-  });
-  await alert.present();
-}
-async addProdRatingErrorAlert() {
-  const alert = await this.alertController.create({
-    header: 'We are sorry!',
-    subHeader: 'Your product rating was not captured.',
-    message: 'Please try again',
-    buttons: [{
-      text: 'OK',
-      role: 'cancel',
-      handler: () => {
-        this.reloadPage();
-      }
-    }],
-  });
-  await alert.present();
-}
+  async addProdRatingErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Your product rating was not captured.',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
+    });
+    await alert.present();
+  }
 
-async editProdRatingSuccessAlert() {
-  const alert = await this.alertController.create({
-    header: 'Success!',
-    subHeader: 'Product Rating Updated',
-    buttons: [{
-      text: 'OK',
-      role: 'cancel',
-      handler: () => {
-        this.reloadPage(); 
-      }
-    }],
-  });
-  await alert.present();
-}
+  async editProdRatingSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Product Rating Updated',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage(); 
+        }
+      }],
+    });
+    await alert.present();
+  }
 
-async editProdRatingErrorAlert() {
-  const alert = await this.alertController.create({
-    header: 'We are sorry!',
-    subHeader: 'Product Rating Was Not Updated',
-    message: 'Please try again',
-    buttons: [{
-      text: 'OK',
-      role: 'cancel',
-      handler: () => {
-        this.reloadPage(); 
-      }
-    }],
-  });
-  await alert.present();
-}
+  async editProdRatingErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Product Rating Was Not Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage(); 
+        }
+      }],
+    });
+    await alert.present();
+  }
 
-async DeleteProdRatingSuccessAlert() {
-  const alert = await this.alertController.create({
-    header: 'Success!',
-    subHeader: 'Your product rating is successfully deleted!',
-    buttons: [{
-      text: 'OK',
-      role: 'cancel',
-      handler: () => {
-        this.reloadPage();
-      }
-    }],
-  });
-  await alert.present();
-}
+  async DeleteProdRatingSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Your product rating is successfully deleted!',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
+    });
+    await alert.present();
+  }
 
-async DeleteProdRatingErrorAlert() {
-  const alert = await this.alertController.create({
-    header: 'We are sorry!',
-    subHeader: 'Your Product Rating Was Unfortunately Not Deleted.',
-    message: 'Please try again',
-    buttons: [{
-      text: 'OK',
-      role: 'cancel',
-      handler: () => {
-        this.reloadPage();
-      }
-    }],
-  });
-  await alert.present();
-}
+  async DeleteProdRatingErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Your Product Rating Was Unfortunately Not Deleted.',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler: () => {
+          this.reloadPage();
+        }
+      }],
+    });
+    await alert.present();
+  }
 
 }

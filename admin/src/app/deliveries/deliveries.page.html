@@ -14,9 +14,13 @@
       </ion-buttons> -->
     </ion-toolbar>
   </ion-header>
-  <ion-button (click)="RoutePrevDeliveries()">View Previous Deliveries</ion-button>
-  <ion-button (click)="Routedeliverycompanies()">Manage Delivery Companies</ion-button>
-  <ion-button (click)="openPDF()">Download Deliveries in Progress Report</ion-button>
+  <ion-toolbar>
+    <ion-button (click)="RoutePrevDeliveries()">View Previous Deliveries</ion-button>  
+    <ion-button (click)="Routedeliverycompanies()">Manage Delivery Companies</ion-button>  
+    
+    <ion-button slot="end" (click)="openPDF()">Download Report pdf</ion-button>
+  </ion-toolbar>
+  
 
   <ion-content *ngIf="deliveries.length == 0">
     <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">

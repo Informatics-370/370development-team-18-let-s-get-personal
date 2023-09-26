@@ -48,6 +48,11 @@ export class SuccessfulDeliveriesPage implements OnInit {
     this.router.navigate(['./tabs/deliveries']);
   }
 
+  RouteDeliveriesControlBreak()
+  {
+    this.router.navigate(['./tabs/delivery-prices']);
+  }
+
   uploadWayBill(dateDelivered: Date){
     this.action = "Uploaded waybill for delivery delivered on the " + dateDelivered
     this.AddTrail()

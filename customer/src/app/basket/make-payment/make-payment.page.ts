@@ -218,9 +218,6 @@ updateSearchResults() {
     return distance;
 
   }
-  
-  
-
 
   AddDeliveryRequest(){
     let addressID = JSON.parse(JSON.stringify(localStorage.getItem('addressID')));

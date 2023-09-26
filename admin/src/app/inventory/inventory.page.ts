@@ -309,20 +309,37 @@ export class InventoryPage implements OnInit {
 
 //============== Delete =======
 deletestockitemID!: string
+deletestockimageID!: string 
+deletestockitemname!: string 
   DeleteStockItem(){
     this.stockitemservice.DeleteStockItem(this.deletestockitemID).subscribe(result =>{
       if(result.status == "Success"){
         this.DeleteStockItemSuccessAlert(); 
+        this.deleteStockImage(this.deletestockimageID, this.deletestockitemname)
+
+        this.action = "Deleted Product: " + this.deletestockitemname
+        this.AddTrail()
       }
       else{
         this.DeleteStockItemErrorAlert();
-      }
-      
+      }      
     },(error) => {
       this.errormsg = error
       this.DeleteStockItemErrorAlert();
       
       console.error('Delete stock item error:', error);
+    });
+  }
+
+  deleteStockImage(stock_Image_ID:string, stockItemName:string){
+    this.imageservice.DeleteStockImage(stock_Image_ID).subscribe(result =>{
+      this.action = "Deleted Stock Image for product: " + stockItemName
+      this.AddTrail()
+
+      //this.DeleteStockImageSuccessAlert()
+    },(error) => {
+      this.DeleteStockImageErrorAlert();        
+      console.error('Delete stock image error:', error);
     });
   }
 
@@ -408,12 +425,16 @@ deletestockitemID!: string
   {
     this.router.navigate(['./tabs/best-sellers']);
   }
+  pricehistorynav()
+  {
+    this.router.navigate(['./tabs/price-history']);
+  }
 
 //============== Alerts =======
   async HelpAlert() {
     const alert = await this.alertController.create({
-      header: 'Please Note: You are required to add the product image while adding a product',
-      subHeader: 'Each product will be automatically pulled through to the customers shop page',
+      header: 'Each product will be automatically pulled through to the customers Shop Page', 
+      subHeader: 'Please Note: You are required to add the product image while adding a product',
       buttons: [{
           text: 'OK',
           role: 'cancel',
@@ -453,11 +474,14 @@ deletestockitemID!: string
     await alert.present();
   }
 
-  async ConfirmDeleteStockItemSuccessAlert(stockitemID: string) {
+  async ConfirmDeleteStockItemSuccessAlert(stockitemID: string, stockimageID: string, stockitemname:string) {
     this.deletestockitemID = stockitemID
+    this.deletestockimageID = stockimageID
+    this.deletestockitemname = stockitemname
     const alert = await this.alertController.create({
       header: 'Are you sure?',
       subHeader: 'This action will remove item from transactional reports and customers will no longer be able to order it',
+      message: 'This action will also remove the image associated with this Product',
       buttons: [{
         text: 'OK',
         role: 'cancel',
@@ -572,6 +596,37 @@ deletestockitemID!: string
 
   reloadPage(){
     window.location.reload()
+  }
+
+  async DeleteStockImageSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Stock Image Deleted',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }  
+  
+  async DeleteStockImageErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Stock Image was not deleted',
+      message: 'Please note we cannot delete images that are being used in a product',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
   }
 
 }

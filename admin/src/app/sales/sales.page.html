@@ -14,12 +14,17 @@
   <ion-button (click)="openPDF()">Download Sales Report</ion-button>
   <ion-button (click)="RefundPolicyRoute()">Refund Policy</ion-button>
   <!-- <ion-button (click)="RefundsRoute()">Refunds</ion-button>  -->
-  <!-- <ion-button (click)="bestellersnav()">Best Sellers</ion-button>  -->
+  <ion-button (click)="bestellersnav()">Manage Best Sellers</ion-button> 
 
   <!-- Control break -->
   <div>
     <ion-grid>
-      <ion-row>        
+      <ion-row>
+        <ion-col size="12" style="text-align: center;  border-bottom-style: solid; border-color: lightgray;">
+          <h2>Sales Per Stock Type</h2>
+        </ion-col>
+      </ion-row>
+      <ion-row style="text-align: center;">        
         <ion-card *ngFor="let type of stocktypes">
           <ion-card-header style="font-weight: bold;">
             {{type.stock_Type_Name}}: R {{type.stock_Type_Total | number }}
@@ -27,13 +32,38 @@
           <ng-container *ngIf="type.stock_Type_Total > 0 then Sales; else NoSales"></ng-container>
           <ng-template #Sales>
             <ion-card-content *ngFor="let control of type.controlbreak" >            
-              <label>{{control.stock_Item_Name}}: R {{control.total_Amount | number }}</label>
+              <label>{{control.order_Line_Item_Quantity}}x {{control.stock_Item_Name}}: R {{control.total_Amount | number }}</label>
             </ion-card-content>  
           </ng-template>
           <ng-template #NoSales style="text-align: center;">
              <p style="text-align: center;">No sales</p> 
           </ng-template>
         </ion-card>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div id="htmlData">    
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" style="text-align: center;">
+          <h2 style="text-align: center; border-bottom-style: solid; border-color: lightgray;">Sales List</h2>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col offset="1" sizeLg="2" sizeMd="4" sizeXs="4"  style="font-weight: bold; text-align: center;"> Customer </ion-col>
+        <ion-col sizeLg="2" sizeMd="4" sizeXs="4"  style="font-weight: bold; text-align: center;"> Product </ion-col>
+        <ion-col sizeLg="2" sizeMd="4" sizeXs="4"  style="font-weight: bold; text-align: center;"> Amount Paid </ion-col>
+        <ion-col sizeLg="2" sizeMd="4" sizeXs="4"  style="font-weight: bold; text-align: center;"> Quantity </ion-col>
+        <ion-col sizeLg="2" sizeMd="4" sizeXs="4"  style="font-weight: bold; text-align: center;"> Date Paid </ion-col>
+        <!-- <ion-col sizeLg="2" sizeMd="4" sizeXs="4" ></ion-col> -->
+      </ion-row>
+      <ion-row *ngFor="let item of sales">
+        <ion-col offset="1" sizeLg="2" sizeMd="4" sizeXs="4" style="text-align: center;"> {{item.customer_UserName}} </ion-col>
+        <ion-col sizeLg="2" sizeMd="4" sizeXs="4" style="text-align: center;">{{getProductName(item.stock_Item_ID)}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="4" sizeXs="4" style="text-align: center;"> R {{item.payment_Amount}}.00 </ion-col>
+        <ion-col sizeLg="2" sizeMd="4" sizeXs="4" style="text-align: center;"> {{item.sale_Quantity}} </ion-col>
+        <ion-col sizeLg="2" sizeMd="4" sizeXs="4" style="text-align: center;"> {{item.sale_Date| date: 'yyyy-MM-dd'}} </ion-col>
+        <!-- <ion-col sizeLg="2" sizeMd="4" sizeXs="4" style="text-align: center;"><ion-button (click)="item.stock_Item_ID">Add To Best Seller</ion-button></ion-col> -->
       </ion-row>
     </ion-grid>
   </div>

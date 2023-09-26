@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>delivery-prices</ion-title>
+    <ion-title>Delivery Price Report</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,12 +10,14 @@
       <ion-title size="large">delivery-prices</ion-title>
     </ion-toolbar>
   </ion-header>
-  <div>
+  <p style="cursor:pointer;" (click)="backNav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
+  <ion-button (click)="openPDF()">Download report</ion-button>
+  <div id="htmlData">
     <ion-grid>
       <ion-row>        
         <ion-card *ngFor="let company of deliverycompanies">
           <ion-card-header style="font-weight: bold;">
-            {{company.delivery_Company_Name}}: R {{company.delivery_Price | number }}
+            {{company.delivery_Company_Name}}: R {{company.delivery_Company_Total | number }}
           </ion-card-header>
           <ng-container *ngIf="company.delivery_Company_Total > 0 then Sales; else NoSales"></ng-container>
           <ng-template #Sales>

@@ -78,16 +78,24 @@ export class OrdersPage implements OnInit {
   }
 
   async presentLoading() {
+    
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
       message: 'Click the backdrop to dismiss early...',
       duration: 2000,
       backdropDismiss: true,
+      
     });
-    
-    await loading.present();
-  
+
+    if(this.orderRequests.length == 0){
+      await loading.present();      
+    }
+    else{
+      await loading.dismiss();
+    }   
+
     const { role, data } = await loading.onDidDismiss();
+    
     console.log('Loading dismissed!');
   } 
 

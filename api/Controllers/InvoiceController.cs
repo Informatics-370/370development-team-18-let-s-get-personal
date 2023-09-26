@@ -40,16 +40,7 @@ namespace IPKP___API.Controllers
                     Invoice_Total_exclVAT = invoice.Invoice_Total_exclVAT,
                     Invoice_Total_VAT = invoice.Invoice_Total_VAT,
                     Invoice_Total_inclVAT = invoice.Invoice_Total_inclVAT,
-
-                    customer = new Customer
-                    {
-                        Customer_ID = invoice.customer.Customer_ID,
-                        Email = invoice.customer.Email,
-                        FirstName = invoice.customer.FirstName,
-                        Surname = invoice.customer.Surname,
-                        Username = invoice.customer.Username,
-                        Cell_Number = invoice.customer.Cell_Number,
-                    }
+                    Customer_ID = invoice.Customer_ID,
                 };
 
                 _IPKPRepository.Add(newinvoice);
@@ -72,18 +63,19 @@ namespace IPKP___API.Controllers
         [Route("SendInvoice")]
         public async Task<IActionResult> SendInvoice(Invoice newinvoice)
         {
-            var user = await _userManager.FindByNameAsync(newinvoice.customer.Username);
-            
-            if (newinvoice.customer.Username != null)
+            var results = await _IPKPRepository.GetCustomerDetailsAsync(newinvoice.Customer_ID);
+            if (results == null)
             {
+                string userEmail = results.Email;
+
                 try
                 {
                     var subject = "It's Personal Invoice";
-                    var message = "Dear " + newinvoice.customer.FirstName + ",<br><br>" +
+                    var message = "Dear " + results.FirstName + ",<br><br>" +
                     "We hope this message finds you well.<br><br>" +
                     "Thank you for using our services! Please find your invoice details below " + "<br><br>" +
 
-                    "Discount Amount: R"+ newinvoice.Discount_Amount +".00"+ "<br>" +
+                    "Discount Amount: R" + newinvoice.Discount_Amount + ".00" + "<br>" +
                     "Delivery Amount: R" + newinvoice.Delivery_Price + ".00" + "<br>" +
                     "Total Excluding Vat: R" + newinvoice.Invoice_Total_exclVAT + ".00" + "<br>" +
                     "Vat Amount: R" + newinvoice.Invoice_Total_VAT + ".00" + "<br><br>" +
@@ -92,7 +84,7 @@ namespace IPKP___API.Controllers
 
                     "Best regards,<br>Let's Get Personal";
 
-                    _ = SendEmail(subject, message, newinvoice.customer.Email);
+                    _ = SendEmail(subject, message, userEmail);
 
                 }
                 catch (Exception)
@@ -105,16 +97,20 @@ namespace IPKP___API.Controllers
                 return NotFound("Does not exist");
             }
 
-            //, Password = user.PasswordHash
-            var loggedInUser = new ForgotPassword { UserName = user.UserName };
+            //var user = await _userManager.FindByNameAsync(newinvoice.customer.Username);
+            
+            //if (newinvoice.customer.Username != null)
+            //{
+                
+            //}
 
             return Ok(new Response { Status = "Success", Message = "Invoice Sent To Customer" });
         }
 
         private async Task SendEmail(/*string fromEmailAddress,*/ string subject, string message, string toEmailAddress)
         {
-            string fromEmailAddress = "sarahpick@gmail.com";
-            var fromAddress = new MailAddress(fromEmailAddress);
+            string fromEmailAddress = "satahpick@gmail.com";
+            //var fromAddress = new MailAddress(fromEmailAddress);
             var toAddress = new MailAddress(toEmailAddress);
 
             SmtpClient client = new SmtpClient("smtp.gmail.com")

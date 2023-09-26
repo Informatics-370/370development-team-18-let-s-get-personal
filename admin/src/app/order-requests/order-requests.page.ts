@@ -46,6 +46,7 @@ export class OrderRequestsPage implements OnInit {
       console.log('results',result)
     })
   }
+
   async presentLoading() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
@@ -54,7 +55,12 @@ export class OrderRequestsPage implements OnInit {
       backdropDismiss: true,
     });
     
-    await loading.present();
+    if(this.orderRequests.length == 0){
+      await loading.present();      
+    }
+    else{
+      await loading.dismiss();
+    } 
   
     const { role, data } = await loading.onDidDismiss();
     console.log('Loading dismissed!');
@@ -97,17 +103,17 @@ generatePDF() {
         layout: 'lightHorizontalLines', // optional          
         table: {
           headerRows: 1,
-          //widths: [ '30%', '40%', '30%' ],
+          widths: [ '14%', '14%', '14%', '14%', '14%', '14%', '14%' ],
           // margin: [left, top, right, bottom]
-          margin: [ 5, 10, 5, 5 ],
+          margin: [ 1, 10, 1, 5 ],
           
           body: [
-            [ 'Customer Username', 'Street Number', 'Street Name', 'Delivery Company', 'Product', 
-            'Order Quantity', 'Product Size', 'Product Colour', 'Order Request Date' ],
+            [ 'Customer', 'Address', 'Delivery Company', 'Product', 
+            'Quantity', 'Product Colour', 'Order Request Date' ],
             ...this.orderRequests.map(p => 
               ([
-                p.customer_UserName, p.streetNumber, p.streetName, p.delivery_Company_Name, 
-                p.stock_Item_Name, p.order_Line_Item_Quantity, p.stock_Item_Size,
+                p.customer_UserName, p.streetNumber + p.streetName, p.delivery_Company_Name, 
+                p.stock_Item_Name, p.order_Line_Item_Quantity,
                 p.stock_Colour_Name, p.order_Request_Date
               ])
             )
