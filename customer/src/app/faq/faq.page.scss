@@ -2,11 +2,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20vh;
+    height: 100%;
     color: palevioletred;
     background-color: whitesmoke;
   }
-  
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+
   .animated-heading {
     font-size: 100px;
     animation: bounceIn 1s ease infinite;

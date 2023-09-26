@@ -19,7 +19,6 @@ import { WriteOffVM } from 'src/app/ViewModels/writeoffVM';
 import { AuditTrailService } from 'src/app/Services/audittrail.service';
 import { AuditTrail } from 'src/app/Models/adittrail';
 
-
 @Component({
   selector: 'app-stock-take',
   templateUrl: './stock-take.page.html',
@@ -92,6 +91,9 @@ export class StockTakePage implements OnInit {
           +". Old Quantity: " + this.editProduct.stock_Item_Quantity
           this.AddTrail()
         }       
+      },(error) => {
+      this.editErrorAlert();        
+      console.error('confirmeditmodal error:', error);
       })
     }
     catch{      
@@ -132,8 +134,10 @@ export class StockTakePage implements OnInit {
         console.log(writeoff)
         let writeoffID = writeoff.write_Off_ID
         localStorage.setItem('writeoffID', JSON.stringify(writeoffID));
-      })
-
+      },(error) => {
+      this.WriteOffErrorAlert();        
+      console.error('WriteOff error:', error);
+    })
       this.WriteOffLine()
     }
     catch
@@ -167,6 +171,9 @@ export class StockTakePage implements OnInit {
           this.decreaseQuantity()
           console.log(result)
         }
+      },(error) => {
+      this.WriteOffLineErrorAlert();        
+      console.error('WriteOffLine error:', error);
       })
     }
     catch
@@ -177,12 +184,12 @@ export class StockTakePage implements OnInit {
 
   decreaseQuantity()
   {
-    let VM = new WriteOffVM()
-    let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)
-    VM.write_Off_Quantity = this.writeoffquantity
-    let stockitemname = JSON.parse(localStorage.getItem('stock_Item_Name') as string)
-
     try{
+      let VM = new WriteOffVM()
+      let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)
+      VM.write_Off_Quantity = this.writeoffquantity
+      let stockitemname = JSON.parse(localStorage.getItem('stock_Item_Name') as string)
+    
       this.inventoryservice.DecreaseStockQuantity(stockitemID, VM).subscribe(result => {
         if(result.status == "Success"){
           this.WriteOffLineSuccessAlert()
@@ -191,6 +198,9 @@ export class StockTakePage implements OnInit {
           this.action = "Wrote off Stock "+ stockitemname + "Quantity: " + this.writeoffquantity
           this.AddTrail()
         }
+      },(error) => {
+        this.DecreasesQuantityErrorAlert();        
+        console.error('decreaseQuantity error:', error);
       })
     }
     catch{
@@ -222,6 +232,18 @@ export class StockTakePage implements OnInit {
   }
 
 //========== Alerts ===============
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'When Writing off quantity is to decrease the quantity if products were damaged, lost or stolen',
+      message: "This action will not remove the Product, only decrease it's quantity" ,
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
 
   async editSuccessAlert() {
     const alert = await this.alertController.create({

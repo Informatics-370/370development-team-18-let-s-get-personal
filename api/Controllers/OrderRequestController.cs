@@ -55,6 +55,15 @@ namespace IPKP___API.Controllers
             return Ok(new Response { Status = "Success", Message = "Delivery Address Added To Database." });
         }
 
+        [HttpPost]
+        [Route("PlaceOrder")]
+        public async Task<IActionResult> PlaceOrderT(OrderT d)
+        {
+            await _IPKPRepository.SaveChangesAsync();
+
+            return Ok(new Response { Status = "Success", Message = "Delivery Request Added To Database." });
+        }
+
         //add delivery request
         [HttpPost]
         [Route("AddDeliveryRequest")]

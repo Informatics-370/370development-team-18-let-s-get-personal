@@ -6,6 +6,7 @@ export class BestSellerVM{
     stock_Item_Price!: number
     stock_Item_Size!: string
     stock_Item_Quantity!: number
+    stock_Sale_Quantity!: number
 
     inventory_Comments!: string
     inventory_Date!: Date

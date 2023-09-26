@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { FormsModule, ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { AuditTrail } from '../Models/adittrail';
 import { AuditTrailService } from '../Services/audittrail.service';
 import { AuditTrailVM } from '../ViewModels/audittrailVM';
@@ -15,14 +15,16 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts";
   templateUrl: './audit-trail.page.html',
   styleUrls: ['./audit-trail.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class AuditTrailPage implements OnInit {
   AdminAuditTrails: AuditTrailVM[] = []
   EmployeeAuditTrails: AuditTrailVM[] = []
   CustomerAuditTrails: AuditTrailVM[] = []
+  searchString: string = "";
+  searchedtrail: AuditTrailVM[] = [];
 
-  constructor(private service:AuditTrailService, private excelservice: ExcelService ) 
+  constructor(private service:AuditTrailService, private excelservice: ExcelService, private alertController:AlertController ) 
   {
     (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
   }
@@ -31,6 +33,26 @@ export class AuditTrailPage implements OnInit {
     this.getAdminAuditTrails()
     this.getEmployeeAuditTrails()
     this.getCustomerAuditTrails()
+    //this.GetAllTrails()
+  }
+
+  SearchForm: FormGroup = new FormGroup({
+    name:new FormControl('',[Validators.required])
+  })
+
+  search(){  
+    let alltrails = this.AdminAuditTrails.concat(this.EmployeeAuditTrails).concat(this.CustomerAuditTrails)
+
+    this.searchString=this.SearchForm.get('name')?.value;
+
+    this.searchedtrail = alltrails.filter(
+      f => f.firstName.toLowerCase().includes(this.searchString.toLowerCase()),
+      //(f: { surname: string; }) => f.surname.toLowerCase().includes(this.searchString.toLowerCase()), 
+    )
+
+    this.AdminAuditTrails = []
+    this.EmployeeAuditTrails = [] 
+    this.CustomerAuditTrails = []
   }
 
   getAdminAuditTrails(){
@@ -126,5 +148,16 @@ export class AuditTrailPage implements OnInit {
     pdfMake.createPdf(docDefinition).download();      
   }
 
-
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'Audit trails are immedietely added when a user performs an action.',
+      message: 'They cannot be manually added',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
 }

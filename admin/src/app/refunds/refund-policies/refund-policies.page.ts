@@ -9,6 +9,8 @@ import { Refund } from 'src/app/Models/refund';
 import { Refund_Policy } from 'src/app/Models/refundpolicy';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { tap } from 'rxjs/operators';
+
 
 //for modal
 import { ModalController} from '@ionic/angular'; 
@@ -26,29 +28,59 @@ import { OverlayEventDetail } from '@ionic/core/components';
 export class RefundPoliciesPage implements OnInit {
 
   filterTerm: string = "";
+  filteredRefundPolicies: Refund_Policy[] = [];
 
   filteredpolicies:  Refund_Policy[] = [];
   refundPolicies: Refund_Policy[] =[]
+
   prevRefunds:Refund[]=[];
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:RefundService, private router: Router, 
-    private alertController:AlertController, private modalCtrl: ModalController ) { }
+    private alertController:AlertController, private modalCtrl: ModalController,private datePipe: DatePipe ) { }
 
   ngOnInit(): void {
     this.getAllRefundPolicies();
-
-    if(this.filterTerm==""){
+   /* //if(this.filterTerm==""){
       this.filteredpolicies = this.refundPolicies;
-    }
+    //}
+    console.log('refundPolicies',this.refundPolicies)
+    console.log('filtered',this.filteredRefundPolicies)*/
+
+    this.getAllRefundPolicies().subscribe(() => {
+      if(this.filterTerm==""){
+        this.filteredpolicies = this.refundPolicies;
+      }
+      console.log('refundPolicies', this.refundPolicies);
+      console.log('filtered', this.filteredRefundPolicies);
+    });
   }
 
   AddForm: FormGroup = new FormGroup({
-    date: new FormControl('',[Validators.required]),
+    date: new FormControl('',[Validators.required,this.dateValidator.bind(this)]),
     version: new FormControl('',[Validators.required]),
     description: new FormControl('',[Validators.required])
   })
   
-  search(){
+  dateValidator(control: FormControl): { [key: string]: boolean } | null {
+    const inputDate = new Date(control.value);
+    const currentDate = new Date();
+
+    if (inputDate < currentDate) {
+      return { dateInPast: true }; // Return an error if the date is in the past
+    }
+    
+    return null; // Validation passed
+  }
+
+  searchByDate(date: string) {
+    this.filteredRefundPolicies = this.refundPolicies.filter(item => {
+      const policyDate = this.datePipe.transform(item.refund_Policy_Date, 'yyyy-MM-dd');
+      return policyDate && policyDate.includes(date);
+    });
+    console.log('search',this.refundPolicies)
+  }
+  
+  /*search(){
     //empty array
     this.filteredpolicies = [];
 
@@ -58,13 +90,21 @@ export class RefundPoliciesPage implements OnInit {
       searchitem.refund_Policy_Description.toLocaleLowerCase().includes(this.filterTerm.toLocaleLowerCase())||
       searchitem.refund_Policy_Version == Number(this.filterTerm)
     );
-  }
+    
+  }*/
 
   getAllRefundPolicies(){
-    this.service.GetAllRefundPolicies().subscribe(result =>{
+    /*this.service.GetAllRefundPolicies().subscribe(result =>{
       this.refundPolicies = result as Refund_Policy[];
       console.log(this.refundPolicies);
-    })
+    })*/
+    return this.service.GetAllRefundPolicies().pipe(
+      tap(result => {
+        this.refundPolicies = result as Refund_Policy[];
+        this.filteredRefundPolicies=this.refundPolicies;
+        console.log('m',this.refundPolicies);
+      })
+    );
   }
 
   AddRefundPolicy(){

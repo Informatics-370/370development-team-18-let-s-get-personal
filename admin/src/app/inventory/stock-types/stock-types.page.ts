@@ -52,15 +52,12 @@ export class StockTypesPage implements OnInit {
     addStockType.stock_Type_Name = this.AddTypeForm.value.name;
 
       this.service.AddStockType(addStockType).subscribe(result => {
-        if(result.status == "Error")
-        {
-          this.AddStockTypeSuccessAlert();
-        }
-        else if(result.status == "Success"){
-          this.action = "Added Stock Type: " + this.AddTypeForm.value.name
-          this.AddTrail()
-          this.AddStockTypeSuccessAlert();
-        }
+        this.action = "Added Stock Type: " + this.AddTypeForm.value.name
+        this.AddTrail()
+        this.AddStockTypeSuccessAlert();
+    },(error) => {
+      this.AddStockTypeErrorAlert();        
+      console.error('Add stock type error:', error);
     })
   }
   
@@ -75,15 +72,12 @@ export class StockTypesPage implements OnInit {
   //=============== Delete ===============
   deleteStockTypes(stock_Type_ID:string, stock_Type_Name: string){
     this.service.DeleteStockType(stock_Type_ID).subscribe(result =>{
-      if(result.status == "Error")
-      {
-        this.DeleteStockTypeErrorAlert();
-      }
-      else if(result.status == "Success"){
-        this.action = "Deleted Stock Type " + stock_Type_Name
-        this.AddTrail()
-        this.DeleteStockTypeSuccessAlert();
-      }
+      this.action = "Deleted Stock Type " + stock_Type_Name
+      this.AddTrail()
+      this.DeleteStockTypeSuccessAlert();
+    },(error) => {
+      this.DeleteStockTypeErrorAlert();        
+      console.error('Delete stock type error:', error);
     });
   }
   
@@ -105,20 +99,17 @@ export class StockTypesPage implements OnInit {
   }
 
   confirmeditmodal(){
-    try
-    {
-      let editedType = new StockTypes();
-      editedType.stock_Type_Name = this.editForm.value.name;
+    let editedType = new StockTypes();
+    editedType.stock_Type_Name = this.editForm.value.name;
 
-      this.service.UpdateStockType(this.editStockType.stock_Type_ID, editedType).subscribe(result =>{
-        this.action = "Updated Stock Type Name From:" + this.editStockType.stock_Type_Name + " To: "+this.editForm.value.name
-        this.AddTrail()
-        this.editSuccessAlert();
-      })      
-    }
-    catch{      
-      this.editErrorAlert();
-    }    
+    this.service.UpdateStockType(this.editStockType.stock_Type_ID, editedType).subscribe(result =>{
+      this.action = "Updated Stock Type Name From:" + this.editStockType.stock_Type_Name + " To: "+this.editForm.value.name
+      this.AddTrail()
+      this.editSuccessAlert();
+    },(error) => {
+      this.editErrorAlert();        
+      console.error('Edit stock type error:', error);
+    })     
   }
 
   canceleditmodal() {
@@ -152,6 +143,19 @@ export class StockTypesPage implements OnInit {
   }
 
   //=============== Alerts ===============
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'When types are updated the new colour name will populate the respective products. ',
+      message: 'Types cannot be deleted if they are being used in a product',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
+
   async DeleteStockTypeSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
@@ -171,7 +175,7 @@ export class StockTypesPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
       subHeader: 'Stock Type was not deleted',
-      message: 'Please try again',
+      message: 'Please note we cannot delete types that are being used in a product',
       buttons: [{
           text: 'OK',
           role: 'cancel',

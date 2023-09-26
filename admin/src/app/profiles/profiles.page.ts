@@ -105,6 +105,41 @@ export class ProfilesPage implements OnInit {
     })
   }
 
+  generateUserPDF() {  
+    let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    let date = new Date
+    
+    let docDefinition = {  
+      fillColor: "White",
+      fillOpacity: "",
+      margin: [ 5, 10, 5, 5 ],
+      header: user+" - It's Personal Customer List",  
+      footer:'Downloaded by: '+ user + ' at: '+ date,        
+      content:[
+        {          
+          layout: 'lightHorizontalLines', // optional          
+          table: {
+            headerRows: 1,
+            widths: [ '16.5%', '16.5%', '16.5%', '16.5%', '16.5%', '16.5%' ],
+            // margin: [left, top, right, bottom]
+            margin: [ 5, 10, 5, 5 ],
+            
+            body: [
+              [ 'Username', 'First Name', 'Last Name', 'Email Address', 'Cell Number', 'Date Registered' ],
+              ['Customers:', '', '', '','', ''],
+              ...this.customers.map(p => ([p.username, p.firstName, p.surname, p.email, p.cell_Number, p.date_Registered])),
+              ['Employees:', '', '', '','', ''],
+              ...this.employees.map(p => ([p.username, p.firstName, p.surname, p.email, p.cell_Number, p.date_Registered])),
+              ['Admins:', '', '', '','', ''],
+              ...this.admin.map(p => ([p.username, p.firstName, p.surname, p.email, p.cell_Number, p.date_Registered]))
+            ]
+          }          
+        }
+      ]      
+    };  
+    pdfMake.createPdf(docDefinition).download();      
+  }
+
   generateCustomerPDF() {  
     let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
     let date = new Date

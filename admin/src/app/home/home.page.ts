@@ -19,7 +19,7 @@ import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
 })
 export class HomePage implements OnInit {
   subscribeTimer:any
-  timeLeft!: number;
+  timeLeft: number =0;
   interval:any;
   messages: ContactUs[] = []
   orderRequests: OrderLineItemVM[] =[]
@@ -27,6 +27,10 @@ export class HomePage implements OnInit {
   constructor(private router:Router, private alertController:AlertController, private service: ContactUsService
     , private trailservice: AuditTrailService, public orderservice: OrderService,) 
   { }
+
+  public Help() {
+    this.router.navigate(["/admin-help"])
+  }
 
   ngOnInit() {
     this.getMessages()
@@ -50,16 +54,11 @@ export class HomePage implements OnInit {
 
 //============== Replied status update =======
   markAsReplied(contactusID: string){
-    let contact = new ContactUs() 
-    contact.replied = true
-
-    this.service.UpdateContactUsStatus(contactusID, contact).subscribe(data =>{
-      if(data.status == "Success"){
-        this.UpdateStatusSuccessAlert()
-      }
-      else{
-        this.UpdateStatusErrorAlert()
-      }
+    this.service.DeleteContactUs(contactusID).subscribe(data =>{
+      this.DeleteSuccessAlert()
+    },(error) => {
+      this.DeleteErrorAlert();        
+      console.error('Edit stock image error:', error);
     })
   }
 
@@ -69,16 +68,24 @@ export class HomePage implements OnInit {
   })
 
   observableTimer() {
+    this.timeLeft = JSON.parse(localStorage.getItem('timeleft') as string)
     const source = timer(1000, this.timeLeft);
     const abc = source.subscribe(val => {
       console.log(val, '-');
       this.subscribeTimer = this.timeLeft - val;
+
+      if(this.timeLeft == 0){
+        this.ReminderAlert()
+      }
     });
   }
 
-  handleChange(e: any) {
+  Name!: string
+  handleChange(e: any, name:string) {
     console.log('ionChange fired with value: ' + e.detail.value);
     this.timeLeft = e.detail.value
+    localStorage.setItem('timeleft', JSON.stringify(this.timeLeft))
+    this.Name = name
     this.observableTimer()
   }
 
@@ -129,7 +136,7 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  async UpdateStatusSuccessAlert() {
+  async DeleteSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
       subHeader: 'Contact Us Message Marked as Replied',
@@ -144,10 +151,25 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  async UpdateStatusErrorAlert() {
+  async DeleteErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are Sorry!',
       subHeader: 'Status not updated please try again',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+          handler:() =>{
+            this.reloadPage();
+          }
+      }],
+    });
+    await alert.present();
+  }
+
+  async ReminderAlert() {
+    const alert = await this.alertController.create({
+      header: 'Reminder!',
+      subHeader: 'Remember to reply to ' + this.Name,
       buttons: [{
           text: 'OK',
           role: 'cancel',

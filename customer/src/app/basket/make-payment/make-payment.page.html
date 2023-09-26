@@ -23,7 +23,8 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-  
+      
+
       <ion-item>
         <ion-label position="stacked">Street Name</ion-label><br>
         <ion-input  labelPlacement="floating" placeholder="Example: Flower Street" formControlName="streetName"></ion-input>
@@ -73,9 +74,24 @@
         <p style="color: crimson;" class="small mt-1" *ngIf="f['areaCode'].hasError('minLength')">
           Code should be 4 numbers only.</p>
       </div>
+
+      <ion-item>
+        <ion-label>Full Address:</ion-label>
+        <ion-input
+          [formControl]="searchControl"
+          (ionInput)="updateSearchResults()"
+          placeholder="Type address..."
+        ></ion-input>
+      </ion-item>
       
+      <ion-list *ngIf="showPredictions">
+        <ion-item *ngFor="let prediction of predictions" (click)="selectPrediction(prediction)">
+          {{ prediction.description }}
+        </ion-item>
+      </ion-list>
+
       <ion-button (click)="AddDeliveryAddress()" [disabled]="AddDelAddressForm.invalid">Confirm Address</ion-button>
-     <!--checkOut()-->
+     
   </form>
   
   </div>

@@ -29,7 +29,8 @@ export class StockImagePage implements OnInit {
 
   constructor(public modalCtrl: ModalController, private service:StockImageDataService,
     private router: Router, private alertController: AlertController, private route:ActivatedRoute,
-    private trailservice: AuditTrailService) { }
+    private trailservice: AuditTrailService) 
+  { }
 
   AddImageForm:FormGroup = new FormGroup({
     imagefile: new FormControl('',[Validators.required]),     
@@ -52,68 +53,15 @@ export class StockImagePage implements OnInit {
     this.router.navigate(['./tabs/inventory']);
   }
 
-   /*uploadFile = (files: any) => {
- uploadFile = (files: any) => {
-    let fileToUpload = <File>files[0];
-    this.formData.append('file', fileToUpload , fileToUpload.name); //
-    this.fileNameUploaded = fileToUpload.name
-  }*/
-
-  uploadFile = (files: any) => {
-    let fileToUpload = <File>files[0];
-    
-    // Check if the file is an image (you can extend this check with more image types)
-    if (fileToUpload.type.startsWith('image/')) {
-      this.formData.append('file', fileToUpload, fileToUpload.name);
-      this.fileNameUploaded = fileToUpload.name;
-    } else {
-      // Display an error message or handle the non-image file as needed
-      this.fileNameUploaded = 'Invalid file type. Please choose an image file.';
-    }
-  }
-  
-
-  addStockImage(){
-    //if(this.AddImageForm.valid)
-    //{
-      this.formData.append('name', this.AddImageForm.get('name')!.value);
-      this.service.AddStockImage(this.formData).subscribe(result => {
-        if(result == null){
-          this.AddStockImageErrorAlert()
-        }
-        else{
-          this.action = "Added Stock Image: " + this.AddImageForm.value.name
-          this.AddTrail()
-          this.AddStockImageSuccessAlert() 
-        }
-        // if(result.status == "Error"){        
-        //   this.AddStockImageSuccessAlert();
-        // }
-        // else if(result.status == "Success"){
-        //   this.AddStockImageSuccessAlert();
-        // }
-      })
-    //}          
-  }
-  
-  canceladdImagemodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  confirmaddImagemodal() {
-    this.addStockImage();    
-  }
-
   deleteStockImage(stock_Image_ID:string, stock_Image_Name:string){
     this.service.DeleteStockImage(stock_Image_ID).subscribe(result =>{
-      if(result.status == "Error") {
-        this.DeleteStockImageErrorAlert();
-      }
-      else if(result.status == "Success"){
-        this.action = "Deleted Stock Image: " + stock_Image_Name
-        this.AddTrail()
-        this.DeleteStockImageSuccessAlert();
-      }         
+      this.action = "Deleted Stock Image: " + stock_Image_Name
+
+      this.AddTrail()
+      this.DeleteStockImageSuccessAlert()
+    },(error) => {
+      this.DeleteStockImageErrorAlert();        
+      console.error('Delete stock image error:', error);
     });
   }
 
@@ -142,20 +90,16 @@ export class StockImagePage implements OnInit {
   }
 
   confirmeditmodal(){
-    try
-    {
-      this.formData.append('name', this.editForm.get('name')!.value);
+    this.formData.append('name', this.editForm.get('name')!.value);
+    this.service.UpdateStockImage(this.editImage.stock_Image_ID, this.formData).subscribe(result =>{
+      this.action = "Edited Stock Image From "+ this.editImage.stock_Image_Name + " To: " + this.editForm.value.name
+      this.AddTrail()
 
-      this.service.UpdateStockImage(this.editImage.stock_Image_ID, this.formData).subscribe(result =>{
-        this.action = "Edited Stock Image From "+ this.editImage.stock_Image_Name + " To: " + this.editForm.value.name
-        this.AddTrail()
-
-        this.editSuccessAlert();
-      })      
-    }
-    catch{      
-      this.editErrorAlert();
-    }    
+      this.editSuccessAlert();
+    },(error) => {
+      this.editErrorAlert();        
+      console.error('Edit stock image error:', error);
+    })         
   }
 
   canceleditmodal() {
@@ -177,6 +121,9 @@ export class StockImagePage implements OnInit {
       audittrail.actionName = this.action
       this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
         console.log(result)
+      },(error) => {
+        //this.editErrorAlert();        
+        console.error('Audit trail error:', error);
       })
     }
     else{
@@ -184,11 +131,27 @@ export class StockImagePage implements OnInit {
       audittrail.actionName = this.action
       this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
         console.log(result)
+      },(error) => {
+        //this.editErrorAlert();        
+        console.error('Audit trail error:', error);
       })
     }
   }
 
   //========= Alerts =====
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'You are required to add the product image while adding a product',
+      message: 'Images cannot be deleted if they are being used in a product',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
+
   async editSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
@@ -239,7 +202,7 @@ export class StockImagePage implements OnInit {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
       subHeader: 'Stock Image was not deleted',
-      message: 'Please try again',
+      message: 'Please note we cannot delete images that are being used in a product',
       buttons: [{
           text: 'OK',
           role: 'cancel',
@@ -284,7 +247,43 @@ export class StockImagePage implements OnInit {
 
   reloadPage(){
     window.location.reload()
-  }
-  
+  } 
  
 }
+
+  // uploadFile = (files: any) => {
+  //   let fileToUpload = <File>files[0];
+    
+  //   // Check if the file is an image (you can extend this check with more image types)
+  //   if (fileToUpload.type.startsWith('image/')) {
+  //     this.formData.append('file', fileToUpload, fileToUpload.name);
+  //     this.fileNameUploaded = fileToUpload.name;
+  //   } else {
+  //     // Display an error message or handle the non-image file as needed
+  //     this.fileNameUploaded = 'Invalid file type. Please choose an image file.';
+  //   }
+  // }  
+
+  // addStockImage(){
+  //   //if(this.AddImageForm.valid)
+  //   //{
+  //     this.formData.append('name', this.AddImageForm.get('name')!.value);
+  //     this.service.AddStockImage(this.formData).subscribe(result => {
+  //       if(result == null){
+  //         this.AddStockImageErrorAlert()
+  //       }
+  //       else{
+  //         this.action = "Added Stock Image: " + this.AddImageForm.value.name
+  //         this.AddTrail()
+  //         this.AddStockImageSuccessAlert() 
+  //       }
+  //     })         
+  // }
+  
+  // canceladdImagemodal() {
+  //   this.modal.dismiss(null, 'cancel');
+  // }
+
+  // confirmaddImagemodal() {
+  //   this.addStockImage();    
+  // }

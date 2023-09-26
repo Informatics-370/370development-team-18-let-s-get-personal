@@ -47,6 +47,9 @@ export class DeliveryCompaniesPage implements OnInit {
     this.service.GetDeliveryCompanies().subscribe(result =>{
       this.deliverycompanies = result as Delivery_Company[];
       console.log(this.deliverycompanies)
+    },(error) => {
+      this.ErrorAlert();        
+      console.error(error);
     })
   }
 
@@ -55,23 +58,35 @@ export class DeliveryCompaniesPage implements OnInit {
     this.thisroute.navigate(['./tabs/deliveries']);
   }
 
-  AddDeliveryCompany(){
+  RouteDeliveriesControlBreak()
+  {
+    this.thisroute.navigate(['./tabs/delivery-prices']);
+  }
+
+//========== Add ===========
+  isAddModalOpen = false;
+  OpenAddModal(isOpen: boolean){
+    this.isAddModalOpen = isOpen;
+  }
+
+  canceladdmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirmaddmodal() {
     let AddDeliveryCompany = new Delivery_Company();
     AddDeliveryCompany.delivery_Price = this.AddForm.value.Delivery_Price;
     AddDeliveryCompany.delivery_Company_Name = this.AddForm.value.deliverycompanyname;
 
     this.service.AddDeliveryCompany(AddDeliveryCompany).subscribe(response => {
-      if(response.status == "Error")
-      {
-        this.addDeliveryCompanyErrorAlert();
-      }
-      else{
-        this.addDeliveryCompanySuccessAlert();
-        this.action = "Added Delivery Company: " + this.AddForm.value.deliverycompanyname
-        this.AddTrail()
-      }
-    })
+      this.addDeliveryCompanySuccessAlert();
+      this.action = "Added Delivery Company: " + this.AddForm.value.deliverycompanyname
+      this.AddTrail()
 
+    },(error) => {
+      this.addDeliveryCompanyErrorAlert();        
+      console.error('Edit stock image error:', error);
+    })    
   }
 
 
@@ -79,19 +94,16 @@ export class DeliveryCompaniesPage implements OnInit {
   DeleteDeliveryCompany(delivery_Company_ID: string, delivery_Company_Name: string){
     this.service.DeleteDeliveryCompany(delivery_Company_ID).subscribe(result => {
       console.log(result);
-      if(result.status == "Error")
-      {
-        this.DeleteDeliveryCompanyErrorAlert();
-      }
-      else if(result.status == "Success"){
-        this.DeleteDeliveryCompanySuccessAlert();
-        this.action = "Deleted Delivery Company: " + delivery_Company_Name
-        this.AddTrail()
-      }
+      this.DeleteDeliveryCompanySuccessAlert();
+      this.action = "Deleted Delivery Company: " + delivery_Company_Name
+      this.AddTrail()
+    },(error) => {
+      this.DeleteDeliveryCompanyErrorAlert();        
+      console.error('DeleteDeliveryCompany error:', error);
     })
   }
 
-  //========== Edit ===========
+//========== Edit ===========
   isModalOpen = false;
   editCompany: Delivery_Company = new Delivery_Company();
   editForm: FormGroup = new FormGroup({
@@ -116,15 +128,13 @@ export class DeliveryCompaniesPage implements OnInit {
       editedCompany.delivery_Price = this.editForm.value.Delivery_Price
 
       this.service.UpdateDeliveryCompany(this.editCompany.delivery_Company_ID, editedCompany).subscribe(result => {
-        if(result == null){
-          this.UpdateDeliveryCompanyErrorAlert()
-        }
-        else{
-          this.UpdateDeliveryCompanySuccessAlert()
-          this.action = "Updated discount from "+ this.editCompany.delivery_Company_Name + ", "+ this.editCompany.delivery_Price 
+        this.UpdateDeliveryCompanySuccessAlert()
+        this.action = "Updated discount from "+ this.editCompany.delivery_Company_Name + ", "+ this.editCompany.delivery_Price 
           + ", " + this.editForm.value.deliverycompanyname + ", "+ this.editForm.value.Delivery_Price 
-          this.AddTrail()
-        }        
+        this.AddTrail()       
+      },(error) => {
+        this.UpdateDeliveryCompanyErrorAlert();        
+        console.error('UpdateDeliveryCompany error:', error);
       })
     }
     catch{
@@ -166,16 +176,24 @@ export class DeliveryCompaniesPage implements OnInit {
     window.location.reload()
   }
   
-  canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
 
-  confirmaddmodal() {
-    this.AddDeliveryCompany();    
-  }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+//====== Alerts =====
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'Delivery companies will be pulled through as delivery options when the customer checks out their order',
+      message: '',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
   }
 
   async addDeliveryCompanySuccessAlert() {
@@ -266,6 +284,22 @@ export class DeliveryCompaniesPage implements OnInit {
         role: 'cancel',
         handler:() =>{
           this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async ErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Something went wrong',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
         }
     }],
     });

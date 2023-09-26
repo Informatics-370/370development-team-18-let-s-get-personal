@@ -20,7 +20,8 @@ namespace IPKP___API.Controllers.Models.Entities
         [ForeignKey(nameof(Payment_ID))]
         public Guid Payment_ID { get; set; }
 
-        public Customer customer { get; set; }
+        [ForeignKey(nameof(Customer_ID))]
+        public Guid Customer_ID { get; set; }
 
         public double Discount_Amount { get; set; }
 

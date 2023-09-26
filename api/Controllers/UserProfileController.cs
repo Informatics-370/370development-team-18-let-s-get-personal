@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace IPKP___API.Controllers
 {
@@ -17,9 +18,11 @@ namespace IPKP___API.Controllers
     {
         //Users, employees and customers
         private readonly IIPKPRepository _IPKPRepository;
-        public UserProfileController(IIPKPRepository iPKPRepository)
+        private readonly UserManager<IdentityUser> _userManager;
+        public UserProfileController(IIPKPRepository iPKPRepository, UserManager<IdentityUser> userManager)
         {
             _IPKPRepository = iPKPRepository;
+            _userManager = userManager;
         }
         //*************** Admins ***************\\
         [HttpGet]

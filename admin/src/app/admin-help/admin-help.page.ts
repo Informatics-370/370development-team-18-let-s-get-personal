@@ -89,10 +89,6 @@ export class AdminHelpPage implements OnInit {
     return textNodes;
   }
 
-  public faq() {
-    this.router.navigate(["/tabs/faq"])
-  }
-
   async WordErrorAlert() {
     const alert = await this.alertController.create({
       header: 'Sorry!',

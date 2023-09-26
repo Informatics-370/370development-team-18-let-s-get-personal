@@ -63,23 +63,19 @@ export class ViewEmployeesPage implements OnInit {
   DeleteEmployee(employee_ID: string, username: string){
     this.authservice.DeleteUser(username).subscribe(result => {
       console.log(result);
-      if(result == null){
-        this.DeleteEmployeeErrorAlert();
-      }
-      else{
-        this.DeleteEmployeeSuccessAlert();
-      }
+      this.DeleteEmployeeSuccessAlert();
+    },(error) => {
+      this.DeleteEmployeeErrorAlert();        
+      console.error('DeleteEmployee error:', error);
     })    
         
-    this.empservice.DeleteEmployee(employee_ID).subscribe(result => {
-      console.log(result);
-      if(result == null){
-        this.DeleteEmployeeErrorAlert();
-      }
-      else{
-        this.DeleteEmployeeSuccessAlert();
-      }
-    })    
+    // this.empservice.DeleteEmployee(employee_ID).subscribe(result => {
+    //   console.log(result);
+    //   this.DeleteEmployeeSuccessAlert();
+    // },(error) => {
+    //   this.DeleteEmployeeErrorAlert();        
+    //   console.error('Edit stock image error:', error);
+    // })    
 
   }
 
@@ -164,6 +160,9 @@ export class ViewEmployeesPage implements OnInit {
 
       this.empservice.UpdateEmployee(this.editEmployee.employee_ID, editedEmployee).subscribe(result =>{
         this.editSuccessAlert();
+      },(error) => {
+        this.editErrorAlert();        
+        console.error('Edit employee error:', error);
       })
     }
     catch{      
@@ -184,9 +183,9 @@ export class ViewEmployeesPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler:() =>{
-          this.reloadPage();
-        }
+        // handler:() =>{
+        //   this.reloadPage();
+        // }
     }],
     });
     await alert.present();

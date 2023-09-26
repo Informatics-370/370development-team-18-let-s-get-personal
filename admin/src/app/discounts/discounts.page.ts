@@ -16,8 +16,6 @@ import { StockItemViewModel } from '../ViewModels/stockitemsVM';
 import { Stock_Item } from '../Models/stockitem';
 import { DatePipe } from '@angular/common';
 
-
-
 @Component({
   selector: 'app-discounts',
   templateUrl: './discounts.page.html',
@@ -30,12 +28,24 @@ export class DiscountsPage implements OnInit {
   discounts: Discount[] = [];
   Products: StockItemViewModel[] = [];
   stockItems: Stock_Item[] = [];
+  searchedDiscount: Discount[]=[];
+  searchString: string = "";
 
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service: DiscountService, private thisroute: Router, public modalCtrl: ModalController,
     private alertController: AlertController, private _service: StockItemDataService, private formBuilder: FormBuilder,
     private trailservice: AuditTrailService) { }
+
+    SearchForm: FormGroup = new FormGroup({
+      name:new FormControl('',[Validators.required])
+    })
+
+    searchDiscount(){
+      this.searchString=this.SearchForm.get('name')?.value;
+      this.searchedDiscount = this.discounts.filter(
+        f => f.discount_Name.toLowerCase().includes(this.searchString.toLowerCase()));
+    }
 
   AddForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -63,8 +73,6 @@ export class DiscountsPage implements OnInit {
     return null; // Validation passed
   }
 
-
-
   ngOnInit(): void {
     this.getDiscounts();
     this.GetStockItems();
@@ -73,8 +81,8 @@ export class DiscountsPage implements OnInit {
   getDiscounts() {
     this.service.GetAllDiscounts().subscribe(result => {
       this.discounts = result;
+      this.searchedDiscount=this.discounts;
       console.log(this.discounts)
-
     })
   }
 
@@ -88,11 +96,9 @@ export class DiscountsPage implements OnInit {
   getProductName(stockId: string): string {
     const product = this.Products.find(product => product.stock_Item_ID === stockId);
     return product ? product.stock_Item_Name : '';
-
   }
 
-
-  //=========== Add ===========
+//=========== Add ===========
   AddDiscount() {
     console.log('Form error',this.AddForm.errors)
    // if(this.AddForm.valid){
@@ -103,14 +109,14 @@ export class DiscountsPage implements OnInit {
     addDiscount.discount_Amount = this.AddForm.value.amount;
     addDiscount.effective_From_Date = this.AddForm.value.effectiveFromdate;
     addDiscount.effective_To_Date = this.AddForm.value.effectiveTodate;
-    addDiscount.stock_Id = this.AddForm.value.productID;
+    addDiscount.stock_Item_ID = this.AddForm.value.productID;
 
     console.log('Discount Name', addDiscount.discount_Name);
     console.log('Discount Amount', addDiscount.discount_Amount);
     console.log('Effective From Date', addDiscount.effective_From_Date);
     console.log('Effective To Date', addDiscount.effective_To_Date);
-    console.log('Stock ID', addDiscount.stock_Id);
-    const productName=this.getProductName(addDiscount.stock_Id)
+    console.log('Stock ID', addDiscount.stock_Item_ID);
+    const productName=this.getProductName(addDiscount.stock_Item_ID)
     console.log('productName', productName)
 
     this.service.AddDiscount(addDiscount).subscribe(response => {
@@ -135,7 +141,6 @@ export class DiscountsPage implements OnInit {
     effectiveFromdate: new FormControl('', [Validators.required]),
     effectiveTodate: new FormControl('', [Validators.required])
   })
-
 
   EditDiscount(discount_ID: string, isOpen: boolean) {
     this.service.GetDiscount(discount_ID).subscribe(response => {
@@ -163,7 +168,10 @@ export class DiscountsPage implements OnInit {
         this.action = "Updated discount from " + this.editDiscount.discount_Name + "," + this.editDiscount.discount_Amount + "," + this.editDiscount.effective_From_Date + "," + this.editDiscount.effective_To_Date
           + " to: " + this.editForm.value.name + "," + this.editForm.value.amount + "," + this.editForm.value.effectiveFromdate + "," + this.editForm.value.effectiveTodate
         this.AddTrail()
-      })
+      },(error) => {
+      this.editDiscountErrorAlert();        
+      console.error('Edit discount error:', error);
+    })
     }
     catch {
       this.editDiscountErrorAlert();
@@ -175,23 +183,22 @@ export class DiscountsPage implements OnInit {
     //this.modal.dismiss(null, 'cancel');
   }
 
-  //=========== Delete ===========
+//=========== Delete ===========
   DeleteDiscount(discount_ID: string, discount_Name: string) {
     this.service.DeleteDiscount(discount_ID).subscribe(result => {
       console.log(result);
-      if (result.status == "Error") {
-        this.DeleteDiscountErrorAlert();
-      }
-      else if (result.status == "Success") {
-        this.DeleteDiscountSuccessAlert();
+      this.DeleteDiscountSuccessAlert();
 
-        this.action = "Deleted Discount" + discount_Name
-        this.AddTrail()
-      }
+      this.action = "Deleted Discount" + discount_Name
+      this.AddTrail()
+
+    },(error) => {
+      this.DeleteDiscountErrorAlert();        
+      console.error('Edit stock image error:', error);
     })
   }
 
-  //=========== Audit trail ===========
+//=========== Audit trail ===========
   action!: string
   AddTrail() {
     let audittrail = new AuditTrail()
@@ -215,7 +222,6 @@ export class DiscountsPage implements OnInit {
     }
   }
 
-
   reloadPage() {
     window.location.reload()
   }
@@ -230,6 +236,20 @@ export class DiscountsPage implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+//=========== Delete ===========
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'Discounts will be automatically applied to the Product in a customers basket',
+      message: '',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
   }
 
   async editDiscountSuccessAlert() {

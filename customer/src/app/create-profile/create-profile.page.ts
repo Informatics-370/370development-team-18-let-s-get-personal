@@ -106,7 +106,7 @@ export class CreateProfilePage implements OnInit {
         text: 'OK',
         role: 'cancel',
         handler:() =>{
-          this._router.navigate(['./tabs/register-otp']);;
+          //this._router.navigate(['./tabs/register-otp']);;
         }
       }],
     });

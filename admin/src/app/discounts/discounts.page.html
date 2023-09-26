@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Discounts</ion-title>
+    <ion-button slot="end" (click)="HelpAlert()">Help</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -12,34 +13,48 @@
       </ion-buttons> -->
     </ion-toolbar>
   </ion-header>
-  
+
   <ion-content id="content">
     <ion-button id="adddiscountmodal">Add Discount</ion-button>
+    <form [formGroup]="SearchForm">
+      <ion-item>
+        <ion-input type="text" formControlName="name" placeholder="Discount Name" required></ion-input>
+        <ion-button slot="start" (click)="searchDiscount()">Search</ion-button>
+      </ion-item>
+    </form>
     <ion-grid>
       <ion-row>
-        <ion-col  sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Discount Name</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="font-weight: bold; text-align: center;">Discount Amount</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="font-weight: bold; text-align: center;">Product Name</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="font-weight: bold; text-align: center;">Effective From Date</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="font-weight: bold; text-align: center;">Effective To Date</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Discount Name</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Discount
+          Amount</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Product Name</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Effective From
+          Date</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Effective To
+          Date</ion-col>
         <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="font-weight: bold; text-align: center;"></ion-col>
         <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="font-weight: bold; text-align: center;"></ion-col>
       </ion-row>
-      <ion-row *ngFor="let item of discounts">
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">{{item.discount_Name}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">R {{item.discount_Amount}}.00</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">{{getProductName(item.stock_Id)}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">{{item.effective_From_Date| date: 'yyyy-MM-dd'}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"  style="text-align: center;">{{item.effective_To_Date| date: 'yyyy-MM-dd'}}</ion-col>
-        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;"><ion-button (click)="DeleteDiscount(item.discount_ID, item.discount_Name)">Delete</ion-button></ion-col>
-        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;"><ion-button (click)="EditDiscount(item.discount_ID, true)" >Update</ion-button></ion-col>      
+      <ion-row *ngFor="let item of searchedDiscount">
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.discount_Name}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">R {{item.discount_Amount}}.00</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"
+          style="text-align: center;">{{getProductName(item.stock_Item_ID)}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.effective_From_Date| date:
+          'yyyy-MM-dd'}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.effective_To_Date| date:
+          'yyyy-MM-dd'}}</ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;"><ion-button
+            (click)="DeleteDiscount(item.discount_ID, item.discount_Name)">Delete</ion-button></ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;"><ion-button
+            (click)="EditDiscount(item.discount_ID, true)">Update</ion-button></ion-col>
       </ion-row>
     </ion-grid>
 
   </ion-content>
 </ion-content>
 
-<ion-footer> 
+<ion-footer>
   <ion-modal trigger="adddiscountmodal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
@@ -49,54 +64,55 @@
           </ion-buttons>
           <ion-title>Add Discount Policy Details</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmaddmodal()" 
-            [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <form [formGroup]="AddForm">          
-            <ion-item>
-              <ion-label position="stacked">Discount Name</ion-label><br>
-              <ion-input type="text" formControlName="name" placeholder="" required></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label position="stacked">Discount Amount</ion-label><br>
-              <ion-input type="number" formControlName="amount" placeholder="" required></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label position="stacked">Product</ion-label><br>
-              <ion-select formControlName="productID">
-                <ion-select-option *ngFor="let product of Products" [value]="product.stock_Item_ID">{{ product.stock_Item_Name}}</ion-select-option>
-              </ion-select>
-            </ion-item>
-            <ion-item>
-              <ion-label position="stacked">Effective From Date</ion-label><br>
-              <!--<ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
+        <form [formGroup]="AddForm">
+          <ion-item>
+            <ion-label position="stacked">Discount Name</ion-label><br>
+            <ion-input type="text" formControlName="name" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Discount Amount</ion-label><br>
+            <ion-input type="number" formControlName="amount" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Product</ion-label><br>
+            <ion-select formControlName="productID">
+              <ion-select-option *ngFor="let product of Products" value="{{product.stock_Item_ID}}">
+                {{product.stock_Item_Name}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Effective From Date</ion-label><br>
+            <!--<ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
             <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime>-->
-            <input type="date"  formControlName="effectiveFromdate" placeholder="" required>
-            </ion-item> 
-            <div *ngIf="AddForm.get('effectiveFromdate')?.hasError('required')" class="error-message">
-              <p style="color: crimson;">Date is required.</p>
-            </div>
-            <div *ngIf="AddForm.get('effectiveFromdate')?.hasError('dateInPast')" class="error-message">
-              <p style="color: crimson;">Date cannot be in the past.</p>
-            </div>
-            <ion-item>
-              <ion-label position="stacked">Effective To Date</ion-label><br>
-              <!--<ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input
+            <ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
+          </ion-item>
+          <div *ngIf="AddForm.get('effectiveFromdate')?.hasError('required')" class="error-message">
+            <p style="color: crimson;">Date is required.</p>
+          </div>
+          <div *ngIf="AddForm.get('effectiveFromdate')?.hasError('dateInPast')" class="error-message">
+            <p style="color: crimson;">Date cannot be in the past.</p>
+          </div>
+          <ion-item>
+            <ion-label position="stacked">Effective To Date</ion-label><br>
+            <!--<ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input
               <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime>-->
-              <input type="date" formControlName="effectiveTodate" placeholder="" required>
-            </ion-item>  
-            <div *ngIf="AddForm.get('effectiveTodate')?.hasError('required')" class="error-message">
-              <p style="color: crimson;">Date is required.</p>
-            </div>
-            <div *ngIf="AddForm.get('effectiveTodate')?.hasError('dateInPast')" class="error-message">
-              <p style="color: crimson;">Date cannot be in the past.</p>
-            </div> 
-            <div *ngIf="AddForm.hasError('notValid', ['effectiveTodate'])">
-              <p style="color: crimson;">Effective To Date cannot be earlier than Effective From Date.</p>
-            </div>                
+            <ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input>
+          </ion-item>
+          <div *ngIf="AddForm.get('effectiveTodate')?.hasError('required')" class="error-message">
+            <p style="color: crimson;">Date is required.</p>
+          </div>
+          <div *ngIf="AddForm.get('effectiveTodate')?.hasError('dateInPast')" class="error-message">
+            <p style="color: crimson;">Date cannot be in the past.</p>
+          </div>
+          <div *ngIf="AddForm.hasError('notValid', ['effectiveTodate'])">
+            <p style="color: crimson;">Effective To Date cannot be earlier than Effective From Date.</p>
+          </div>
         </form>
       </ion-content>
     </ng-template>
@@ -116,24 +132,24 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <form [formGroup]="editForm" >
+        <form [formGroup]="editForm">
           <ion-item>
             <ion-label position="stacked">Discount Name</ion-label><br>
-            <ion-input type="text" formControlName="name"></ion-input> 
+            <ion-input type="text" formControlName="name"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Discount Amount</ion-label><br>
-            <ion-input type="number" formControlName="amount" ></ion-input>
+            <ion-input type="number" formControlName="amount"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Effective From Date</ion-label><br>
             <ion-input type="date" formControlName="effectiveFromdate"></ion-input>
-          </ion-item> 
+          </ion-item>
           <ion-item>
             <ion-label position="stacked">Effective To Date</ion-label><br>
             <ion-input type="date" formControlName="effectiveTodate"></ion-input>
-          </ion-item>                    
-      </form>
+          </ion-item>
+        </form>
       </ion-content>
     </ng-template>
   </ion-modal>

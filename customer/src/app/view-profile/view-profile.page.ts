@@ -9,6 +9,7 @@ import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { AuthenticationService } from 'src/app/Services/authentication.service';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ChangePasswordVM } from '../ViewModels/changepasswordVM';
 
 @Component({
   selector: 'app-view-profile',
@@ -41,7 +42,43 @@ export class ViewProfilePage implements OnInit {
 
   }
 
-//========== edit =====
+//========== Change password ==========
+isPassModalOpen = false;
+passwordform: FormGroup = new FormGroup({
+  // username: new FormControl('',[Validators.required]),
+  oldpassword: new FormControl('',[Validators.required]),
+  newpassword: new FormControl('',[Validators.required]),
+  confirmpassword: new FormControl('',[Validators.required]),
+})
+
+ChangePassword(isOpen: boolean){
+  this.isPassModalOpen = isOpen;
+}
+
+confirmpassmodal(){
+  let username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
+  let newpassword = new ChangePasswordVM()
+  newpassword.userName = username
+  newpassword.oldPassword = this.passwordform.value.oldpassword
+  newpassword.newPassword = this.passwordform.value.newpassword
+  newpassword.confirmPassword = this.passwordform.value.confirmpassword
+
+  this.authservice.ChangeUserPassword(newpassword).subscribe(result =>{
+    this.editSuccessAlert()
+  },(error) => {
+    this.editErrorAlert();        
+    console.error('Edit stock image error:', error);
+  })
+}
+
+cancelpassmodal() {
+  this.isPassModalOpen = false;
+}
+
+
+
+
+//========== edit ==========
   isModalOpen = false;
   editCustomer: Customer = new Customer();
   editForm: FormGroup = new FormGroup({
@@ -139,9 +176,6 @@ export class ViewProfilePage implements OnInit {
   }
   public ExpRating() {
     this._router.navigate(["/tabs/experience-rating"])
-  }
-  public ChangePassword() {
-    this._router.navigate(["./tabs/change-password"])
   }
 
   public Logout() {

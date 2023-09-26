@@ -29,7 +29,6 @@ export class AdminProfilePage implements OnInit {
   ngOnInit() {
     this.getUser()
   }
-
  
   getUser(){
     this.username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
@@ -40,12 +39,18 @@ export class AdminProfilePage implements OnInit {
       this.service.GetAdminDetails(userID).subscribe(result=>{
         this.profile = result as Admin;
         console.log(this.admin)
+      },(error) => {
+      this.ErrorAlert();        
+      console.error(error);
       })
     }
     else if (roles.includes('Employee')){
       this.service.GetEmployee(userID).subscribe(result=>{
         this.profile = result as Employee;
         console.log(this.employee)
+      },(error) => {
+        this.ErrorAlert();        
+        console.error(error);
       })
     }
   }
@@ -54,21 +59,40 @@ export class AdminProfilePage implements OnInit {
     this.AuthService.Logout();   
   }  
 
-  ChangePassword(){
+//=========== Change password ===========
+  isPassModalOpen = false;
+  passwordform: FormGroup = new FormGroup({
+    // username: new FormControl('',[Validators.required]),
+    oldpassword: new FormControl('',[Validators.required]),
+    newpassword: new FormControl('',[Validators.required]),
+    confirmpassword: new FormControl('',[Validators.required]),
+  })
+
+  ChangePassword(isOpen: boolean){
+    this.isPassModalOpen = isOpen;
+  }
+
+  confirmpassmodal(){
+    let username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
     let newpassword = new ChangePasswordVM()
-    //change password form
+    newpassword.userName = username
+    newpassword.oldPassword = this.passwordform.value.oldpassword
+    newpassword.newPassword = this.passwordform.value.newpassword
+    newpassword.confirmPassword = this.passwordform.value.confirmpassword
 
     this.AuthService.ChangeUserPassword(newpassword).subscribe(result =>{
-      if(result.status == "Success"){
-        //change status success popup
-      }
-      else{
-        //error alert
-      }
+      this.editSuccessAlert()
+    },(error) => {
+      this.editErrorAlert();        
+      console.error('Edit stock image error:', error);
     })
   }
 
-  //=========== edits ===========
+  cancelpassmodal() {
+    this.isPassModalOpen = false;
+  }
+
+//=========== edits ===========
   isModalOpen = false;
   editadmin: Admin = new Admin();
 
@@ -77,7 +101,7 @@ export class AdminProfilePage implements OnInit {
     surname: new FormControl('',[Validators.required]),
     email: new FormControl('',[Validators.required]),
     cell_Number: new FormControl(''),
-    username: new FormControl('',[Validators.required])
+    // username: new FormControl('',[Validators.required])
   })
 
   EditAdmin(admin_ID:string, isOpen: boolean)
@@ -89,13 +113,14 @@ export class AdminProfilePage implements OnInit {
       this.editForm.controls['surname'].setValue(this.editadmin.surname);
       this.editForm.controls['email'].setValue(this.editadmin.email);
       this.editForm.controls['cell_Number'].setValue(this.editadmin.cell_Number);
-      this.editForm.controls['username'].setValue(this.editadmin.username);
+      // this.editForm.controls['username'].setValue(this.editadmin.username);
     })
     
     this.isModalOpen = isOpen;
   }
 
   confirmeditmodal(){
+    let userid = JSON.parse(JSON.stringify(localStorage.getItem('userID')));
     try
     {
       let editedAdmin = new Admin();
@@ -103,11 +128,14 @@ export class AdminProfilePage implements OnInit {
       editedAdmin.surname = this.editForm.value.surname;
       editedAdmin.email = this.editForm.value.email;
       editedAdmin.cell_Number = this.editForm.value.cell_Number;
-      editedAdmin.username = this.editForm.value.username;
+      // editedAdmin.username = this.editForm.value.username;
 
-      this.service.UpdateAdmin(this.editadmin.admin_ID, editedAdmin).subscribe(result =>{
+      this.service.UpdateAdmin(userid, editedAdmin).subscribe(result =>{
         this.editSuccessAlert();
-      })
+      },(error) => {
+      this.editErrorAlert();        
+      console.error('confirmeditmodal error:', error);
+    })
     }
     catch{      
       this.editErrorAlert();
@@ -116,6 +144,18 @@ export class AdminProfilePage implements OnInit {
 
   canceleditmodal() {
     this.isModalOpen = false;
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+  reloadPage(){
+    window.location.reload()
+  }
+
+  public Help() {
+    this.router.navigate(["/admin-help"])
   }
 
   async editSuccessAlert() {
@@ -149,16 +189,21 @@ export class AdminProfilePage implements OnInit {
     await alert.present();
   }
 
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  async ErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Something went wrong',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
   }
 
-  reloadPage(){
-    window.location.reload()
-  }
-
-  public Help() {
-    this.router.navigate(["/admin-help"])
-  }
 
 }

@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Home</ion-title>
+    <ion-button slot="end" (click)="Help()">Help</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -11,18 +12,25 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-grid *ngIf="messages.length == 0">
+  <!--<ion-grid *ngIf="messages.length == 0">
     <ion-row>
       <ion-col>Messages</ion-col>
     </ion-row>
     <ion-row>
       <ion-col>No Messages</ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid>-->
+  <ion-content *ngIf="messages.length == 0" >
+    <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
+      <p style="text-align: center;">No New Messages</p><br>
+     <img src="/assets/no-results.png" alt="empty icon" class="center"  id="icon" style="width: 25%; height: 25%;"
+     sizes="50vh" />
+    </div>
+  </ion-content>
 
   <ion-grid *ngIf="messages.length > 0">
     <ion-row>
-      <ion-col>Messages</ion-col>
+      <ion-col> New Messages</ion-col>
     </ion-row>
 
     <ion-row>
@@ -39,13 +47,13 @@
       <ion-col>{{item.contact_Us_Message}}</ion-col>
       <ion-col>{{item.contact_Us_Phone}}</ion-col>
       <ion-col>{{item.contact_Us_Email}}</ion-col>
-      
-      <ion-col> <!-- timedate picker -->
+
+      <!-- <ion-col> 
         <ion-item>
           <p>Remind me in: </p>          
           <ion-list> 
             <ion-item>
-              <ion-select aria-label="Time" placeholder="Select Time" (ionChange)="handleChange($event)" (ionCancel)="handleCancel()" (ionDismiss)="handleDismiss()">
+              <ion-select aria-label="Time" placeholder="Select Time" (ionChange)="handleChange($event, item.contact_Us_Name)" (ionCancel)="handleCancel()" (ionDismiss)="handleDismiss()">
                 <ion-select-option value= 5000> 5 min </ion-select-option>
                 <ion-select-option value= 10000> 10 min </ion-select-option>
                 <ion-select-option value= 15000> 15 min </ion-select-option>
@@ -54,9 +62,9 @@
           </ion-list>
           <p>{{subscribeTimer}}</p>
         </ion-item>
-      </ion-col>
+      </ion-col> -->
 
-      <ion-col><ion-button {{item.contact_Us_ID}}>Mark As Replied</ion-button></ion-col>
+      <ion-col><ion-button (click)="markAsReplied(item.contact_Us_ID)">Mark As Replied</ion-button></ion-col>
     </ion-row>
   </ion-grid>
 

@@ -40,18 +40,16 @@ export class ForgotPasswordPage implements OnInit {
     
     if (this.ForgotForm.valid) {
       const formData = this.ForgotForm.value;
-      console.log(formData);
+      console.log('Form',formData);
       let username = new ForgotPasswordViewModel();
       //this.emailcustomer=Object.assign(this.emailcustomer,this.ForgotForm.value);
       username.UserName = this.ForgotForm.value.Username
       
       this.service.ForgotPassword(username).subscribe(result => {
-
       localStorage.setItem("otp",JSON.stringify(result));
         this.message=result;
         //Swal.fire({position:'center',icon:'success',title:'Successful',text:this.message.message,showConfirmButton: false,timer:1500})
-      localStorage.setItem('Username',this.username.UserName);
-
+      localStorage.setItem('Username',username.UserName);
        this.SuccessAlert();
         console.log('Customer',username)
         this._router.navigate(['./tabs/otp']);

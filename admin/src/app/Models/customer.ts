@@ -1,10 +1,10 @@
 import { User } from "./user"
 export class Customer{  
     customer_ID!: number
-    firstName!: String
-    surname!: String
+    firstName!: string
+    surname!: string
     cell_Number!: Number
-    email!: String  
+    email!: string  
     username!: string
     date_Registered!: Date
     user!: User  

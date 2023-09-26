@@ -29,22 +29,25 @@ export class CheckOutPage implements OnInit {
   delprice: number = 0;
   totalprice: number = 0
   orderrequest!: Order_Request
+  vatprice!: number
   constructor(public service: OrderRequestService, private auditservice: AuditTrailService, private router: Router,
     private alertController:AlertController) { }
 
   ngOnInit() {
-    this.order = JSON.parse(localStorage.getItem('order') as string)
-    this.discount = JSON.parse(JSON.stringify(localStorage.getItem('discount')))
-    this.basketItems=this.order.basketItems;
+    this.order = JSON.parse(localStorage.getItem('order') as string)    
+    let items = JSON.parse(localStorage.getItem('cart') as string)
+    this.basketItems= items //this.order.basketItems;
     console.log(this.basketItems);  
-  
+    
     this.GetOrderDetails()
   }
 
   GetOrderDetails(){    
     try
     {
+      this.discount = JSON.parse(JSON.stringify(localStorage.getItem('discount')))
       let delID = JSON.parse(JSON.stringify(localStorage.getItem('deliveryID'))) // JSON.parse(localStorage.getItem('deliveryID') as string)
+      
       this.service.GetDeliveryByID(delID).subscribe(result =>{
         this.deliveryvm = result as DeliveryVM[];
           console.log(this.deliveryvm)
@@ -52,29 +55,54 @@ export class CheckOutPage implements OnInit {
             //let amount = element.delivery_Price 
             this.delprice += element.delivery_Price
           });
-          localStorage.setItem('delprice', JSON.stringify(this.delprice));
-          console.log(this.delprice)
+
+        localStorage.setItem('delprice', JSON.stringify(this.delprice));
+        console.log(this.delprice)
+
+      },(error) => {
+        this.ErrorAlert();        
+        console.error( error);
       })
-      
+      this.culculate()
     }
     catch{
-      //Error alert
-    }
+      this.ErrorAlert()
+    }    
     
-    this.culculate()
   }
 
-  culculate(){
+  pureprice: number =0
+  culculate(){    
     let orderprice = this.order.price
-    this.totalprice = orderprice + this.delprice
+    const storedVat: string | null = localStorage.getItem('vatamount');
+    const storedPure: string | null = localStorage.getItem('pureprice');
+    const storedDelPrice: string | null = localStorage.getItem('delprice');
+    
+    if (storedVat !== null && storedPure !== null && storedDelPrice !== null) {
+      this.vatprice = parseInt(storedVat, 10);
+      this.pureprice = parseInt(storedPure, 10);
+      this.delprice = parseInt(storedDelPrice, 10);
+    }
+
+    // this.vatprice = JSON.parse(localStorage.getItem('vatamount') as string);
+    // this.pureprice = JSON.parse(localStorage.getItem('pureprice') as string)
+    // this.delprice = JSON.parse(localStorage.getItem('delprice') as string)
+
+    console.log(orderprice)
+    console.log(this.vatprice)
+    console.log(this.delprice)
+
+    this.totalprice = this.pureprice + this.delprice + this.vatprice
     console.log(this.totalprice)
     localStorage.setItem('totalprice', JSON.stringify(this.totalprice));
   }
 
-  AddOrderRequest(){
+  AddOrderRequest(totalPrice:any){
+
+    this.proceedToPayFast(totalPrice.toFixed(2));
     // try
     // {
-      let addorderRequest = new Order_Request();
+      /*let addorderRequest = new Order_Request();
       let delID = JSON.parse(JSON.stringify(localStorage.getItem('deliveryID'))) //JSON.parse(localStorage.getItem('deliveryID') as string)
       let customerID = JSON.parse(JSON.stringify(localStorage.getItem('customerID'))) //JSON.parse(localStorage.getItem('customerID') as string)
 
@@ -83,6 +111,7 @@ export class CheckOutPage implements OnInit {
       addorderRequest.delivery_ID = delID
       addorderRequest.customer_ID = customerID      
       addorderRequest.order_Request_Total_Price = ortprice
+
 
       this.service.AddOrderRequest(addorderRequest).subscribe(result => {
         this.orderrequest = result as Order_Request
@@ -101,7 +130,7 @@ export class CheckOutPage implements OnInit {
     // catch
     // {
 
-    // }
+    // }*/
     
   } 
 
@@ -118,11 +147,14 @@ export class CheckOutPage implements OnInit {
     })
   }
 
-  proceedToPayFast() {
+  proceedToPayFast(price:any) {
+    //localStorage.setItem("order", JSON.stringify(this.order));
     const merchantId = '10030633';
     const merchantKey = 'azvaw7rrloy1e';
     const returnUrl = 'http://localhost:8100/tabs/successful-payment';
-    const totalPrice = this.totalprice 
+    const totalPrice = price; 
+
+    localStorage.setItem("totalPrice",totalPrice);
 
     const itemNamesList = "Order"+new Date();
   
@@ -156,6 +188,28 @@ export class CheckOutPage implements OnInit {
 
   public ContactUs() {
     this.router.navigate(["/tabs/contact-us"])
+  }
+
+  async ErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry! ',
+      subHeader: '',
+      message:'',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        // handler: () => {
+        //   this.reloadPage();
+        // }
+      },{
+        text: 'Contact Us',
+        //role: 'cancel',
+        handler: () => {
+          this.ContactUs();
+        }
+      }],
+    });
+    await alert.present();
   }
 
 }

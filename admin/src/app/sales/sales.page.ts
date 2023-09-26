@@ -13,10 +13,15 @@ export type jsPDFDocument = any;
 type Opts = { [key: string]: string | number }
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { Stock_Item } from 'src/app/Models/stockitem';
+import { BestSellerVM } from '../ViewModels/bestsellerVM';
+import { Best_Sellers } from '../Models/bestsellers';
+import { BestsellersService } from '../Services/bestsellers.service';
 import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { SalesVM } from '../ViewModels/salesVM';
 import { StockTypeDataService } from '../Services/stocktype.service';
 import { StockTypes } from '../Models/stocktypes';
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
 @Component({
   selector: 'app-sales',
   templateUrl: './sales.page.html',
@@ -28,10 +33,16 @@ export class SalesPage implements OnInit {
   private readonly jsPDFDocument: jsPDFDocument
   
   constructor(private service: SalesService, private router: Router, public stockitemservice: StockItemDataService,
-    public environmentInjector: EnvironmentInjector, private typeservice: StockTypeDataService) { }  
+    public environmentInjector: EnvironmentInjector, private typeservice: StockTypeDataService, 
+    private bestsellerservice: BestsellersService) 
+  {
+    (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  }  
 
   ngOnInit(): void {    
     this.GetStockTypes()
+    this.GetSalesList()
+    this.GetStockItems()
   }
 
   sales: Payment[] =[]
@@ -40,6 +51,21 @@ export class SalesPage implements OnInit {
     this.service.GetAllSales().subscribe(res => {
       this.sales = res as Payment[]
     })
+  }
+
+  Products: StockItemViewModel[] = [];
+  public GetStockItems() {
+    this.stockitemservice.GetStockItems().subscribe(result => {
+      this.Products = result as StockItemViewModel[];
+      console.log(this.Products)
+    })
+  }
+
+  getProductName(stockId: string): string {
+    const product = this.Products.find(product => product.stock_Item_ID === stockId);
+    
+    return product ? product.stock_Item_Name : '';
+    
   }
 
   controlbreak: SalesVM[] =[]
@@ -75,9 +101,8 @@ export class SalesPage implements OnInit {
     });
   }
 
-  
-  @ViewChild('htmlData') htmlData!: ElementRef;
-  
+  //Download control break
+  @ViewChild('htmlData') htmlData!: ElementRef;  
   openPDF(): void {
     let DATA: any = document.getElementById('htmlData');
     html2canvas(DATA).then((canvas) => {       
@@ -93,6 +118,56 @@ export class SalesPage implements OnInit {
           
       PDF.save('IPKP-Products.pdf');
     });
+  }
+
+  //download saleslist
+  generatePDF() {  
+    let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    let date = new Date
+    
+    let docDefinition = {  
+      fillColor: "White",
+      fillOpacity: "",
+      margin: [ 5, 10, 5, 5 ],
+      header: user+" - It's Personal Order Requests",  
+      footer:'Downloaded by: '+ user + ' at: '+ date,        
+      content:[
+        {          
+          layout: 'lightHorizontalLines', // optional          
+          table: {
+            headerRows: 1,
+            widths: [ '20%', '20%', '20%', '20%', '20%'  ],
+            // margin: [left, top, right, bottom]
+            margin: [ 1, 10, 1, 5 ],
+            
+            body: [
+              [ 'Customer', 'Product', 'Payment Amount', 'Quantity', 'Sale Date'],
+              ...this.sales.map(p => 
+                ([
+                  p.customer_UserName, this.getProductName(p.stock_Item_ID), 'R' + p.payment_Amount, 
+                  p.sale_Quantity, p.sale_Date
+                ])
+              )
+            ]
+          }          
+        }
+      ]      
+    };  
+    pdfMake.createPdf(docDefinition).download();      
+  }
+
+  AddToBestSeller(stockitemid: string){
+    let stockitem = new Best_Sellers()
+    stockitem.stock_Item_ID = stockitemid
+    console.log(stockitem)
+
+    this.bestsellerservice.AddBestSeller(stockitem).subscribe(result => {
+      console.log(result)
+      // this.AddSuccessAlert();
+    },(error) => {
+      // this.AddErrorAlert()        
+      console.error('AddToBestSellers error:', error);
+    })
   }
 
 //========= Navigations =========

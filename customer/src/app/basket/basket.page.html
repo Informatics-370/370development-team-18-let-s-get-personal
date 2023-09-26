@@ -9,7 +9,7 @@
 	<div class="col-12 text-center" ><!--style="padding-top: 3cm; margin-left: 2.5cm;"-->
 	  <p style="text-align: center;">Your basket is empty.</p>
 	  <p style="text-align: center;">Add something to make me happy!!</p>
-	  <img src="/assets/EmptyCart.PNG" alt="empty icon" class="center" width="100" height="500"/>
+	  <img src="/assets/EmptyCart.PNG" alt="empty icon" class="center" width="100%" height="100%"/>
 	  <ion-button class="center" (click)="shopall()">Return to shop</ion-button>
 	</div>
 </ion-content>
@@ -19,14 +19,17 @@
     <ion-item *ngFor="let item of cartItems">
       <ion-thumbnail slot="start">
         <img src='data:image/png;base64,{{item.stock_Item.stockImageFile}}'/>
+		
       </ion-thumbnail>
       <ion-label>
-        <h5>{{ item.stock_Item_Name }}</h5>
+        <h5>{{item.stock_Item.stock_Item_Name}}</h5>
         <ion-button (click)="removeItemFromBasket(item.stock_Item.stock_Item_ID)">Remove</ion-button>
         <ion-button (click)="decrementQuantity(item)">-</ion-button>
-        <span>{{ item.basket_Quantity}}</span>
-        <ion-button (click)="incrementQuantity(item)">+</ion-button>
+        <span> {{ item.basket_Quantity}}</span>
+        <ion-button (click)="incrementQuantity(item)">+</ion-button>		
       </ion-label>
+
+	  <ion-label>R {{item.stock_Item.stock_Item_Price}}.00</ion-label>
       <ion-button *ngIf="isEmptyObject(item.personalization)" (click)="personalize(item.stock_Item.stock_Item_ID,true)">Personalize Item</ion-button>
 	  <ion-button *ngIf="!isEmptyObject(item.personalization)" (click)="personalize(item.stock_Item.stock_Item_ID,true)">Update Personalize Item</ion-button>
 	  
@@ -35,23 +38,30 @@
   </ion-list>
   <ion-button (click)="clearBasket()">Empty Basket</ion-button>
   <ion-grid>
-    <ion-row>
-      <ion-col>Bill Details</ion-col>
-    </ion-row>
-    <ion-col></ion-col>
-    <ion-row>
-      <ion-col>Items Total (Excluding Delivery)</ion-col>
-	  <ion-col>Vat: R{{vatprice}}.00</ion-col>
-      <ion-col><strong>R{{calculateTotalPrice()}}</strong></ion-col>
-      <ion-button (click)="makepayment()">Checkout</ion-button>
-    </ion-row>
+		<ion-row>
+			<ion-col><h3> Bill Details </h3></ion-col>			
+		</ion-row>
+		<ion-row>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6">Total Before Vat:</ion-col>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6"> R {{pureprice}}.00</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6">Vat: </ion-col>	
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6">R {{roundedvat}}</ion-col>		
+		</ion-row>
+		<ion-row *ngIf="discount_Amount">
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6"> Discount: </ion-col>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6">R {{discount_Amount}}.00 </ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6">Total (Excluding Delivery)</ion-col>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6"><strong>R {{calculateTotalPrice()}}</strong></ion-col>
+		</ion-row>	
+		<ion-row>
+			<ion-col size="12" style="text-align: end;"><ion-button (click)="makepayment()">Checkout</ion-button></ion-col>
+		</ion-row>	
   </ion-grid>
-  <!-- Discount -->
-  <ion-grid *ngFor="let item of discounts">
-	<ion-row>
-		<ion-col>Discount amount: R {{item.discount_Amount}}.00</ion-col>
-	</ion-row>
-  </ion-grid>
+  
   <img src="/assets/Cart.PNG" alt="cart icon" class="center" style="width: 25%; height: 50%;" />
 </ion-content>
 

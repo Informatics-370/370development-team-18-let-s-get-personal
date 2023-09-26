@@ -11,10 +11,11 @@
     </ion-toolbar>
   </ion-header>
   <p style="cursor:pointer;" (click)="deliveriesnav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
+  <ion-button (click)="RouteDeliveriesControlBreak()">View Delivery Company Price Report</ion-button>
 
   <!-- deliveriesnav() -->
 
-  <ion-content *ngIf="deliveries.length == 0">
+  <ion-content *ngIf="deliveries.length == 0 && faileddeliveries.length == 0">
     <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
       <p>No Successful Deliveries</p>
     </div>
