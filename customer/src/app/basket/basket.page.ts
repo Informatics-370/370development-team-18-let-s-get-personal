@@ -171,8 +171,11 @@ export class BasketPage implements OnInit {
     localStorage.removeItem('stockId');
     localStorage.removeItem('addressID');
     localStorage.removeItem('deliveryID');
-    localStorage.removeItem("order")
-    localStorage.removeItem("selectedItem")
+    localStorage.removeItem("order");
+    localStorage.removeItem("selectedItem");
+    localStorage.removeItem("vatamount");
+    localStorage.removeItem("pureprice");
+    localStorage.removeItem("totalprice");
     this.reloadPage();
   }
 
@@ -313,7 +316,7 @@ export class BasketPage implements OnInit {
     this.modal.dismiss(null, 'cancel');
   }
 
-  confirmaddmodal() {
+  /*confirmaddmodal() {
     try{     
 
       //Upload to backend
@@ -322,7 +325,7 @@ export class BasketPage implements OnInit {
     catch{
       this.addPersonalizationErrorAlert()
     }
-  }
+  }*/
 
   uploadFile = (files: any) => {
     let fileToUpload = <File>files[0];
@@ -389,7 +392,7 @@ export class BasketPage implements OnInit {
         localStorage.setItem('personalisedID', JSON.stringify(personalisedID));
 
         console.log('Both', personalisation);
-        this.AddPersonalisationToCart()
+        /*this.AddPersonalisationToCart()*/
         //this.addPersonalizationSuccessAlert()
 
         //Action Trail
@@ -403,7 +406,7 @@ export class BasketPage implements OnInit {
     //}
   }
 
-  AddPersonalisationToCart() {
+  /*AddPersonalisationToCart() {
     try{
       let stockId = localStorage.getItem("stockId");
 
@@ -428,11 +431,38 @@ export class BasketPage implements OnInit {
       this.addPersonalizationErrorAlert()
     }
     
-  }
+  }*/
 
   isEmptyObject(obj: any) {
     return Object.keys(obj).length === 0;
-  }  
+  }
+
+  confirmaddmodal() {
+    let stockId = localStorage.getItem("stockId");
+
+    let items = JSON.parse(localStorage.getItem('cart') as string) || [];
+    let existingItem: BasketItems = items.find((cartItem: any) => cartItem.stock_Item.stock_Item_ID === stockId);
+
+    let design_Text = this.AddTextForm.get('designText')?.value;
+    //let image_File = this.UploadImageForm.get("designImage")?.value;
+    let image_File = localStorage.getItem("Image-URL") ?? "";
+    if (existingItem) {
+      //items.push({ ...existingItem, personalization. : 1 });
+      existingItem.personalization.personalizationText = design_Text;
+      existingItem.personalization.img = image_File;
+      localStorage.removeItem("stockId");
+      //console.log('LocalStorage cart', existingItem)
+    }
+    localStorage.setItem('cart', JSON.stringify(items));
+    //this.uploadImage();
+    //this.UploadPersonalisation();
+    this.addPersonalizationSuccessAlert();
+
+    //Action Trail
+    this.action = "Personalised Item:" + items.stock_Item.stock_Item_Name
+    this.AddAuditTrail()
+  }
+  
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;

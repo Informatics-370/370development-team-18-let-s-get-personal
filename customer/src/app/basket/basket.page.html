@@ -37,7 +37,24 @@
     </ion-item>
   </ion-list>
   <ion-button (click)="clearBasket()">Empty Basket</ion-button>
-  <ion-grid>
+ <!--<ion-grid>
+    <ion-row>
+      <ion-col>Bill Details</ion-col>
+    </ion-row>
+    <ion-col></ion-col>
+    <ion-row>
+      <ion-col>Items Total (Excluding Delivery)</ion-col>
+	  <--<ion-col>Vat: R{{vatprice}}</ion-col>->
+      <ion-col><strong>R{{calculateTotalPrice()}}</strong></ion-col>
+      <ion-button (click)="makepayment()">Checkout</ion-button>
+    </ion-row>
+  </ion-grid>-->
+
+  <!-- Discount -->
+  <ion-grid ><!--*ngFor="let item of discounts"-->
+	<ion-row>
+		<ion-col>Discount amount: R {{discount_Amount}}.00</ion-col>
+	</ion-row>
 		<ion-row>
 			<ion-col><h3> Bill Details </h3></ion-col>			
 		</ion-row>
