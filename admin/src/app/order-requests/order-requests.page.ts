@@ -87,7 +87,6 @@ export class OrderRequestsPage implements OnInit {
   }
 
 //====== PDF download =========
-
 generatePDF() {  
   let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
   let date = new Date
@@ -150,7 +149,7 @@ generatePDF() {
 
 
 //====== Alerts =========
-async HelpAlert() {
+  async HelpAlert() {
     const alert = await this.alertController.create({
       header: 'Please Note: ',
       subHeader: 'Once an order request is changed to in progress it will show on the Orders in Progress page',
@@ -167,6 +166,7 @@ async HelpAlert() {
     });
     await alert.present();
   }
+  
   async AcceptSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',

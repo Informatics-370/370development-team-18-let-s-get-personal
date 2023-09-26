@@ -97,9 +97,9 @@ export class MakePaymentPage implements OnInit {
 
     localStorage.setItem("order",JSON.stringify(this.order));
 
-    this.router.navigate(["/tabs/check-out"])
+    //this.router.navigate(["/tabs/check-out"])
 
-    /*this.service.AddDeliveryAdress(addDelivery).subscribe(response => {
+    this.service.AddDeliveryAdress(addDelivery).subscribe(response => {
       this.addedaddres = response as DeliveryAddress;
       //this.AddDeliveryRequest();
       this.confirmAlert();
@@ -107,7 +107,7 @@ export class MakePaymentPage implements OnInit {
         let addressID = this.addedaddres.delivery_Address_ID
         localStorage.setItem('addressID', JSON.stringify(addressID));
         localStorage.setItem("order",JSON.stringify(this.order));
-      /*try
+      try
       {
         console.log(this.addedaddres)
         //let addressID = this.addedaddres.delivery_Address_ID
@@ -121,7 +121,7 @@ export class MakePaymentPage implements OnInit {
     },(error) => {
       this.addDeliveryErrorAlert();
       console.error('add address error:', error);
-    });*/
+    });
   }
 
   @Output() predictionSelected = new EventEmitter<string>();

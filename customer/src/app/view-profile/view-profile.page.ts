@@ -156,9 +156,9 @@ cancelpassmodal() {
 
   public deleteProfile(customer_ID: string) {
     try{
-      // this.service.DeleteCustomer(customer_ID).subscribe(result =>{
-      //   console.log(result);
-      // })
+      this.service.DeleteCustomer(customer_ID).subscribe(result =>{
+        console.log(result);
+      })
 
       this.authservice.DeleteUser(this.username).subscribe(result =>{
         console.log(result);

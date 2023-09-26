@@ -16,6 +16,8 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public string Contact_Us_Message { get; set; }
 
+        //ignore replied
+
         public bool replied { get; set; }
     }
 }

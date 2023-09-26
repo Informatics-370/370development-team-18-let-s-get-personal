@@ -938,7 +938,14 @@ namespace IPKP___API.Controllers.Models.Repository
             return orderlineitem;
         }
 
-//sales
+        public async Task<Order_Request> GetOrderRequestByCustomerID(Guid customerID)
+        {
+            IQueryable<Order_Request> query = _appDbContext.Order_Requests
+                    .Where(u => u.Customer_ID == customerID);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        //sales
         public object GetSalesReport(string stocktypename)
         {
             List<SalesVM> sales = (

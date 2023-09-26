@@ -48,7 +48,7 @@
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.streetNumber}} {{item.streetName}} <br> {{item.city}}  {{item.province}} <br> {{item.areaCode}}</ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.delivery_Company_Name}}</ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.delivery_Price}}</ion-col>
-        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.order_Request_Date}} </ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.order_Request_Date | date: 'yyyy-MM-dd'}} </ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"><ion-button (click)="ReceiveDelivery(item.delivery_ID, item.order_Line_Item_ID, item.stock_Item_ID, item.customer_ID, item.order_Line_Item_Quantity)">Delivered</ion-button></ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"><ion-button (click)="FailedDelivery(item.delivery_ID, item.order_Line_Item_ID, item.stock_Item_ID, item.customer_ID, item.order_Line_Item_Quantity)">Failed</ion-button></ion-col>
       </ion-row>

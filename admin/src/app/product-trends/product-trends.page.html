@@ -11,10 +11,10 @@
     </ion-toolbar>
   </ion-header>
   <ion-button (click)="openPDF()">Download Trend Chart</ion-button>
-  <ion-grid>
+  <ion-grid id="TrendsData">
     <ion-row>
       <ion-col offset="2" sizeLg="10" sizeMd="10" sizeXs="10">
-        <div id="TrendsData" class="chart-container"  style="width: 80%;">
+        <div  class="chart-container"  style="width: 80%;">
           <canvas id="MyChart" >{{ chart }}</canvas>
         </div>
       </ion-col>

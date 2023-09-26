@@ -121,20 +121,31 @@ namespace IPKP___API.Controllers
         {
             try
             {
+                var orderrequests = await _IPKPRepository.GetOrderRequestByCustomerID(customer_ID);
                 var existingCustomerUser = await _IPKPRepository.GetCustomerDetailsAsync(customer_ID);
 
-                if (existingCustomerUser == null) return NotFound("Could Not Find Customer User" + customer_ID);
-
-                _IPKPRepository.Delete(existingCustomerUser);
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                if (existingCustomerUser == null) 
                 {
-                    return Ok("Customer User Removed Successfully");
+                    return NotFound("Could Not Find Customer User" + customer_ID);
                 }
+                else if (orderrequests != null)
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "Customer has a requested order." });
+                }
+                else
+                {
+                    _IPKPRepository.Delete(existingCustomerUser);
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok("Customer User Removed Successfully");
+                    }
+                }
+                
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Internal Service Error, Please Contact Support.");
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok("Customer USer Removed From Database.");
         }

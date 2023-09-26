@@ -259,8 +259,8 @@ export class BasketPage implements OnInit {
 
 //==================== Checks ====================
   CheckPersonalised() {
-    //let personalised = JSON.parse(JSON.stringify(localStorage.getItem('personalisedID')));
-    let personalised = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
+    let personalised = JSON.parse(JSON.stringify(localStorage.getItem('personalisedID')));
+    //let personalised = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
 
     if (personalised == null) {  //  [==="User"]
       this.PleasePersonalizeAlert()
@@ -412,12 +412,12 @@ export class BasketPage implements OnInit {
   
       let design_Text = this.AddTextForm.get('designText')?.value;
       let image_File = this.UploadImageForm.get("designImage")?.value;
-      let personalisatioID = this.personalizations.personalisation_Design_ID
+      let personalisationID = this.personalizations.personalisation_Design_ID
       if (existingItem) {
         //items.push({ ...existingItem, personalization. : 1 });
         existingItem.personalization.personalizationText = design_Text;
         existingItem.personalization.img = image_File;
-        existingItem.personalization.personalisation_ID = personalisatioID;
+        existingItem.personalization.personalisation_ID = personalisationID;
         console.log('LocalStorage cart', existingItem)
       }
       localStorage.setItem('cart', JSON.stringify(items));

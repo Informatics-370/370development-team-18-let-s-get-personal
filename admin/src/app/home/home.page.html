@@ -30,7 +30,7 @@
 
   <ion-grid *ngIf="messages.length > 0">
     <ion-row>
-      <ion-col> New Messages</ion-col>
+      <ion-col sizeLg="12" style="text-align: center;"> <h2>New Messages</h2></ion-col>
     </ion-row>
 
     <ion-row>
@@ -38,7 +38,6 @@
       <ion-col>Question</ion-col>
       <ion-col>Phone Number</ion-col>
       <ion-col>Email Address</ion-col>
-      <ion-col></ion-col>
       <ion-col></ion-col>
     </ion-row>
 
@@ -72,29 +71,29 @@
   <ion-content *ngIf="orderRequests.length == 0">
     <ion-grid>
       <ion-row>
-        <ion-col>Orders In Progress</ion-col>
+        <ion-col size="12" style="text-align: center;"> <h2>Orders In Progress</h2></ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>No Orders In Progress</ion-col>
+        <ion-col size="12" style="text-align: center;">No Orders In Progress</ion-col>
       </ion-row>
     </ion-grid>    
   </ion-content>
 
     <ion-grid *ngIf="orderRequests.length > 0">
       <ion-row>
-        <ion-col>Orders In Progress</ion-col>
+        <ion-col sizeLg="12" style="text-align: center;"> <h2>Orders In Progress</h2></ion-col>
       </ion-row>
       <ion-row>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Customer </ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Address </ion-col>
-       <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Product </ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Date Requested </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="font-weight: bold; text-align: center;"> Customer </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="font-weight: bold; text-align: center;"> Address </ion-col>
+       <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="font-weight: bold; text-align: center;"> Product </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="font-weight: bold; text-align: center;"> Date Requested </ion-col>
       </ion-row>
       <ion-row *ngFor="let item of orderRequests">
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.customer_UserName}} </ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.stock_Item_Name}} </ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.order_Request_Date}} </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.customer_UserName}} </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.stock_Item_Name}} </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.order_Request_Date}} </ion-col>
       </ion-row>
     </ion-grid>
 

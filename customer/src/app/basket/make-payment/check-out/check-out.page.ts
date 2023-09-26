@@ -53,7 +53,7 @@ export class CheckOutPage implements OnInit {
           console.log(this.deliveryvm)
           this.deliveryvm.forEach(element => {
             //let amount = element.delivery_Price 
-            this.delprice += element.delivery_Price
+            this.delprice = element.delivery_Price
           });
 
         localStorage.setItem('delprice', JSON.stringify(this.delprice));
@@ -97,12 +97,12 @@ export class CheckOutPage implements OnInit {
     localStorage.setItem('totalprice', JSON.stringify(this.totalprice));
   }
 
-  AddOrderRequest(totalPrice:any){
+  AddOrderRequest(totalPrice:number){
 
-    this.proceedToPayFast(totalPrice.toFixed(2));
+    this.proceedToPayFast(totalPrice); //.toFixed(2)
     // try
     // {
-      /*let addorderRequest = new Order_Request();
+      let addorderRequest = new Order_Request();
       let delID = JSON.parse(JSON.stringify(localStorage.getItem('deliveryID'))) //JSON.parse(localStorage.getItem('deliveryID') as string)
       let customerID = JSON.parse(JSON.stringify(localStorage.getItem('customerID'))) //JSON.parse(localStorage.getItem('customerID') as string)
 
@@ -125,12 +125,12 @@ export class CheckOutPage implements OnInit {
       this.AddAuditTrail()
 
 
-      this.proceedToPayFast()
+      //this.proceedToPayFast()
     // }
     // catch
     // {
 
-    // }*/
+    // }
     
   } 
 
@@ -147,14 +147,14 @@ export class CheckOutPage implements OnInit {
     })
   }
 
-  proceedToPayFast(price:any) {
+  proceedToPayFast(price:number) {
     //localStorage.setItem("order", JSON.stringify(this.order));
     const merchantId = '10030633';
     const merchantKey = 'azvaw7rrloy1e';
     const returnUrl = 'http://localhost:8100/tabs/successful-payment';
     const totalPrice = price; 
 
-    localStorage.setItem("totalPrice",totalPrice);
+    //localStorage.setItem("totalPrice",totalPrice);
 
     const itemNamesList = "Order"+new Date();
   
