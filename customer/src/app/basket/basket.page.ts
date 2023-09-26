@@ -171,8 +171,11 @@ export class BasketPage implements OnInit {
     localStorage.removeItem('stockId');
     localStorage.removeItem('addressID');
     localStorage.removeItem('deliveryID');
-    localStorage.removeItem("order")
-    localStorage.removeItem("selectedItem")
+    localStorage.removeItem("order");
+    localStorage.removeItem("selectedItem");
+    localStorage.removeItem("vatamount");
+    localStorage.removeItem("pureprice");
+    localStorage.removeItem("totalprice");
     this.reloadPage();
   }
 

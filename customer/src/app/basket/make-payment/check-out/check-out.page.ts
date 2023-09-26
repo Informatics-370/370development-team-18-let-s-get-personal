@@ -27,6 +27,7 @@ export class CheckOutPage implements OnInit {
   address:DeliveryAddress= new DeliveryAddress();
   deliveryvm: DeliveryVM[] = [];
   orderrequest!: Order_Request
+  vat!:any
   
   constructor(public service: OrderRequestService, private auditservice: AuditTrailService, private router: Router,
     private alertController:AlertController) { }
@@ -35,9 +36,12 @@ export class CheckOutPage implements OnInit {
     this.order = JSON.parse(localStorage.getItem('order') as string)    
     let items = JSON.parse(localStorage.getItem('cart') as string)
     this.basketItems= items //this.order.basketItems;
-    console.log(this.basketItems);  
+    console.log('basket',this.basketItems); 
+    let vatAmount = localStorage.getItem('vatamount');
+    this.vat=vatAmount;
+ 
     
-    this.GetOrderDetails()
+    /*this.GetOrderDetails()*/
   }
 
   GetOrderDetails(){    

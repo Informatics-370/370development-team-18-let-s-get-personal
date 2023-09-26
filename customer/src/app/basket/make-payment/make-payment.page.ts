@@ -65,11 +65,13 @@ export class MakePaymentPage implements OnInit {
     streetNumber: new FormControl('',[Validators.required, Validators.max(99999)]),
     streetName: new FormControl('',[Validators.required]),
     province: new FormControl('',[Validators.required]),
+    /*suburb: new FormControl('',[Validators.required]),*/
     city: new FormControl('',[Validators.required,Validators.pattern('^[a-zA-Z]+$')]),
     //areaCode: new FormControl('',[Validators.required,Validators.minLength(4), Validators.maxLength(4)]),
     areaCode:new FormControl('',[Validators.required,Validators.minLength(4), Validators.maxLength(4)]),//Validators.pattern('/^(0\d{1,2}|0\d{3}-\d{4})$/')
     dwellingtype: new FormControl('',[Validators.required]),
     deliveryCompanyID: new FormControl('',[Validators.required]),
+    /*searchControl: new FormControl('',[Validators.required]),*/
   })
 
   get f(){return this.AddDelAddressForm.controls}
@@ -171,6 +173,13 @@ updateSearchResults() {
       this.suburb = addressComponents[1];
       this.city = addressComponents[2];
       this.country = addressComponents[3];
+      // Set the values of the form fields
+    this.AddDelAddressForm.patchValue({
+      streetName: this.streetAddress,
+      suburb: this.suburb, // You can set it here if you have this information
+      city: this.city,
+      areaCode: '', // You can set it here if you have this information
+    });
     }
 
      //this.calculateDistance(this.oLat,this.oLong,this.Lat,this.Long);
@@ -264,6 +273,8 @@ updateSearchResults() {
     this.order.deliveryAddress.dwelling_Type=dwellingtype;
     this.order.deliveryCompanyID = delivery_Company_ID;
 
+  
+
     localStorage.setItem("order",JSON.stringify(this.order));
 
     this.router.navigate(["/tabs/check-out"])
@@ -281,9 +292,9 @@ updateSearchResults() {
     this.modal.dismiss(null, 'cancel');
   }
 
-  confirmaddmodal() {
+  /*confirmaddmodal() {
     this.AddDeliveryAddress();    
-  }
+  }*/
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
