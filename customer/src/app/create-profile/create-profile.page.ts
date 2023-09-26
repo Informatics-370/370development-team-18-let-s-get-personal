@@ -101,7 +101,7 @@ export class CreateProfilePage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Success!',
       subHeader: "You've been Registered",
-      message:'Proceed to verify your email address.',
+      message:'Proceed to log in to your account.',
       buttons: [{
         text: 'OK',
         role: 'cancel',

@@ -42,8 +42,8 @@
             <ion-label color="danger">Low On Stock {{item.stock_Item_Quantity}} left</ion-label>
           </ion-item>
 
-          <ion-item *ngIf="item.stock_Item_Quantity > 0" style="text-align: center;">
-            <ion-button (click)="addToBasket(item)">Add To Basket</ion-button>
+          <ion-item *ngIf="item.stock_Item_Quantity > 0">
+            <ion-button class="center" (click)="addToBasket(item)">Add To Basket</ion-button>
           </ion-item>          
         </ion-card>
       </ion-col>
