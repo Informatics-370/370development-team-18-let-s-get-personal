@@ -33,6 +33,7 @@ import { Response } from '../Models/response';
         .pipe(map(result => result))
     }
 
+<<<<<<< HEAD
   //get selected one
     public GetDiscount(discount_ID:number){ 
         return this.httpClient.get(`${this.apiUrl}Discount/GetDiscount/${discount_ID}`)
@@ -42,6 +43,11 @@ import { Response } from '../Models/response';
   //edit
     public UpdateDiscount(discount_ID:number, discount:Discount){
         return this.httpClient.put<Response>(`${this.apiUrl}Discount/edit-discounts/${discount_ID}`, discount)
+=======
+    public GetDiscountByStock(stock_Item_ID:string){ 
+      return this.httpClient.get(`${this.apiUrl}Discount/GetDiscountByStockID/${stock_Item_ID}`)
+      .pipe(map(result => result))
+>>>>>>> developer
     }
 
     //delete 

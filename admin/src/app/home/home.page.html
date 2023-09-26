@@ -1,0 +1,102 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+    <ion-button slot="end" (click)="Help()">Help</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">home</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!--<ion-grid *ngIf="messages.length == 0">
+    <ion-row>
+      <ion-col>Messages</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>No Messages</ion-col>
+    </ion-row>
+  </ion-grid>-->
+  <ion-content *ngIf="messages.length == 0" >
+    <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
+      <p style="text-align: center;">No New Messages</p><br>
+     <img src="/assets/no-results.png" alt="empty icon" class="center"  id="icon" style="width: 25%; height: 25%;"
+     sizes="50vh" />
+    </div>
+  </ion-content>
+
+  <ion-grid *ngIf="messages.length > 0">
+    <ion-row>
+      <ion-col> New Messages</ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>Name</ion-col>
+      <ion-col>Question</ion-col>
+      <ion-col>Phone Number</ion-col>
+      <ion-col>Email Address</ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let item of messages">
+      <ion-col>{{item.contact_Us_Name}}</ion-col>
+      <ion-col>{{item.contact_Us_Message}}</ion-col>
+      <ion-col>{{item.contact_Us_Phone}}</ion-col>
+      <ion-col>{{item.contact_Us_Email}}</ion-col>
+
+      <!-- <ion-col> 
+        <ion-item>
+          <p>Remind me in: </p>          
+          <ion-list> 
+            <ion-item>
+              <ion-select aria-label="Time" placeholder="Select Time" (ionChange)="handleChange($event, item.contact_Us_Name)" (ionCancel)="handleCancel()" (ionDismiss)="handleDismiss()">
+                <ion-select-option value= 5000> 5 min </ion-select-option>
+                <ion-select-option value= 10000> 10 min </ion-select-option>
+                <ion-select-option value= 15000> 15 min </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+          <p>{{subscribeTimer}}</p>
+        </ion-item>
+      </ion-col> -->
+
+      <ion-col><ion-button (click)="markAsReplied(item.contact_Us_ID)">Mark As Replied</ion-button></ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- new order requests -->
+  <ion-content *ngIf="orderRequests.length == 0">
+    <ion-grid>
+      <ion-row>
+        <ion-col>Orders In Progress</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>No Orders In Progress</ion-col>
+      </ion-row>
+    </ion-grid>    
+  </ion-content>
+
+    <ion-grid *ngIf="orderRequests.length > 0">
+      <ion-row>
+        <ion-col>Orders In Progress</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Customer </ion-col>
+        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Address </ion-col>
+       <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Product </ion-col>
+        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Date Requested </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of orderRequests">
+        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.customer_UserName}} </ion-col>
+        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
+        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.stock_Item_Name}} </ion-col>
+        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.order_Request_Date}} </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  <!-- out deliveries -->
+</ion-content>

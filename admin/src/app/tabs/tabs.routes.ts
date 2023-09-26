@@ -121,6 +121,18 @@ export const routes: Routes = [
         loadComponent: () => import('../product-trends/product-trends.page').then( m => m.ProductTrendsPage)
       },
       {
+        path: 'delivery-prices',
+        loadComponent: () => import('../deliveries/delivery-prices/delivery-prices.page').then( m => m.DeliveryPricesPage)
+      },
+      {
+        path: 'admin-help',
+        loadComponent: () => import('../admin-help/admin-help.page').then( m => m.AdminHelpPage)
+      },
+      {
+        path: 'price-history',
+        loadComponent: () => import('../inventory/price-history/price-history.page').then( m => m.PriceHistoryPage)
+      },
+      {
         path: '',
         redirectTo: '/tabs/login',
         pathMatch: 'full',

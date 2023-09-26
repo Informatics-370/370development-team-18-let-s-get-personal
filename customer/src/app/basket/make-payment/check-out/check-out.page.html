@@ -1,9 +1,8 @@
 
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Checkout
-    </ion-title>
+    <ion-title>Checkout</ion-title>
+    <ion-button slot="end" (click)="CheckOutTip()">Help</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -14,27 +13,55 @@
       Order Items
     </ion-item-divider>
     <ion-item *ngFor="let item of basketItems">
-    {{item.stock_Item.stock_Item_Name}}  - R{{item.stock_Item.stock_Item_Price}}
+    {{item.stock_Item.stock_Item_Name}}  - R{{item.stock_Item.stock_Item_Price}} &nbsp;&nbsp; X&nbsp; {{item.basket_Quantity}}
     </ion-item>    
   </ion-list>
 
   <ion-list>
     <ion-item-divider>Delivery Address</ion-item-divider>
     <ion-item *ngFor="let d of deliveryvm">
-      <p>Delivery Price  - R{{d.delivery_Price}} <br>
+      <p>Delivery Price: R{{d.delivery_Price}}.00 <br>
       Address: {{d.streetNumber}} {{d.streetName}}</p>
     </ion-item>
+
+    <!--<ion-item-divider>Vat: R {{order.price*0.15}}</ion-item-divider>-->
+    <ion-item-divider>Vat:</ion-item-divider>
+    <ion-item>
+      <p>R {{order.price*0.15}}</p>
+    </ion-item>
+
+    <ion-item-divider>Delivery Price:</ion-item-divider>
+    <ion-item>
+      <p>R {{(order.deliveryPrice).toFixed(2)}}</p>
+    </ion-item>
+    <ion-item *ngIf="discount>0">
+      <ion-item-divider>Discount</ion-item-divider>
+      <p>R {{discount}}.00</p>
+    </ion-item>
+  </ion-list>
+  
+
+  <ion-list>
+    <ion-item-divider>Total Price:</ion-item-divider>
+    <ion-item>
+      <p>R {{((order.price)+(order.deliveryPrice)+(order.price*0.15)).toFixed(2)}}</p>
+    </ion-item>
+    <!--<ion-item>
+      <p>R {{order.price}}</p>
+    </ion-item>-->    
   </ion-list>
 
   <ion-list>
-    <ion-item-divider>Total Price</ion-item-divider>
-    <ion-item>
-      <p>{{totalprice}}</p>
-    </ion-item>
-    
+        
   </ion-list>
+
+  <ion-list>
+        
+  </ion-list>
+
+
   <!-- Checkout Button -->
-  <ion-button expand="full" (click)="AddOrderRequest()">Checkout</ion-button>
+  <ion-button expand="full" (click)="AddOrderRequest(order.price+order.deliveryPrice+order.price*0.15)">Checkout</ion-button>
 </ion-content>
 
 <!-- Address Form -->

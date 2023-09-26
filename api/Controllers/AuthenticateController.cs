@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Net;
 using IPKP___API.Controllers.Models.Repository;
+using static System.Net.WebRequestMethods;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IPKP___API.Controllers
 {
@@ -46,6 +49,7 @@ namespace IPKP___API.Controllers
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+
         {
             var user = await _userManager.FindByNameAsync(model.Username);
 
@@ -61,6 +65,7 @@ namespace IPKP___API.Controllers
                     {
                         new Claim(ClaimTypes.Name, user.UserName),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     };
 
                     foreach (var userRole in userRoles)
@@ -88,7 +93,6 @@ namespace IPKP___API.Controllers
                 //return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "User details wer not found. Please check your login details"  });
             }
         }
-
 
         [HttpPost]
         [Route("RegisterCustomer")]
@@ -118,7 +122,13 @@ namespace IPKP___API.Controllers
                 Username = model.Username,
                 Cell_Number = model.Cell_Number,
                 Date_Registered = DateTime.Now,
-                User_ID = new Guid(),
+                User_ID = new Guid(user.Id),
+
+                User = new User
+                {
+                    User_ID = new Guid(user.Id),
+                    Username = model.Username,
+                }
             };
 
             _IPKPRepository.Add(customer);
@@ -133,6 +143,29 @@ namespace IPKP___API.Controllers
             {
                 await _userManager.AddToRoleAsync(user, User_Role.user);
             }
+
+            var subject = "Your IPKP account has been successfully registered!";
+            var message = "We are excited to welcome you to It's Personal's community!<br><br>" +
+    "We are writing to inform you that your account has been successfully registered, and you are now a valued member of our platform. This is a significant step toward enjoying the full range of benefits and services we offer.<br><br>" +
+    "Here are some key details about your account:<br>" +
+    "<ul>" +
+    "<li>Username: " + model.Username + "</li>" +
+    "<li>Email Address: " + model.Email + "</li>" +
+    "<li>Account Created On: " + customer.Date_Registered + "</li>" +
+    "</ul>" +
+    "With your newly registered account, you can now:<br>" +
+    "<ul>" +
+    "<li>Access our platform and explore all the features and services we offer.</li>" +
+    "<li>Customize your profile and preferences to tailor your experience.</li>" +
+    "<li>Enjoy personalizing your products and gifting your loved ones.</li>" +
+    "</ul>" +
+    "If you encounter any issues during the registration process or have questions about using our platform, please don't hesitate to reach out to our dedicated customer support team at <a href='mailto:ktlmamadi@gmail.com'>IPKP@gmail.com</a>. We are here to assist you every step of the way.<br><br>" +
+    "Thank you for choosing It's Personal. We look forward to providing you with an exceptional experience, and we're excited to have you as a member of our community.<br><br>" +
+    "Warm regards,<br>Let's Get Personal";
+
+            await SendEmail(subject, message, model.Email);
+
+
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
 
@@ -167,6 +200,12 @@ namespace IPKP___API.Controllers
                     Cell_Number = model.Cell_Number,
                     User_ID = new Guid(),
                     Date_Registered = DateTime.Now,
+
+                    User = new User
+                    {
+                        User_ID = new Guid(user.Id),
+                        Username = model.Username,
+                    }
                 };
 
                 _IPKPRepository.Add(admin);
@@ -218,8 +257,14 @@ namespace IPKP___API.Controllers
                     Email = model.Email,
                     Username = model.Username,
                     Cell_Number = model.Cell_Number,
-                    User_ID = new Guid(),
+                    User_ID = new Guid(user.Id),
                     Date_Registered = DateTime.Now,
+
+                    User = new User
+                    {
+                        User_ID = new Guid(user.Id),
+                        Username = model.Username,
+                    }
                 };
 
                 _IPKPRepository.Add(employee);
@@ -261,6 +306,38 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAdminID/{username}")]
+        public async Task<IActionResult> GetAdminID(string username)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetAdmin(username);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Admin" });
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetEmployeeID/{username}")]
+        public async Task<IActionResult> GetEmployeeID(string username)
+        {
+            try
+            {
+                var results = await _IPKPRepository.GetEmployee(username);
+                if (results == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Admin" });
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
@@ -282,32 +359,55 @@ namespace IPKP___API.Controllers
         {
             var user = await _userManager.FindByNameAsync(uvm.UserName);
 
+            int otp = GenerateRandomNumer();
+
             if (user != null)
             {
+             
                 try
                 {
 
-                    var principal = await _claimsPrincipalFactory.CreateAsync((AppUser)user);
+                    /*var principal = await _claimsPrincipalFactory.CreateAsync((AppUser)user);
 
                     await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
 
                     // 2 Step Verification
                     var otp = GenerateTwoFactorCodeFor(user.UserName);
 
-                    var fromEmailAddress = "resinartnewsletter@gmail.com"; // you must add your own provided email
+                    var fromEmailAddress = "u19032618@tuks.co.za"; // you must add your clients email
                     var subject = "System Log in";
                     var message = $"Enter the following OTP: {otp}";
                     var toEmailAddress = user.Email;
 
                     // Sending email
-                    await SendEmail(fromEmailAddress, subject, message, toEmailAddress);
+                    await SendEmail(subject, message, toEmailAddress);
 
-                    //return GenerateJWTToken(user);
+                    //return GenerateJWTToken(user);*/
+
+                    //string userId = uvm.UserName;
+                    // string generatedOTP = GenerateOTP(6); // Generate OTP
+                    // DateTime expirationTime = DateTime.Now.AddMinutes(15); // Set expiration time (adjust as needed)
+
+                    // Store OTP and expiration time in the distributed cache
+                    // You'll need to use the appropriate caching library and configuration here
+
+                    var subject = "Your One-Time Password (OTP) Pin";
+                    var message = "Dear "+uvm.UserName+",<br><br>" +
+                    "We hope this message finds you well.<br><br>"+
+                    "Thank you for using our services. To ensure the security of your account, we have generated a One-Time Password (OTP) pin for you.<br><br>" +
+                    "Your OTP Pin: "+otp+"<br><br>" +
+
+                    "If you did not request this OTP or have any concerns about your account security, please contact our customer support immediately at <a href='mailto:ktlmamadi@gmail.com'>IPKP@gmail.com</a> <br>" +
+                    "Thank you for choosing our services. We appreciate your trust in us.<br><br>"+
+   
+                    "Best regards,<br>Let's Get Personal";
+
+                    _ = SendEmail(subject, message, user.Email);
 
                 }
                 catch (Exception)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal error12 occured. Please contact support");
                 }
             }
             else
@@ -318,7 +418,74 @@ namespace IPKP___API.Controllers
             //, Password = user.PasswordHash
             var loggedInUser = new ForgotPassword { UserName = user.UserName };
 
-            return Ok(loggedInUser);
+            return Ok(otp);
+        }
+
+
+        //[HttpGet("ResetPassword")]
+        //public async Task<IActionResult> ResetPassword(string token, string email)
+        //{
+        //    var model = new ResetPassword { Token = token, Email = email };
+        //    return Ok(new
+        //    {
+        //        model
+        //    });
+        //}
+
+        /*[HttpPost]
+        [Route("ResetPassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPassword resetPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPassword.Email);
+            if (user != null)
+            {
+                var resetPassResult = await _userManager
+                  .ResetPasswordAsync(user, resetPassword.Token, resetPassword.ConfirmPassword);
+                if (!resetPassResult.Succeeded)
+                {
+                    foreach (var error in resetPassResult.Errors)
+                    {
+                        ModelState.AddModelError(error.Code, error.Description);
+                    }
+                    return Ok(ModelState);
+                }
+                return StatusCode(StatusCodes.Status200OK,
+                  new Response { Status = "Success", Message = $"Password changed successfully!" });
+            }
+            return StatusCode(StatusCodes.Status400BadRequest,
+                new Response { Status = "Fail", Message = $"Password not changed! Please contact support." });
+
+        }*/
+
+        private int GenerateRandomNumer() {
+            int _min = 1000;
+            int _max = 9999;
+
+            Random _rdm = new Random();
+
+            return _rdm.Next(_min, _max);
+        }
+
+        public static string GenerateOTP(int length)
+        {
+            const string validChars = "0123456789";
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                var otp = new char[length];
+                var charsLength = validChars.Length;
+                var buffer = new byte[1];
+
+                for (int i = 0; i < length; i++)
+                {
+                    rng.GetBytes(buffer);
+                    var randomNumber = BitConverter.ToUInt32(buffer, 0);
+                    var randomIndex = (int)(randomNumber % charsLength);
+                    otp[i] = validChars[randomIndex];
+                }
+
+                return new string(otp);
+            }
         }
 
         private static string GenerateTwoFactorCodeFor(string username)
@@ -342,11 +509,37 @@ namespace IPKP___API.Controllers
             return optCode.ToString();
         }
 
-        private async Task SendEmail(string fromEmailAddress, string subject, string message, string toEmailAddress)
+        private async Task SendEmail(/*string fromEmailAddress,*/ string subject, string message, string toEmailAddress)
         {
+            string fromEmailAddress = "sarahpick@gmail.com";
             var fromAddress = new MailAddress(fromEmailAddress);
             var toAddress = new MailAddress(toEmailAddress);
 
+            SmtpClient client = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "wauc crru pvma osvq"),
+                EnableSsl = true
+            };
+
+            MailMessage msg = new MailMessage() { 
+                From= new MailAddress(fromEmailAddress),
+                Subject =subject,
+                Body = message,
+                IsBodyHtml=true
+            };
+
+            msg.To.Add(toEmailAddress);
+
+            try {
+                client.Send(msg);
+                Console.WriteLine("Email sent successfully!");
+            }
+            catch (Exception e) {
+                Console.WriteLine($"An error occurred: {e.Message}");
+
+            }
+            /*
             using (var compiledMessage = new MailMessage(fromAddress, toAddress))
             {
                 compiledMessage.Subject = subject;
@@ -356,32 +549,115 @@ namespace IPKP___API.Controllers
                 {
                     smtp.Host = "smtp.gmail.com"; // for example: smtp.gmail.com
                     smtp.Port = 587;
-                    smtp.EnableSsl = true;
+                   // smtp.EnableSsl = true;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential("itspersonal@gmail.com", "pnyblzriureedwgp"); // your own provided email and password
+               
+                    smtp.Credentials = new NetworkCredential("sarahpick@gmail.com", "Sarah@Gmail0702"); // your own provided email and password
                     await smtp.SendMailAsync(compiledMessage);
+                }
+            }*/
+        }
+
+        //FOR CAPTURING RATINGS BY CUSTOMER
+        [HttpPost]
+        [Route("GetCustomerbyID")]
+        public async Task<IActionResult> GetCustomerbyID([FromBody] LoginViewModel model)
+        {
+            var user = await _userManager.FindByNameAsync(model.Username);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                List<Customer> CustomerList = new List<Customer>();
+
+                var results = await _IPKPRepository.GetAllCustomersAsync();
+
+                return Ok(user);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
+            }
+        }
+
+        [HttpPost]
+        [Route("ChangeUserPassword")]
+        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangePasswordVM changepasswordVM)
+        {
+            var user = await _userManager.FindByNameAsync(changepasswordVM.UserName);
+
+            if (user != null)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, changepasswordVM.OldPassword, changepasswordVM.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    return Ok(new Response { Status = "Success", Message = "User Password Updated Successfully!" });
+                }
+                else
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "User Password Not Updated!" });
+                }
+
+            }
+            else
+            {
+                return NotFound(new Response { Status = "Error", Message = "User Not Found!" });                
+            }            
+
+        }
+
+        [HttpPost]
+        [Route("DeleteUser/{username}")]
+        public async Task<IActionResult> DeleteUser(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return NotFound(new Response { Status = "Error", Message = "User Not Found!" });
+            }
+            else
+            {
+                var result = await _userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return Ok(new Response { Status = "Success", Message = "User Password Updated Successfully!" });
+                }
+                else
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "User Password Not Updated!" });
                 }
             }
         }
+
+        //[HttpPost]
+        //[Route("ChangeUserName")]
+        //public async Task<IActionResult> ChangeUserName([FromBody] ChangePasswordVM changeVM)
+        //{
+        //    var user = await _userManager.FindByNameAsync(changeVM.UserName);
+
+        //    if (user != null)
+        //    {
+        //        var result = await _userManager.UpdateNormalizedUserNameAsync(user);
+
+        //        if (result.Succeeded)
+        //        {
+        //            return Ok(new Response { Status = "Success", Message = "User Password Updated Successfully!" });
+        //        }
+        //        else
+        //        {
+        //            return BadRequest(new Response { Status = "Error", Message = "User Password Not Updated!" });
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        return NotFound(new Response { Status = "Error", Message = "User Not Found!" });
+        //    }
+
+        //}
+
     }
 }
 
-//[HttpPost]
-//[Route("GetCustomerbyID")]
-//public async Task<IActionResult> GetCustomerbyID([FromBody] LoginViewModel model)
-//{
-//    var user = await _userManager.FindByNameAsync(model.Username);
-//    if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-//    {
-//        List<Customer> CustomerList = new List<Customer>();
-
-//        var results = await _IPKPRepository.GetAllCustomersAsync();
-
-//        return Ok(user);
-//    }
-//    else
-//    {
-//        return StatusCode(StatusCodes.Status500InternalServerError, "Internal error occured. Please contact support");
-//    }
-//}

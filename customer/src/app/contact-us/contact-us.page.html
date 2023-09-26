@@ -10,7 +10,48 @@
       <ion-title size="large">Get in touch with us</ion-title>
     </ion-toolbar>
   </ion-header>
+<<<<<<< HEAD
   <!-- <ion-list>
+=======
+  <form [formGroup]="ContactForm">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input type="text" formControlName="Name" placeholder=""></ion-input>
+        
+        <!-- [class.is-invalid]="f['FirstName'].invalid && f['FirstName'].touched" required -->
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input type="Email" formControlName="Email" placeholder=""></ion-input>
+      </ion-item>
+      
+      <!-- [class.is-invalid]="f['Email'].invalid && f['Email'].touched" required -->
+
+      <!-- <div class="text-center" *ngIf="f['Email'].invalid && f['Email'].touched"> 
+        <p style="color: crimson;" class="small mt-1" *ngIf="f['Email'].errors?.['required']">Email is required!</p>
+        <p style="color: crimson;" class="small mt-1" *ngIf="f['Email'].errors?.['pattern']"> Email is Invalid</p>
+      </div> -->
+      
+      <ion-item>
+        <ion-label position="stacked">Phonenumber</ion-label>
+        <ion-input type="text" formControlName="Cell_Number" placeholder="" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Message</ion-label>
+        <ion-input type="text" formControlName="Message" placeholder="" required></ion-input>
+      </ion-item>
+    </ion-list>
+    
+ </form>
+ <ion-button expand="block" (click)="Submit()">Send Comment</ion-button>
+
+</ion-content>
+
+<!-- <ion-list>
+>>>>>>> developer
     <ion-item>
       <ion-input label="Name" labelPlacement="floating" placeholder="Enter name"></ion-input>
     </ion-item>

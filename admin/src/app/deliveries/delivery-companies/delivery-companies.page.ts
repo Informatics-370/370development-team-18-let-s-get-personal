@@ -2,22 +2,22 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
-import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { DeliveryDataService } from 'src/app/Services/deliveries.service';
 import { Delivery_Company } from 'src/app/Models/deliverycompany';
-
-//for modal
+import { RouterModule, Router } from '@angular/router';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
+import { AuditTrail } from 'src/app/Models/adittrail';
 
 @Component({
   selector: 'app-delivery-companies',
   templateUrl: './delivery-companies.page.html',
   styleUrls: ['./delivery-companies.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterModule]
 })
 export class DeliveryCompaniesPage implements OnInit {
 
@@ -32,7 +32,7 @@ export class DeliveryCompaniesPage implements OnInit {
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DeliveryDataService, private thisroute: Router, public modalCtrl: ModalController,
-    private alertController:AlertController ) { }
+    private alertController:AlertController, private trailservice: AuditTrailService ) { }
 
   AddForm: FormGroup = new FormGroup({
     deliverycompanyname: new FormControl('',[Validators.required]),
@@ -41,65 +41,159 @@ export class DeliveryCompaniesPage implements OnInit {
 
   ngOnInit(): void {
     this.getDeliveryCompany()
-  }
-  
+  }  
 
   getDeliveryCompany(){
     this.service.GetDeliveryCompanies().subscribe(result =>{
       this.deliverycompanies = result as Delivery_Company[];
       console.log(this.deliverycompanies)
+    },(error) => {
+      this.ErrorAlert();        
+      console.error(error);
     })
   }
 
-  AddDeliveryCompany(){
+  deliveriesnav()
+  {
+    this.thisroute.navigate(['./tabs/deliveries']);
+  }
+
+  RouteDeliveriesControlBreak()
+  {
+    this.thisroute.navigate(['./tabs/delivery-prices']);
+  }
+
+//========== Add ===========
+  isAddModalOpen = false;
+  OpenAddModal(isOpen: boolean){
+    this.isAddModalOpen = isOpen;
+  }
+
+  canceladdmodal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirmaddmodal() {
     let AddDeliveryCompany = new Delivery_Company();
     AddDeliveryCompany.delivery_Price = this.AddForm.value.Delivery_Price;
     AddDeliveryCompany.delivery_Company_Name = this.AddForm.value.deliverycompanyname;
 
     this.service.AddDeliveryCompany(AddDeliveryCompany).subscribe(response => {
-      if(response.status == "Error")
-      {
-        this.addDeliveryCompanyErrorAlert();
-      }
-      else{
-        this.addDeliveryCompanySuccessAlert();
-      }
-    })
+      this.addDeliveryCompanySuccessAlert();
+      this.action = "Added Delivery Company: " + this.AddForm.value.deliverycompanyname
+      this.AddTrail()
 
+    },(error) => {
+      this.addDeliveryCompanyErrorAlert();        
+      console.error('Edit stock image error:', error);
+    })    
   }
 
-  EditDeliveryCompany(delivery_Company_ID:string)
-  {
-    this.thisroute.navigate(['/edit-company', delivery_Company_ID]);
-  }
 
-  DeleteDeliveryCompany(delivery_Company_ID: string){
+//========== Delete ===========
+  DeleteDeliveryCompany(delivery_Company_ID: string, delivery_Company_Name: string){
     this.service.DeleteDeliveryCompany(delivery_Company_ID).subscribe(result => {
       console.log(result);
-      if(result.status == "Error")
-      {
-        this.DeleteDeliveryCompanyErrorAlert();
-      }
-      else if(result.status == "Success"){
-        this.DeleteDeliveryCompanySuccessAlert();
-      }
+      this.DeleteDeliveryCompanySuccessAlert();
+      this.action = "Deleted Delivery Company: " + delivery_Company_Name
+      this.AddTrail()
+    },(error) => {
+      this.DeleteDeliveryCompanyErrorAlert();        
+      console.error('DeleteDeliveryCompany error:', error);
     })
+  }
+
+//========== Edit ===========
+  isModalOpen = false;
+  editCompany: Delivery_Company = new Delivery_Company();
+  editForm: FormGroup = new FormGroup({
+    deliverycompanyname: new FormControl('',[Validators.required]),
+    Delivery_Price: new FormControl('',[Validators.required])
+  })
+
+  EditDeliveryCompany(delivery_Company_ID:string, isOpen: boolean)
+  {
+    this.service.GetDeliveryCompany(delivery_Company_ID).subscribe(result =>{
+      this.editCompany = result as Delivery_Company
+      this.editForm.controls['deliverycompanyname'].setValue(this.editCompany.delivery_Company_Name);
+      this.editForm.controls['Delivery_Price'].setValue(this.editCompany.delivery_Price);
+    })
+    this.isModalOpen = isOpen;
+  }
+
+  confirmeditmodal(){
+    try{
+      let editedCompany = new Delivery_Company()
+      editedCompany.delivery_Company_Name = this.editForm.value.deliverycompanyname
+      editedCompany.delivery_Price = this.editForm.value.Delivery_Price
+
+      this.service.UpdateDeliveryCompany(this.editCompany.delivery_Company_ID, editedCompany).subscribe(result => {
+        this.UpdateDeliveryCompanySuccessAlert()
+        this.action = "Updated discount from "+ this.editCompany.delivery_Company_Name + ", "+ this.editCompany.delivery_Price 
+          + ", " + this.editForm.value.deliverycompanyname + ", "+ this.editForm.value.Delivery_Price 
+        this.AddTrail()       
+      },(error) => {
+        this.UpdateDeliveryCompanyErrorAlert();        
+        console.error('UpdateDeliveryCompany error:', error);
+      })
+    }
+    catch{
+      this.UpdateDeliveryCompanyErrorAlert()
+    }
+  }
+
+  canceleditmodal() {
+    this.isModalOpen = false;
+    //this.modal.dismiss(null, 'cancel');
+  }
+
+
+//========== Audit trail ===========
+  action!: string
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
   }
 
   reloadPage(){
     window.location.reload()
   }
   
-  canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
 
-  confirmaddmodal() {
-    this.AddDeliveryCompany();    
-  }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+//====== Alerts =====
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'Delivery companies will be pulled through as delivery options when the customer checks out their order',
+      message: '',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
   }
 
   async addDeliveryCompanySuccessAlert() {
@@ -158,6 +252,54 @@ export class DeliveryCompaniesPage implements OnInit {
         role: 'cancel',
         handler:() =>{
           this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async UpdateDeliveryCompanyErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Delivery Company Was Not Updated.',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async UpdateDeliveryCompanySuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Delivery Company Was Updated.',
+      //message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async ErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Something went wrong',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
         }
     }],
     });

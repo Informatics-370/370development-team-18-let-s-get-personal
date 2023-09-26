@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Delivery Companies</ion-title>
+    <ion-button slot="end" (click)="HelpAlert()">Help</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -10,21 +11,24 @@
       <ion-title size="large">Delivery Companies</ion-title>
     </ion-toolbar>
   </ion-header>
-  
   <ion-content id="content">
-    <ion-button id="addCompanymodal">Add Delivery Company</ion-button>
+    <p style="cursor:pointer;" (click)="deliveriesnav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
+
+    <ion-button (click)="OpenAddModal(true)">Add Delivery Company</ion-button>
+    <!-- <ion-button (click)="RouteDeliveriesControlBreak()">View Delivery Company Price Report</ion-button> -->
     <!-- <ion-searchbar [(ngModel)]="filterTerm" (ionInput)="updateSearchResults()"></ion-searchbar>                     -->
     <ion-grid>
       <ion-row>
-        <ion-col style="font-weight: bold;"><h2>Delivery Company Name</h2></ion-col>
-        <ion-col></ion-col>
-        <ion-col></ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="font-weight: bold; text-align: center;">Delivery Company Name</ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="font-weight: bold; text-align: center;">Delivery Price</ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="font-weight: bold; text-align: center;"></ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="font-weight: bold; text-align: center;"></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of deliverycompanies">
-        <ion-col>{{item.delivery_Company_Name}}</ion-col>
-        <ion-col>{{item.delivery_Price}}</ion-col>
-        <ion-col><ion-button (click)="DeleteDeliveryCompany(item.delivery_Company_ID)">Delete</ion-button></ion-col>
-        <ion-col><ion-button (click)="EditDeliveryCompany(item.delivery_Company_ID)" >Update</ion-button></ion-col>      
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.delivery_Company_Name}}</ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">R {{item.delivery_Price}}</ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;"><ion-button (click)="DeleteDeliveryCompany(item.delivery_Company_ID, item.delivery_Company_Name)">Delete</ion-button></ion-col>
+        <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;"><ion-button (click)="EditDeliveryCompany(item.delivery_Company_ID, true)" >Update</ion-button></ion-col>      
       </ion-row>
     </ion-grid>
 
@@ -32,7 +36,7 @@
 </ion-content>
 
 <ion-footer> 
-  <ion-modal trigger="addCompanymodal" (willDismiss)="onWillDismiss($event)">
+  <ion-modal [isOpen]="isAddModalOpen" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -59,4 +63,33 @@
       </ion-content>
     </ng-template>
   </ion-modal>
+
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Add Delivery Company Details</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="editForm" >
+          <ion-item>
+            <ion-label position="stacked">Delivery Company Name</ion-label><br>
+            <ion-input type="text" formControlName="deliverycompanyname"></ion-input> 
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Delivery Company Price</ion-label><br>
+            <ion-input type="number" formControlName="Delivery_Price"></ion-input>
+          </ion-item>                   
+      </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-footer>

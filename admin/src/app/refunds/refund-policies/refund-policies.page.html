@@ -15,16 +15,17 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-searchbar show-clear-button="always" (ionInput)="search()" [(ngModel)]="filterTerm" ></ion-searchbar>
+          <!--<ion-searchbar show-clear-button="always" (ionInput)="search()" [(ngModel)]="filterTerm" ></ion-searchbar>-->
+          Search by date: <input type="date" [(ngModel)]="filterTerm" (change)="searchByDate(filterTerm)"/>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col style="font-weight: bold;">Policy Date</ion-col>
         <ion-col style="font-weight: bold;">Version number</ion-col>
-        <ion-col style="font-weight: bold;">Descrption</ion-col>
+        <ion-col style="font-weight: bold;">Description</ion-col>
       </ion-row>
-      <ion-row *ngFor="let item of refundPolicies">
-        <ion-col>{{item.refund_Policy_Date}}</ion-col>
+      <ion-row *ngFor="let item of filteredRefundPolicies">
+        <ion-col>{{item.refund_Policy_Date| date: 'yyyy-MM-dd'}}</ion-col>
         <ion-col>{{item.refund_Policy_Version}}</ion-col>
         <ion-col>{{item.refund_Policy_Description}}</ion-col>
         <ion-button (click)="DeleteRefundPolicy(item.refund_Policy_ID)" >Delete</ion-button>
@@ -45,7 +46,7 @@
           </ion-buttons>
           <ion-title>Add Refund Policy</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmaddmodal()" [disabled]="AddForm.invalid" [strong]="true">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -56,11 +57,15 @@
         <form [formGroup]="AddForm">          
             <ion-item>
               <ion-label position="stacked">Refund Policy Date</ion-label><br>
-              <ion-input type="date" formControlName="date" placeholder=""></ion-input>
+             <!---<ion-input type="date" formControlName="date" placeholder=""></ion-input>-->
+              <input type="date"  formControlName="date" placeholder="" required>
             </ion-item>
+            <div *ngIf="AddForm.get('date')?.hasError('dateInPast')" class="error-message">
+              <p style="color: crimson;">Date cannot be in the past.</p>
+            </div>
             <ion-item>
               <ion-label position="stacked">Refund Policy Version</ion-label><br>
-              <ion-input type="number" formControlName="version" placeholder=""></ion-input>
+              <ion-input type="number" formControlName="version" placeholder="" ></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Refund Policy Description</ion-label><br>

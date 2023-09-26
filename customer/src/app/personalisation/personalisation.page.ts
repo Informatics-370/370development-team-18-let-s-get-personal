@@ -112,7 +112,21 @@ export class PersonalisationPage implements OnInit {
     await alert.present();
   }*/
   ngOnInit(): void {
+<<<<<<< HEAD
     // this.GetPersonalisation()
+=======
+    const itemParam = this.route.snapshot.queryParamMap.get('item');
+    if (itemParam) {
+      this.selectedItem = JSON.parse(itemParam);
+      /*try {
+        localStorage.setItem('selectedItem', JSON.stringify(this.selectedItem));
+      } catch {
+        console.log('error', Error)
+      }*/
+
+    }
+
+>>>>>>> developer
   }
 
   // GetPersonalisation() {

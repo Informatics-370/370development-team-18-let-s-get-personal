@@ -4,28 +4,27 @@ import { FormsModule } from '@angular/forms';
 import { Delivery_Company } from '../Models/deliverycompany';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { DeliveryDataService } from '../Services/deliveries.service';
 import { DeliveryViewModel } from '../ViewModels/deliveryVM';
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
-import { OverlayEventDetail } from '@ionic/core/components';
+import { AuditTrailService } from '../Services/audittrail.service';
+import { AuditTrail } from '../Models/adittrail';
 import { OrderService } from '../Services/order.service';
 import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-export type jsPDFDocument = any;
-type Opts = { [key: string]: string | number }
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from "pdfmake/build/vfs_fonts"; 
+import { Order } from '../Models/orders';
 
 @Component({
   selector: 'app-deliveries',
   templateUrl: './deliveries.page.html',
   styleUrls: ['./deliveries.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule,ReactiveFormsModule,RouterModule]
+  imports: [IonicModule, CommonModule, FormsModule, RouterModule]
 })
 export class DeliveriesPage implements OnInit {
-  private readonly jsPDFDocument: jsPDFDocument
+  
   searchValue: string ='';
   deliveries:OrderLineItemVM[]=[];
   filteredDelivery:DeliveryViewModel[]=[];
@@ -44,12 +43,23 @@ export class DeliveriesPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service:DeliveryDataService, private router: Router, public modalCtrl: ModalController,
     private alertController:AlertController, public environmentInjector: EnvironmentInjector, 
-    public orderservice: OrderService,) { }
+    public orderservice: OrderService, private trailservice: AuditTrailService) 
+  {
+    (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  }
   
   Routedeliverycompanies()
   {
     this.router.navigate(['./tabs/delivery-companies']);
   }
+
+  RoutePrevDeliveries()
+  {
+    this.router.navigate(['./tabs/successful-deliveries']);
+  }
+
+  
+  
 
   GetRequestedDeliveries(){
     this.service.GetOutDeliveries().subscribe(res => {
@@ -65,50 +75,207 @@ export class DeliveriesPage implements OnInit {
     })
   }
 
+  stockItemID: any
+  customerID: any
+  qauntity: any
 
-  ReceiveDelivery(DeliveryId: string, order_Line_Item_ID:string){
+  ReceiveDelivery(DeliveryId: string, order_Line_Item_ID:string, stockItemID: string, customerID: string, qauntity: number){
     try
     {
+      this.stockItemID = stockItemID
+      this.customerID = customerID
+      this.qauntity = qauntity
+      localStorage.setItem('order_Line_Item_ID', JSON.stringify(order_Line_Item_ID));
       this.service.ChangeStatusToRecieved(DeliveryId).subscribe(result =>{
-                      
-      })
-
-      this.orderservice.ProcessOrder(order_Line_Item_ID).subscribe(result =>{
-                     
-      })
-      this.ReceiveDeliverySuccessAlert 
+        if(result.status == "Success"){
+          console.log(result);          
+        }
+      },(error) => {
+        this.ReceiveDeliveryErrorAlert();        
+        console.error('ReceiveDelivery error:', error);
+      }) 
+      this.getOrder()
     }
     catch{
       this.ReceiveDeliveryErrorAlert
     }
   }
 
-  addToOrder(){
+  FailedDelivery(DeliveryId: string, order_Line_Item_ID:string, stockItemID: string, customerID: string, qauntity: number){
+    try{
+      this.stockItemID = stockItemID
+      this.customerID = customerID
+      this.qauntity = qauntity
+      localStorage.setItem('order_Line_Item_ID', JSON.stringify(order_Line_Item_ID));
 
+      this.service.ChangeStatusToFailed(DeliveryId).subscribe(result =>{
+        if(result.status == "Success"){
+          console.log(result);          
+        }
+      },(error) => {
+        this.ReceiveDeliveryErrorAlert();        
+        console.error('ReceiveDelivery error:', error);
+      })
+      this.getOrder()
+    }
+    catch{
+      this.ReceiveDeliveryErrorAlert
+    }
+  }
+
+  orderlineitem: OrderLineItemVM = new OrderLineItemVM()
+  getOrder(){
+    try
+    {
+      let order_Line_Item_ID = JSON.parse(localStorage.getItem('order_Line_Item_ID') as string)
+      console.log(order_Line_Item_ID);
+      this.orderservice.GetOrderByID(order_Line_Item_ID).subscribe(result =>{        
+        this.orderlineitem = result as OrderLineItemVM
+        console.log(this.orderlineitem);
+
+        let customer = this.orderlineitem.customer_ID
+        localStorage.setItem('customer', JSON.stringify(customer));
+        console.log(customer);
+        this.addToOrder(); 
+      },(error) => {
+        this.AddOrderErrorAlert();        
+        console.error('getOrder error:', error);
+      })        
+    }
+    catch{
+      this.AddOrderErrorAlert()
+    }    
+  }
+
+  addToOrder(){    
+    try
+    {
+      let order = new Order;
+      console.log(this.orderlineitem.customer_ID)
+        order.customer_ID = this.customerID
+        order.order_Quantity = this.qauntity
+        order.stock_Item_ID = this.stockItemID
+        this.orderservice.AddOrder(order).subscribe(response => {
+          if(response.status == "Success")
+          {
+            console.log(response);
+            this.proccessOrder();
+          }
+          else
+          {
+            this.AddOrderErrorAlert()
+          }
+      },(error) => {
+        this.AddOrderErrorAlert();        
+        console.error('AddToOrder error:', error);
+      })
+    }
+    catch{
+      this.AddOrderErrorAlert()
+    }    
+  }
+
+  proccessOrder(){
+    //delete from orderline 
+    try
+    {
+      let order_Line_Item_ID = JSON.parse(localStorage.getItem('order_Line_Item_ID') as string)
+      this.orderservice.ProcessOrder(order_Line_Item_ID).subscribe(result =>{
+        console.log(result)
+      },(error) => {
+        this.DeleteOrderLineItemErrorAlert();        
+        console.error('proccessOrder error:', error);
+      })
+      this.ReceiveDeliverySuccessAlert()
+      
+      this.action = "Changed Delivery status to Received" 
+      this.AddTrail()
+    }
+    catch
+    {
+      this.DeleteOrderLineItemErrorAlert()
+    }
+    
+  }
+
+//=========== Audit trail ===========
+  action!: string
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
   }
 
   reloadPage(){
     window.location.reload()
   }
-  
-  @ViewChild('htmlData') htmlData!: ElementRef;
-  
-  openPDF(): void {
-    let DATA: any = document.getElementById('htmlData');
-    html2canvas(DATA).then((canvas) => {       
-      //Initialize JSPDF
-      let PDF = new jsPDF('p', 'mm', 'a4');
-      //Converting canvas to Image
-      const FILEURI = canvas.toDataURL('image/png');
-      //Add image Canvas to PDF
-      let fileWidth = 208;
-      let fileHeight = (canvas.height * fileWidth) / canvas.width;      
-      let position = 10;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
-          
-      PDF.save('IPKP-DeliveriesInProgress.pdf');
-    });
+
+  openPDF(){
+    let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    let date = new Date
+    
+    let docDefinition = {  
+      fillColor: "White",
+      fillOpacity: "",
+      margin: [ 5, 10, 5, 5 ],
+      header: user+" - It's Personal Audit Trail",  
+      footer:'Downloaded by: '+ user + ' at: '+ date,        
+      content:[
+        {          
+          layout: 'lightHorizontalLines', // optional          
+          table: {
+            headerRows: 1,
+            //widths: [ '30%', '40%', '30%' ],
+            // margin: [left, top, right, bottom]
+            margin: [ 5, 10, 5, 5 ],
+            
+            body: [
+              [ 
+                'Customer Username', 'Street Number', 'Street Name', 'City', 'Province', 'Area Code', 
+                'Delivery Company', 'Delivery Price', 'Order Requested Date'
+              ],
+              ...this.deliveries.map(p => 
+                ([
+                  p.customer_UserName, p.streetNumber, p.streetName, p.city, p.province, p.areaCode, 
+                  p.delivery_Company_Name, p.delivery_Price, p.order_Request_Date
+                ])),
+            ]
+          }          
+        }
+      ]      
+    };  
+    pdfMake.createPdf(docDefinition).download(); 
   }
+
+//=========== Alerts ===========
+  // async HelpAlert() {
+  //   const alert = await this.alertController.create({
+  //     header: 'Please Note: ',
+  //     subHeader: 'Once a delivery is changed from In Progress to Failed or Succeeded the order ',
+  //     message: '',
+  //     buttons: [{
+  //         text: 'OK',
+  //         role: 'cancel',
+  //     }],
+  //   });
+  //   await alert.present();
+  // }
 
   async ReceiveDeliverySuccessAlert() {
     const alert = await this.alertController.create({
@@ -128,7 +295,39 @@ export class DeliveriesPage implements OnInit {
   async ReceiveDeliveryErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Delivery Was Not Successfully Received',
+      subHeader: 'Delivery Status Was Not Successfully Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async AddOrderErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Order was not added to Successful Orders',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async DeleteOrderLineItemErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Order was not removed from Orders In Progress',
       message: 'Please try again',
       buttons: [{
         text: 'OK',

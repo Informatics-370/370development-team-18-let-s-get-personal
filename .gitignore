@@ -509,3 +509,4 @@ api/Migrations/20230819184426_initial.Designer.cs
 *.cs
 api/Migrations/20230820192152_initial.cs
 api/Migrations/20230820192152_initial.Designer.cs
+customer/src/app/shop-all/stationary/stationary.page.spec.ts

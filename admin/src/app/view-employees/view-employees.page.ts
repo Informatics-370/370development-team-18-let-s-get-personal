@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { IonicModule, AlertController, ModalController, IonModal } from '@ionic/angular';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { User } from 'src/app/Models/user';
-import { Customer } from 'src/app/Models/customer';
 import { Employee } from 'src/app/Models/employee';
 import { UserProfileDataService } from '../Services/userprofile.service';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -18,67 +16,93 @@ import { RegisterVM } from '../ViewModels/registerVM';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class ViewEmployeesPage implements OnInit {
-  register: RegisterVM[] =[]
+  register: RegisterVM[] = []
   //Profile: User[] = []
   employees: Employee[] = []
   employee: any
   @ViewChild(IonModal) modal!: IonModal
   
-  constructor( private alertController:AlertController, 
-    private empservice: UserProfileDataService, public modalCtrl: ModalController,
-    public authservice: AuthenticationService, public router: Router) { } //private service:ProfileService,
+  constructor( private alertController:AlertController, public modalCtrl: ModalController,
+    private empservice: UserProfileDataService, public authservice: AuthenticationService, public router: Router) { } 
+    //private service:ProfileService,
 
   ngOnInit() {
-  //  this.getProfle()
+    //  this.getProfle()
     this.GetAllEmployees()
-  } 
+  }
 
-  backButton(){
+  backButton() {
     this.router.navigate(['./tabs/profiles']);
   }
 
   AddEmployeeForm: FormGroup = new FormGroup({
-    FirstName: new FormControl('',[Validators.required]),
-    Surname: new FormControl('',[Validators.required]),
-    Email: new FormControl('',[Validators.required]),    
-    Cell_Number: new FormControl('',[Validators.required]),
-    Username: new FormControl('',[Validators.required]),
-    Password: new FormControl('',[Validators.required]),
+    FirstName: new FormControl('', [Validators.required]),
+    Surname: new FormControl('', [Validators.required]),
+    Email: new FormControl('', Validators.compose([Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])),
+    Cell_Number: new FormControl('', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(12)])), //, Validators.pattern("^(\\+27|0)[6-8][0-9]{8}$")
+    Username: new FormControl('', [Validators.required]),
+    // Password: new FormControl('',Validators.compose([Validators.required,Validators.minLength(8),Validators.pattern('(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[$@$!%?&])[A-Za-zd$@$!%?&].{8,15}')])),
+    Password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')])
   })
 
-  GetAllEmployees(){
-    this.empservice.GetAllEmployees().subscribe(result =>{
+  get f() { return this.AddEmployeeForm.controls }
+
+  GetAllEmployees() {
+    this.empservice.GetAllEmployees().subscribe(result => {
       this.employees = result as Employee[];
     })
   }
   
-  GetEmployee(Employee_ID: number){
+  GetEmployee(Employee_ID: string){
     this.empservice.GetEmployee(Employee_ID).subscribe(result => {
-      this.employee = result  
+      this.employee = result
       console.log(result);
     })
   }
+  
+  DeleteEmployee(employee_ID: string, username: string){
+    this.authservice.DeleteUser(username).subscribe(result => {
+      console.log(result);
+      this.DeleteEmployeeSuccessAlert();
+    },(error) => {
+      this.DeleteEmployeeErrorAlert();        
+      console.error('DeleteEmployee error:', error);
+    })    
+        
+    // this.empservice.DeleteEmployee(employee_ID).subscribe(result => {
+    //   console.log(result);
+    //   this.DeleteEmployeeSuccessAlert();
+    // },(error) => {
+    //   this.DeleteEmployeeErrorAlert();        
+    //   console.error('Edit stock image error:', error);
+    // })    
 
-  AddEmployee(){
-    let addemployee = new RegisterVM()
-    addemployee.firstName = this.AddEmployeeForm.value.FirstName
-    addemployee.surname = this.AddEmployeeForm.value.Surname
-    addemployee.email = this.AddEmployeeForm.value.Email
-    addemployee.cell_Number = this.AddEmployeeForm.value.Cell_Number
-    addemployee.username = this.AddEmployeeForm.value.Username
-    addemployee.password = this.AddEmployeeForm.value.Password
+  }
 
-    this.authservice.RegisterEmployee(addemployee).subscribe(result => {
-      if(result.status == "Error")
-        {
+  AddEmployee() {
+    if (this.AddEmployeeForm.valid) {
+      const formData = this.AddEmployeeForm.value;
+      console.log(formData);
+
+      let addemployee = new RegisterVM()
+      addemployee.firstName = this.AddEmployeeForm.value.FirstName
+      addemployee.surname = this.AddEmployeeForm.value.Surname
+      addemployee.email = this.AddEmployeeForm.value.Email
+      addemployee.cell_Number = this.AddEmployeeForm.value.Cell_Number
+      addemployee.username = this.AddEmployeeForm.value.Username
+      addemployee.password = this.AddEmployeeForm.value.Password
+
+      this.authservice.RegisterEmployee(addemployee).subscribe(result => {
+        this.AddEmployeeSuccessAlert()
+        console.log(this.AddEmployee)
+      },
+        (error) => {
+          // Handle registration error
           this.AddEmployeeErrorAlert()
-        }        
-      else if(result.status == "Success")
-        {
-          this.AddEmployeeSuccessAlert()
-          console.log(this.AddEmployee)
+          console.error('Registration error:', error);
         }
-    }) 
+      );
+    }
   }
 
   canceladdmodal() {
@@ -86,27 +110,116 @@ export class ViewEmployeesPage implements OnInit {
   }
 
   confirmaddmodal() {
-    this.AddEmployee();    
+    this.AddEmployee();
   }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
-  reloadPage(){
+  reloadPage() {
     window.location.reload()
   }
 
-  DeleteEmployee(Employee_ID: number){
-    this.empservice.DeleteEmployee(Employee_ID).subscribe(result => {
-      console.log(result);
-      if(result == null){
-        this.DeleteEmployeeErrorAlert();
-      }
-      else{
-        this.DeleteEmployeeSuccessAlert();
-      }
-    })    
+  //=========== edits
+  isModalOpen = false;
+  editEmployee: Employee = new Employee();
+
+  editForm: FormGroup = new FormGroup({
+    firstName: new FormControl('',[Validators.required]),
+    surname: new FormControl('',[Validators.required]),
+    email: new FormControl('',[Validators.required]),
+    cell_Number: new FormControl(''),
+    username: new FormControl('',[Validators.required])
+  })
+
+  EditEmployee(employee_ID:string, isOpen: boolean)
+  {    
+    this.empservice.GetEmployee(employee_ID).subscribe(response => {         
+      this.editEmployee = response as Employee;
+
+      this.editForm.controls['firstName'].setValue(this.editEmployee.firstName);
+      this.editForm.controls['surname'].setValue(this.editEmployee.surname);
+      this.editForm.controls['email'].setValue(this.editEmployee.email);
+      this.editForm.controls['cell_Number'].setValue(this.editEmployee.cell_Number);
+      this.editForm.controls['username'].setValue(this.editEmployee.username);
+    })
+    
+    this.isModalOpen = isOpen;
+  }
+
+  confirmeditmodal(){
+    try
+    {
+      let editedEmployee = new Employee();
+      editedEmployee.firstName = this.editForm.value.firstName;
+      editedEmployee.surname = this.editForm.value.surname;
+      editedEmployee.email = this.editForm.value.email;
+      editedEmployee.cell_Number = this.editForm.value.cell_Number;
+      editedEmployee.username = this.editForm.value.username;
+
+      this.empservice.UpdateEmployee(this.editEmployee.employee_ID, editedEmployee).subscribe(result =>{
+        this.editSuccessAlert();
+      },(error) => {
+        this.editErrorAlert();        
+        console.error('Edit employee error:', error);
+      })
+    }
+    catch{      
+      this.editErrorAlert();
+    }    
+  }
+
+  canceleditmodal() {
+    this.isModalOpen = false;
+  }
+
+  //=========== alerts
+  async DeleteHelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note:!',
+      subHeader: 'Deleting an Employee will remove their login details but will not delete their details and audit trail from the system',
+      message: 'This is so you can still see previous employees information and the actions they performed while employed.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        // handler:() =>{
+        //   this.reloadPage();
+        // }
+    }],
+    });
+    await alert.present();
+  }
+
+  async editSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Employee Updated',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async editErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Employee Was Not Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
   }
 
   async DeleteEmployeeSuccessAlert() {
@@ -116,7 +229,7 @@ export class ViewEmployeesPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler:() =>{
+        handler: () => {
           this.reloadPage();
         }
       }],
@@ -132,7 +245,7 @@ export class ViewEmployeesPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler:() =>{
+        handler: () => {
           this.reloadPage();
         }
       }],
@@ -147,7 +260,7 @@ export class ViewEmployeesPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler:() =>{
+        handler: () => {
           this.reloadPage();
         }
       }],
@@ -163,7 +276,7 @@ export class ViewEmployeesPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler:() =>{
+        handler: () => {
           this.reloadPage();
         }
       }],

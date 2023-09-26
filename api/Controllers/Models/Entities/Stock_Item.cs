@@ -61,6 +61,8 @@ namespace IPKP___API.Controllers.Models.Entities
 
         //public virtual ICollection<Personalisation_Design> Personalisation_Design { get; set; }
 
+        public Stock_Price_History StockPriceHistory { get; set; }
+
     }
 }
 

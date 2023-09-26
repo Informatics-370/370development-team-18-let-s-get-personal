@@ -66,7 +66,27 @@ export class CreateProfilePage implements OnInit {
     await alert.present();
   }
 
+<<<<<<< HEAD
   async AddEmployeeErrorAlert() {
+=======
+  async AddCustomerSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: "You've been Registered",
+      message:'Proceed to verify your email address.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          //this._router.navigate(['./tabs/register-otp']);;
+        }
+      }],
+    });
+    await alert.present();
+  }
+
+  async AddCustomerErrorAlert() {
+>>>>>>> developer
     const alert = await this.alertController.create({
       header: 'We are sorry!',
       subHeader: 'Employee Was Not Added',

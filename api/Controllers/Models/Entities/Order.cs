@@ -12,15 +12,18 @@ namespace IPKP___API.Controllers.Models.Entities
         [Key]
         public Guid Order_ID { get; set; }
 
-        //Forign Keys
-        [ForeignKey(nameof(Order_Line_Item_ID))]
-        public Guid Order_Line_Item_ID { get; set; }
+        public int Order_Quantity { get; set; }
 
-        //public virtual Order_Line_Item Order_Line_Item { get; set; }
-        //Attributes
-        [StringLength(255)]
-        public string Order_Notes { get; set; }
+        public DateTime Order_Completed_Date { get; set; }
 
-        //public virtual ICollection<Invoice> Invoice { get; set; }
+        //Foreign Keys
+        [ForeignKey(nameof(Customer_ID))]
+        public Guid Customer_ID { get; set; }
+        
+
+        [ForeignKey(nameof(Stock_Item_ID))]
+        public Guid Stock_Item_ID { get; set; }
+
+        public string Stock_Item_Name { get; set; }
     }
 }

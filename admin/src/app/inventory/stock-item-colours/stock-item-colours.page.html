@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Stock Item Colours</ion-title>
+    <ion-button slot="end" (click)="HelpAlert()">Help</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -14,6 +15,7 @@
   
   <ion-content id="content">
     <ion-card-content>
+      <p style="cursor:pointer;" (click)="inventoryNav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
       <ion-button id="addmodal">Add Stock Item Colour</ion-button>
       <!-- <ion-searchbar [(ngModel)]="filterTerm"  (ionInput)="updateSearchResults()"></ion-searchbar>                     -->
       <ion-grid>
@@ -24,8 +26,8 @@
         </ion-row>
         <ion-row *ngFor="let item of stockitemcolours">
           <ion-col>{{item.stock_Item_Colour_Name}}</ion-col>
-          <ion-col><ion-button (click)="deletecolour(item.stock_Item_Colour_ID)">Delete</ion-button></ion-col>
-          <ion-col><ion-button (click)="getstockcolour(item.stock_Item_Colour_ID)">Update</ion-button></ion-col>      
+          <ion-col><ion-button (click)="deletecolour(item.stock_Item_Colour_ID, item.stock_Item_Colour_Name)">Delete</ion-button></ion-col>
+          <ion-col><ion-button (click)="EditColour(item.stock_Item_Colour_ID, true)">Update</ion-button></ion-col>      
         </ion-row>
       </ion-grid>  
     </ion-card-content>
@@ -33,7 +35,6 @@
   
 </ion-content>
 
-<ion-footer> 
   <ion-modal trigger="addmodal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
@@ -43,7 +44,7 @@
           </ion-buttons>
           <ion-title>Add Stock Item Colour</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmaddmodal()" [disabled]="AddColourForm.invalid" [strong]="true">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -53,11 +54,31 @@
               <ion-label position="stacked">Stock Item Colour Name</ion-label><br>
               <ion-input type="text" formControlName="name" placeholder="" required></ion-input>
             </ion-item>
-            <!-- <ion-item>
-              <ion-label position="stacked">Stock Item Colour Image</ion-label><br>
-            </ion-item>                   -->
         </form>
       </ion-content>
     </ng-template>
   </ion-modal>
-</ion-footer>
+
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Add Discount Policy Details</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="editForm" >
+          <ion-item>
+            <ion-label position="stacked">Stock Item Colour Name</ion-label><br>
+            <ion-input type="text" formControlName="name" placeholder="" required></ion-input>
+          </ion-item>                   
+      </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>

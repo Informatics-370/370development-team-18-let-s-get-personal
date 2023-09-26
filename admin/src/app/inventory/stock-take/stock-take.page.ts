@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
-//for modal
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
@@ -12,17 +11,14 @@ import { StockItemDataService } from 'src/app/Services/stockitem.service';
 import { Stock_Item } from 'src/app/Models/stockitem';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
 import { InventoryDataService } from 'src/app/Services/inventory.service';
-import { StockTypes } from 'src/app/Models/stocktypes';
-import { StockTypeDataService } from 'src/app/Services/stocktype.service';
-import { StockItemColours } from 'src/app/Models/stockitemcolour';
-import { StockItemColourDataService } from 'src/app/Services/stockitemcolours.service';
-import { Stock_Image } from 'src/app/Models/stockimage';
-import { StockImageDataService } from 'src/app/Services/stockimage.service';
+import { Write_Off } from 'src/app/Models/writeoff';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
-import { InventoryViewModel } from 'src/app/ViewModels/InventoryVM';
+import { Write_Off_Line_Item } from 'src/app/Models/writeofflineitem';
 import { PersonalisationService } from 'src/app/Services/personalisation.service';
-import { Image_Price } from 'src/app/Models/imageprice';
-import { TextPrice } from 'src/app/Models/textprice';
+import { WriteOffVM } from 'src/app/ViewModels/writeoffVM';
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
+import { AuditTrail } from 'src/app/Models/adittrail';
+
 @Component({
   selector: 'app-stock-take',
   templateUrl: './stock-take.page.html',
@@ -32,39 +28,17 @@ import { TextPrice } from 'src/app/Models/textprice';
 })
 export class StockTakePage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
-  errormsg: string = ""; 
-  inventory: InventoryViewModel[] =[];
+  editProduct: Stock_Item = new Stock_Item();
   Products: StockItemViewModel[] = [];
-
   stockitems!: Stock_Item[];
-  stocktypes: StockTypes[] =[];
-  stockitemcolours: StockItemColours[] = [];
-  stockimages: Stock_Image[] =[];
-
-  textprice: TextPrice[] =[]
-  imageprice: Image_Price[] =[]
-
+  action!: string
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public bestsellerservice:BestsellersService, private alertController:AlertController,     
-    //dataservices
-    public stockitemservice: StockItemDataService, private typeservice:StockTypeDataService,
-    private imageservice:StockImageDataService, private colourservice:StockItemColourDataService,
-    private inventoryservice: InventoryDataService, public pservice: PersonalisationService) { }
+    public stockitemservice: StockItemDataService, private inventoryservice: InventoryDataService, 
+    public pservice: PersonalisationService, private trailservice: AuditTrailService) { }
     
   ngOnInit() {
     this.GetAllStockItems();
-    this.GetStockImages();
-    this.GetStockItemColours();
-    this.GetStockTypes();
-  }
-
-  UpdateQuantity(){
-    
-  }
-
-  Writeoff()
-  {
-    this.router.navigate(['./tabs/write-off']);
   }
 
   GetAllStockItems(){
@@ -73,122 +47,299 @@ export class StockTakePage implements OnInit {
     })    
   }
 
-  AddStockForm: FormGroup = new FormGroup({
-    Stock_Item_Name: new FormControl('',[Validators.required]),
-    Stock_Item_Price: new FormControl('',[Validators.required]),
-    Stock_Item_Size: new FormControl('',[Validators.required]),
+  inventoryNav()
+  {
+    this.router.navigate(['./tabs/inventory']);
+  }
+
+  prevWriteOffsNav(){
+    this.router.navigate(['./tabs/write-off']);
+  }
+
+//========== Stock Take ===============
+  isModalOpen = false;
+  editForm: FormGroup = new FormGroup({
     Inventory_Comments: new FormControl(''),
     Stock_Item_Quantity: new FormControl('',[Validators.required]),
-    Stock_Type_ID: new FormControl('',[Validators.required]),
-    Stock_Image_ID: new FormControl('',[Validators.required]),
-    Stock_Item_Colour_ID: new FormControl('',[Validators.required]),
   })
 
-  AddStockItem(){
-    let addStockItem = new Stock_Item();
-    addStockItem.stock_Item_Name = this.AddStockForm.value.Stock_Item_Name;
-    addStockItem.stock_Item_Price = this.AddStockForm.value.Stock_Item_Price;
-    addStockItem.stock_Item_Size = this.AddStockForm.value.Stock_Item_Size;
-    addStockItem.inventory_Comments = this.AddStockForm.value.Inventory_Comments;
-    addStockItem.stock_Item_Quantity = this.AddStockForm.value.Stock_Item_Quantity;
-    addStockItem.stock_Type_ID = this.AddStockForm.value.Stock_Type_ID;
-    addStockItem.stock_Image_ID = this.AddStockForm.value.Stock_Image_ID;
-    addStockItem.stock_Item_Colour_ID = this.AddStockForm.value.Stock_Item_Colour_ID;
-    
-
-    this.stockitemservice.AddStockItem(addStockItem).subscribe(result => {
-      if(result.status == "Error")
-        {
-          this.AddStockItemErrorAlert();
-          this.errormsg = result.Message;
-        }
-      else if(result.status == "Success")
-        {
-          console.log(addStockItem)
-          this.AddStockItemSuccessAlert();
-        }
-    }) 
-  }
-
-
-  GetStockTypes(){
-    this.typeservice.GetStockTypes().subscribe(result =>{
-      this.stocktypes = result as StockTypes[];
-      console.log(this.stocktypes);
+  UpdateQuantity(stock_Item_ID:string, isOpen: boolean)
+  {    
+    this.stockitemservice.GetStockItem(stock_Item_ID).subscribe(response => {         
+      this.editProduct = response as Stock_Item;
+      localStorage.setItem('stock_Item_Name', JSON.stringify(this.editProduct.stock_Item_Name));
+      // this.editForm.controls['Inventory_Comments'].setValue(this.editProduct.inventory_Comments);
+      this.editForm.controls['Stock_Item_Quantity'].setValue(this.editProduct.stock_Item_Quantity);
     })
-  }
-  
-  GetStockImages(){
-    this.imageservice.GetAllStockImages().subscribe(result =>{
-      this.stockimages = result as Stock_Image[];
-      console.log(this.stockimages);
-    })    
+    
+    this.isModalOpen = isOpen;
   }
 
-  GetStockItemColours(){
-    this.colourservice.GetStockItemColours().subscribe(result =>{
-      this.stockitemcolours = result as StockItemColours[];
-      console.log(this.stockitemcolours)      
-    })   
+  confirmeditmodal(){
+    try
+    {
+      let editedProduct = new Stock_Item();
+      editedProduct.stock_Item_Quantity = this.editForm.value.Stock_Item_Quantity;
+      // editedProduct.inventory_Comments = this.editForm.value.Inventory_Comments;
+      let stockitemname = JSON.parse(localStorage.getItem('stock_Item_Name') as string)
+
+      this.inventoryservice.Stocktake(this.editProduct.stock_Item_ID, editedProduct).subscribe(result =>{
+        if(result.status == "Success"){
+          this.editSuccessAlert();
+          
+          this.action = "Stock Take "+ stockitemname +". New Quantity: " + this.editForm.value.Stock_Item_Quantity 
+          +". Old Quantity: " + this.editProduct.stock_Item_Quantity
+          this.AddTrail()
+        }       
+      },(error) => {
+      this.editErrorAlert();        
+      console.error('confirmeditmodal error:', error);
+      })
+    }
+    catch{      
+      this.editErrorAlert();
+    }    
   }
-  
-  // getImagePrice(){
-  //   this.pservice.GetAllImagePrices().subscribe(result => {
-  //     this.imageprice = result as Image_Price[];
-  //     console.log(this.imageprice)
-  //   })
-  // }
 
-  // getTextPrice(){
-  //   this.pservice.GetAllTextPrices().subscribe(result => {
-  //     this.textprice = result as TextPrice[];
-  //     console.log(this.textprice)
-  //   })
-  // }
-
-  canceladdmodal() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  confirmaddmodal() {
-    this.AddStockItem();    
+  canceleditmodal() {
+    this.isModalOpen = false;
   }
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }
 
-  reloadPage(){
-    window.location.reload()
+  //========== Write off ===============
+  
+  isWriteOffModalOpen = false;
+  writeoffForm: FormGroup = new FormGroup({
+    Write_Off_Reason: new FormControl('',[Validators.required]),
+    Write_Off_Quantity: new FormControl('',[Validators.required]),
+  })
+
+  WriteOffModal(stock_Item_ID:string, isOpen: boolean, stock_Item_Name:string){  
+    localStorage.setItem('stock_Item_Name', JSON.stringify(stock_Item_Name));  
+    localStorage.setItem('stockitemID', JSON.stringify(stock_Item_ID));
+    this.isWriteOffModalOpen = isOpen;
   }
 
-  async AddStockItemSuccessAlert() {
+  //add to write off
+  Writeoff() 
+  {
+    try
+    {
+      let writeoff = new Write_Off();
+      this.inventoryservice.AddToWriteoff(writeoff).subscribe(result => {
+        writeoff = result as Write_Off
+        console.log(writeoff)
+        let writeoffID = writeoff.write_Off_ID
+        localStorage.setItem('writeoffID', JSON.stringify(writeoffID));
+      },(error) => {
+      this.WriteOffErrorAlert();        
+      console.error('WriteOff error:', error);
+    })
+      this.WriteOffLine()
+    }
+    catch
+    {
+      this.WriteOffErrorAlert()
+    }
+  }
+
+  writeoffquantity!: any
+  //add to write off line item
+  WriteOffLine() 
+  {
+    try
+    {
+      let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)//JSON.parse(JSON.stringify(localStorage.getItem('stockitemID')));
+      let writeoffID = JSON.parse(localStorage.getItem('writeoffID') as string)//JSON.parse(JSON.stringify(localStorage.getItem('writeoffID')));   
+    
+      console.log(stockitemID)
+      console.log(writeoffID)
+
+      let lineitem = new Write_Off_Line_Item()    
+      lineitem.write_Off_Quantity = this.writeoffForm.value.Write_Off_Quantity
+      lineitem.write_Off_Reason = this.writeoffForm.value.Write_Off_Reason
+      lineitem.stock_Item_ID = stockitemID
+      lineitem.write_Off_ID = writeoffID
+
+      this.writeoffquantity = this.writeoffForm.value.Write_Off_Quantity
+    
+      this.inventoryservice.AddToWriteoffLine(lineitem).subscribe(result => {
+        if(result.status == "Success"){
+          this.decreaseQuantity()
+          console.log(result)
+        }
+      },(error) => {
+      this.WriteOffLineErrorAlert();        
+      console.error('WriteOffLine error:', error);
+      })
+    }
+    catch
+    {
+      this.WriteOffLineErrorAlert()
+    }
+  }
+
+  decreaseQuantity()
+  {
+    try{
+      let VM = new WriteOffVM()
+      let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)
+      VM.write_Off_Quantity = this.writeoffquantity
+      let stockitemname = JSON.parse(localStorage.getItem('stock_Item_Name') as string)
+    
+      this.inventoryservice.DecreaseStockQuantity(stockitemID, VM).subscribe(result => {
+        if(result.status == "Success"){
+          this.WriteOffLineSuccessAlert()
+          console.log(result)
+
+          this.action = "Wrote off Stock "+ stockitemname + "Quantity: " + this.writeoffquantity
+          this.AddTrail()
+        }
+      },(error) => {
+        this.DecreasesQuantityErrorAlert();        
+        console.error('decreaseQuantity error:', error);
+      })
+    }
+    catch{
+      this.DecreasesQuantityErrorAlert()
+    }    
+  }
+
+  //========== Trail ===============
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+  }
+
+//========== Alerts ===============
+  async HelpAlert() {
     const alert = await this.alertController.create({
-      header: 'Success!',
-      subHeader: 'Stock Item added',
+      header: 'Please Note: ',
+      subHeader: 'When Writing off quantity is to decrease the quantity if products were damaged, lost or stolen',
+      message: "This action will not remove the Product, only decrease it's quantity" ,
       buttons: [{
           text: 'OK',
           role: 'cancel',
-          handler:() =>{
-            this.reloadPage();
-          }
       }],
     });
     await alert.present();
   }
 
-  async AddStockItemErrorAlert() {
+  async editSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Product Updated',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async editErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Stock Item was not added',
-      message: this.errormsg,
+      subHeader: 'Product Was Not Updated',
+      message: 'Please try again',
       buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler:() =>{
-            this.reloadPage();
-          }
-      }],
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  reloadPage(){
+    window.location.reload()
+  }
+
+  async WriteOffLineSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Write off completed',
+      // message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async WriteOffLineErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Write off was not completed',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async WriteOffErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Write off request faild',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async DecreasesQuantityErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Write off Quantity update faild',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
     });
     await alert.present();
   }

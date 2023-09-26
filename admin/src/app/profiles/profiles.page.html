@@ -10,8 +10,9 @@
       <ion-title size="large">profiles</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-button (click)="openPDF()">Dowload Users List</ion-button>
+  <ion-button (click)="routeAudit()">View Audit Trail</ion-button>
   <ion-button (click)="routeEmployees()">Manage Employees</ion-button>
+  <ion-button (click)="generateUserPDF()">Download Users Report</ion-button>
  <!----<ion-item>
     <ion-label position="stacked">User Role</ion-label><br>
     <ion-select placeholder="Select a User Role" formControlName="UserId">
@@ -26,10 +27,12 @@
     <ion-grid>
      
       <ion-col>
+        
          <form [formGroup]="SearchForm">      
         <ion-item>
           <ion-input type="text" formControlName="name" placeholder="Admin Name" required></ion-input>
-          <ion-button (click)="searchAdmin()">Search</ion-button>
+          <ion-button (click)="searchAdmin()" slot="start">Search</ion-button>
+          <ion-button (click)="generateAdminPDF()">Download Admin PDF Report</ion-button>
         </ion-item> 
       </form>
         <ion-row><h2>Admins</h2></ion-row>
@@ -45,15 +48,17 @@
           <ion-col>{{a.email}}</ion-col>
           <ion-col>{{a.username}}</ion-col>
           <ion-col>{{a.cell_Number}}</ion-col>
-          <ion-col>{{a.date_Registered}}</ion-col>
+          <ion-col>{{a.date_Registered| date: 'yyyy-MM-dd'}}</ion-col>
         </ion-row>
       </ion-col>
 
       <ion-col>
+        
         <form [formGroup]="SearchForm">      
           <ion-item>
             <ion-input type="text" formControlName="name" placeholder="Employee Name" required></ion-input>
-            <ion-button (click)="searchEmployee()">Search</ion-button>
+            <ion-button (click)="searchEmployee()" slot="start">Search</ion-button>
+            <ion-button (click)="generateEmployeePDF()">Download Employee PDF Report</ion-button>
           </ion-item> 
         </form>
         <ion-row><h2>Employees</h2>  </ion-row>
@@ -69,15 +74,16 @@
           <ion-col>{{e.email}}</ion-col>
           <ion-col>{{e.username}}</ion-col>
           <ion-col>{{e.cell_Number}}</ion-col>
-          <ion-col>{{e.date_Registered}}</ion-col>
+          <ion-col>{{e.date_Registered| date: 'yyyy-MM-dd'}}</ion-col>
         </ion-row>
       </ion-col>
-      
       <ion-col>
+        
         <form [formGroup]="SearchForm">      
           <ion-item>
             <ion-input type="text" formControlName="name" placeholder="Customer Name" required></ion-input>
-            <ion-button (click)="searchCustomer()">Search</ion-button>
+            <ion-button (click)="searchCustomer()" slot="start">Search</ion-button>
+            <ion-button (click)="generateCustomerPDF()">Download Customer PDF Report</ion-button>
           </ion-item> 
         </form>
         <ion-row><h2>Customers</h2></ion-row>
@@ -93,10 +99,9 @@
           <ion-col>{{c.email}}</ion-col>
           <ion-col>{{c.username}}</ion-col>
           <ion-col>{{c.cell_Number}}</ion-col>
-          <ion-col>{{c.date_Registered}}</ion-col>
+          <ion-col>{{c.date_Registered| date: 'yyyy-MM-dd'}}</ion-col>
         </ion-row>
       </ion-col>
-
     </ion-grid>
   </div>
   

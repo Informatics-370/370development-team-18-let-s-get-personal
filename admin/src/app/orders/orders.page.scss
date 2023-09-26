@@ -10,3 +10,16 @@ img{
     width: 100px;
     height: 100px;
 }
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+
+  #icon {
+    /* Add your specific styles for this image here */
+    /* For example, to prevent the width and height styles, you can reset them: */
+    width: auto;
+    height: auto;
+  }

@@ -22,6 +22,7 @@ namespace IPKP___API.Controllers
         {
             _IPKPRepository = iPKPRepository;
         }
+
         [HttpGet]
         [Route("GetAllStockItems")]
         public object GetAllStockItemsAsync()
@@ -29,6 +30,7 @@ namespace IPKP___API.Controllers
             try
             {
                 var stockitems = _IPKPRepository.GetStockNames();
+               
 
                 if(stockitems == null)
                 {
@@ -45,6 +47,28 @@ namespace IPKP___API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAllStockItemsByType/{stock_Type_ID}")]
+        public object GetAllStockItemsByType(Guid stock_Type_ID)
+        {
+            try
+            {
+                var stockitems = _IPKPRepository.GetStockNamesByType(stock_Type_ID);
+
+                if (stockitems == null)
+                {
+                    return NotFound(new Response { Status = "Success", Message = "No Stock Items were found." });
+                }
+                else
+                {
+                    return Ok(stockitems);
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
 
         [HttpPost]
         [Route("AddStockItem")]
@@ -64,6 +88,14 @@ namespace IPKP___API.Controllers
                     Stock_Type_ID = sivm.Stock_Type_ID,
                     Stock_Image_ID = sivm.Stock_Image_ID,
                     Stock_Item_Colour_ID = sivm.Stock_Item_Colour_ID,
+
+                    StockPriceHistory = new Stock_Price_History
+                    {
+                        Stock_Price_History_ID = new Guid(),
+                        Effective_From_Date = DateTime.Today,
+                        Stock_Price_Amount = sivm.Stock_Item_Price,
+                        Stock_Item_Name = sivm.Stock_Item_Name,
+                    }
                 };
                 _IPKPRepository.Add(stockItem);
                 await _IPKPRepository.SaveChangesAsync();
@@ -104,18 +136,46 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateStockItem/{stock_Item_ID}")]
-        public async Task<IActionResult> UpdateStockItemAsync(Guid stock_Item_ID, StockItemViewModel sivm)
+        public async Task<IActionResult> UpdateStockItemAsync(Guid stock_Item_ID, Stock_Item sivm)
         {
             try
             {
                 var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
 
-                if (existingStockItem == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
+                if (existingStockItem == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
+                }
+                else if (existingStockItem.Stock_Item_Price == sivm.Stock_Item_Price)
+                {
 
-                existingStockItem.Stock_Item_Name = sivm.Stock_Item_Name;
-                existingStockItem.Stock_Type_ID = sivm.Stock_Type_ID;
-                existingStockItem.Stock_Image_ID = sivm.Stock_Image_ID;
-                existingStockItem.Stock_Item_Colour_ID = sivm.Stock_Item_Colour_ID;
+                    existingStockItem.Stock_Item_Name = sivm.Stock_Item_Name;
+                    existingStockItem.Stock_Type_ID = sivm.Stock_Type_ID;
+                    existingStockItem.Stock_Image_ID = sivm.Stock_Image_ID;
+                    existingStockItem.Stock_Item_Colour_ID = sivm.Stock_Item_Colour_ID;
+                    existingStockItem.Inventory_Comments = sivm.Inventory_Comments;
+                    existingStockItem.Stock_Item_Price = sivm.Stock_Item_Price;
+                    existingStockItem.Stock_Item_Size = sivm.Stock_Item_Size;
+                }
+                else
+                {
+                    existingStockItem.Stock_Item_Name = sivm.Stock_Item_Name;
+                    existingStockItem.Stock_Type_ID = sivm.Stock_Type_ID;
+                    existingStockItem.Stock_Image_ID = sivm.Stock_Image_ID;
+                    existingStockItem.Stock_Item_Colour_ID = sivm.Stock_Item_Colour_ID;
+                    existingStockItem.Inventory_Comments = sivm.Inventory_Comments;
+                    existingStockItem.Stock_Item_Price = sivm.Stock_Item_Price;
+                    existingStockItem.Stock_Item_Size = sivm.Stock_Item_Size;
+                    existingStockItem.StockPriceHistory.Effective_To_Date = DateTime.Today;
+
+                    existingStockItem.StockPriceHistory = new Stock_Price_History
+                    {
+                        Stock_Price_History_ID = new Guid(),
+                        Effective_From_Date = DateTime.Today,
+                        Stock_Price_Amount = sivm.Stock_Item_Price,
+                        Stock_Item_Name = sivm.Stock_Item_Name,
+                    };
+                }
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {
@@ -136,21 +196,58 @@ namespace IPKP___API.Controllers
             try
             {
                 var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(StockItemId);
+                var results = _IPKPRepository.GetOrderLineItemByStockItem(StockItemId);
 
-                if (existingStockItem == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item " + StockItemId });
-
-                _IPKPRepository.Delete(existingStockItem);
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                if (existingStockItem == null)
                 {
-                    return Ok(new Response { Status = "Success", Message = "Stock Item  Removed Successfully" });
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item " + StockItemId });
                 }
+                else if(results == null)
+                {
+                    _IPKPRepository.Delete(existingStockItem);
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Stock Item  Removed Successfully" });
+                    }
+                }
+                else
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "Cannot delete stock item while it is being used in an order in progress." });
+                }
+                
             }
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
             return Ok(new Response { Status = "Success", Message = "Stock Item  Removed From Database." });
+        }
+
+        [HttpGet]
+        [Route("GetStockItemsWithPriceHistory")]
+        public async Task<IActionResult> GetStockItemsWithPriceHistoryAsync() //public async Task<IActionResult>
+        {
+            try
+            {
+
+                var results = await _IPKPRepository.GetAllStockItemsIncludingPriceHistoryAsync();
+
+                if (results == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Items Price History" });
+
+                }
+                else
+                {
+                    return Ok(results);
+                }
+
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
         }
 
     }

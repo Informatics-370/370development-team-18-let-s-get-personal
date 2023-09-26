@@ -1,13 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Basket</ion-title>
+	<ion-button slot="end" (click)="PersonalisationTip()">Help</ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="cartItems.length == 0">
-	<div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
-	  <p>Your basket is empty.</p>
-	  <ion-button (click)="shopall()">Return to shop</ion-button>
+	<div class="col-12 text-center" ><!--style="padding-top: 3cm; margin-left: 2.5cm;"-->
+	  <p style="text-align: center;">Your basket is empty.</p>
+	  <p style="text-align: center;">Add something to make me happy!!</p>
+	  <img src="/assets/EmptyCart.PNG" alt="empty icon" class="center" width="100%" height="100%"/>
+	  <ion-button class="center" (click)="shopall()">Return to shop</ion-button>
 	</div>
 </ion-content>
 
@@ -16,44 +19,55 @@
     <ion-item *ngFor="let item of cartItems">
       <ion-thumbnail slot="start">
         <img src='data:image/png;base64,{{item.stock_Item.stockImageFile}}'/>
+		
       </ion-thumbnail>
       <ion-label>
-        <h5>{{ item.stock_Item_Name }}</h5>
+        <h5>{{item.stock_Item.stock_Item_Name}}</h5>
         <ion-button (click)="removeItemFromBasket(item.stock_Item.stock_Item_ID)">Remove</ion-button>
         <ion-button (click)="decrementQuantity(item)">-</ion-button>
-        <span>{{ item.basket_Quantity}}</span>
-        <ion-button (click)="incrementQuantity(item)">+</ion-button>
+        <span> {{ item.basket_Quantity}}</span>
+        <ion-button (click)="incrementQuantity(item)">+</ion-button>		
       </ion-label>
-	  <!-- id="addPersonalizationmodal" -->
-      <ion-button id="addPersonalizationmodal" (click)="personalize(item.stock_Item.stock_Item_ID)">Personalize Item</ion-button>
+
+	  <ion-label>R {{item.stock_Item.stock_Item_Price}}.00</ion-label>
+      <ion-button *ngIf="isEmptyObject(item.personalization)" (click)="personalize(item.stock_Item.stock_Item_ID,true)">Personalize Item</ion-button>
+	  <ion-button *ngIf="!isEmptyObject(item.personalization)" (click)="personalize(item.stock_Item.stock_Item_ID,true)">Update Personalize Item</ion-button>
+	  
+      <ion-button *ngIf="!isEmptyObject(item.personalization)" (click)="view(item)">View Personalization</ion-button>
     </ion-item>
   </ion-list>
   <ion-button (click)="clearBasket()">Empty Basket</ion-button>
   <ion-grid>
-    <ion-row>
-      <ion-col>Bill Details</ion-col>
-    </ion-row>
-   <!---<ion-col>Personalisation cost:</ion-col>-->
-    <ion-col></ion-col>
-    <ion-row>
-      <ion-col>Items Total (Excluding Delivery)</ion-col>
-      <ion-col><strong>R{{calculateTotalPrice()}}</strong></ion-col>
-      <ion-button (click)="makepayment()">Checkout</ion-button>
-    </ion-row>
+		<ion-row>
+			<ion-col><h3> Bill Details </h3></ion-col>			
+		</ion-row>
+		<ion-row>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6">Total Before Vat:</ion-col>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6"> R {{pureprice}}.00</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6">Vat: </ion-col>	
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6">R {{roundedvat}}</ion-col>		
+		</ion-row>
+		<ion-row *ngIf="discount_Amount">
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6"> Discount: </ion-col>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6">R {{discount_Amount}}.00 </ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6">Total (Excluding Delivery)</ion-col>
+			<ion-col sizeLg="3" sizeMd="3" sizeSm="6"><strong>R {{calculateTotalPrice()}}</strong></ion-col>
+		</ion-row>	
+		<ion-row>
+			<ion-col size="12" style="text-align: end;"><ion-button (click)="makepayment()">Checkout</ion-button></ion-col>
+		</ion-row>	
   </ion-grid>
+  
+  <img src="/assets/Cart.PNG" alt="cart icon" class="center" style="width: 25%; height: 50%;" />
 </ion-content>
 
-
-<ion-content *ngIf="cartItems.length == 0">
-  <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
-    <p>Your basket is empty.</p>
-    <ion-button (click)="shopall()">Return to shop</ion-button>
-  </div>
-</ion-content>
 
 <ion-footer>
-
-	<ion-modal trigger="addPersonalizationmodal" (willDismiss)="onWillDismiss($event)">
+	<ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
 		<ng-template>
 			<ion-header>
 				<ion-toolbar>
@@ -62,33 +76,30 @@
 					</ion-buttons>
 					<ion-title id="addmodal">Add Personalization</ion-title>
 					<ion-buttons slot="end">
-						<ion-button (click)="confirmaddmodal()" >Confirm</ion-button>
+						<ion-button (click)="confirmaddmodal()" [disabled]="AddTextForm.invalid || UploadImageForm.invalid" >Confirm</ion-button>
 					</ion-buttons>
 				</ion-toolbar>
 			</ion-header>
 			<ion-content class="ion-padding">
-				 <p style="color: red;">[strong]="true"
-					If you would like to not add a design text or image please enter none 
-				</p> 
 				<form [formGroup]="AddTextForm">
 					<ion-item>
-						<ion-label position="stacked">
-							<h3>Design Text</h3>
-						</ion-label><br>
-						<ion-input type="text" formControlName="designText" placeholder="" id="designText" required></ion-input>
+						<ion-label>Design Text</ion-label>
+						<ion-input 
+						 type="text" formControlName="designText" placeholder="" id="designText" required></ion-input>
 					</ion-item>					
 				</form>
 				<form [formGroup]="UploadImageForm">
 					<ion-item>
 						<div>
 							<ion-label>Design Image</ion-label>
-							<input formControlName="designImage" type="file" id="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+							<input formControlName="designImage" type="file" id="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;"  accept="image/*">
 							<ion-button mat-stroked-button color="primary" (click)="file.click()">Upload File</ion-button>
 							<span *ngIf="fileNameUploaded.length > 0"> {{fileNameUploaded}}</span>
 						</div>
 					</ion-item>
 				</form>
 				<p>Please upload your inspiration photo for your design</p>
+				<img src="/assets/Smile.jpg" alt="smile icon" class="center" style="width: 100%; height: 80%;" />
 			</ion-content>
 		</ng-template>
 	</ion-modal>

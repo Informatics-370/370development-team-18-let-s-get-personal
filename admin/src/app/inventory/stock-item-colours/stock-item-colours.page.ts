@@ -5,12 +5,13 @@ import { StockItemColours } from 'src/app/Models/stockitemcolour';
 import { StockItemColourDataService } from 'src/app/Services/stockitemcolours.service';
 import { ToastController } from '@ionic/angular';
 import { FormsModule, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-//for modal
 import { ModalController} from '@ionic/angular'; 
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { AuditTrailService } from 'src/app/Services/audittrail.service';
+import { AuditTrail } from 'src/app/Models/adittrail';
 
 @Component({
   selector: 'app-stock-item-colours',
@@ -20,25 +21,14 @@ import { OverlayEventDetail } from '@ionic/core/components';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class StockItemColoursPage implements OnInit {
-  /*filterTerm: string = "";
-  stockitemcolours:any=StockItemColours;
-  filteredStockItemColour = this.stockitemcolours.filter((items: { Stock_Item_Colour_Name: string,Stock_Item_Colour_Image:string; }) => 
-  items.Stock_Item_Colour_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
-
-
-  updateSearchResults() {
-    this.filteredStockItemColour = this.stockitemcolours.filter((items: { Stock_Item_Colour_Name: string; }) =>
-     items.Stock_Item_Colour_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
-  }*/
-
   @ViewChild(IonModal) modal!: IonModal
   stockitemcolours: StockItemColours[] = [];
   colour: any;
   yourImageDataURL: any;
-  
+  errormsg: string = "";
 
   constructor(public modalCtrl: ModalController, private toast: ToastController, 
-    private service:StockItemColourDataService,
+    private service:StockItemColourDataService, private trailservice: AuditTrailService,
     private router: Router, private route: ActivatedRoute, private alertController: AlertController) {  }
 
   AddColourForm:FormGroup = new FormGroup({
@@ -55,35 +45,40 @@ export class StockItemColoursPage implements OnInit {
       console.log(this.stockitemcolours)      
     })   
   }
-  
-  getstockcolour(stock_Item_Colour_ID:string){
-    this.router.navigate(['tabs/edit-stock-item-colours']),stock_Item_Colour_ID;
+
+  inventoryNav()
+  {
+    this.router.navigate(['./tabs/inventory']);
   }
 
   addcolour(){
+    if (this.AddColourForm.valid){
+
     let addColour = new StockItemColours();
     addColour.stock_Item_Colour_Name = this.AddColourForm.value.name;
     this.service.AddStockItemColour(addColour).subscribe(result => {
-      if(result.status == "Error")
-      {
-        this.AddColourErrorAlert();
-      }
-      else if(result.status == "Success"){
-        this.AddColourSuccessAlert();
-      }
-    })
+      this.action = "Added Stock Item Colour: " + this.editForm.value.name
+      this.AddTrail()
+      this.AddColourSuccessAlert();
+    },
+    (error) => {
+      this.AddColourErrorAlert();
+      console.error('Add stock colour error:', error);
+    });
+    //this.presentLoading();
+  }
   }
 
-  deletecolour(stock_Item_Colour_ID:string){
+  deletecolour(stock_Item_Colour_ID:string, stock_Item_Colour_Name:string){
     this.service.DeleteStockItemColour(stock_Item_Colour_ID).subscribe(result =>{
-      if(result.status == "Error")
-      {
-        this.DeleteColourErrorAlert();
-      }
-      else if(result.status == "Success"){
-        this.DeleteColourSuccessAlert();
-      }
-     });
+      this.action = "Deleted Stock Item Colour:" + stock_Item_Colour_Name
+      this.AddTrail()
+      this.DeleteColourSuccessAlert();
+    },(error) => {
+      this.errormsg = error
+      this.DeleteColourErrorAlert();        
+      console.error('Delete stock colour error:', error);
+    });
   }
 
   canceladdmodal() {
@@ -94,8 +89,112 @@ export class StockItemColoursPage implements OnInit {
     this.addcolour();    
   }
 
+  //=============== edit ====
+  isModalOpen = false;
+  editColour: StockItemColours = new StockItemColours();
+  editForm: FormGroup = new FormGroup({
+    name: new FormControl('',[Validators.required]),
+  })
+
+  EditColour(stock_Item_Colour_ID:string, isOpen: boolean)
+  {    
+    this.service.GetStockItemColour(stock_Item_Colour_ID).subscribe(response => {         
+      this.editColour = response as StockItemColours;
+
+      this.editForm.controls['name'].setValue(this.editColour.stock_Item_Colour_Name);
+    })    
+    this.isModalOpen = isOpen;
+  }
+
+  confirmeditmodal(){
+    let editedColour = new StockItemColours();
+      editedColour.stock_Item_Colour_Name = this.editForm.value.name;
+
+      this.service.UpdateStockItemColour(this.editColour.stock_Item_Colour_ID, editedColour).subscribe(result =>{
+        this.action = "Updated Stock Item Colour From " + this.editColour.stock_Item_Colour_Name + "  To: " + this.editForm.value.name
+        this.AddTrail()
+
+        this.editSuccessAlert();
+      },(error) => {
+      this.editErrorAlert();        
+      console.error('Edit colour error:', error);
+    })  
+  }
+
+  canceleditmodal() {
+    this.isModalOpen = false;
+  }
+
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+  action!: string
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = this.action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+  }
+
+  //=============== Alerts ====
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'When colours are updated the new colour name will populate the respective products. This will not update the images',
+      message: 'Colours cannot be deleted if they are being used in a product',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
+
+  async editSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Colour Updated',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async editErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Colour Was Not Updated',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
   }
 
   async DeleteColourSuccessAlert() {
@@ -117,7 +216,7 @@ export class StockItemColoursPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
       subHeader: 'Stock Colour was not deleted',
-      message: 'Please try again',
+      message: 'Please note we cannot delete colours that are being used in a product',
       buttons: [{
           text: 'OK',
           role: 'cancel',
