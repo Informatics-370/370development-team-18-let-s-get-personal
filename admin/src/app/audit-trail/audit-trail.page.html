@@ -55,15 +55,15 @@
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
       <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;">{{item.actionName}}</ion-col>
-      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate}}</ion-col>
+      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate| date: 'yyyy-MM-dd'}}</ion-col>
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
     </ion-row>
 
     <ion-row *ngFor="let item of AdminAuditTrails">
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
-      <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;">{{item.actionName}}</ion-col>
-      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate}}</ion-col>
+      <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;" [innerHTML]="item.actionName">{{item.actionName}}</ion-col>
+      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate| date: 'yyyy-MM-dd'}}</ion-col>
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
     </ion-row>
 
@@ -71,7 +71,7 @@
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
       <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;">{{item.actionName}}</ion-col>
-      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate}}</ion-col>
+      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate| date: 'yyyy-MM-dd'}}</ion-col>
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
     </ion-row>
 
@@ -79,8 +79,8 @@
     <ion-row *ngFor="let item of searchedtrail">
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
-      <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;">{{item.actionName}}</ion-col>
-      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate}}</ion-col>
+      <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;" [innerHTML]="item.actionName">{{item.actionName}}</ion-col>
+      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate| date: 'yyyy-MM-dd'}}</ion-col>
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
     </ion-row>
   </ion-grid>

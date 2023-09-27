@@ -53,6 +53,20 @@ export class SuccessfulPaymentPage implements OnInit {
 
     this.placeOrderT(this.order);
 
+    localStorage.removeItem('cart');
+    localStorage.removeItem('cartItemCount');
+    localStorage.removeItem('quantity');
+    localStorage.removeItem('Image-URL');
+    localStorage.removeItem('stockId');
+    localStorage.removeItem('addressID');
+    localStorage.removeItem('deliveryID');
+    localStorage.removeItem("order");
+    localStorage.removeItem("selectedItem");
+    localStorage.removeItem("vatamount");
+    localStorage.removeItem("pureprice");
+    localStorage.removeItem("totalprice");
+    localStorage.removeItem("discount");
+
   }
 
   placeOrderT(order:OrderT):void{
