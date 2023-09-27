@@ -1,0 +1,49 @@
+ion-button{
+    /*for responsiveness*/
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    overflow: hidden;
+
+    /*for styling*/
+    //height:2.75rem;
+   // border:none;
+    //margin-bottom: 20px;
+    //width: 100%;
+    padding: 0.75rem 1.5rem;
+    //font-size: 15px;
+    //color: rgba(15, 14, 14, 0.948);
+    //background-color: #488aec;
+    border-radius: 4px;
+    text-align: center;
+    text-transform: uppercase;
+    //vertical-align: middle;
+    white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* CSS class to reduce button size */
+.small-button {
+    width: 100px; /* Adjust the width as needed */
+  }
+  
+  /* CSS animation for the text to move out */
+  .small-button ion-button span {
+    animation: moveOut 2s forwards;
+  }
+  
+  /* Keyframes for the animation */
+  @keyframes moveOut {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(50px); /* Adjust the distance to move the text */
+      opacity: 0;
+    }
+  }
+  

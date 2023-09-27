@@ -10,6 +10,7 @@ import { OverlayEventDetail } from '@ionic/core/components';
 import { AuthenticationService } from 'src/app/Services/authentication.service';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ChangePasswordVM } from '../ViewModels/changepasswordVM';
+import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-view-profile',
@@ -47,13 +48,27 @@ isPassModalOpen = false;
 passwordform: FormGroup = new FormGroup({
   // username: new FormControl('',[Validators.required]),
   oldpassword: new FormControl('',[Validators.required]),
-  newpassword: new FormControl('',[Validators.required]),
-  confirmpassword: new FormControl('',[Validators.required]),
-})
+  newpassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
+  confirmpassword:new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
+}, { validators: this.passwordMatchValidator 
+  })
+
+passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
+  const newPassword = control.get('newpassword');
+  const confirmNewPassword = control.get('confirmpassword');
+
+  if (newPassword && confirmNewPassword && newPassword.value !== confirmNewPassword.value) {
+    return { 'passwordMismatch': true };
+  }
+
+  return null;
+}
 
 ChangePassword(isOpen: boolean){
   this.isPassModalOpen = isOpen;
 }
+
+get f() { return this.passwordform.controls }
 
 confirmpassmodal(){
   let username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
@@ -88,6 +103,8 @@ cancelpassmodal() {
     email: new FormControl('',[Validators.required]),
     username: new FormControl('',[Validators.required]),
   })
+
+
 
   public updateProfile(customer_ID:string, isOpen: boolean) {
     this.service.GetCustomer(customer_ID).subscribe(response => {         
@@ -228,8 +245,8 @@ cancelpassmodal() {
 
   async editErrorAlert() {
     const alert = await this.alertController.create({
-      header: 'We are sorry!',
-      subHeader: 'Updated Failed',
+      header: 'Password Update Failed!',
+      subHeader: 'Ensure you entered the correct current password.',
       message: 'Please try again',
       buttons: [{
         text: 'OK',

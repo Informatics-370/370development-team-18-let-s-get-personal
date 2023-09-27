@@ -16,6 +16,7 @@ import { StockItemViewModel } from '../ViewModels/stockitemsVM';
 import { Stock_Item } from '../Models/stockitem';
 import { DatePipe } from '@angular/common';
 
+
 @Component({
   selector: 'app-discounts',
   templateUrl: './discounts.page.html',
@@ -35,7 +36,7 @@ export class DiscountsPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service: DiscountService, private thisroute: Router, public modalCtrl: ModalController,
     private alertController: AlertController, private _service: StockItemDataService, private formBuilder: FormBuilder,
-    private trailservice: AuditTrailService) { }
+    private trailservice: AuditTrailService,private datePipe: DatePipe) { }
 
     SearchForm: FormGroup = new FormGroup({
       name:new FormControl('',[Validators.required])
@@ -138,8 +139,8 @@ export class DiscountsPage implements OnInit {
   editForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     amount: new FormControl('', [Validators.required]),
-    effectiveFromdate: new FormControl('', [Validators.required]),
-    effectiveTodate: new FormControl('', [Validators.required])
+    effectiveFromdate: new FormControl('', [Validators.required, this.dateValidator.bind(this)]),
+    effectiveTodate: new FormControl('', [Validators.required, this.dateValidator.bind(this)]),
   })
 
   EditDiscount(discount_ID: string, isOpen: boolean) {
@@ -165,8 +166,14 @@ export class DiscountsPage implements OnInit {
       this.service.UpdateDiscount(this.editDiscount.discount_ID, editedDiscount).subscribe(result => {
         this.editDiscountSuccessAlert();
 
-        this.action = "Updated discount from " + this.editDiscount.discount_Name + "," + this.editDiscount.discount_Amount + "," + this.editDiscount.effective_From_Date + "," + this.editDiscount.effective_To_Date
-          + " to: " + this.editForm.value.name + "," + this.editForm.value.amount + "," + this.editForm.value.effectiveFromdate + "," + this.editForm.value.effectiveTodate
+         // Format the dates as 'yyyy-MM-dd'
+      const fromDateString = this.datePipe.transform(this.editDiscount.effective_From_Date, 'yyyy-MM-dd');
+      const toDateString = this.datePipe.transform(this.editDiscount.effective_To_Date, 'yyyy-MM-dd');
+      const fromNewDateString = this.datePipe.transform(this.editForm.value.effectiveFromdate , 'yyyy-MM-dd');
+      const toNewDateString = this.datePipe.transform(this.editForm.value.effectiveTodate, 'yyyy-MM-dd');
+
+        this.action = "Updated discount"+ "<br>" +"From: " + this.editDiscount.discount_Name + ", " +"amount="+ this.editDiscount.discount_Amount + ", " +"start date: "+ fromDateString + ", " +"end date: "+ toDateString
+          + "<br>" +" To: " + this.editForm.value.name + ", " +"amount="+ this.editForm.value.amount + ", " +"start date: "+ fromNewDateString+ ", " +"end date: "+ toNewDateString
         this.AddTrail()
       },(error) => {
       this.editDiscountErrorAlert();        
@@ -176,6 +183,12 @@ export class DiscountsPage implements OnInit {
     catch {
       this.editDiscountErrorAlert();
     }
+  }
+
+  formatDate(date: string): string {
+    // Assuming date is in the format 'yyyy-MM-ddTHH:mm:ss'
+    const dateObject = new Date(date);
+    return dateObject.toISOString().split('T')[0]; // Format as 'yyyy-MM-dd'
   }
 
   canceleditmodal() {
@@ -189,7 +202,7 @@ export class DiscountsPage implements OnInit {
       console.log(result);
       this.DeleteDiscountSuccessAlert();
 
-      this.action = "Deleted Discount" + discount_Name
+      this.action = "Deleted Discount " + discount_Name
       this.AddTrail()
 
     },(error) => {

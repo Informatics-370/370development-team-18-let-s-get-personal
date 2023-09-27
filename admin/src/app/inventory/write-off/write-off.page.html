@@ -26,7 +26,7 @@
         <ion-col>{{item.stock_Item_Name}}</ion-col>
         <ion-col>{{item.write_Off_Reason}}</ion-col>
         <ion-col>{{item.write_Off_Quantity}}</ion-col>
-        <ion-col>{{item.write_Off_Date}}</ion-col>
+        <ion-col>{{item.write_Off_Date| date: 'yyyy-MM-dd'}}</ion-col>
       </ion-row>
     </ion-grid>
   </ion-content>

@@ -125,7 +125,7 @@
           <ion-buttons slot="start">
             <ion-button (click)="canceleditmodal()">Cancel</ion-button>
           </ion-buttons>
-          <ion-title>Add Discount Policy Details</ion-title>
+          <ion-title>Update Discount Policy Details</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
           </ion-buttons>
@@ -143,12 +143,27 @@
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Effective From Date</ion-label><br>
-            <ion-input type="date" formControlName="effectiveFromdate"></ion-input>
+            <ion-input type="date" formControlName="effectiveFromdate" required></ion-input>
           </ion-item>
+          <div *ngIf="editForm.get('effectiveFromdate')?.hasError('required')" class="error-message">
+            <p style="color: crimson;">Date is required.</p>
+          </div>
+          <div *ngIf="editForm.get('effectiveFromdate')?.hasError('dateInPast')" class="error-message">
+            <p style="color: crimson;">Date cannot be in the past.</p>
+          </div>
           <ion-item>
             <ion-label position="stacked">Effective To Date</ion-label><br>
-            <ion-input type="date" formControlName="effectiveTodate"></ion-input>
+            <ion-input type="date" formControlName="effectiveTodate" required></ion-input>
           </ion-item>
+          <div *ngIf="editForm.get('effectiveTodate')?.hasError('required')" class="error-message">
+            <p style="color: crimson;">Date is required.</p>
+          </div>
+          <div *ngIf="editForm.get('effectiveTodate')?.hasError('dateInPast')" class="error-message">
+            <p style="color: crimson;">Date cannot be in the past.</p>
+          </div>
+          <div *ngIf="editForm.hasError('notValid', ['effectiveTodate'])">
+            <p style="color: crimson;">Effective To Date cannot be earlier than Effective From Date.</p>
+          </div>
         </form>
       </ion-content>
     </ng-template>

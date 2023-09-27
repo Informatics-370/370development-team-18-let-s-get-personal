@@ -38,7 +38,7 @@
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.streetNumber}} {{item.streetName}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.city}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.province}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.dateDelivered}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.dateDelivered| date: 'yyyy-MM-dd'}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4"><ion-input type="file" (change)="onFileSelected($event, item.delivery_ID)"></ion-input></ion-col>
       </ion-row>
     </ion-col>
@@ -58,7 +58,7 @@
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.streetNumber}} {{item.streetName}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.city}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.province}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.dateDelivered}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.dateDelivered| date: 'yyyy-MM-dd'}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4"><ion-input type="file" (change)="onFileSelected($event, item.delivery_ID)"></ion-input></ion-col>
       </ion-row>
     </ion-col>

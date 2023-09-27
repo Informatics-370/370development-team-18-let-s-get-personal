@@ -16,7 +16,7 @@
 			<ion-row *ngFor="let item of orders">
 				<ion-col>{{item.stock_Item_Name}}</ion-col>
 				<ion-col>{{item.order_Line_Item_Quantity}}</ion-col>
-				<ion-col>{{item.order_Completed_Date}}</ion-col>
+				<ion-col>{{item.order_Completed_Date| date: 'yyyy-MM-dd'}}</ion-col>
 				<ion-col><ion-button (click)="AddRating(item.stock_Item_ID,true, item.stock_Item_Name)">Add Product Rating</ion-button></ion-col>
 			</ion-row>
 		</ion-grid>

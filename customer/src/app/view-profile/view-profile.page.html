@@ -101,7 +101,7 @@
           </ion-buttons>
           <!-- <ion-title>Add Discount Policy Details</ion-title> -->
           <ion-buttons slot="end">
-            <ion-button (click)="confirmpassmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmpassmodal()" [disabled]="passwordform.invalid" [strong]="true">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -109,16 +109,28 @@
         <form [formGroup]="passwordform" >
           <ion-item>
             <ion-label position="stacked">Enter current password</ion-label><br>
-            <ion-input type="text" formControlName="oldpassword" placeholder="" required></ion-input>
+            <ion-input type="password" formControlName="oldpassword" placeholder="" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Enter new password</ion-label><br>
-            <ion-input type="text" formControlName="newpassword" placeholder="" required></ion-input>
+            <ion-input type="password" formControlName="newpassword" placeholder=""  required></ion-input>
           </ion-item>
+          <div class="text-center" *ngIf="f['newpassword'].invalid && f['newpassword'].touched">
+            <p style="color: crimson;" class="small mt-1" *ngIf="f['newpassword'].errors?.['required']">
+              New password is required!</p>
+            <p style="color: crimson;" class="small mt-1" *ngIf="f['newpassword'].errors?.['pattern']">
+              Password must contain minimum of 8 characters,at least one uppercase letter,at least one
+              lowercase letter
+              ,at least one number and at least one special character</p>
+          </div>
           <ion-item>
             <ion-label position="stacked">Confirm new password</ion-label><br>
-            <ion-input type="text" formControlName="confirmpassword" placeholder="" required></ion-input>
-          </ion-item>  
+            <ion-input type="password" formControlName="confirmpassword" placeholder=""  required></ion-input>
+          </ion-item> 
+          <div style="color: crimson;" *ngIf="passwordform.hasError('passwordMismatch')">
+            Passwords do not match.
+          </div>
+           
       </form>
       </ion-content>
     </ng-template>
