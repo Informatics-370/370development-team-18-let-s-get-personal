@@ -42,9 +42,8 @@ export class CheckOutPage implements OnInit {
     console.log('basket',this.basketItems); 
     let vatAmount = localStorage.getItem('vatamount');
     this.vat=vatAmount;
- 
     
-    /*this.GetOrderDetails()*/
+    this.GetOrderDetails()
   }
 
   GetOrderDetails(){    

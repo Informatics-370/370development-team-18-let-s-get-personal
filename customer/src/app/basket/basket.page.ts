@@ -262,8 +262,8 @@ export class BasketPage implements OnInit {
 
 //==================== Checks ====================
   CheckPersonalised() {
-    let personalised = JSON.parse(JSON.stringify(localStorage.getItem('personalisedID')));
-    //let personalised = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
+    //let personalised = JSON.parse(JSON.stringify(localStorage.getItem('personalisedID')));
+    let personalised = JSON.parse(JSON.stringify(localStorage.getItem('stockId')));
 
     if (personalised == null) {  //  [==="User"]
       this.PleasePersonalizeAlert()
@@ -347,7 +347,7 @@ export class BasketPage implements OnInit {
   uploadImage() {
     this.service.UploadDesignImage(this.formData).subscribe(result => {
       this.uploadedImage = result as Design_Image
-      // this.imageID = this.uploadedImage.design_Image_ID
+      //this.imageID = this.uploadedImage.design_Image_ID
       console.log('Image API', this.uploadedImage)
       this.uploadText()
     },

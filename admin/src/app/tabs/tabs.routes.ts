@@ -128,23 +128,28 @@ export const routes: Routes = [
       },
       {
         path: 'home',
-        loadComponent: () => import('../home/home.page').then( m => m.HomePage)
+        loadComponent: () => import('../home/home.page').then( m => m.HomePage),
+        canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
       },
       {
         path: 'saleperproduct',
-        loadComponent: () => import('../saleperproduct/saleperproduct.page').then( m => m.SaleperproductPage)
+        loadComponent: () => import('../saleperproduct/saleperproduct.page').then( m => m.SaleperproductPage),
+        canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
       },
       {
         path: 'delivery-prices',
-        loadComponent: () => import('../deliveries/delivery-prices/delivery-prices.page').then( m => m.DeliveryPricesPage)
+        loadComponent: () => import('../deliveries/delivery-prices/delivery-prices.page').then( m => m.DeliveryPricesPage),
+        canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
       },
       {
         path: 'admin-help',
-        loadComponent: () => import('../admin-help/admin-help.page').then( m => m.AdminHelpPage)
+        loadComponent: () => import('../admin-help/admin-help.page').then( m => m.AdminHelpPage),
+        canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
       },
       {
         path: 'price-history',
-        loadComponent: () => import('../inventory/price-history/price-history.page').then( m => m.PriceHistoryPage)
+        loadComponent: () => import('../inventory/price-history/price-history.page').then( m => m.PriceHistoryPage),
+        canActivate:[AuthGuard],data:{roles:['Admin', 'Employee']}
       },
       {
         path: '',

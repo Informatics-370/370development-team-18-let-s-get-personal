@@ -2,7 +2,7 @@ import { Customer } from '../Models/customer';
 export class Invoice{
     invoice_ID!: string  
 
-    customer!: Customer
+    customer_ID!: string
     order_Line_Item_ID!: string
     payment_ID!: string
 

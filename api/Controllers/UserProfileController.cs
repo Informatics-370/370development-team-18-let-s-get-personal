@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace IPKP___API.Controllers
 {
@@ -62,25 +63,72 @@ namespace IPKP___API.Controllers
             try
             {
                 var existingAdmin = await _IPKPRepository.GetAdminDetailsAsync(admin_ID);
+                var user = await _userManager.FindByNameAsync(existingAdmin.Username);
 
-                if (existingAdmin == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee " + admin_ID });
-
-                existingAdmin.User = admin.User;
-                existingAdmin.FirstName = admin.FirstName;
-                existingAdmin.Surname = admin.Surname;
-                existingAdmin.Cell_Number = admin.Cell_Number;
-                existingAdmin.Email = admin.Email;
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                if (existingAdmin == null)
                 {
-                    return Ok(new Response { Status = "Success", Message = "Employee Updated Successfully" });
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee " + admin_ID });
                 }
+                else 
+                {
+                    existingAdmin.User = admin.User;
+                    existingAdmin.FirstName = admin.FirstName;
+                    existingAdmin.Surname = admin.Surname;
+                    existingAdmin.Cell_Number = admin.Cell_Number;
+                    existingAdmin.Email = admin.Email;
+                    existingAdmin.Username = admin.Username;
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Admin details Updated Successfully!" });
+                    }
+
+                    var usernamereuslt = await _userManager.SetUserNameAsync(user, admin.Username);
+                    var emailresult = await _userManager.SetEmailAsync(user, admin.Email);
+                    //var savechanges = await _IPKPRepository.SaveChangesAsync();                    
+
+                    if (usernamereuslt.Succeeded && emailresult.Succeeded)
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Admin details Updated Successfully!" });
+                    }
+                }
+                
             }
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok(new Response { Status = "Success", Message = "Employee Saved To Database." });
+            return Ok(new Response { Status = "Success", Message = "New Admin Details Saved To Database." });
+        }
+
+        [HttpDelete]
+        [Route("DeleteAdminUser/{admin_ID}")]
+        public async Task<IActionResult> DeleteAdminUserProfileAsync(Guid admin_ID)
+        {
+            try
+            {
+                var existingAdminUser = await _IPKPRepository.GetAdminDetailsAsync(admin_ID);
+
+                if (existingAdminUser == null)
+                {
+                    return NotFound("Could Not Find Admin User" + admin_ID);
+                }
+                else
+                {
+                    _IPKPRepository.Delete(existingAdminUser);
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok("Customer User Removed Successfully");
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+            return Ok("Customer USer Removed From Database.");
         }
 
 
@@ -152,24 +200,39 @@ namespace IPKP___API.Controllers
 
         [HttpPut]
         [Route("UpdateCustomerUserProfile/{customer_ID}")]
-        public async Task<IActionResult> UpdateCustomerUserProfileAsync(Guid customer_ID, Customer upvm)
+        public async Task<IActionResult> UpdateCustomerUserProfileAsync(Guid customer_ID, Customer customer)
         {
             try
             {
                 var existingCustomerUser = await _IPKPRepository.GetCustomerDetailsAsync(customer_ID);
+                var user = await _userManager.FindByNameAsync(existingCustomerUser.Username);
 
-                if (existingCustomerUser == null) return NotFound("Could Not Find Customer" + customer_ID);
-
-                //existingCustomerUser.Title = upvm.Title;
-                existingCustomerUser.FirstName = upvm.FirstName;
-                existingCustomerUser.Surname = upvm.Surname;
-                existingCustomerUser.Cell_Number = upvm.Cell_Number;
-                existingCustomerUser.Email = upvm.Email;
-
-                if (await _IPKPRepository.SaveChangesAsync())
-                {
-                    return Ok("Customer User Updated Successfully");
+                if (existingCustomerUser == null) 
+                { 
+                    return NotFound("Could Not Find Customer" + customer_ID); 
                 }
+                else
+                {
+                    existingCustomerUser.FirstName = customer.FirstName;
+                    existingCustomerUser.Surname = customer.Surname;
+                    existingCustomerUser.Cell_Number = customer.Cell_Number;
+                    existingCustomerUser.Email = customer.Email;
+                    existingCustomerUser.Username = customer.Username;
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Customer details Updated Successfully!" });
+                    }
+
+                    var usernamereuslt = await _userManager.SetUserNameAsync(user, customer.Username);
+                    var emailresult = await _userManager.SetEmailAsync(user, customer.Email);
+
+                    if (usernamereuslt.Succeeded && emailresult.Succeeded)
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Customer details Updated Successfully!" });
+                    }
+                }
+                
             }
             catch (Exception)
             {
@@ -217,19 +280,36 @@ namespace IPKP___API.Controllers
             try
             {
                 var existingEmployee = await _IPKPRepository.GetEmployeeDetailsAsync(employee_ID);
+                var user = await _userManager.FindByNameAsync(existingEmployee.Username);
 
-                if (existingEmployee == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" + employee_ID });
-
-                existingEmployee.User = employee.User;
-                existingEmployee.FirstName = employee.FirstName;
-                existingEmployee.Surname = employee.Surname;
-                existingEmployee.Cell_Number = employee.Cell_Number;
-                existingEmployee.Email = employee.Email;
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                if (existingEmployee == null)
                 {
-                    return Ok(new Response { Status = "Success", Message = "Employee Updated Successfully" });
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" + employee_ID });
                 }
+                else
+                {
+
+                    existingEmployee.User = employee.User;
+                    existingEmployee.FirstName = employee.FirstName;
+                    existingEmployee.Surname = employee.Surname;
+                    existingEmployee.Cell_Number = employee.Cell_Number;
+                    existingEmployee.Email = employee.Email;
+                    existingEmployee.Username = employee.Username;
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Employee Updated Successfully" });
+                    }
+
+                    var usernamereuslt = await _userManager.SetUserNameAsync(user, employee.Username);
+                    var emailresult = await _userManager.SetEmailAsync(user, employee.Email);
+
+                    if (usernamereuslt.Succeeded && emailresult.Succeeded)
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Admin details Updated Successfully!" });
+                    }
+                }
+
             }
             catch (Exception)
             {

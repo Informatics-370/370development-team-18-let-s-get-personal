@@ -88,9 +88,9 @@
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Effective From Date</ion-label><br>
-            <!--<ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
-            <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime>-->
             <ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
+            <!-- <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime> -->
+            <!-- <ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input> -->
           </ion-item>
           <div *ngIf="AddForm.get('effectiveFromdate')?.hasError('required')" class="error-message">
             <p style="color: crimson;">Date is required.</p>
@@ -100,9 +100,9 @@
           </div>
           <ion-item>
             <ion-label position="stacked">Effective To Date</ion-label><br>
-            <!--<ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input
-              <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime>-->
             <ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input>
+              <!-- <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime> -->
+            <!-- <ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input> -->
           </ion-item>
           <div *ngIf="AddForm.get('effectiveTodate')?.hasError('required')" class="error-message">
             <p style="color: crimson;">Date is required.</p>

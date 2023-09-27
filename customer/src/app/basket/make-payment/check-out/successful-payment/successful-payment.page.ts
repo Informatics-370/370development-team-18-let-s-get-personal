@@ -54,17 +54,17 @@ export class SuccessfulPaymentPage implements OnInit {
     //localStorage.removeItem("totalPrice")
     
     
-    //this.placeOrderT(this.order);
+    this.placeOrderT(this.order);
 
   }
 
-  // placeOrderT(order:OrderT):void{
-  //   this.orderService.placeOrder(order).subscribe(res=>{
-  //     console.log(res);
-  //   },error=>{
-  //     console.log(error)
-  //   })
-  // }
+  placeOrderT(order:OrderT):void{
+    this.orderService.placeOrder(order).subscribe(res=>{
+      console.log(res);
+    },error=>{
+      console.log(error)
+    })
+  }
 
   /*ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)
@@ -158,14 +158,13 @@ export class SuccessfulPaymentPage implements OnInit {
           console.log(result)
           console.log(this.paymentID)
           this.addInvoice()
+
         },(error) => {
           this.ErrorAlert();        
           console.error(error);
         })
       })     
-    }
-    
-
+    }   
   }
 
   addInvoice(){
@@ -191,19 +190,8 @@ export class SuccessfulPaymentPage implements OnInit {
       invoice.discount_Amount = discountamount
       invoice.payment_ID = this.paymentID //this.uploadedPayment.payment_ID //
       invoice.order_Line_Item_ID = this.uploadedOrderLine.order_Line_Item_ID //this.orderlineitemid
-      let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')));
-      
-      // let customer = new Customer()
-      // 
-      // customer.customer_ID = this.customer.customer_ID
-      // customer.email = this.customer.email
-      // customer.firstName = this.customer.firstName
-      // customer.surname = this.customer.surname
-      // customer.username = this.customer.username
-      // customer.cell_Number = this.customer.cell_Number
-
-      // invoice.customer = customer
-
+      let customerID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')));
+      invoice.customer_ID = customerID
       console.log(invoice)
 
       this.invoiceservice.AddInvoice(invoice).subscribe(result => {
