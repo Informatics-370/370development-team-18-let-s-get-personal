@@ -100,7 +100,7 @@
           </ion-buttons>
           <!-- <ion-title>Add Discount Policy Details</ion-title> -->
           <ion-buttons slot="end">
-            <ion-button (click)="confirmpassmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmpassmodal()" [strong]="true" [disabled]="passwordform.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>

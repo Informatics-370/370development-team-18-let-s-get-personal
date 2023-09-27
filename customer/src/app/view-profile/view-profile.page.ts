@@ -63,12 +63,18 @@ confirmpassmodal(){
   newpassword.newPassword = this.passwordform.value.newpassword
   newpassword.confirmPassword = this.passwordform.value.confirmpassword
 
-  this.authservice.ChangeUserPassword(newpassword).subscribe(result =>{
-    this.editSuccessAlert()
-  },(error) => {
-    this.editErrorAlert();        
-    console.error('Edit stock image error:', error);
-  })
+  if(newpassword.newPassword === newpassword.confirmPassword) 
+  {
+    this.authservice.ChangeUserPassword(newpassword).subscribe(result =>{
+      this.editSuccessAlert()
+    },(error) => {
+      this.editErrorAlert();        
+      console.error('Edit stock image error:', error);
+    })
+  }
+  else{
+    this.PasswordMatchErrorAlert()
+  }  
 }
 
 cancelpassmodal() {
@@ -155,20 +161,17 @@ cancelpassmodal() {
   }
 
   public deleteProfile(customer_ID: string) {
-    try{
-      this.service.DeleteCustomer(customer_ID).subscribe(result =>{
-        console.log(result);
-      })
-
-      this.authservice.DeleteUser(this.username).subscribe(result =>{
-        console.log(result);
-      })
-
+    this.service.DeleteCustomer(customer_ID).subscribe(result =>{
+      console.log(result);
       this.Logout()
-    }
-    catch{
+    },(error) => {
+      this.deleteErrorAlert();        
+      console.error(error);
+    })
 
-    }
+    // this.authservice.DeleteUser(this.username).subscribe(result =>{
+    //   console.log(result);
+    // })
   }
   
   public PreviousOrders() {
@@ -211,6 +214,22 @@ cancelpassmodal() {
   //   await alert.present();
   // }
 
+  async PasswordMatchErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Your new passwords do not match!',
+      // subHeader: 'Something went wrong',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
   async editSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
@@ -230,6 +249,22 @@ cancelpassmodal() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
       subHeader: 'Updated Failed',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async deleteErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'Delete Failed',
       message: 'Please try again',
       buttons: [{
         text: 'OK',

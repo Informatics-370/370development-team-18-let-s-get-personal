@@ -67,8 +67,8 @@ export class AdminProfilePage implements OnInit {
   passwordform: FormGroup = new FormGroup({
     // username: new FormControl('',[Validators.required]),
     oldpassword: new FormControl('',[Validators.required]),
-    newpassword: new FormControl('',[Validators.required]),
-    confirmpassword: new FormControl('',[Validators.required]),
+    newpassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
+    confirmpassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
   })
 
   ChangePassword(isOpen: boolean){
@@ -83,12 +83,18 @@ export class AdminProfilePage implements OnInit {
     newpassword.newPassword = this.passwordform.value.newpassword
     newpassword.confirmPassword = this.passwordform.value.confirmpassword
 
-    this.AuthService.ChangeUserPassword(newpassword).subscribe(result =>{
-      this.editSuccessAlert()
-    },(error) => {
-      this.editErrorAlert();        
-      console.error('Edit stock image error:', error);
-    })
+    if(newpassword.newPassword === newpassword.confirmPassword) 
+    {
+      this.AuthService.ChangeUserPassword(newpassword).subscribe(result =>{
+        this.editSuccessAlert()
+      },(error) => {
+        this.editErrorAlert();        
+        console.error('Edit stock image error:', error);
+      })
+    }
+    else{
+      this.PasswordMatchErrorAlert()
+    }    
   }
 
   cancelpassmodal() {
@@ -209,5 +215,20 @@ export class AdminProfilePage implements OnInit {
     await alert.present();
   }
 
+  async PasswordMatchErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Your new passwords do not match!',
+      // subHeader: 'Something went wrong',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
 
 }
