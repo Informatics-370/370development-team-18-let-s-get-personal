@@ -21,6 +21,7 @@ export class AdminProfilePage implements OnInit {
   employee: Employee = new Employee()
   admin: Admin = new Admin()
   @ViewChild(IonModal) modal!: IonModal
+  isAdmin!: boolean
   profile: any
   constructor(private AuthService:AuthenticationService, private router:Router, private service: UserProfileDataService,
     private alertController:AlertController, public modalCtrl: ModalController,)
@@ -38,6 +39,7 @@ export class AdminProfilePage implements OnInit {
     if(roles.includes('Admin')){
       this.service.GetAdminDetails(userID).subscribe(result=>{
         this.profile = result as Admin;
+        this.isAdmin = true;
         console.log(this.admin)
       },(error) => {
       this.ErrorAlert();        
@@ -47,6 +49,7 @@ export class AdminProfilePage implements OnInit {
     else if (roles.includes('Employee')){
       this.service.GetEmployee(userID).subscribe(result=>{
         this.profile = result as Employee;
+        this.isAdmin = false;
         console.log(this.employee)
       },(error) => {
         this.ErrorAlert();        

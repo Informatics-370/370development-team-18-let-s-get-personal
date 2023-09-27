@@ -14,7 +14,7 @@
   </ion-header>
   <ion-content id="content">
     <ion-button (click)="Logout()">Log out</ion-button>
-    <ion-button (click)="EditAdmin(profile.admin_ID, true)">Update Profile</ion-button>
+    <ion-button (click)="EditAdmin(profile.admin_ID, true)" *ngIf="isAdmin == true">Update Profile</ion-button>
     <ion-button (click)="ChangePassword(true)">Change Passsword</ion-button>
     
     <ion-card>

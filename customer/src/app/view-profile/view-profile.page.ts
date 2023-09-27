@@ -86,7 +86,7 @@ cancelpassmodal() {
     surname: new FormControl('',[Validators.required]),
     cell_Number: new FormControl('',[Validators.required]),
     email: new FormControl('',[Validators.required]),
-    // username: new FormControl('',[Validators.required]),
+    username: new FormControl('',[Validators.required]),
   })
 
   public updateProfile(customer_ID:string, isOpen: boolean) {
@@ -97,7 +97,7 @@ cancelpassmodal() {
       this.editForm.controls['surname'].setValue(this.editCustomer.surname);
       this.editForm.controls['cell_Number'].setValue(this.editCustomer.cell_Number);
       this.editForm.controls['email'].setValue(this.editCustomer.email);
-      // this.editForm.controls['username'].setValue(this.editCustomer.username);
+      this.editForm.controls['username'].setValue(this.editCustomer.username);
     })    
     this.isModalOpen = isOpen;
   }
@@ -110,7 +110,7 @@ cancelpassmodal() {
       editedCustomer.surname = this.editForm.value.surname;
       editedCustomer.cell_Number = this.editForm.value.cell_Number;
       editedCustomer.email = this.editForm.value.email;
-      // editedCustomer.username = this.editForm.value.username;
+      editedCustomer.username = this.editForm.value.username;
 
       this.service.UpdateCustomer(this.editCustomer.customer_ID, editedCustomer).subscribe(result =>{
         
