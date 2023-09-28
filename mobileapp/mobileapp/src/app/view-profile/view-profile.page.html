@@ -1,0 +1,126 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+      <ion-title>Profile</ion-title>      
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-toolbar>
+    <ion-button (click)="updateProfile(customer.customer_ID, true)">Manage Profile</ion-button>  
+    <ion-button (click)="ExpRating()">Experience Rating</ion-button>
+    <ion-button (click)="PreviousOrders()">View Previous Orders</ion-button>
+    <ion-button slot="end" (click)="Logout()">Log out</ion-button>
+    <ion-button (click)="ChangePassword(true)">Change Password</ion-button>
+  </ion-toolbar>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{customer.firstName}}'s Details:</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>Name</ion-label>
+          <p>{{customer.firstName}} {{customer.surname}}</p>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Cell Number</ion-label>
+          <p>{{customer.cell_Number}}</p>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Email Adress</ion-label>
+          <p>{{customer.email}}</p>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Username</ion-label>
+          <p>{{customer.username}}</p>
+        </ion-item>
+
+      </ion-list>
+    </ion-card-content>
+   
+  </ion-card>
+
+  
+</ion-content>
+
+<ion-footer>
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+           <ion-title>Update Profile Details</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="editForm" >
+          <ion-item>
+            <ion-label position="stacked">First Name</ion-label><br>
+            <ion-input type="text" formControlName="firstName" placeholder="" required></ion-input>
+          </ion-item> 
+          <ion-item>
+            <ion-label position="stacked">Last Name</ion-label><br>
+            <ion-input type="text" formControlName="surname" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Email Address</ion-label><br>
+            <ion-input type="text" formControlName="email" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Cellphone number</ion-label><br>
+            <ion-input type="text" formControlName="cell_Number" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Customer Username</ion-label><br>
+            <ion-input type="text" formControlName="username" placeholder="" required></ion-input>
+          </ion-item>   
+      </form>
+      <ion-toolbar>
+        <ion-title slot="end"><ion-button (click)="DeleteConfirmAlert(customer.customer_ID)">Delete Profile</ion-button></ion-title>
+      </ion-toolbar>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isPassModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancelpassmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <!-- <ion-title>Add Discount Policy Details</ion-title> -->
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmpassmodal()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="passwordform" >
+          <ion-item>
+            <ion-label position="stacked">Enter current password</ion-label><br>
+            <ion-input type="text" formControlName="oldpassword" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Enter new password</ion-label><br>
+            <ion-input type="text" formControlName="newpassword" placeholder="" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Confirm new password</ion-label><br>
+            <ion-input type="text" formControlName="confirmpassword" placeholder="" required></ion-input>
+          </ion-item>  
+      </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-footer>

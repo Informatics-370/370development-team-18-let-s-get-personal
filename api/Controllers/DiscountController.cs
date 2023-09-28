@@ -119,6 +119,9 @@ namespace IPKP___API.Controllers
                 else
                 {
                     existingDiscount.Discount_Name = discount.Discount_Name;
+                    existingDiscount.Discount_Amount = discount.Discount_Amount;
+                    existingDiscount.Effective_From_Date = discount.Effective_From_Date;
+                    existingDiscount.Effective_To_Date = discount.Effective_To_Date;
 
                     if (await _IPKPRepository.SaveChangesAsync())
                     {

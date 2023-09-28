@@ -277,6 +277,19 @@ cancelpassmodal() {
     await alert.present();
   }
 
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'If you would like to view your previous orders, please download our app!',
+      message: 'This is where you can also rate our products and services',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
+    });
+    await alert.present();
+  }
+
   reloadPage(){
     window.location.reload()
   }
