@@ -33,8 +33,6 @@ namespace IPKP___API.Controllers
                 var newinvoice = new Invoice
                 {
                     Invoice_ID = new Guid(),
-                    Order_Line_Item_ID = invoice.Order_Line_Item_ID,
-                    Payment_ID = invoice.Payment_ID,
                     Discount_Amount = invoice.Discount_Amount,
                     Delivery_Price = invoice.Delivery_Price,
                     Invoice_Total_exclVAT = invoice.Invoice_Total_exclVAT,
@@ -77,7 +75,7 @@ namespace IPKP___API.Controllers
 
                     "Discount Amount: R" + newinvoice.Discount_Amount + ".00" + "<br>" +
                     "Delivery Amount: R" + newinvoice.Delivery_Price + ".00" + "<br>" +
-                    "Total Excluding Vat: R" + newinvoice.Invoice_Total_exclVAT + ".00" + "<br>" +
+                    "Total Of Product Items Excluding Vat: R" + newinvoice.Invoice_Total_exclVAT + ".00" + "<br>" +
                     "Vat Amount: R" + newinvoice.Invoice_Total_VAT + ".00" + "<br><br>" +
 
                     "Total: R" + newinvoice.Invoice_Total_inclVAT + ".00" + "<br>" +

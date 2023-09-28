@@ -37,7 +37,6 @@ export class MakePaymentPage implements OnInit {
 
   order = new OrderT();
 
-
   oLong:number=28.2310411;
   oLat:number=-25.756598;;
   Long!:number;
@@ -49,8 +48,7 @@ export class MakePaymentPage implements OnInit {
 
   ngOnInit() {
     this.getDeliveryCompany();
-    this.order = JSON.parse(localStorage.getItem('order') as string)
-    
+    this.order = JSON.parse(localStorage.getItem('order') as string)    
   }
 
   @ViewChild(IonModal) modal!: IonModal
@@ -100,30 +98,6 @@ export class MakePaymentPage implements OnInit {
     localStorage.setItem("order",JSON.stringify(this.order));
 
     this.router.navigate(["/tabs/check-out"])
-
-   /* this.service.AddDeliveryAdress(addDelivery).subscribe(response => {
-      this.addedaddres = response as DeliveryAddress;
-      //this.AddDeliveryRequest();
-      this.confirmAlert();
-      console.log('Address',this.addedaddres)
-        let addressID = this.addedaddres.delivery_Address_ID
-        localStorage.setItem('addressID', JSON.stringify(addressID));
-        localStorage.setItem("order",JSON.stringify(this.order));
-      try
-      {
-        console.log(this.addedaddres)
-        //let addressID = this.addedaddres.delivery_Address_ID
-        //localStorage.setItem('addressID', JSON.stringify(addressID));
-        this.AddDeliveryRequest()
-      }
-      catch
-      {
-        this.addDeliveryErrorAlert()
-      }
-    },(error) => {
-      this.addDeliveryErrorAlert();
-      console.error('add address error:', error);
-    });*/
   }
 
   @Output() predictionSelected = new EventEmitter<string>();
@@ -132,7 +106,7 @@ export class MakePaymentPage implements OnInit {
   showPredictions = false;
   predictions: any[] = [];
 
-updateSearchResults() {
+  updateSearchResults() {
     const query = this.searchControl.value;
     if (query && query.length >= 3) {
       this.placesService.getPlacePredictions(query).subscribe(
@@ -185,6 +159,7 @@ updateSearchResults() {
      //this.calculateDistance(this.oLat,this.oLong,this.Lat,this.Long);
   }
   deliveryPrice:any;
+
   async getCordinate(address:any){
     fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyDmbh7Bh6P-aR-w9LJMdy6c3zTVhDd-K3A`)
     .then(response=>response.json()).then(data=>{
@@ -225,44 +200,18 @@ updateSearchResults() {
     const distance = 6371 * c; // Radius of the Earth in kilometers
 
     return distance;
-
   }
 
-  AddDeliveryRequest(){
-    let addressID = JSON.parse(JSON.stringify(localStorage.getItem('addressID')));
-      let addDeliveryRequest = new Delivery();
-      addDeliveryRequest.delivery_Address_ID = this.addedaddres.delivery_Address_ID //this.addedaddres.delivery_Address_ID addressID
-      addDeliveryRequest.delivery_Company_ID = this.AddDelAddressForm.value.deliveryCompanyID
-
-      console.log(this.deliveryPrice)
-
-      this.service.AddDeliveryRequest(addDeliveryRequest).subscribe(res =>{
-        let added = res as Delivery;
-        let deliveryID = added.delivery_ID
-        localStorage.setItem('deliveryID', deliveryID);
-
-        //Action Trail
-        this.action = "Added Delivery Address"
-        this.AddAuditTrail()
-
-        this.checkOut()
-        //this.router.navigate(["/tabs/check-out"])
-      },
-      (error) => {
-        this.confirmErrorAlert();
-        console.error('add delivery error:', error);
-      });
-  }
 
   checkOut(){
     //change to delivery request 
-    let streetName =this.AddDelAddressForm.get("streetName")?.value
-    let streetNumber =this.AddDelAddressForm.get("streetNumber")?.value
-    let city =this.AddDelAddressForm.get("city")?.value
-    let province =this.AddDelAddressForm.get("province")?.value
-    let areaCode =this.AddDelAddressForm.get("areaCode")?.value;
-    let dwellingtype =this.AddDelAddressForm.get("dwellingtype")?.value;
-    let delivery_Company_ID =this.AddDelAddressForm.get("delivery_Company_ID")?.value;
+    let streetName = this.AddDelAddressForm.get("streetName")?.value
+    let streetNumber = this.AddDelAddressForm.get("streetNumber")?.value
+    let city = this.AddDelAddressForm.get("city")?.value
+    let province = this.AddDelAddressForm.get("province")?.value
+    let areaCode = this.AddDelAddressForm.get("areaCode")?.value;
+    let dwellingtype = this.AddDelAddressForm.get("dwellingtype")?.value;
+    let delivery_Company_ID = this.AddDelAddressForm.get("delivery_Company_ID")?.value;
 
     this.order = JSON.parse(localStorage.getItem('order') as string);
     this.order.deliveryAddress.streetName=streetName;
@@ -273,16 +222,11 @@ updateSearchResults() {
     this.order.deliveryAddress.dwelling_Type=dwellingtype;
     this.order.deliveryCompanyID = delivery_Company_ID;
 
-  
-
     localStorage.setItem("order",JSON.stringify(this.order));
 
     this.router.navigate(["/tabs/check-out"])
    
-  }
-
-  
-
+  } 
 
   reloadPage(){
     window.location.reload()
@@ -299,19 +243,6 @@ updateSearchResults() {
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
   }  
-
-//========= Audit Trail ========
-  action!: string
-  AddAuditTrail(){
-    let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')))
-    let audittrail = new AuditTrail()
-    audittrail.customer_ID = customer_ID
-    audittrail.actionName = this.action
-
-    this.auditservice.AddCustomerAuditTrail(audittrail).subscribe(result => {
-      console.log(result)
-    })
-  }
 
   public ContactUs() {
     this.router.navigate(["/tabs/contact-us"])
@@ -385,6 +316,7 @@ updateSearchResults() {
     });
     await alert.present();
   }
+
   async confirmAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',
@@ -403,3 +335,66 @@ updateSearchResults() {
   }
 }
 
+   /* this.service.AddDeliveryAdress(addDelivery).subscribe(response => {
+      this.addedaddres = response as DeliveryAddress;
+      //this.AddDeliveryRequest();
+      this.confirmAlert();
+      console.log('Address',this.addedaddres)
+        let addressID = this.addedaddres.delivery_Address_ID
+        localStorage.setItem('addressID', JSON.stringify(addressID));
+        localStorage.setItem("order",JSON.stringify(this.order));
+      try
+      {
+        console.log(this.addedaddres)
+        //let addressID = this.addedaddres.delivery_Address_ID
+        //localStorage.setItem('addressID', JSON.stringify(addressID));
+        this.AddDeliveryRequest()
+      }
+      catch
+      {
+        this.addDeliveryErrorAlert()
+      }
+    },(error) => {
+      this.addDeliveryErrorAlert();
+      console.error('add address error:', error);
+    });*/
+
+
+//========= Audit Trail ========
+  // action!: string
+  // AddAuditTrail(){
+  //   let customer_ID = JSON.parse(JSON.stringify(localStorage.getItem('customerID')))
+  //   let audittrail = new AuditTrail()
+  //   audittrail.customer_ID = customer_ID
+  //   audittrail.actionName = this.action
+
+  //   this.auditservice.AddCustomerAuditTrail(audittrail).subscribe(result => {
+  //     console.log(result)
+  //   })
+  // }
+
+  // AddDeliveryRequest(){
+  //   let addressID = JSON.parse(JSON.stringify(localStorage.getItem('addressID')));
+  //     let addDeliveryRequest = new Delivery();
+  //     addDeliveryRequest.delivery_Address_ID = this.addedaddres.delivery_Address_ID //this.addedaddres.delivery_Address_ID addressID
+  //     addDeliveryRequest.delivery_Company_ID = this.AddDelAddressForm.value.deliveryCompanyID
+
+  //     console.log(this.deliveryPrice)
+
+  //     this.service.AddDeliveryRequest(addDeliveryRequest).subscribe(res =>{
+  //       let added = res as Delivery;
+  //       let deliveryID = added.delivery_ID
+  //       localStorage.setItem('deliveryID', deliveryID);
+
+  //       //Action Trail
+  //       this.action = "Added Delivery Address"
+  //       this.AddAuditTrail()
+
+  //       this.checkOut()
+  //       //this.router.navigate(["/tabs/check-out"])
+  //     },
+  //     (error) => {
+  //       this.confirmErrorAlert();
+  //       console.error('add delivery error:', error);
+  //     });
+  // }

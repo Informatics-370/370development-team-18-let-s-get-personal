@@ -16,7 +16,7 @@
       <ion-row>
         <ion-col>
           <!--<ion-searchbar show-clear-button="always" (ionInput)="search()" [(ngModel)]="filterTerm" ></ion-searchbar>-->
-          Search by date: <input type="date" [(ngModel)]="filterTerm" (change)="searchByDate(filterTerm)"/>
+          Search by date: <ion-input type="date" [(ngModel)]="filterTerm" (change)="searchByDate(filterTerm)"/>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -58,7 +58,7 @@
             <ion-item>
               <ion-label position="stacked">Refund Policy Date</ion-label><br>
              <!---<ion-input type="date" formControlName="date" placeholder=""></ion-input>-->
-              <input type="date"  formControlName="date" placeholder="" required>
+              <ion-input type="date"  formControlName="date" placeholder="" required></ion-input>
             </ion-item>
             <div *ngIf="AddForm.get('date')?.hasError('dateInPast')" class="error-message">
               <p style="color: crimson;">Date cannot be in the past.</p>

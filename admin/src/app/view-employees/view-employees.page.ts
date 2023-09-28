@@ -60,22 +60,15 @@ export class ViewEmployeesPage implements OnInit {
     })
   }
   
-  DeleteEmployee(employee_ID: string, username: string){
-    this.authservice.DeleteUser(username).subscribe(result => {
+  DeleteEmployee(employee_ID: string, username: string){  
+        
+    this.empservice.DeleteEmployee(employee_ID).subscribe(result => {
       console.log(result);
       this.DeleteEmployeeSuccessAlert();
     },(error) => {
       this.DeleteEmployeeErrorAlert();        
-      console.error('DeleteEmployee error:', error);
+      console.error('Edit stock image error:', error);
     })    
-        
-    // this.empservice.DeleteEmployee(employee_ID).subscribe(result => {
-    //   console.log(result);
-    //   this.DeleteEmployeeSuccessAlert();
-    // },(error) => {
-    //   this.DeleteEmployeeErrorAlert();        
-    //   console.error('Edit stock image error:', error);
-    // })    
 
   }
 
@@ -177,16 +170,21 @@ export class ViewEmployeesPage implements OnInit {
   //=========== alerts
   async DeleteHelpAlert() {
     const alert = await this.alertController.create({
-      header: 'Please Note:!',
-      subHeader: 'Deleting an Employee will remove their login details but will not delete their details and audit trail from the system',
-      message: 'This is so you can still see previous employees information and the actions they performed while employed.',
-      buttons: [{
+      header: 'Please Note',
+      subHeader: 'Deleting an Employee will remove their login, personal and audit trail details from the system',
+      message: 'If you would like to keep a record of what they did on the system please download the audit trail and then proceed to delete.',
+      buttons: 
+      [{
         text: 'OK',
+        role: 'cancel'
+      },
+      {
+        text: 'Got To Audit Trail',
         role: 'cancel',
-        // handler:() =>{
-        //   this.reloadPage();
-        // }
-    }],
+        handler:() =>{
+          this.auditTrailNav();
+        }
+      }],
     });
     await alert.present();
   }
@@ -282,6 +280,10 @@ export class ViewEmployeesPage implements OnInit {
       }],
     });
     await alert.present();
+  }
+
+  auditTrailNav() {
+    this.router.navigate(['./tabs/audit-trail']);
   }
 
 }

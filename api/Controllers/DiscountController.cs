@@ -66,11 +66,20 @@ namespace IPKP___API.Controllers
             try
             {
                 var results = await _IPKPRepository.GetDiscountByStockAsync(stock_Item_ID);
+                var todaysdate = DateTime.Today;
+
                 if (results == null)
                 {
                     return NotFound(new Response { Status = "Error", Message = "Could Not Find Discount" });
                 }
-                return Ok(results);
+                else if (results.Effective_From_Date > todaysdate && results.Effective_To_Date < todaysdate)
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "Discount Expired." });
+                }
+                else
+                {
+                    return Ok(results);
+                }               
             }
             catch (Exception)
             {

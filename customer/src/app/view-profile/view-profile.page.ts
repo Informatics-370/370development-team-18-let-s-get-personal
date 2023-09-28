@@ -281,8 +281,8 @@ cancelpassmodal() {
   async deleteErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'Delete Failed',
-      message: 'Please try again',
+      subHeader: 'We could not delete your profile',
+      message: 'Please note that we cannot delete your profile if you have an active order.',
       buttons: [{
         text: 'OK',
         role: 'cancel',

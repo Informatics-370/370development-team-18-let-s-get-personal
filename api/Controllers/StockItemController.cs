@@ -76,6 +76,17 @@ namespace IPKP___API.Controllers
         {
             try
             {
+                var StockPriceHistory = new Stock_Price_History
+                {
+                    Stock_Price_History_ID = new Guid(),
+                    Effective_From_Date = DateTime.Today,
+                    Stock_Price_Amount = sivm.Stock_Item_Price,
+                    Stock_Item_Name = sivm.Stock_Item_Name,
+                };
+                _IPKPRepository.Add(StockPriceHistory);
+                await _IPKPRepository.SaveChangesAsync();
+
+
                 var stockItem = new Stock_Item
                 {
                     Stock_Item_ID = new Guid(),
@@ -88,18 +99,12 @@ namespace IPKP___API.Controllers
                     Stock_Type_ID = sivm.Stock_Type_ID,
                     Stock_Image_ID = sivm.Stock_Image_ID,
                     Stock_Item_Colour_ID = sivm.Stock_Item_Colour_ID,
-
-                    StockPriceHistory = new Stock_Price_History
-                    {
-                        Stock_Price_History_ID = new Guid(),
-                        Effective_From_Date = DateTime.Today,
-                        Stock_Price_Amount = sivm.Stock_Item_Price,
-                        Stock_Item_Name = sivm.Stock_Item_Name,
-                    }
+                    Stock_Price_History_ID = StockPriceHistory.Stock_Price_History_ID,
                 };
                 _IPKPRepository.Add(stockItem);
                 await _IPKPRepository.SaveChangesAsync();
 
+                
             }
             catch (Exception)
             {
@@ -166,9 +171,11 @@ namespace IPKP___API.Controllers
                     existingStockItem.Inventory_Comments = sivm.Inventory_Comments;
                     existingStockItem.Stock_Item_Price = sivm.Stock_Item_Price;
                     existingStockItem.Stock_Item_Size = sivm.Stock_Item_Size;
-                    existingStockItem.StockPriceHistory.Effective_To_Date = DateTime.Today;
 
-                    existingStockItem.StockPriceHistory = new Stock_Price_History
+                    var history = await _IPKPRepository.GetStockItemHistoryAsync(existingStockItem.Stock_Price_History_ID);
+                    history.Effective_To_Date = DateTime.Today;
+
+                    var StockPriceHistory = new Stock_Price_History
                     {
                         Stock_Price_History_ID = new Guid(),
                         Effective_From_Date = DateTime.Today,

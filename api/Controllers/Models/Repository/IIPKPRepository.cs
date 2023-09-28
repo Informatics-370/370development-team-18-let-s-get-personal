@@ -38,11 +38,14 @@ namespace IPKP___API.Controllers.Models.Repository
         //Stock items
         Task<Stock_Item[]> GetAllStockItemsAsync();
         Task<Stock_Item> GetStockItemDetailsAsync(Guid stock_Item_ID);
-        Task<Stock_Item> GetStockItemByName(string stock_Item_Name);
-        Task<Stock_Price_History[]> GetAllStockItemsIncludingPriceHistoryAsync();
+        Task<Stock_Item> GetStockItemByName(string stock_Item_Name);        
         object GetStockNames();
         object GetStockList();
         object GetStockNamesByType(Guid stocktypeID);
+
+        // price history
+        Task<Stock_Price_History[]> GetAllStockItemsIncludingPriceHistoryAsync();
+        Task<Stock_Price_History> GetStockItemHistoryAsync(Guid stock_Price_History_ID);
 
         Task<Stock_Type> GetStockTypeDetailsAsync(Guid stock_Type_ID);
         Task<Stock_Type[]> GetAllStockTypesAsync();

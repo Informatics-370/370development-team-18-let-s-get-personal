@@ -15,7 +15,7 @@ namespace IPKP___API.Controllers.Models.Entities
         [Column("Stock_Item_Price", TypeName = "decimal(18, 2)")]
         public decimal Stock_Price_Amount { get; set; }
         public DateTime Effective_From_Date { get; set; }
-        public DateTime Effective_To_Date { get; set; }
+        public DateTime? Effective_To_Date { get; set; }
 
         public string Stock_Item_Name { get; set; }
 
