@@ -176,6 +176,7 @@ export class BasketPage implements OnInit {
     localStorage.removeItem("pureprice");
     localStorage.removeItem("totalprice");
     localStorage.removeItem("discount");
+    localStorage.removeItem("delprice");
     this.reloadPage();
   }
 
@@ -233,7 +234,7 @@ export class BasketPage implements OnInit {
       this.order.paid = false;
 
       localStorage.setItem("order", JSON.stringify(this.order));
-      console.log('order', items);
+      /*console.log('order', items);*/
 
       this.CheckPersonalised();
     }

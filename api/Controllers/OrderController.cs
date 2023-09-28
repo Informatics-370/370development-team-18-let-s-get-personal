@@ -3,11 +3,13 @@ using IPKP___API.Controllers.Models.Repository;
 using IPKP___API.Controllers.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace IPKP___API.Controllers
 {
@@ -21,7 +23,7 @@ namespace IPKP___API.Controllers
         {
           _IPKPRepository = iPKPRepository;
         }
-
+       /* private readonly UserManager<IdentityUser> _userManager;*/
 
         [HttpPost]
         [Route("PlaceOrder")]
@@ -179,8 +181,8 @@ namespace IPKP___API.Controllers
             try
             {
                 string orderStatus = "Requested";
-                var requests = _IPKPRepository.GetOrderLineItembyStatus(orderStatus); //GetOrderRequests();
-                //var requests = _IPKPRepository.GetAllOrderLineItems();
+               /* var requests = _IPKPRepository.GetOrderLineItembyStatus(orderStatus); //GetOrderRequests();*/
+                var requests = _IPKPRepository.GetAllOrderLineItems();
 
                 if (requests == null)
                 {
@@ -341,6 +343,7 @@ namespace IPKP___API.Controllers
         [Route("ProcessOrder/{order_Line_Item_ID}")]
         public async Task<IActionResult> ProcessOrder(Guid order_Line_Item_ID)
         {
+           /* var user = await _userManager.FindByNameAsync();*/
             //delete 
             try
             {
@@ -358,6 +361,15 @@ namespace IPKP___API.Controllers
                         return Ok(order);
                     }
                 }
+               /* var subject = "Your Order is being Processed.";
+                var message = "Dear " + uvm.UserName + ",<br><br>" +
+                "We hope this message finds you well.<br><br>" +
+                "We are writing to inform you that your order is progress.<br><br>" +
+                "Your will receive an email to notifiy you when your order is out for delivery in a few days" + 
+
+                "Best regards,<br>Let's Get Personal";
+
+                _ = SendEmail(subject, message, user.Email);*/
             }
             catch (Exception)
             {

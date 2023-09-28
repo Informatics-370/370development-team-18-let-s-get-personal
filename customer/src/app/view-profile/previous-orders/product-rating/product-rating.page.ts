@@ -12,12 +12,12 @@ import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { SalesVM } from 'src/app/ViewModels/salesVM';
 import { SalesService } from 'src/app/Services/sales.service';
-enum COLORS {
+/*enum COLORS {
   GREY = "E0E0E0",
   GREEN = "#76FF03",
   YELLOW = "#FFCA28",
   RED = "#DD2C00"
-}
+}*/
 
 @Component({
   selector: 'app-product-rating',
@@ -67,7 +67,7 @@ export class ProductRatingPage implements OnInit {
     this.service.GetProductRatingByCustomerID(customer_ID).subscribe(res => {
       this.results = res;
       this.prodRatings = this.results;
-    }, error => {
+    }, (error) => {
       console.log(error);
     })
   }
@@ -88,6 +88,7 @@ export class ProductRatingPage implements OnInit {
 
   AddForm: FormGroup = new FormGroup({
     comment: new FormControl('', [Validators.required]),
+    /*productName:new FormControl('',[Validators.required])*/
   });
 
   selectedRating: number = 0;
@@ -98,26 +99,29 @@ export class ProductRatingPage implements OnInit {
   }
   
   rating: ProductRating = new ProductRating();
+
   confirmaddmodal(/*Stock_Item_ID: string*/ ) {
     this.comment = this.AddForm.get('comment')?.value;
 
     this.rating.stock_Item_ID = JSON.parse(JSON.stringify(localStorage.getItem('RatingStockID')));
-    this.rating.customer_ID = this.customerId.replace(/"/g, '')
+    this.rating.customer_ID = this.customerId.replace(/"/g, '');
     this.rating.product_Rating_Comments = this.comment;
     this.rating.product_Star_Rating = this.selectedRating;
 
-    try {
+    /*try {*/
       this.service.AddProductRating(this.rating).subscribe(res => {
        this.addProdRatingSuccessAlert();
-      }, error => {
-        console.log(error);
-      })
-    } catch {
+       console.log('Succcesssss akmo')
+      }, (error) => {
+        this.addProdRatingErrorAlert()
+        console.log('error',error);
+      });
+   /* } catch {
       this.addProdRatingErrorAlert()
     }
     if (this.comment = null) {
       this.addProdRatingErrorAlert()
-    }
+    }*/
   }
 
   canceladdmodal() {

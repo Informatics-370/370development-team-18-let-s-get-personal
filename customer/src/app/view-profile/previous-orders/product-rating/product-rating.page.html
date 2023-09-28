@@ -53,7 +53,7 @@
 					</ion-buttons>
 					<ion-title id="addmodal">Add Product rating</ion-title>
 					<ion-buttons slot="end">
-						<ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+						<ion-button (click)="confirmaddmodal()" [disabled]="AddForm.invalid" [strong]="true">Confirm</ion-button>
 					</ion-buttons>
 				</ion-toolbar>
 			</ion-header>
@@ -63,11 +63,11 @@
 						<ion-label position="stacked">
 							<h3>Product Name</h3>
 						</ion-label><br>
-						<ion-text>{{stockitemName}}</ion-text>
+						<ion-text >{{stockitemName}}</ion-text>
 					</ion-item>
 					<ion-row>
 						<ion-col *ngFor="let star of stars" (click)="rateExperience(star)">
-							<ion-icon [name]="star >= selectedRating ? 'star' : 'star-outline'"
+							<ion-icon [name]="star <= selectedRating ? 'star' : 'star-outline'"
 								formControlName="selectedRating"></ion-icon>
 						</ion-col>
 					</ion-row>
@@ -109,7 +109,7 @@
 						<ion-label position="stacked">Rating</ion-label><br>
 						<ion-row>
 							<ion-col *ngFor="let star of stars" (click)="rateExperience(star)">
-								<ion-icon [name]="star >= selectedRating ? 'star' : 'star-outline'"></ion-icon>
+								<ion-icon [name]="star <= selectedRating ? 'star' : 'star-outline'"></ion-icon>
 							</ion-col>
 						</ion-row>
 						<p>Selected Rating: {{ selectedRating }}</p>

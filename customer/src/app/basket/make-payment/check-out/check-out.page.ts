@@ -21,7 +21,7 @@ import { RouterModule, Router } from '@angular/router';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class CheckOutPage implements OnInit {
-  discount!: number
+  discount!: any
   order = new OrderT();
   basketItems: BasketItems[] = [];
   address:DeliveryAddress= new DeliveryAddress();
@@ -42,7 +42,9 @@ export class CheckOutPage implements OnInit {
     console.log('basket',this.basketItems); 
     let vatAmount = localStorage.getItem('vatamount');
     this.vat=vatAmount;
-    
+    let discountAmount=localStorage.getItem('discount');
+    this.discount=discountAmount;
+    console.log('disocunt',discountAmount)
     this.GetOrderDetails()
   }
 
@@ -64,7 +66,7 @@ export class CheckOutPage implements OnInit {
         console.log(this.delprice)
 
       },(error) => {
-        this.ErrorAlert();        
+        //this.ErrorAlert();        
         console.error( error);
       })
       this.culculate()
@@ -101,12 +103,12 @@ export class CheckOutPage implements OnInit {
     localStorage.setItem('totalprice', JSON.stringify(this.totalprice));
   }
 
-  AddOrderRequest(totalPrice:number){
+  AddOrderRequest(totalPrice:any){
 
-    this.proceedToPayFast(totalPrice); //.toFixed(2)
+    this.proceedToPayFast(totalPrice.toFixed(2)); //
     // try
     // {
-      let addorderRequest = new Order_Request();
+     /* let addorderRequest = new Order_Request();
       let delID = JSON.parse(JSON.stringify(localStorage.getItem('deliveryID'))) //JSON.parse(localStorage.getItem('deliveryID') as string)
       let customerID = JSON.parse(JSON.stringify(localStorage.getItem('customerID'))) //JSON.parse(localStorage.getItem('customerID') as string)
 
@@ -126,7 +128,7 @@ export class CheckOutPage implements OnInit {
 
       //Action Trail
       this.action = "Confirmed Order Details"
-      this.AddAuditTrail()
+      this.AddAuditTrail()*/
 
 
       //this.proceedToPayFast()
@@ -153,14 +155,14 @@ export class CheckOutPage implements OnInit {
     })
   }
 
-  proceedToPayFast(price:number) {
+  proceedToPayFast(price:any) {
     //localStorage.setItem("order", JSON.stringify(this.order));
     const merchantId = '10030633';
     const merchantKey = 'azvaw7rrloy1e';
     const returnUrl = 'http://localhost:8100/tabs/successful-payment';
     const totalPrice = price; 
 
-    //localStorage.setItem("totalPrice",totalPrice);
+    localStorage.setItem("totalPrice",totalPrice);
 
     const itemNamesList = "Order"+new Date();
   

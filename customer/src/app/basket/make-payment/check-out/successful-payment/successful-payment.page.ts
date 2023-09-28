@@ -41,7 +41,7 @@ export class SuccessfulPaymentPage implements OnInit {
 //========= get orderT working on backed
   ngOnInit() {
     this.getUser()
-    this.AddOrderLineItem()
+    /*this.AddOrderLineItem()*/
 
     const orderString = localStorage.getItem("order");
 
@@ -51,10 +51,11 @@ export class SuccessfulPaymentPage implements OnInit {
 
     this.order.price=parseFloat(price);
     this.order.customerID=localStorage.getItem("customerID");
-    //localStorage.removeItem("totalPrice")
+    localStorage.removeItem("totalPrice")
     
     
     this.placeOrderT(this.order);
+    this.addSale()
 
     localStorage.removeItem('cart');
     localStorage.removeItem('cartItemCount');

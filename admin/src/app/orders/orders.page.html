@@ -40,7 +40,7 @@
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.stock_Item_Size}} </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.stock_Colour_Name}} </ion-col>      
         <!--<ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> <img src='data:image/png;base64,{{item.image_File}}'> </ion-col>-->
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> <img src='data:image/png;base64,{{item.image_File}}'> </ion-col>
+        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> <img src='{{item.image_File}}'> </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.design_Text}} </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> 
           {{item.order_Request_Date | date: 'yyyy-MM-dd'}} </ion-col>

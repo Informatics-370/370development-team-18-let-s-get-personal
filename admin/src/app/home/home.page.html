@@ -93,7 +93,7 @@
         <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.customer_UserName}} </ion-col>
         <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
         <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.stock_Item_Name}} </ion-col>
-        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.order_Request_Date}} </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.order_Request_Date| date: 'yyyy-MM-dd'}} </ion-col>
       </ion-row>
     </ion-grid>
 
