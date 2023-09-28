@@ -313,16 +313,15 @@ deletestockimageID!: string
 deletestockitemname!: string 
   DeleteStockItem(){
     this.stockitemservice.DeleteStockItem(this.deletestockitemID).subscribe(result =>{
-      if(result.status == "Success"){
-        this.DeleteStockItemSuccessAlert(); 
+      //if(result.status == "Success"){
         this.deleteStockImage(this.deletestockimageID, this.deletestockitemname)
-
+        this.DeleteStockItemSuccessAlert();
         this.action = "Deleted Product: " + this.deletestockitemname
         this.AddTrail()
-      }
-      else{
-        this.DeleteStockItemErrorAlert();
-      }      
+      //}
+      //else{
+        //this.DeleteStockItemErrorAlert();
+      //}      
     },(error) => {
       this.errormsg = error
       this.DeleteStockItemErrorAlert();
