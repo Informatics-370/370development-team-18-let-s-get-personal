@@ -97,12 +97,14 @@ export class SuccessfulPaymentPage implements OnInit {
       let discountamount = parseInt(storeddiscountamount, 10)
 
       let invoice = new Invoice()
+      invoice.customer_ID = customerID
+      invoice.discount_Amount = discountamount
       invoice.delivery_Price = delprice
       invoice.invoice_Total_exclVAT = excvatprice
       invoice.invoice_Total_VAT = vatamount
       invoice.invoice_Total_inclVAT = inclvatprice
-      invoice.discount_Amount = discountamount      
-      invoice.customer_ID = customerID
+            
+      
 
       console.log(invoice)
 

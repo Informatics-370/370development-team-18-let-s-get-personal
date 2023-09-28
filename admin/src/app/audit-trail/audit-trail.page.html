@@ -11,15 +11,11 @@
       <ion-title size="large">audit-trail</ion-title>
     </ion-toolbar>
   </ion-header> 
-
-  <!-- <ion-toolbar>    
-    <ion-buttons>
-      <ion-tab-button (click)="getOnlyAdmins()">View Admins</ion-tab-button>
-      <ion-tab-button (click)="getOnlyEmployees()">View Employees</ion-tab-button>
-      <ion-tab-button (click)="getAll()">View All</ion-tab-button>
-    </ion-buttons>
-  </ion-toolbar> -->
-
+  <ion-breadcrumbs>
+    <ion-breadcrumb (click)="backButton()" style="cursor:pointer;">IPKP Users</ion-breadcrumb>
+    <ion-breadcrumb>User Audit Trail</ion-breadcrumb>
+  </ion-breadcrumbs>
+  
   <ion-item>    
     <ion-label>
       <ion-button (click)="getOnlyAdmins()">View Admins</ion-button>

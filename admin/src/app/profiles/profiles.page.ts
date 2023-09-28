@@ -8,8 +8,8 @@ import { Customer } from 'src/app/Models/customer';
 import { Employee } from 'src/app/Models/employee';
 import { UserProfileDataService } from '../Services/userprofile.service';
 import { Admin } from '../Models/admin';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+// 
+
 import { DatePipe } from '@angular/common';
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
@@ -105,10 +105,11 @@ export class ProfilesPage implements OnInit {
     })
   }
 
-  generateUserPDF() {  
+  
+
+  async generateUserPDF() {  
     let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
     let date = new Date
-    
     let docDefinition = {  
       fillColor: "White",
       fillOpacity: "",
@@ -116,10 +117,10 @@ export class ProfilesPage implements OnInit {
       header: user +" - It's Personal Customer List",  
       footer:'Downloaded by: '+ user + ' at: '+ date,        
       content:[
-        {
-          image: "assets/Logo.png",
-          width: 150,
-        },
+        // {
+        //   image: 'data: assets/Logo.png',
+        //   width: 150,
+        // },
         {           
           layout: 'lightHorizontalLines', // optional          
           table: {
@@ -238,3 +239,5 @@ export class ProfilesPage implements OnInit {
 
 
 }
+
+

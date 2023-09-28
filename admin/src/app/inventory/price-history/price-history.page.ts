@@ -28,6 +28,7 @@ export class PriceHistoryPage implements OnInit {
   GetAllStockItems(){
     this.stockitemservice.GetStockItemPriceHistory().subscribe(result =>{
       this.stockitems = result as StockPriceHistory[];
+      console.log(this.stockitems)
     })    
   }
 

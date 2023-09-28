@@ -11,6 +11,11 @@
       <ion-title size="large">Best Sellers</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-breadcrumbs>
+    <ion-breadcrumb (click)="salesNav()" style="cursor:pointer;">Sales</ion-breadcrumb>
+    <ion-breadcrumb>Best Sellers</ion-breadcrumb>
+  </ion-breadcrumbs>
+
   <ion-button id="addBestSellermodal">Add a Product to Best Sellers</ion-button>
   <ion-content *ngIf="bestsellers.length == 0">
     <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
@@ -68,7 +73,7 @@
 
         <form [formGroup]="AddBestSellerForm">   
           <ion-item>
-            <ion-select placeholder="Select a Stock Item Colour" formControlName="Stock_Item_ID">
+            <ion-select placeholder="Select a Stock Item" formControlName="Stock_Item_ID">
               <!-- <div slot="label">Product <ion-text color="danger">(Required)</ion-text></div> -->
               <ion-select-option *ngFor="let items of Products" value="{{items.stock_Item_ID}}" >
                 {{items.stock_Item_Name}} - Sales: {{items.stock_Sale_Quantity}}

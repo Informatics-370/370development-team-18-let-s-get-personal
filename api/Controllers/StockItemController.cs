@@ -146,10 +146,15 @@ namespace IPKP___API.Controllers
             try
             {
                 var existingStockItem = await _IPKPRepository.GetStockItemDetailsAsync(stock_Item_ID);
+                var history = await _IPKPRepository.GetStockItemHistoryAsync(existingStockItem.Stock_Price_History_ID);
 
                 if (existingStockItem == null)
                 {
                     return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + stock_Item_ID });
+                }
+                else if (history == null)
+                {
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Price History" + existingStockItem.Stock_Price_History_ID });
                 }
                 else if (existingStockItem.Stock_Item_Price == sivm.Stock_Item_Price)
                 {
@@ -164,16 +169,8 @@ namespace IPKP___API.Controllers
                 }
                 else
                 {
-                    existingStockItem.Stock_Item_Name = sivm.Stock_Item_Name;
-                    existingStockItem.Stock_Type_ID = sivm.Stock_Type_ID;
-                    existingStockItem.Stock_Image_ID = sivm.Stock_Image_ID;
-                    existingStockItem.Stock_Item_Colour_ID = sivm.Stock_Item_Colour_ID;
-                    existingStockItem.Inventory_Comments = sivm.Inventory_Comments;
-                    existingStockItem.Stock_Item_Price = sivm.Stock_Item_Price;
-                    existingStockItem.Stock_Item_Size = sivm.Stock_Item_Size;
-
-                    var history = await _IPKPRepository.GetStockItemHistoryAsync(existingStockItem.Stock_Price_History_ID);
                     history.Effective_To_Date = DateTime.Today;
+                    await _IPKPRepository.SaveChangesAsync();
 
                     var StockPriceHistory = new Stock_Price_History
                     {
@@ -182,6 +179,18 @@ namespace IPKP___API.Controllers
                         Stock_Price_Amount = sivm.Stock_Item_Price,
                         Stock_Item_Name = sivm.Stock_Item_Name,
                     };
+                    _IPKPRepository.Add(StockPriceHistory);
+                    await _IPKPRepository.SaveChangesAsync();
+
+                    existingStockItem.Stock_Item_Name = sivm.Stock_Item_Name;
+                    existingStockItem.Stock_Type_ID = sivm.Stock_Type_ID;
+                    existingStockItem.Stock_Image_ID = sivm.Stock_Image_ID;
+                    existingStockItem.Stock_Item_Colour_ID = sivm.Stock_Item_Colour_ID;
+                    existingStockItem.Inventory_Comments = sivm.Inventory_Comments;
+                    existingStockItem.Stock_Item_Price = sivm.Stock_Item_Price;
+                    existingStockItem.Stock_Item_Size = sivm.Stock_Item_Size;
+                    existingStockItem.Stock_Price_History_ID = StockPriceHistory.Stock_Price_History_ID;
+                    await _IPKPRepository.SaveChangesAsync();
                 }
 
                 if (await _IPKPRepository.SaveChangesAsync())

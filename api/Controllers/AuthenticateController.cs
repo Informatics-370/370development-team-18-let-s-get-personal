@@ -526,7 +526,7 @@ namespace IPKP___API.Controllers
 
         private async Task SendEmail(/*string fromEmailAddress,*/ string subject, string message, string toEmailAddress)
         {
-            string fromEmailAddress = "sarahpick@gmail.com";
+            string fromEmailAddress = "satahpick@gmail.com";
             var fromAddress = new MailAddress(fromEmailAddress);
             var toAddress = new MailAddress(toEmailAddress);
 

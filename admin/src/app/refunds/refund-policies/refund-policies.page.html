@@ -11,6 +11,10 @@
     </ion-toolbar>
   </ion-header>
   <ion-content id="content">
+    <ion-breadcrumbs>
+      <ion-breadcrumb (click)="salesNav()" style="cursor:pointer;">Sales</ion-breadcrumb>
+      <ion-breadcrumb>Best Sellers</ion-breadcrumb>
+    </ion-breadcrumbs>
     <ion-button id="addRefundmodal">Add New Policy</ion-button>
     <ion-grid>
       <ion-row>

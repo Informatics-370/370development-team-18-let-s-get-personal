@@ -11,10 +11,12 @@
     </ion-toolbar>
   </ion-header>
   <ion-content id="content">
-    <p  >
-      <ion-icon name="chevron-back-outline" (click)="inventoryNav()" style="cursor:pointer;"></ion-icon>Inventory
-      <ion-icon name="chevron-back-outline" (click)="stocktakeNav()" style="cursor:pointer;"></ion-icon>Stock Take
-    </p>
+    <ion-breadcrumbs>
+      <ion-breadcrumb (click)="inventoryNav()" style="cursor:pointer;">Inventory</ion-breadcrumb>
+      <ion-breadcrumb (click)="stocktakeNav()" style="cursor:pointer;">Stock Take</ion-breadcrumb>
+      <ion-breadcrumb>Write Offs</ion-breadcrumb>
+    </ion-breadcrumbs>
+    
     <ion-grid>
       <ion-row>
         <ion-col style="font-weight: bold;">Product Name</ion-col>

@@ -40,6 +40,7 @@ namespace IPKP___API.Controllers
                 else
                 {
                     stocktakeitem.Stock_Item_Quantity = sivm.Stock_Item_Quantity;
+                    stocktakeitem.Inventory_Comments = sivm.Inventory_Comments;
 
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
@@ -59,18 +60,54 @@ namespace IPKP___API.Controllers
         //1. Add to write off table
         [HttpPost]
         [Route("AddToWriteoff")]
-        public async Task<IActionResult> AddToWriteoff(Write_Off wo) //[FromForm] IFormCollection formData
+        public async Task<IActionResult> AddToWriteoff(WriteOffVM wo) 
         {
             try
             {
-                var writeoff = new Write_Off
+                var writeoffitem = await _IPKPRepository.GetStockItemDetailsAsync(wo.Stock_Item_ID);
+
+                if (writeoffitem == null)
                 {
-                    Write_Off_ID = new Guid(),
-                    Write_Off_Date = DateTime.Now,
-                };
-                _IPKPRepository.Add(writeoff);
-                await _IPKPRepository.SaveChangesAsync();
-                return Ok(writeoff);
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Stock Item" + wo.Stock_Item_ID });
+                }
+                else
+                {
+                    var writeoff = new Write_Off();
+                    var writeoffline = new Write_Off_Line_Item();
+
+                    writeoff = new Write_Off
+                    {
+                        Write_Off_ID = new Guid(),
+                        Write_Off_Date = DateTime.Now,
+                    };
+                    _IPKPRepository.Add(writeoff);
+                    await _IPKPRepository.SaveChangesAsync();
+
+                    writeoffline = new Write_Off_Line_Item
+                    {
+                        Write_Off_Line_Item_ID = new Guid(),
+                        Write_Off_ID = writeoff.Write_Off_ID,
+
+                        Stock_Item_ID = wo.Stock_Item_ID,
+                        Write_Off_Reason = wo.Write_Off_Reason,
+                        Write_Off_Quantity = wo.Write_Off_Quantity,
+                    };
+                    _IPKPRepository.Add(writeoffline);
+                     await _IPKPRepository.SaveChangesAsync();
+
+                    writeoffitem.Stock_Item_Quantity = writeoffitem.Stock_Item_Quantity - wo.Write_Off_Quantity;
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Stock Item Updated Successfully" });
+                    }
+                    else
+                    {
+                        return BadRequest(new Response { Status = "Error", Message = "Not saved to database." });
+                    }
+
+                }
+                
             }
             catch (Exception)
             {

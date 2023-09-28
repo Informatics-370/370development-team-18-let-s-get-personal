@@ -332,6 +332,9 @@ export class BasketPage implements OnInit {
     this.modal.dismiss(null, 'cancel');
   }
 
+  canvalink(){
+    window.location.href = "https://www.canva.com/";
+  }
   /*confirmaddmodal() {
     try{     
 

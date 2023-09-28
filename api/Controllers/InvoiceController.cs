@@ -82,7 +82,7 @@ namespace IPKP___API.Controllers
 
                     "Best regards,<br>Let's Get Personal";
 
-                    _ = SendEmail(subject, message, userEmail);
+                    await SendEmail(subject, message, userEmail);
 
                 }
                 catch (Exception)
@@ -95,26 +95,19 @@ namespace IPKP___API.Controllers
                 return NotFound("Does not exist");
             }
 
-            //var user = await _userManager.FindByNameAsync(newinvoice.customer.Username);
-            
-            //if (newinvoice.customer.Username != null)
-            //{
-                
-            //}
-
             return Ok(new Response { Status = "Success", Message = "Invoice Sent To Customer" });
         }
 
         private async Task SendEmail(/*string fromEmailAddress,*/ string subject, string message, string toEmailAddress)
         {
             string fromEmailAddress = "satahpick@gmail.com";
-            //var fromAddress = new MailAddress(fromEmailAddress);
+            var fromAddress = new MailAddress(fromEmailAddress);
             var toAddress = new MailAddress(toEmailAddress);
 
             SmtpClient client = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
-                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "amojsldimzrbrtot"),
+                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "wauc crru pvma osvq"),
                 EnableSsl = true
             };
 

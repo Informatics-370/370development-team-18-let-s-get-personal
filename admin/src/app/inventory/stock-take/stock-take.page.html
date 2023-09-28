@@ -13,7 +13,11 @@
   </ion-header>
   
   <ion-content>
-    <p style="cursor:pointer;" (click)="inventoryNav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
+    <ion-breadcrumbs>
+      <ion-breadcrumb (click)="inventoryNav()" style="cursor:pointer;">Inventory</ion-breadcrumb>
+      <ion-breadcrumb>Stock Take</ion-breadcrumb>
+    </ion-breadcrumbs>
+    
     <ion-button (click)="prevWriteOffsNav()">View Write Offs</ion-button>
     <ion-grid>
       <ion-row>
@@ -42,7 +46,7 @@
         <ion-col>{{item.inventory_Comments}}</ion-col>        
         <ion-col>{{item.stock_Item_Quantity}}</ion-col>
         <ion-col> <ion-button (click)="UpdateQuantity(item.stock_Item_ID, true)">Update</ion-button> </ion-col>
-        <ion-col> <ion-button (click)="WriteOffModal(item.stock_Item_ID, true, item.stock_Item_Name)">Write-off</ion-button> </ion-col>
+        <ion-col> <ion-button (click)="WriteOffModal(item.stock_Item_ID, true, item.stock_Item_Name, item.stock_Item_Quantity)">Write-off</ion-button> </ion-col>
       </ion-row>
     </ion-grid>
   </ion-content>  
@@ -64,9 +68,9 @@
       </ion-header>
       <ion-content class="ion-padding">
         <form [formGroup]="editForm" >              
-            <!-- <ion-item>
+            <ion-item>
               <ion-input label="Inventory_Comments" type="text" formControlName="Inventory_Comments" placeholder="" ></ion-input>
-            </ion-item>  -->
+            </ion-item> 
 
             <ion-item>
               <ion-input label="Current Quantity" type="number" formControlName="Stock_Item_Quantity" required></ion-input>
@@ -85,7 +89,7 @@
           </ion-buttons>
           <ion-title>Add Write Off Details</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="Writeoff()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="Writeoff()" [strong]="true" [disabled]="writeoffForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
