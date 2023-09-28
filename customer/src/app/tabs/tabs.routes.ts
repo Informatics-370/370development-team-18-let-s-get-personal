@@ -72,11 +72,6 @@ export const routes: Routes = [
         canActivate:[AuthGuard],data:{roles:['User']}
       },
       {
-        path: 'product-rating',
-        loadComponent: () => import('../view-profile/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage),
-        canActivate:[AuthGuard],data:{roles:['User']}
-      },
-      {
         path: 'check-out',
         loadComponent: () => import('../basket/make-payment/check-out/check-out.page').then( m => m.CheckOutPage),
         canActivate:[AuthGuard],data:{roles:['User']}

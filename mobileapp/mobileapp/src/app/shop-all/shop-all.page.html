@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-title> Shop All </ion-title>
+    </ion-buttons>
+    <ion-button slot="end" (click)="Help()"><ion-icon name="help-outline"></ion-icon></ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Shop</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col sizeLg="1" sizeMd="2" sizeXs="4"><ion-button (click)="GetStockItems()">View All</ion-button></ion-col>
+      <ion-col sizeLg="2" sizeMd="2" sizeXs="4" *ngFor="let item of stocktypes">
+        <ion-button (click)="GetByType(item.stock_Type_ID)">{{item.stock_Type_Name}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid id="grid">
+    <ion-row>
+      <ion-col sizeLg="3" sizeMd="4" sizeXs="6" *ngFor="let item of Products">
+        <ion-card style="height: 100%; width: 100%;">
+          <ion-card-title>{{item.stock_Item_Name}}</ion-card-title>
+          <ion-card-content>
+            <ion-img src='data:image/png;base64,{{item.stockImageFile}}'></ion-img>
+            <p>{{item.stockColourName}}</p>
+            <p>{{item.stock_Item_Size}}</p>
+            <p>R: {{item.stock_Item_Price}}</p>
+          </ion-card-content> 
+
+          <ion-item *ngIf="item.stock_Item_Quantity == 0">
+            <ion-label color="danger">Out of Stock</ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="item.stock_Item_Quantity < 5">
+            <ion-label color="danger">Low On Stock {{item.stock_Item_Quantity}} left</ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="item.stock_Item_Quantity > 0">
+            <ion-button class="center" (click)="addToBasket(item)">Add To Basket</ion-button>
+          </ion-item>          
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

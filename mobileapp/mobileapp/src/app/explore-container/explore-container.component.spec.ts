@@ -7,6 +7,8 @@ describe('ExploreContainerComponent', () => {
   let fixture: ComponentFixture<ExploreContainerComponent>;
 
   beforeEach(async () => {
+    await TestBed.configureTestingModule().compileComponents();
+
     fixture = TestBed.createComponent(ExploreContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

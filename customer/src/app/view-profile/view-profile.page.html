@@ -1,14 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-      <ion-title>Profile</ion-title>      
+      <ion-title>Profile</ion-title>     
+      <ion-button slot="end" (click)="HelpAlert()">Help</ion-button> 
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-toolbar>
     <ion-button (click)="updateProfile(customer.customer_ID, true)">Manage Profile</ion-button>  
-    <ion-button (click)="ExpRating()">Experience Rating</ion-button>
-    <ion-button (click)="PreviousOrders()">View Previous Orders</ion-button>
+    <!-- <ion-button (click)="ExpRating()">Experience Rating</ion-button> -->
+    <!-- <ion-button (click)="PreviousOrders()">View Previous Orders</ion-button> -->
     <ion-button slot="end" (click)="Logout()">Log out</ion-button>
     <ion-button (click)="ChangePassword(true)">Change Password</ion-button>
   </ion-toolbar>

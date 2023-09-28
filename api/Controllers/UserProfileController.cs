@@ -171,6 +171,7 @@ namespace IPKP___API.Controllers
             {
                 var orderrequests = await _IPKPRepository.GetOrderRequestByCustomerID(customer_ID);
                 var existingCustomerUser = await _IPKPRepository.GetCustomerDetailsAsync(customer_ID);
+                var user = await _userManager.FindByNameAsync(existingCustomerUser.Username);
 
                 if (existingCustomerUser == null) 
                 {
@@ -186,7 +187,14 @@ namespace IPKP___API.Controllers
 
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
-                        return Ok("Customer User Removed Successfully");
+                        return Ok(new Response { Status = "Error", Message = "Customer User Removed Successfully" });
+                    }
+
+                    var result = await _userManager.DeleteAsync(user);
+
+                    if (result.Succeeded)
+                    {
+                        return Ok(new Response { Status = "Success", Message = "User Password Updated Successfully!" });
                     }
                 }
                 
@@ -325,14 +333,28 @@ namespace IPKP___API.Controllers
             try
             {
                 var existingEmployee = await _IPKPRepository.GetEmployeeDetailsAsync(Employee_ID);
+                var user = await _userManager.FindByNameAsync(existingEmployee.Username);
 
-                if (existingEmployee == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" + Employee_ID });
-
-                _IPKPRepository.Delete(existingEmployee);
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                if (existingEmployee == null)
+                { 
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" + Employee_ID }); 
+                }
+                else
                 {
-                    return Ok(new Response { Status = "Success", Message = "Employee Removed Successfully" });
+                    _IPKPRepository.Delete(existingEmployee);
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Employee Removed Successfully" });
+                    }
+
+                    var result = await _userManager.DeleteAsync(user);
+
+                    if (result.Succeeded)
+                    {
+                        return Ok(new Response { Status = "Success", Message = "User Password Updated Successfully!" });
+                    }
+
                 }
             }
             catch (Exception)
