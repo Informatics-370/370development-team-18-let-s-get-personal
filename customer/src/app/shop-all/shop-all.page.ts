@@ -12,6 +12,7 @@ import { BestsellersService } from 'src/app/Services/bestsellers.service';
 import { StockTypeDataService } from '../Services/stocktype.service';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
 import { StockTypes } from '../Models/stocktypes';
+import { Best_Sellers } from '../Models/bestsellers';
 @Component({
   selector: 'app-shop-all',
   templateUrl: './shop-all.page.html',
@@ -31,7 +32,7 @@ export class ShopAllPage implements OnInit {
 
   constructor(private _modalController: ModalController, public loadingController: LoadingController,
     private _router: Router, private alertController: AlertController, private typeservice: StockTypeDataService,
-    private basketservice: BasketService, private service: StockItemDataService) { }
+    private basketservice: BasketService, private service: StockItemDataService, private bestsellerservice: BestsellersService) { }
 
   SearchForm: FormGroup = new FormGroup({
     name:new FormControl('',[Validators.required])

@@ -23,7 +23,7 @@ export class DeliveryDataService {
     .pipe(map(result => result))
   }
   
-  public GetDeliveryCompany(deliveryCompanyId:number){ 
+  public GetDeliveryCompany(deliveryCompanyId:string){ 
     return this.httpClient.get(`${this.apiUrl}Deliveries/GetDeliveryCompany/${deliveryCompanyId}`)
     .pipe(map(result => result))
   }

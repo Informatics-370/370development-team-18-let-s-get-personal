@@ -136,7 +136,7 @@ cancelpassmodal() {
       editedCustomer.username = this.editForm.value.username;
 
       this.service.UpdateCustomer(this.editCustomer.customer_ID, editedCustomer).subscribe(result =>{
-        
+        console.log(result);
       }) 
       
       this.editSuccessAlert();     
@@ -158,37 +158,31 @@ cancelpassmodal() {
   customerID!: string
   async DeleteConfirmAlert(customer_ID: string) {
     this.customerID = customer_ID
+    console.log(this.customerID)
     const alert = await this.alertController.create({
       header: 'Are you sure you want to delete your profile?',
       buttons: [{
-        text: 'Cancel',
+        text: 'Continue',
         role: 'cancel',
-        // handler:() =>{
-        //   this.reloadPage(); 
-        // }
-    }, {
-      text: 'Continue',
-      role: 'cancel',
-      handler:() =>{
-        this.deleteProfile(this.customerID); 
-      }
-  }],
+        handler:() =>{
+          this.deleteProfile(); 
+        }
+      },{
+        text: 'Cancel',
+        role: 'cancel'
+      }],
     });
     await alert.present();
   }
 
-  public deleteProfile(customer_ID: string) {
-    this.service.DeleteCustomer(customer_ID).subscribe(result =>{
+  public deleteProfile() {
+    this.service.DeleteCustomer(this.customerID).subscribe(result =>{
       console.log(result);
-      this.Logout()
+      this.DeleteSuccessAlert()
     },(error) => {
       this.deleteErrorAlert();        
       console.error(error);
     })
-
-    // this.authservice.DeleteUser(this.username).subscribe(result =>{
-    //   console.log(result);
-    // })
   }
   
   public PreviousOrders() {
@@ -216,20 +210,20 @@ cancelpassmodal() {
     this._router.navigate(["/tabs/login"])
   }
 
-  // async HelpAlert() {
-  //   const alert = await this.alertController.create({
-  //     header: 'Success!',
-  //     subHeader: 'Updated',
-  //     buttons: [{
-  //       text: 'OK',
-  //       role: 'cancel',
-  //       handler:() =>{
-  //         this.reloadPage(); 
-  //       }
-  //   }],
-  //   });
-  //   await alert.present();
-  // }
+  async DeleteSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Your Account Has Been Deleted',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.Logout(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
 
   async PasswordMatchErrorAlert() {
     const alert = await this.alertController.create({
