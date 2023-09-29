@@ -102,9 +102,7 @@ export class SuccessfulPaymentPage implements OnInit {
       invoice.delivery_Price = delprice
       invoice.invoice_Total_exclVAT = excvatprice
       invoice.invoice_Total_VAT = vatamount
-      invoice.invoice_Total_inclVAT = inclvatprice
-            
-      
+      invoice.invoice_Total_inclVAT = inclvatprice           
 
       console.log(invoice)
 

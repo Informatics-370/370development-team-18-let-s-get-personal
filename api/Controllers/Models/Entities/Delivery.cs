@@ -18,6 +18,7 @@ namespace IPKP___API.Controllers.Models.Entities
 
         public DateTime DateDelivered { get; set; }
 
+        //ignore waybill
         public string Way_Bill_File { get; set; }
 
         //Address Foreign key

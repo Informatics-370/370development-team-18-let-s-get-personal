@@ -1,52 +1,54 @@
-<ion-tabs>
-  <ion-tab-bar slot="top"> 
-    <ion-tab-button class="logo-tab-button" tab="home">
-      <ion-img src="assets/Logo.png"></ion-img>
-    </ion-tab-button>
 
-    <ion-tab-button tab="home">
-      <ion-label>Home</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="order-requests">
-      <ion-label>Order Requests</ion-label>
-    </ion-tab-button>
+    <ion-tabs>
+      <ion-tab-bar slot="top"> 
+        <ion-tab-button class="logo-tab-button" tab="home">
+          <ion-img src="assets/Logo.png"></ion-img>
+        </ion-tab-button>
     
-    <ion-tab-button tab="orders">
-      <ion-label>Orders in Progress</ion-label>
-    </ion-tab-button>
+        <ion-tab-button tab="home">
+          <ion-label>Home</ion-label>
+        </ion-tab-button>
+    
+        <ion-tab-button tab="order-requests">
+          <ion-label>Order Requests</ion-label>
+        </ion-tab-button>
+        
+        <ion-tab-button tab="orders">
+          <ion-label>Orders in Progress</ion-label>
+        </ion-tab-button>
+    
+        <ion-tab-button tab="deliveries">
+          <ion-label>Deliveries</ion-label>
+        </ion-tab-button>
+    
+        <ion-tab-button tab="inventory">
+          <ion-label>Inventory</ion-label>
+        </ion-tab-button>
+    
+        <ion-tab-button tab="discounts">
+          <ion-label>Discounts</ion-label>
+        </ion-tab-button>
+    
+        <!-- <ion-tab-button tab="refunds">
+          <ion-label>Refunds</ion-label>
+        </ion-tab-button> -->
+    
+        <ion-tab-button tab="ratings">
+          <ion-label>Ratings</ion-label>
+        </ion-tab-button>
+    
+        <ion-tab-button tab="profiles" *ngIf="roles == 'Admin'">
+          <ion-label>View Users</ion-label>
+        </ion-tab-button>
+    
+        <ion-tab-button tab="sales">
+          <ion-label>Sales</ion-label>
+        </ion-tab-button>
+    
+        <ion-tab-button tab="admin-profile">
+          <ion-icon name="person-outline"></ion-icon>
+          <span class="username">{{ GetUsernameFromLocalStorage() || 'Guest' }}</span>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
 
-    <ion-tab-button tab="deliveries">
-      <ion-label>Deliveries</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="inventory">
-      <ion-label>Inventory</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="discounts">
-      <ion-label>Discounts</ion-label>
-    </ion-tab-button>
-
-    <!-- <ion-tab-button tab="refunds">
-      <ion-label>Refunds</ion-label>
-    </ion-tab-button> -->
-
-    <ion-tab-button tab="ratings">
-      <ion-label>Ratings</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="profiles" *ngIf="roles == 'Admin'">
-      <ion-label>View Users</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="sales">
-      <ion-label>Sales</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="admin-profile">
-      <ion-icon name="person-outline"></ion-icon>
-      <span class="username">{{ GetUsernameFromLocalStorage() || 'Guest' }}</span>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>
