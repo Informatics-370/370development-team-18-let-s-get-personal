@@ -1,0 +1,71 @@
+/*body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    padding: 10px;
+}
+h1 {
+    font-size: 28px;
+    color: #333;
+}
+h2 {
+    font-size: 24px;
+    color: #da26aa;
+}
+p {
+    font-size: 16px;
+    color: #666;
+}
+ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}*/
+.heading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+    color: palevioletred;
+    background-color: rgb(243, 237, 237);
+  }
+  ion-card-title {
+    font-weight: bold;
+  }
+
+  /* Add this to your CSS or SCSS file */
+/*.search-results {
+    padding: 20px;
+    background-color: #f8f8f8;
+  }
+  
+  .search-results h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .search-results ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .search-results li {
+    margin-bottom: 5px;
+  }*/
+
+  /* Highlight search term */
+.highlighted-text {
+    background-color: yellow;
+    font-weight: bold;
+  }
+
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+
+  
+  
+  
+  

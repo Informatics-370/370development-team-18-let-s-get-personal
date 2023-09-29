@@ -31,7 +31,7 @@ export class DiscountsPage implements OnInit {
   stockItems: Stock_Item[] = [];
   searchedDiscount: Discount[]=[];
   searchString: string = "";
-
+  date = new Date();
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service: DiscountService, private thisroute: Router, public modalCtrl: ModalController,
@@ -77,6 +77,7 @@ export class DiscountsPage implements OnInit {
   ngOnInit(): void {
     this.getDiscounts();
     this.GetStockItems();
+    this.date = new Date();
   }
 
   getDiscounts() {
@@ -97,6 +98,16 @@ export class DiscountsPage implements OnInit {
   getProductName(stockId: string): string {
     const product = this.Products.find(product => product.stock_Item_ID === stockId);
     return product ? product.stock_Item_Name : '';
+  }
+
+  ifDiscountExpired(effectivetodate: Date): boolean {
+    const date = new Date();
+    if(effectivetodate < date){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
 //=========== Add ===========
@@ -255,8 +266,8 @@ export class DiscountsPage implements OnInit {
   async HelpAlert() {
     const alert = await this.alertController.create({
       header: 'Please Note: ',
-      subHeader: 'Discounts will be automatically applied to the Product in a customers basket',
-      message: '',
+      subHeader: 'Discounts will be automatically applied to the product in a customers basket.',
+      message: 'Dates in red are discounts that have expired.',
       buttons: [{
           text: 'OK',
           role: 'cancel',

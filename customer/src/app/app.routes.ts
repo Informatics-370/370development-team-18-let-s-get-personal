@@ -58,15 +58,6 @@ export const routes: Routes = [
     canActivate:[AuthGuard],data:{roles:['User']}
   },
   {
-    path: 'product-rating',
-    loadComponent: () => import('./view-profile/previous-orders/product-rating/product-rating.page').then( m => m.ProductRatingPage),
-    canActivate:[AuthGuard],data:{roles:['User']}
-  },
- /* {
-    path: 'edit-experience-rating',
-    loadComponent: () => import('./view-profile/experience-rating/edit-experience-rating/edit-experience-rating.page').then( m => m.EditExperienceRatingPage)
-  },*/
-  {
     path: 'view-refund-policy',
     loadComponent: () => import('./faq/view-refund-policy/view-refund-policy.page').then( m => m.ViewRefundPolicyPage)
   },

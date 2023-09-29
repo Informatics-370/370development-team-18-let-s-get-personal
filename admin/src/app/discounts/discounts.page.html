@@ -28,26 +28,32 @@
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Discount
           Amount</ion-col>
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Product Name</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Effective From
-          Date</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Effective To
-          Date</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">
+          Effective From Date</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">
+          Effective To Date</ion-col>
         <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="font-weight: bold; text-align: center;"></ion-col>
         <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="font-weight: bold; text-align: center;"></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of searchedDiscount">
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.discount_Name}}</ion-col>
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">R {{item.discount_Amount}}.00</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"
-          style="text-align: center;">{{getProductName(item.stock_Item_ID)}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.effective_From_Date| date:
-          'yyyy-MM-dd'}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.effective_To_Date| date:
-          'yyyy-MM-dd'}}</ion-col>
-        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;"><ion-button
-            (click)="DeleteDiscount(item.discount_ID, item.discount_Name)">Delete</ion-button></ion-col>
-        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;"><ion-button
-            (click)="EditDiscount(item.discount_ID, true)">Update</ion-button></ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">
+          {{getProductName(item.stock_Item_ID)}}
+        </ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">
+          {{item.effective_From_Date| date:'yyyy-MM-dd'}}
+        </ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">
+          <p *ngIf="date < item.effective_To_Date" style="color: red;">{{item.effective_To_Date| date: 'yyyy-MM-dd'}}</p>
+          {{item.effective_To_Date| date: 'yyyy-MM-dd'}}
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          <ion-button (click)="DeleteDiscount(item.discount_ID, item.discount_Name)">Delete</ion-button>
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          <ion-button (click)="EditDiscount(item.discount_ID, true)">Update</ion-button>
+        </ion-col>
       </ion-row>
     </ion-grid>
 

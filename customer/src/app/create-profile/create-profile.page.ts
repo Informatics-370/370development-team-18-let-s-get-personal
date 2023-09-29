@@ -116,7 +116,7 @@ export class CreateProfilePage implements OnInit {
   async AddCustomerErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
-      subHeader: 'That Username has been Taken',
+      subHeader: 'That Username or Email has been Taken',
       message: 'Please try again',
       buttons: [{
         text: 'OK',

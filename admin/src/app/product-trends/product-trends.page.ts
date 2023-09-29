@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild, OnInit } from '@angula
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { RouterModule, Router } from '@angular/router';
 import { AuditTrailService } from '../Services/audittrail.service';
 import { AuditTrail } from '../Models/adittrail';
 import Chart from 'chart.js/auto';
@@ -26,7 +27,7 @@ export class ProductTrendsPage implements OnInit {
   private labeldata: any[] = [];
   private realdata: any[] = [];
   private chartInfo: any;
-  constructor(private service: SalesService, private trailservice: AuditTrailService) { }  
+  constructor(private service: SalesService, private trailservice: AuditTrailService, public router: Router) { }  
   
   ngOnInit(): void {
     this.service.GetSalesGraph().subscribe(result => {
@@ -42,6 +43,10 @@ export class ProductTrendsPage implements OnInit {
         this.createChart(this.labeldata, this.realdata); //, this.colordata
       }
     });    
+  }
+
+  backButton() {
+    this.router.navigate(['./tabs/sales']);
   }
 
   createChart(labeldata: any, realdata: any) //, colordata: any

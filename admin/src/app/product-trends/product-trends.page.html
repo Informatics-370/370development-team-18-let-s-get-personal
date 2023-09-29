@@ -10,6 +10,11 @@
       <ion-title size="large">ProductTrends</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-breadcrumbs>
+    <ion-breadcrumb (click)="backButton()" style="cursor:pointer;">Sales</ion-breadcrumb>
+    <ion-breadcrumb>Product Trend Report</ion-breadcrumb>
+  </ion-breadcrumbs>
+  
   <ion-button (click)="openPDF()">Download Trend Chart</ion-button>
   <ion-grid id="TrendsData">
     <ion-row>

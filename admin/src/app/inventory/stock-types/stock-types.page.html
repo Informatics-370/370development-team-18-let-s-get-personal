@@ -8,13 +8,14 @@
 <ion-content [fullscreen]="false">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <!-- <ion-buttons>
-        <ion-tab-button id="addTypemodal"> Add Stock Type</ion-tab-button>
-      </ion-buttons> -->
     </ion-toolbar>
   </ion-header>
   <ion-content id="content">
-    <p style="cursor:pointer;" (click)="inventoryNav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
+    <ion-breadcrumbs>
+      <ion-breadcrumb (click)="inventoryNav()" style="cursor:pointer;">Inventory</ion-breadcrumb>
+      <ion-breadcrumb>Stock Types</ion-breadcrumb>
+    </ion-breadcrumbs>
+
     <ion-button id="addTypemodal">Add Stock Type</ion-button>
     
     <ion-grid>
@@ -49,7 +50,7 @@
       </ion-header>
       <ion-content class="ion-padding">
         <ion-item>
-          <h3>Add Stock type Details</h3>     
+          <!-- <h3>Add Stock Type Details</h3>      -->
         </ion-item>
         <form [formGroup]="AddTypeForm">          
             <ion-item>
@@ -68,7 +69,7 @@
           <ion-buttons slot="start">
             <ion-button (click)="canceleditmodal()">Cancel</ion-button>
           </ion-buttons>
-          <ion-title>Add Discount Policy Details</ion-title>
+          <ion-title>Add New Stock Type Details</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
           </ion-buttons>

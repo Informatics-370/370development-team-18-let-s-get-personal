@@ -8,8 +8,8 @@ import { Customer } from 'src/app/Models/customer';
 import { Employee } from 'src/app/Models/employee';
 import { UserProfileDataService } from '../Services/userprofile.service';
 import { Admin } from '../Models/admin';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+// 
+
 import { DatePipe } from '@angular/common';
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
@@ -105,18 +105,23 @@ export class ProfilesPage implements OnInit {
     })
   }
 
-  generateUserPDF() {  
+  
+
+  async generateUserPDF() {  
     let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
     let date = new Date
-    
     let docDefinition = {  
       fillColor: "White",
       fillOpacity: "",
       margin: [ 5, 10, 5, 5 ],
-      header: user+" - It's Personal Customer List",  
+      header: user +" - It's Personal Customer List",  
       footer:'Downloaded by: '+ user + ' at: '+ date,        
       content:[
-        {          
+        // {
+        //   image: 'data: assets/Logo.png',
+        //   width: 150,
+        // },
+        {           
           layout: 'lightHorizontalLines', // optional          
           table: {
             headerRows: 1,
@@ -128,8 +133,10 @@ export class ProfilesPage implements OnInit {
               [ 'Username', 'First Name', 'Last Name', 'Email Address', 'Cell Number', 'Date Registered' ],
               ['Customers:', '', '', '','', ''],
               ...this.customers.map(p => ([p.username, p.firstName, p.surname, p.email, p.cell_Number, p.date_Registered])),
+              ['', '', '', '','', ''],
               ['Employees:', '', '', '','', ''],
               ...this.employees.map(p => ([p.username, p.firstName, p.surname, p.email, p.cell_Number, p.date_Registered])),
+              ['', '', '', '','', ''],
               ['Admins:', '', '', '','', ''],
               ...this.admin.map(p => ([p.username, p.firstName, p.surname, p.email, p.cell_Number, p.date_Registered]))
             ]
@@ -232,3 +239,5 @@ export class ProfilesPage implements OnInit {
 
 
 }
+
+

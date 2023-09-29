@@ -90,10 +90,6 @@ export class CheckOutPage implements OnInit {
       this.delprice = parseInt(storedDelPrice, 10);
     }
 
-    // this.vatprice = JSON.parse(localStorage.getItem('vatamount') as string);
-    // this.pureprice = JSON.parse(localStorage.getItem('pureprice') as string)
-    // this.delprice = JSON.parse(localStorage.getItem('delprice') as string)
-
     console.log(orderprice)
     console.log(this.vatprice)
     console.log(this.delprice)
@@ -101,10 +97,11 @@ export class CheckOutPage implements OnInit {
     this.totalprice = this.pureprice + this.delprice + this.vatprice
     console.log(this.totalprice)
     localStorage.setItem('totalprice', JSON.stringify(this.totalprice));
+    
   }
 
   AddOrderRequest(totalPrice:any){
-
+    localStorage.setItem('TotalPaid', totalPrice.toString());
     this.proceedToPayFast(totalPrice.toFixed(2)); //
     // try
     // {

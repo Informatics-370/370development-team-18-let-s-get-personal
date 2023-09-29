@@ -35,8 +35,7 @@ namespace IPKP___API.Controllers
                     Payment_Amount = sale.Payment_Amount,
                     Sale_Quantity = sale.Sale_Quantity,
                     Customer_UserName = sale.Customer_UserName,
-                    Stock_Item_ID = sale.Stock_Item_ID,                   
-                    
+                    Stock_Item_ID = sale.Stock_Item_ID, 
                 };
 
                 _IPKPRepository.Add(newsale);

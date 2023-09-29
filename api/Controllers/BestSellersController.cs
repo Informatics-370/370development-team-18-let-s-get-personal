@@ -53,9 +53,9 @@ namespace IPKP___API.Controllers
             }
             catch (Exception)
             {
-                return BadRequest("Invalid Transaction");
+                return BadRequest(new Response { Status = "Error", Message = "Invalid Transaction" });
             }
-            return Ok("Best Sellers List Added To Database.");
+            return Ok(new Response { Status = "Error", Message = "Best Sellers List Added To Database." });
         }
 
         [HttpDelete]
@@ -66,14 +66,20 @@ namespace IPKP___API.Controllers
             {
                 var bestseller = await _IPKPRepository.GetBestSellerByID(bestsellerId);
 
-                if (bestseller == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Best Seller" + bestsellerId });
-
-                _IPKPRepository.Delete(bestseller);
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                if (bestseller == null)
                 {
-                    return Ok(new Response { Status = "Success", Message = "Best Seller Removed Successfully" });
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Best Seller" + bestsellerId });
                 }
+                else
+                {
+                    _IPKPRepository.Delete(bestseller);
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        return Ok(new Response { Status = "Success", Message = "Best Seller Removed Successfully" });
+                    }
+                }
+                
             }
             catch (Exception)
             {

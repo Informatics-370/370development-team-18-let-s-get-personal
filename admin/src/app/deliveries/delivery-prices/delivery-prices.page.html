@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Delivery Price Report</ion-title>
+    <ion-title>Delivery Company Price Report</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,7 +10,11 @@
       <ion-title size="large">delivery-prices</ion-title>
     </ion-toolbar>
   </ion-header>
-  <p style="cursor:pointer;" (click)="backNav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
+  <ion-breadcrumbs>
+    <ion-breadcrumb (click)="backNav()" style="cursor:pointer;">Deliveries</ion-breadcrumb>
+    <ion-breadcrumb>Delivery Company Price Report</ion-breadcrumb>
+  </ion-breadcrumbs>
+
   <ion-button (click)="openPDF()">Download report</ion-button>
   <div id="htmlData">
     <ion-grid>

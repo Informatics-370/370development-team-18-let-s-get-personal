@@ -77,20 +77,16 @@ namespace IPKP___API.Controllers
                     existingAdmin.Cell_Number = admin.Cell_Number;
                     existingAdmin.Email = admin.Email;
                     existingAdmin.Username = admin.Username;
-
-                    if (await _IPKPRepository.SaveChangesAsync())
-                    {
-                        return Ok(new Response { Status = "Success", Message = "Admin details Updated Successfully!" });
-                    }
-
                     var usernamereuslt = await _userManager.SetUserNameAsync(user, admin.Username);
                     var emailresult = await _userManager.SetEmailAsync(user, admin.Email);
-                    //var savechanges = await _IPKPRepository.SaveChangesAsync();                    
 
-                    if (usernamereuslt.Succeeded && emailresult.Succeeded)
-                    {
-                        return Ok(new Response { Status = "Success", Message = "Admin details Updated Successfully!" });
-                    }
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {                        
+                        if (usernamereuslt.Succeeded && emailresult.Succeeded)
+                        {
+                            return Ok(new Response { Status = "Success", Message = "Admin details Updated Successfully!" });
+                        }
+                    }                    
                 }
                 
             }
@@ -119,7 +115,7 @@ namespace IPKP___API.Controllers
 
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
-                        return Ok("Customer User Removed Successfully");
+                        return Ok("Admin User Removed Successfully");
                     }
                 }
 
@@ -128,7 +124,7 @@ namespace IPKP___API.Controllers
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok("Customer USer Removed From Database.");
+            return Ok("Admin USer Removed From Database.");
         }
 
 
@@ -171,6 +167,7 @@ namespace IPKP___API.Controllers
             {
                 var orderrequests = await _IPKPRepository.GetOrderRequestByCustomerID(customer_ID);
                 var existingCustomerUser = await _IPKPRepository.GetCustomerDetailsAsync(customer_ID);
+                var user = await _userManager.FindByNameAsync(existingCustomerUser.Username);
 
                 if (existingCustomerUser == null) 
                 {
@@ -183,13 +180,16 @@ namespace IPKP___API.Controllers
                 else
                 {
                     _IPKPRepository.Delete(existingCustomerUser);
+                    var result = await _userManager.DeleteAsync(user);
 
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
-                        return Ok("Customer User Removed Successfully");
-                    }
-                }
-                
+                        if (result.Succeeded)
+                        {
+                            return Ok(new Response { Status = "Success", Message = "User Customer Removed Successfully!" });
+                        }
+                    }     
+                }                
             }
             catch (Exception)
             {
@@ -218,18 +218,15 @@ namespace IPKP___API.Controllers
                     existingCustomerUser.Cell_Number = customer.Cell_Number;
                     existingCustomerUser.Email = customer.Email;
                     existingCustomerUser.Username = customer.Username;
-
-                    if (await _IPKPRepository.SaveChangesAsync())
-                    {
-                        return Ok(new Response { Status = "Success", Message = "Customer details Updated Successfully!" });
-                    }
-
                     var usernamereuslt = await _userManager.SetUserNameAsync(user, customer.Username);
                     var emailresult = await _userManager.SetEmailAsync(user, customer.Email);
 
-                    if (usernamereuslt.Succeeded && emailresult.Succeeded)
+                    if (await _IPKPRepository.SaveChangesAsync())
                     {
-                        return Ok(new Response { Status = "Success", Message = "Customer details Updated Successfully!" });
+                        if (usernamereuslt.Succeeded && emailresult.Succeeded)
+                        {
+                            return Ok(new Response { Status = "Success", Message = "Customer details Updated Successfully!" });
+                        }
                     }
                 }
                 
@@ -295,21 +292,16 @@ namespace IPKP___API.Controllers
                     existingEmployee.Cell_Number = employee.Cell_Number;
                     existingEmployee.Email = employee.Email;
                     existingEmployee.Username = employee.Username;
-
-                    if (await _IPKPRepository.SaveChangesAsync())
-                    {
-                        return Ok(new Response { Status = "Success", Message = "Employee Updated Successfully" });
-                    }
-
                     var usernamereuslt = await _userManager.SetUserNameAsync(user, employee.Username);
                     var emailresult = await _userManager.SetEmailAsync(user, employee.Email);
-
-                    if (usernamereuslt.Succeeded && emailresult.Succeeded)
-                    {
-                        return Ok(new Response { Status = "Success", Message = "Admin details Updated Successfully!" });
-                    }
+                    if (await _IPKPRepository.SaveChangesAsync())                   
+                    { 
+                        if (usernamereuslt.Succeeded && emailresult.Succeeded)
+                        {
+                            return Ok(new Response { Status = "Success", Message = "Admin details Updated Successfully!" });
+                        }
+                    }                            
                 }
-
             }
             catch (Exception)
             {
@@ -325,14 +317,24 @@ namespace IPKP___API.Controllers
             try
             {
                 var existingEmployee = await _IPKPRepository.GetEmployeeDetailsAsync(Employee_ID);
+                var user = await _userManager.FindByNameAsync(existingEmployee.Username);
 
-                if (existingEmployee == null) return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" + Employee_ID });
-
-                _IPKPRepository.Delete(existingEmployee);
-
-                if (await _IPKPRepository.SaveChangesAsync())
+                if (existingEmployee == null)
+                { 
+                    return NotFound(new Response { Status = "Error", Message = "Could Not Find Employee" + Employee_ID }); 
+                }
+                else
                 {
-                    return Ok(new Response { Status = "Success", Message = "Employee Removed Successfully" });
+                    _IPKPRepository.Delete(existingEmployee);
+                    var result = await _userManager.DeleteAsync(user);
+
+                    if (await _IPKPRepository.SaveChangesAsync())
+                    {
+                        if (result.Succeeded)
+                        {
+                            return Ok(new Response { Status = "Success", Message = "User Password Updated Successfully!" });
+                        }
+                    }
                 }
             }
             catch (Exception)

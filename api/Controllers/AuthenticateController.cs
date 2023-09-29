@@ -100,71 +100,81 @@ namespace IPKP___API.Controllers
         {
 
             var userExists = await _userManager.FindByNameAsync(model.Username);
+            var emailExists = await _userManager.FindByEmailAsync(model.Email);
             if (userExists != null)
+            {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
 
-            //create and save new identity user
-            IdentityUser user = new()
-            {
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            //create and save new customer
-            var customer = new Customer
-            {
-                Customer_ID = new Guid(),
-                FirstName = model.FirstName,
-                Surname = model.Surname,
-                Email = model.Email,
-                Username = model.Username,
-                Cell_Number = model.Cell_Number,
-                Date_Registered = DateTime.Now,
-                User_ID = new Guid(user.Id),
-
-                User = new User
-                {
-                    User_ID = new Guid(user.Id),
-                    Username = model.Username,
-                }
-            };
-
-            _IPKPRepository.Add(customer);
-            await _IPKPRepository.SaveChangesAsync();
-
-            if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
-
-            if (!await _roleManager.RoleExistsAsync(User_Role.user))
-                await _roleManager.CreateAsync(new IdentityRole(User_Role.user));
-            if (await _roleManager.RoleExistsAsync(User_Role.user))
-            {
-                await _userManager.AddToRoleAsync(user, User_Role.user);
             }
+            else if (emailExists != null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Email already exists!" });
 
-            var subject = "Your IPKP account has been successfully registered!";
-            var message = "We are excited to welcome you to It's Personal's community!<br><br>" +
-    "We are writing to inform you that your account has been successfully registered, and you are now a valued member of our platform. This is a significant step toward enjoying the full range of benefits and services we offer.<br><br>" +
-    "Here are some key details about your account:<br>" +
-    "<ul>" +
-    "<li>Username: " + model.Username + "</li>" +
-    "<li>Email Address: " + model.Email + "</li>" +
-    "<li>Account Created On: " + customer.Date_Registered + "</li>" +
-    "</ul>" +
-    "With your newly registered account, you can now:<br>" +
-    "<ul>" +
-    "<li>Access our platform and explore all the features and services we offer.</li>" +
-    "<li>Customize your profile and preferences to tailor your experience.</li>" +
-    "<li>Enjoy personalizing your products and gifting your loved ones.</li>" +
-    "</ul>" +
-    "If you encounter any issues during the registration process or have questions about using our platform, please don't hesitate to reach out to our dedicated customer support team at <a href='mailto:ktlmamadi@gmail.com'>IPKP@gmail.com</a>. We are here to assist you every step of the way.<br><br>" +
-    "Thank you for choosing It's Personal. We look forward to providing you with an exceptional experience, and we're excited to have you as a member of our community.<br><br>" +
-    "Warm regards,<br>Let's Get Personal";
+            }
+            else
+            {
+                //create and save new identity user
+                IdentityUser user = new()
+                {
+                    Email = model.Email,
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    UserName = model.Username
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
 
-            await SendEmail(subject, message, model.Email);
+                //create and save new customer
+                var customer = new Customer
+                {
+                    Customer_ID = new Guid(),
+                    FirstName = model.FirstName,
+                    Surname = model.Surname,
+                    Email = model.Email,
+                    Username = model.Username,
+                    Cell_Number = model.Cell_Number,
+                    Date_Registered = DateTime.Now,
+                    User_ID = new Guid(user.Id),
 
+                    User = new User
+                    {
+                        User_ID = new Guid(user.Id),
+                        Username = model.Username,
+                    }
+                };
+
+                _IPKPRepository.Add(customer);
+                await _IPKPRepository.SaveChangesAsync();
+
+                if (!result.Succeeded)
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+
+                if (!await _roleManager.RoleExistsAsync(User_Role.user))
+                    await _roleManager.CreateAsync(new IdentityRole(User_Role.user));
+                if (await _roleManager.RoleExistsAsync(User_Role.user))
+                {
+                    await _userManager.AddToRoleAsync(user, User_Role.user);
+                }
+
+                var subject = "Your IPKP account has been successfully registered!";
+                var message = "We are excited to welcome you to It's Personal's community!<br><br>" +
+                            "We are writing to inform you that your account has been successfully registered, and you are now a valued member of our platform. This is a significant step toward enjoying the full range of benefits and services we offer.<br><br>" +
+                            "Here are some key details about your account:<br>" +
+                            "<ul>" +
+                            "<li>Username: " + model.Username + "</li>" +
+                            "<li>Email Address: " + model.Email + "</li>" +
+                            "<li>Account Created On: " + customer.Date_Registered + "</li>" +
+                            "</ul>" +
+                            "With your newly registered account, you can now:<br>" +
+                            "<ul>" +
+                            "<li>Access our platform and explore all the features and services we offer.</li>" +
+                            "<li>Customize your profile and preferences to tailor your experience.</li>" +
+                            "<li>Enjoy personalizing your products and gifting your loved ones.</li>" +
+                            "</ul>" +
+                            "If you encounter any issues during the registration process or have questions about using our platform, please don't hesitate to reach out to our dedicated customer support team at <a href='mailto:ktlmamadi@gmail.com'>IPKP@gmail.com</a>. We are here to assist you every step of the way.<br><br>" +
+                            "Thank you for choosing It's Personal. We look forward to providing you with an exceptional experience, and we're excited to have you as a member of our community.<br><br>" +
+                            "Warm regards,<br>Let's Get Personal";
+
+                await SendEmail(subject, message, model.Email);
+            }          
 
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
@@ -233,9 +243,14 @@ namespace IPKP___API.Controllers
         public async Task<IActionResult> RegisterEmployee([FromBody] RegisterViewModel model)
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
+            var emailExists = await _userManager.FindByEmailAsync(model.Email);
             if (userExists != null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+            }
+            else if (emailExists != null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Email already exists!" });
             }
             else
             {
@@ -511,7 +526,7 @@ namespace IPKP___API.Controllers
 
         private async Task SendEmail(/*string fromEmailAddress,*/ string subject, string message, string toEmailAddress)
         {
-            string fromEmailAddress = "sarahpick@gmail.com";
+            string fromEmailAddress = "satahpick@gmail.com";
             var fromAddress = new MailAddress(fromEmailAddress);
             var toAddress = new MailAddress(toEmailAddress);
 

@@ -26,7 +26,7 @@ import { WriteOffVM } from '../ViewModels/writeoffVM';
       return this.httpClient.put<Response>(`${this.apiUrl}Inventory/Stocktake/${stock_Item_ID}`, stockitem)
     }
 
-    public AddToWriteoff(stockitem:Write_Off){
+    public AddToWriteoff(stockitem:WriteOffVM){
       return this.httpClient.post(`${this.apiUrl}Inventory/AddToWriteoff`, stockitem, this.httpOptions)
     }    
 

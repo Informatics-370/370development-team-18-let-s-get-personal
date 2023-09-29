@@ -100,7 +100,7 @@ export class BasketPage implements OnInit {
   }
 
 
-  //==================== Basket Quantity ====================
+//==================== Basket Quantity ====================
   public removeItemFromBasket(id: any): void {
     this.cartItems = this.cartItems.filter((cartItem) => cartItem.stock_Item.stock_Item_ID !== id);
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
@@ -188,15 +188,13 @@ export class BasketPage implements OnInit {
     let totalPrice = 0;
     for (const item of this.cartItems) {
       totalPrice += item.stock_Item.stock_Item_Price * item.basket_Quantity;
-      //localStorage.setItem('quantity', JSON.stringify(item.basket_Quantity));
     }
+
     this.pureprice = totalPrice
-    //localStorage.setItem('pureprice', JSON.stringify(pureprice));
     localStorage.setItem('pureprice', this.pureprice.toString());
 
     this.vatprice = (totalPrice * 0.15)
     this.roundedvat = this.vatprice.toFixed(2)
-    //localStorage.setItem('vatamount', JSON.stringify(this.vatprice));
     localStorage.setItem('vatamount', this.vatprice.toString());
 
     totalPrice = totalPrice + this.vatprice - this.discount_Amount
@@ -204,6 +202,7 @@ export class BasketPage implements OnInit {
     this.order.price = totalPrice;
     return this.roundedtotal;
   }
+
   //Discount 
   discounts: Discount = new Discount()
   discount_Amount: number = 0
@@ -215,7 +214,6 @@ export class BasketPage implements OnInit {
         console.log(this.discount_Amount)
         localStorage.setItem('discount', JSON.stringify(this.discount_Amount));
       })
-
     });
   }
 
@@ -334,6 +332,9 @@ export class BasketPage implements OnInit {
     this.modal.dismiss(null, 'cancel');
   }
 
+  canvalink(){
+    window.location.href = "https://www.canva.com/";
+  }
   /*confirmaddmodal() {
     try{     
 

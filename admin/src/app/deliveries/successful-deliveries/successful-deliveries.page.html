@@ -10,10 +10,12 @@
       <ion-title size="large">successful_deliveries</ion-title>
     </ion-toolbar>
   </ion-header>
-  <p style="cursor:pointer;" (click)="deliveriesnav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
+  <ion-breadcrumbs>
+    <ion-breadcrumb (click)="deliveriesnav()" style="cursor:pointer;">Deliveries</ion-breadcrumb>
+    <ion-breadcrumb>Previous Deliveries</ion-breadcrumb>
+  </ion-breadcrumbs>
+  
   <ion-button (click)="RouteDeliveriesControlBreak()">View Delivery Company Price Report</ion-button>
-
-  <!-- deliveriesnav() -->
 
   <ion-content *ngIf="deliveries.length == 0 && faileddeliveries.length == 0">
     <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
@@ -22,10 +24,11 @@
   </ion-content>
 
   <ion-grid>
-    <ion-col size="6">
-      <ion-row>
-        <ion-col style="font-weight: bold; text-align: center;">Successful Deliveries</ion-col>
-      </ion-row>
+    <ion-row>
+      <ion-col size="12" style="text-align: center;">
+        <h2 style="text-align: center; border-bottom-style: solid; border-color: lightgray;">Successful Deliveries</h2>
+      </ion-col>
+    </ion-row>
       <ion-row>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Delivery Company Name</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Street</ion-col>
@@ -39,12 +42,15 @@
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.city}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.province}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.dateDelivered| date: 'yyyy-MM-dd'}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4"><ion-input type="file" (change)="onFileSelected($event, item.delivery_ID)"></ion-input></ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4"></ion-col>
       </ion-row>
-    </ion-col>
-    <ion-col size="6">
+    </ion-grid>
+
+    <ion-grid>
       <ion-row>
-        <ion-col style="font-weight: bold; text-align: center;">Failed Deliveries</ion-col>
+        <ion-col size="12" style="text-align: center;">
+          <h2 style="text-align: center; border-bottom-style: solid; border-color: lightgray;">Failed Deliveries</h2>
+        </ion-col>
       </ion-row>
       <ion-row>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Delivery Company Name</ion-col>
@@ -59,9 +65,8 @@
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.city}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.province}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.dateDelivered| date: 'yyyy-MM-dd'}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4"><ion-input type="file" (change)="onFileSelected($event, item.delivery_ID)"></ion-input></ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4"></ion-col>
       </ion-row>
-    </ion-col>
     
   </ion-grid>
 

@@ -15,7 +15,10 @@
   
   <ion-content id="content">
     <ion-card-content>
-      <p style="cursor:pointer;" (click)="inventoryNav()"> Back</p>
+      <ion-breadcrumbs>
+        <ion-breadcrumb (click)="inventoryNav()" style="cursor:pointer;">Inventory</ion-breadcrumb>
+        <ion-breadcrumb>Stock Item Colours</ion-breadcrumb>
+      </ion-breadcrumbs>
       <ion-button id="addmodal">Add Stock Item Colour</ion-button>
       <!-- <ion-searchbar [(ngModel)]="filterTerm"  (ionInput)="updateSearchResults()"></ion-searchbar>                     -->
       <ion-grid>
