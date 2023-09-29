@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Threading.Tasks;
 using static System.Net.WebRequestMethods;
 
@@ -257,11 +259,12 @@ namespace IPKP___API.Controllers
 
         //send order to delivery
         [HttpPut]
-        [Route("SendOutDelivery/{order_Line_Item_ID}")]
-        public async Task<ActionResult<Order_Line_Item>> SendOutDelivery(Guid order_Line_Item_ID, Order_Line_Item dvm)
+        [Route("SendOutDelivery/{order_Line_Item_ID}/{customer_Id}")]
+        public async Task<ActionResult<Order_Line_Item>> SendOutDelivery(Guid order_Line_Item_ID, Guid customer_Id, Order_Line_Item dvm)
         {
             try
             {
+                var customer = await _IPKPRepository.GetCustomerDetailsAsync(customer_Id);
                 var requests = await _IPKPRepository.GetOrderLineItemByID(order_Line_Item_ID);
 
                 if (requests == null)
@@ -270,9 +273,21 @@ namespace IPKP___API.Controllers
                 }
                 else
                 {
+                    
                     requests.Order_Status = "Out";
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
+                        
+                       var subject = "Your Order is out for delivery.";
+                        var message = "Dear " + customer.FirstName + ",<br><br>" +
+                        "We hope this message finds you well.<br><br>" +
+                        "We are writing to inform you that your order is out for delivery.<br><br>" +
+                        "Await communication from the delivery company soon." +"<br><br>"+
+
+                        "Best regards,<br>Let's Get Personal";
+
+                        await SendEmail(subject,message, customer.Email);
+
                         return Ok(requests);
                     }
                 }
@@ -360,15 +375,6 @@ namespace IPKP___API.Controllers
                         return Ok(order);
                     }
                 }
-               /* var subject = "Your Order is being Processed.";
-                var message = "Dear " + uvm.UserName + ",<br><br>" +
-                "We hope this message finds you well.<br><br>" +
-                "We are writing to inform you that your order is progress.<br><br>" +
-                "Your will receive an email to notifiy you when your order is out for delivery in a few days" + 
-
-                "Best regards,<br>Let's Get Personal";
-
-                _ = SendEmail(subject, message, user.Email);*/
             }
             catch (Exception)
             {
@@ -423,6 +429,40 @@ namespace IPKP___API.Controllers
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+        private async Task SendEmail(string subject, string message, string toEmailAddress)
+        {
+            string fromEmailAddress = "satahpick@gmail.com";
+            var fromAddress = new MailAddress(fromEmailAddress);
+            var toAddress = new MailAddress(toEmailAddress);
+
+            SmtpClient client = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "wauc crru pvma osvq"),
+                EnableSsl = true
+            };
+
+            MailMessage msg = new MailMessage()
+            {
+                From = new MailAddress(fromEmailAddress),
+                Subject = subject,
+                Body = message,
+                IsBodyHtml = true
+            };
+
+            msg.To.Add(toEmailAddress);
+
+            try
+            {
+                client.Send(msg);
+                Console.WriteLine("Email sent successfully!");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred: {e.Message}");
+
             }
         }
 
