@@ -92,8 +92,9 @@ AddDelAddressForm: FormGroup = new FormGroup({
     this.delservice.GetDeliveryCompany(delcompanyID).subscribe(result =>{
       let localprice = result as Delivery_Company
       this.chargeRatePerKm = localprice.delivery_Price
-      console.log(this.chargeRatePerKm)
+      console.log('charge rate/km',this.chargeRatePerKm)
     });
+    
   }
 
   AddDeliveryAddress(){
@@ -200,7 +201,7 @@ AddDelAddressForm: FormGroup = new FormGroup({
           this.Lat = location.lat;
           this.Long = location.lng;
           this.distanceInKm = this.calculateDistance(this.oLat, this.oLong, this.Lat, this.Long);
-          console.log(this.distanceInKm)
+          console.log('distanceInKm',this.distanceInKm)
           const charge = (this.distanceInKm * this.chargeRatePerKm).toFixed(2); // Round to the nearest 100
           this.deliveryPrice = charge;
           this.order.deliveryPrice = parseFloat(charge);

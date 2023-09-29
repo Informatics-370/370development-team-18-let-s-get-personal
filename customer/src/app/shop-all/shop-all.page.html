@@ -49,4 +49,10 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <div *ngIf="isLoading" class="overlay">
+    <div class="loading-popup">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+  </div>
 </ion-content>

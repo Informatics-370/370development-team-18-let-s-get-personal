@@ -30,6 +30,7 @@ export class ShopAllPage implements OnInit {
 
   counter=document.querySelector("#counter"); 
 
+  isLoading: boolean = false;
   constructor(private _modalController: ModalController, public loadingController: LoadingController,
     private _router: Router, private alertController: AlertController, private typeservice: StockTypeDataService,
     private basketservice: BasketService, private service: StockItemDataService, private bestsellerservice: BestsellersService) { }
@@ -45,6 +46,7 @@ export class ShopAllPage implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoading=true;  
     this.GetStockItems();
     this.GetTypes();
     if(this.searchString === "")
@@ -78,6 +80,7 @@ export class ShopAllPage implements OnInit {
     this.service.GetStockItems().subscribe(result => {
       this.Products = result as StockItemViewModel[];
       console.log(this.Products)
+      this.isLoading=false;  
     })
   }
 

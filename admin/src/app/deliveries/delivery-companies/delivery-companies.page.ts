@@ -25,6 +25,7 @@ export class DeliveryCompaniesPage implements OnInit {
   deliverycompanies:Delivery_Company[]=[];
   filteredDeliveryCompany:Delivery_Company[]=[];
 
+  isLoading: boolean = false;
   // updateSearchResults() {
   //   this.filteredDeliveryCompany = this.deliverycompanies.filter((items: { Delivery_Company_Name: string; }) =>
   //    items.Delivery_Company_Name.toLowerCase().includes(this.filterTerm.toLowerCase()));
@@ -40,17 +41,20 @@ export class DeliveryCompaniesPage implements OnInit {
   })
 
   ngOnInit(): void {
+    this.isLoading=true;  
     this.getDeliveryCompany()
   }  
 
   getDeliveryCompany(){
     this.service.GetDeliveryCompanies().subscribe(result =>{
       this.deliverycompanies = result as Delivery_Company[];
-      console.log(this.deliverycompanies)
+      console.log(this.deliverycompanies)  
     },(error) => {
       this.ErrorAlert();        
       console.error(error);
-    })
+    }).add(() => {
+      this.isLoading = false; // Stop loading
+    });
   }
 
   deliveriesnav()
@@ -74,6 +78,7 @@ export class DeliveryCompaniesPage implements OnInit {
   }
 
   confirmaddmodal() {
+    this.isLoading=true;  
     let AddDeliveryCompany = new Delivery_Company();
     AddDeliveryCompany.delivery_Price = this.AddForm.value.Delivery_Price;
     AddDeliveryCompany.delivery_Company_Name = this.AddForm.value.deliverycompanyname;
@@ -82,10 +87,12 @@ export class DeliveryCompaniesPage implements OnInit {
       this.addDeliveryCompanySuccessAlert();
       this.action = "Added Delivery Company: " + this.AddForm.value.deliverycompanyname
       this.AddTrail()
+      this.isLoading=false;  
 
     },(error) => {
       this.addDeliveryCompanyErrorAlert();        
       console.error('Edit stock image error:', error);
+      this.isLoading=false;
     })    
   }
 
@@ -113,6 +120,7 @@ export class DeliveryCompaniesPage implements OnInit {
 
   EditDeliveryCompany(delivery_Company_ID:string, isOpen: boolean)
   {
+    
     this.service.GetDeliveryCompany(delivery_Company_ID).subscribe(result =>{
       this.editCompany = result as Delivery_Company
       this.editForm.controls['deliverycompanyname'].setValue(this.editCompany.delivery_Company_Name);
@@ -122,7 +130,8 @@ export class DeliveryCompaniesPage implements OnInit {
   }
 
   confirmeditmodal(){
-    try{
+   /* try{*/
+      this.isLoading=true;  
       let editedCompany = new Delivery_Company()
       editedCompany.delivery_Company_Name = this.editForm.value.deliverycompanyname
       editedCompany.delivery_Price = this.editForm.value.Delivery_Price
@@ -135,11 +144,13 @@ export class DeliveryCompaniesPage implements OnInit {
       },(error) => {
         this.UpdateDeliveryCompanyErrorAlert();        
         console.error('UpdateDeliveryCompany error:', error);
-      })
-    }
+      }).add(() => {
+        this.isLoading = false; // Stop loading
+      });
+   /* }
     catch{
       this.UpdateDeliveryCompanyErrorAlert()
-    }
+    }*/
   }
 
   canceleditmodal() {

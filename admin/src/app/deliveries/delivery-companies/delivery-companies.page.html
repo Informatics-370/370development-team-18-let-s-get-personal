@@ -34,7 +34,12 @@
         <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;"><ion-button (click)="EditDeliveryCompany(item.delivery_Company_ID, true)" >Update</ion-button></ion-col>      
       </ion-row>
     </ion-grid>
-
+    <div *ngIf="isLoading" class="overlay">
+      <div class="loading-popup">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    </div>
   </ion-content>
 </ion-content>
 
@@ -62,9 +67,15 @@
               <ion-label position="stacked"><h3>Company Delivery Price</h3> </ion-label><br>
               <ion-input type="number" formControlName="Delivery_Price" placeholder="" required></ion-input>
             </ion-item>                
-        </form>
+        </form><div *ngIf="isLoading" class="overlay">
+      <div class="loading-popup">
+        <div class="spinner"></div>
+        <p>Adding...</p>
+      </div>
+    </div>
       </ion-content>
     </ng-template>
+    
   </ion-modal>
 
   <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
@@ -91,6 +102,12 @@
             <ion-input type="number" formControlName="Delivery_Price"></ion-input>
           </ion-item>                   
       </form>
+      <div *ngIf="isLoading" class="overlay">
+        <div class="loading-popup">
+          <div class="spinner"></div>
+          <p>Updating...</p>
+        </div>
+      </div>
       </ion-content>
     </ng-template>
   </ion-modal>

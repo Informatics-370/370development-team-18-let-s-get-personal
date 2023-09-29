@@ -60,7 +60,7 @@ export class ProfilesPage implements OnInit {
       this.searchString=this.SearchForm.get('name')?.value;
       this.searchedCustomer = this.customers.filter(
         f => f.firstName.toLowerCase().includes(this.searchString.toLowerCase()));
-        this.isLoading=false;
+        
     }
 
   ngOnInit() {
@@ -97,6 +97,7 @@ export class ProfilesPage implements OnInit {
       this.employees = result as Employee[];
       this.searchedEmployee=this.employees;
       console.log(this.employees);
+      this.isLoading=false;  
     })
   }
 
