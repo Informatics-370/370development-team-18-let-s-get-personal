@@ -35,7 +35,9 @@ export class DeliveriesPage implements OnInit {
     //  items.Tracking_Number.toString().includes(this.searchValue));
   }
 
+  isLoading: boolean = false;
   ngOnInit() {
+    this.isLoading=true;
     this.GetRequestedDeliveries();
     this.getDeliveryCompany();
   }
@@ -65,6 +67,7 @@ export class DeliveriesPage implements OnInit {
     this.service.GetOutDeliveries().subscribe(res => {
       this.deliveries = res as OrderLineItemVM[]
       console.log(this.deliveries)
+      this.isLoading=false;
     })
   }
 

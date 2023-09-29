@@ -22,31 +22,39 @@ export class OrdersPage implements OnInit {
     public loadingController: LoadingController, private trailservice: AuditTrailService ) { }
 
   ngOnInit() {
+    this.isLoading=true;
     this.GetOrdersInProgress()
+    
   }
-
+  isLoading: boolean = false;
   GetOrdersInProgress(){
-    this.presentLoading()
+    /*this.presentLoading()*/
     this.service.GetOrdersInProgress().subscribe(result =>{
       this.orderRequests = result as OrderLineItemVM[]
+      console.log(this.orderRequests)
+      this.isLoading=false;
     })
   }
   
-  OutForDelivery(order_Line_Item_ID: string){
-    try
-    {
-      this.service.SendOutDelivery(order_Line_Item_ID).subscribe(result =>{
+  OutForDelivery(order_Line_Item_ID: string,customer_Id: string){
+    this.isLoading=true;
+ /* try
+    {*/
+      this.service.SendOutDelivery(order_Line_Item_ID,customer_Id).subscribe(result =>{
         this.AcceptSuccessAlert()
       },(error) => {
         this.AcceptErrorAlert();        
         console.error('OutForDelivery error:', error);
-      })    
+      }).add(() => {
+        this.isLoading = false; // Stop loading
+      });
+          
       this.AddTrail()
-    }
+    /*}
     catch
     {
       this.AcceptErrorAlert()
-    }
+    }*/
     
   }
 

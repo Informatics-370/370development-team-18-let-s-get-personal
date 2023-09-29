@@ -19,8 +19,9 @@ export class RatingsPage implements OnInit {
   experienceratings: ExperienceRatingVM[] = []
   constructor(private service: ProductRatingDataService, private eservice: Experience_RatingService,
     private route: Router) { }
-
+    isLoading: boolean = false;
   ngOnInit() {
+    this.isLoading=true;  
     this.getExperienceRatings()
     this.getProductRatings()
   }
@@ -28,12 +29,14 @@ export class RatingsPage implements OnInit {
   getExperienceRatings(){
     this.eservice.GetAllExperienceRatings().subscribe(result => {
       this.experienceratings = result as ExperienceRatingVM[]
+      this.isLoading=false;
     })
   }
 
   getProductRatings(){
     this.service.GetProductRatings().subscribe(result => {
       this.productratings = result as ProductRatingVM[]
+      this.isLoading=false;  
     })
   }
 

@@ -106,6 +106,8 @@ export class BasketPage implements OnInit {
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
     //update the quantity cartItemCount
     this.storeCartItemCountInLocalStorage();
+    this.updateCounterSpan(this.cartItems);
+    this.reloadPage();
   }
 
   public async incrementQuantity(item: any) {
@@ -118,6 +120,7 @@ export class BasketPage implements OnInit {
       localStorage.setItem('cart', JSON.stringify(this.cartItems));
       // Store the cart item count before reloading the page
       this.storeCartItemCountInLocalStorage();
+      this.reloadPage();
     }
     else {
       console.log("Maximum item reached!")
@@ -145,6 +148,7 @@ export class BasketPage implements OnInit {
       localStorage.setItem('cart', JSON.stringify(this.cartItems));
       // Store the cart item count before reloading the page
       this.storeCartItemCountInLocalStorage();
+      this.reloadPage();
     }
   }
 
@@ -202,6 +206,7 @@ export class BasketPage implements OnInit {
     this.order.price = totalPrice;
     return this.roundedtotal;
   }
+
 
   //Discount 
   discounts: Discount = new Discount()
@@ -456,7 +461,10 @@ export class BasketPage implements OnInit {
     return Object.keys(obj).length === 0;
   }
 
+  isLoading: boolean = false;
+
   confirmaddmodal() {
+    this.isLoading = true;
     let stockId = localStorage.getItem("stockId");
 
     let items = JSON.parse(localStorage.getItem('cart') as string) || [];
@@ -476,6 +484,9 @@ export class BasketPage implements OnInit {
     //this.uploadImage();
     //this.UploadPersonalisation();
     this.addPersonalizationSuccessAlert();
+    
+      this.isLoading = false; // Stop loading
+    
 
     //Action Trail
     this.action = "Personalised Item:" + items.stock_Item.stock_Item_Name
@@ -486,6 +497,7 @@ export class BasketPage implements OnInit {
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
     this.isModalOpen = false;
+    this.isLoading = false;
   }
 
   // public update(id: any, isOpen: boolean) {
@@ -554,18 +566,18 @@ export class BasketPage implements OnInit {
     });
     await alert.present();
   }
-
+/*We only allow orders less than 10 items. You can filter the shop items by category */
   async PersonalisationTip() {
     const alert = await this.alertController.create({
-      header: 'Please note:',
-      subHeader: 'We do require a jpeg inspiration photo and text description to fulfil your order',
-      message: 'If you are having issues with personalising your orderd please contact us on our contact us page.',
+      header: 'How to use:',
+      subHeader: 'Click the "personalize item" button to add your personalization. Once that is completed click the "Checkout" button.',
+      message: 'Note: We do require an inspiration photo and text description to fulfil your order. If you are having issues with personalizing your order please contact us on our contact us page.',
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler: () => {
+        /*handler: () => {
           this.reloadPage();
-        }
+        }*/
       }, {
         text: 'Contact Us',
         //role: 'cancel',

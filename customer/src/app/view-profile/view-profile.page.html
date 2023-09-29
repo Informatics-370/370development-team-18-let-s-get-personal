@@ -59,7 +59,7 @@
           </ion-buttons>
            <ion-title>Update Profile Details</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmeditmodal()" [strong]="true" [disabled]="editForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -77,6 +77,10 @@
             <ion-label position="stacked">Email Address</ion-label><br>
             <ion-input type="text" formControlName="email" placeholder="" required></ion-input>
           </ion-item>
+          <div class="text-center" *ngIf="g['email'].invalid && g['email'].touched">
+            <p style="color: crimson;" class="small mt-1" *ngIf="g['email'].errors?.['pattern']">
+              Email is Invalid</p>
+          </div>
           <ion-item>
             <ion-label position="stacked">Cellphone number</ion-label><br>
             <ion-input type="text" formControlName="cell_Number" placeholder="" required></ion-input>
@@ -87,7 +91,7 @@
           </ion-item>   
       </form>
       <ion-toolbar>
-        <ion-title slot="end"><ion-button (click)="DeleteConfirmAlert(customer.customer_ID)">Delete Profile</ion-button></ion-title>
+        <ion-title slot="end"><ion-button (click)="deleteProfile(customer.customer_ID)">Delete Profile</ion-button></ion-title>
       </ion-toolbar>
       </ion-content>
     </ng-template>

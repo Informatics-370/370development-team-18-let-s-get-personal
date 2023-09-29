@@ -82,7 +82,7 @@ export class ForgotPasswordPage implements OnInit {
   async ErrorAlert() {
     const alert = await this.alertController.create({
       header: 'Email not found!',
-      message: 'Ensure that this is the email you used to register your profile. Try again.',
+      message: 'Ensure that this is the username you used to register your profile. Try again.',
       buttons: [{
         text: 'OK',
         role: 'cancel',

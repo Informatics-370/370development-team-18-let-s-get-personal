@@ -48,11 +48,12 @@ export class SuccessfulPaymentPage implements OnInit {
     this.addSale();
     this.addInvoice();
     //removing local storage after invoice
+    /*this.placeOrder();*/
   }
 
   placeOrderT(order:OrderT):void{
     this.orderService.placeOrder(order).subscribe(res=>{
-      console.log(res);
+      console.log('order',res);
     },error=>{
       console.log(error)
     })
@@ -70,12 +71,13 @@ export class SuccessfulPaymentPage implements OnInit {
    
       this.saleService.AddSale(addedSale).subscribe(result =>{
         let uploadedPayment = result as Payment;
-        console.log(uploadedPayment)
+        console.log('sales',uploadedPayment)
       },(error) => {
         this.ErrorAlert();        
         console.error(error);
       })     
     })
+    /*console.log('sale')*/
 
   }
 
@@ -106,7 +108,7 @@ export class SuccessfulPaymentPage implements OnInit {
             
       
 
-      console.log(invoice)
+      console.log('invoice',invoice)
 
       this.invoiceservice.AddInvoice(invoice).subscribe(result => {
           console.log(result)
@@ -116,6 +118,7 @@ export class SuccessfulPaymentPage implements OnInit {
 
       this.placeOrder();
     }
+    /*console.log('invoice')*/
   }
 
   private placeOrder():void{
@@ -136,7 +139,7 @@ export class SuccessfulPaymentPage implements OnInit {
       localStorage.removeItem("pureprice");
       localStorage.removeItem("totalprice");
       localStorage.removeItem("discount");
-
+      localStorage.removeItem("TotalPaid");
       localStorage.removeItem("order");
       // localStorage.removeItem("cart");
       // localStorage.removeItem("orderRequestID");

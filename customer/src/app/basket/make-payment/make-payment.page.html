@@ -21,20 +21,19 @@
         [formControl]="searchControl"
           (ionInput)="updateSearchResults()"
           placeholder="Type address..."
-          required
+          [required]="!predictionSelectedFlag"
         ></ion-input>
-        <!--<div class="text-center" *ngIf="f['searchControl'].invalid && f['searchControl'].touched">
-          <p style="color: crimson;" class="small mt-1" *ngIf="f['searchControl'].errors?.['required']">Area code is
-            required!</p>
-        </div>-->
       </ion-item>
+      
       
       <ion-list *ngIf="showPredictions">
         <ion-item *ngFor="let prediction of predictions" (click)="selectPrediction(prediction)">
           {{ prediction.description }}
         </ion-item>
       </ion-list>
-
+<div *ngIf="!predictionSelectedFlag || searchControl.hasError('searchRequired')">
+        <p style="color: crimson;" class="small mt-1">Address selection is required for delivery price!</p>
+      </div>
       <ion-item>
         <ion-label position="stacked">Delivery Company</ion-label><br>
         <ion-select placeholder="Select a Delivery Company" formControlName="deliveryCompanyID">

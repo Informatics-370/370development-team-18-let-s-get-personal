@@ -116,8 +116,14 @@
 					</ion-item>
 				</form>
 				<p style="text-align: center;">Please upload your inspiration photo for your design</p>
-				<p style="text-align: center;">If you would like to make a custom design follow this <a (click)="canvalink()" style="cursor: pointer;"> link</a> and download it as a JPEG  </p>
-				<img src="/assets/Smile.jpg" alt="smile icon" class="center" style="width: 100%; height: 80%;" />
+				<p style="text-align: center;">If you would like to make a custom design follow this <a (click)="canvalink()" style="cursor: pointer;"> link</a> and download it. </p>
+				<img src="/assets/Smile.jpg" alt="smile icon" class="center" style="width: 50%; height: 50%;"  />
+				<div *ngIf="isLoading" class="overlay">
+					<div class="loading-popup">
+					  <div class="spinner"></div>
+					  <p>Adding...</p>
+					</div>
+				  </div>
 			</ion-content>
 		</ng-template>
 	</ion-modal>

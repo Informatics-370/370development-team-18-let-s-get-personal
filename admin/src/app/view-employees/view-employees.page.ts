@@ -180,7 +180,7 @@ export class ViewEmployeesPage implements OnInit {
       },
       {
         text: 'Got To Audit Trail',
-        role: 'cancel',
+        /*role: 'cancel',*/
         handler:() =>{
           this.auditTrailNav();
         }

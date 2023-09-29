@@ -105,5 +105,10 @@
       </ion-col>
     </ion-grid>
   </div>
-  
+  <div *ngIf="isLoading" class="overlay">
+    <div class="loading-popup">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+  </div>
 </ion-content>

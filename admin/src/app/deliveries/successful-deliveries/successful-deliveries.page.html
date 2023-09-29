@@ -14,34 +14,47 @@
     <ion-breadcrumb (click)="deliveriesnav()" style="cursor:pointer;">Deliveries</ion-breadcrumb>
     <ion-breadcrumb>Previous Deliveries</ion-breadcrumb>
   </ion-breadcrumbs>
-  
+
   <ion-button (click)="RouteDeliveriesControlBreak()">View Delivery Company Price Report</ion-button>
 
   <ion-content *ngIf="deliveries.length == 0 && faileddeliveries.length == 0">
     <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
-      <p>No Successful Deliveries</p>
+      <p style="text-align: center;">No Successful deliveries</p><br>
+      <img src="/assets/no-results.png" alt="empty icon" class="center"  id="icon" />
+    </div>
+    <div *ngIf="isLoading" class="overlay">
+      <div class="loading-popup">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+      </div>
     </div>
   </ion-content>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" style="text-align: center;">
-        <h2 style="text-align: center; border-bottom-style: solid; border-color: lightgray;">Successful Deliveries</h2>
-      </ion-col>
-    </ion-row>
+  <div *ngIf="deliveries.length != 0 || faileddeliveries.length != 0">
+    <ion-grid>
       <ion-row>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Delivery Company Name</ion-col>
+        <ion-col size="12" style="text-align: center;">
+          <h2 style="text-align: center; border-bottom-style: solid; border-color: lightgray;">Successful Deliveries
+          </h2>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Delivery Company
+          Name</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Street</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">City</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4"style="font-weight: bold; text-align: center;">Province</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Date Delivered</ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Province</ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Date
+          Delivered</ion-col>
       </ion-row>
       <ion-row *ngFor="let item of deliveries">
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.delivery_Company_Name}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.streetNumber}} {{item.streetName}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.streetNumber}}
+          {{item.streetName}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.city}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.province}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.dateDelivered| date: 'yyyy-MM-dd'}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.dateDelivered| date:
+          'yyyy-MM-dd'}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4"></ion-col>
       </ion-row>
     </ion-grid>
@@ -53,21 +66,26 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Delivery Company Name</ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Delivery Company
+          Name</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Street</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">City</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4"style="font-weight: bold; text-align: center;">Province</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Date Delivered</ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Province</ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="font-weight: bold; text-align: center;">Date
+          Delivered</ion-col>
       </ion-row>
       <ion-row *ngFor="let item of faileddeliveries">
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.delivery_Company_Name}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.streetNumber}} {{item.streetName}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.streetNumber}}
+          {{item.streetName}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.city}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.province}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.dateDelivered| date: 'yyyy-MM-dd'}}</ion-col>
+        <ion-col sizeLg="2" sizeMd="3" sizeXs="4" style="text-align: center;">{{item.dateDelivered| date:
+          'yyyy-MM-dd'}}</ion-col>
         <ion-col sizeLg="2" sizeMd="3" sizeXs="4"></ion-col>
       </ion-row>
-    
-  </ion-grid>
+
+    </ion-grid>
+  </div>
 
 </ion-content>

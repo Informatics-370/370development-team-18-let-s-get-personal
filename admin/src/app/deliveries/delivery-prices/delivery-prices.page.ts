@@ -29,9 +29,10 @@ export class DeliveryPricesPage implements OnInit {
   constructor(private service:DeliveryDataService, private router: Router, public modalCtrl: ModalController,
     private alertController:AlertController, private trailservice: AuditTrailService) 
   { }
-
+  isLoading: boolean = false;
   ngOnInit() {
     this.getDeliveryCompany()
+    this.isLoading=true;
   }
 
   backNav()
@@ -47,6 +48,7 @@ export class DeliveryPricesPage implements OnInit {
     
         //Fetch Total per type
         this.DeliveryChargeControlBreak(company)
+        this.isLoading=false;  
       });
     })
   }

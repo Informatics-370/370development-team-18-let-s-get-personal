@@ -82,8 +82,9 @@ export class ShopAllPage implements OnInit {
 
   async Help() {
     const alert = await this.alertController.create({
-      header: 'Please note: ',
-      subHeader: 'We only allow orders less than 10 items. You can filter the shop items by category',
+      header: 'How to use: ',
+      subHeader: 'To add an item to your basket click the "Add to basket" button',
+      message:'Proceed to the basket tab to view your items and add personalization.',
       buttons: [{
         text: 'OK',
         role: 'cancel',

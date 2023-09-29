@@ -69,9 +69,9 @@
           <ion-buttons slot="start">
             <ion-button (click)="canceleditmodal()">Cancel</ion-button>
           </ion-buttons>
-          <ion-title>Add Discount Policy Details</ion-title>
+          <ion-title>Update Stock Item Colour</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmeditmodal()" [strong]="true" [disabled]="editForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>

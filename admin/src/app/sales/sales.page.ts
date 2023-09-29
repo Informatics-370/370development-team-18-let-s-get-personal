@@ -38,8 +38,9 @@ export class SalesPage implements OnInit {
   {
     (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
   }  
-
-  ngOnInit(): void {    
+  isLoading: boolean = false;
+  ngOnInit(): void {  
+    this.isLoading=true;    
     this.GetStockTypes()
     this.GetSalesList()
     this.GetStockItems()
@@ -50,6 +51,7 @@ export class SalesPage implements OnInit {
   {
     this.service.GetAllSales().subscribe(res => {
       this.sales = res as Payment[]
+      this.isLoading=false;  
     })
   }
 

@@ -98,15 +98,15 @@ cancelpassmodal() {
 
 
 
-
+get g() { return this.editForm.controls }
 //========== edit ==========
   isModalOpen = false;
   editCustomer: Customer = new Customer();
   editForm: FormGroup = new FormGroup({
     firstName: new FormControl('',[Validators.required]),
     surname: new FormControl('',[Validators.required]),
-    cell_Number: new FormControl('',[Validators.required]),
-    email: new FormControl('',[Validators.required]),
+    cell_Number:new FormControl('', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(12), Validators.pattern('[- +()0-9]{9,}')])),
+    email:new FormControl('', Validators.compose([Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])),
     username: new FormControl('',[Validators.required]),
   })
 
@@ -168,7 +168,7 @@ cancelpassmodal() {
         // }
     }, {
       text: 'Continue',
-      role: 'cancel',
+      /*role: 'cancel',*/
       handler:() =>{
         this.deleteProfile(this.customerID); 
       }

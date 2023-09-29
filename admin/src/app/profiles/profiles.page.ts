@@ -39,6 +39,7 @@ export class ProfilesPage implements OnInit {
     (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
   } 
 
+  isLoading: boolean = false;
     SearchForm: FormGroup = new FormGroup({
       name:new FormControl('',[Validators.required])
     })
@@ -59,9 +60,11 @@ export class ProfilesPage implements OnInit {
       this.searchString=this.SearchForm.get('name')?.value;
       this.searchedCustomer = this.customers.filter(
         f => f.firstName.toLowerCase().includes(this.searchString.toLowerCase()));
+        this.isLoading=false;
     }
 
   ngOnInit() {
+    this.isLoading=true;  
     this.GetEmployees()
     this.GetCustomers()
     this.GetAdmins()

@@ -32,6 +32,7 @@ export class DiscountsPage implements OnInit {
   searchedDiscount: Discount[]=[];
   searchString: string = "";
   date = new Date();
+  isLoading: boolean = false;
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service: DiscountService, private thisroute: Router, public modalCtrl: ModalController,
@@ -75,6 +76,7 @@ export class DiscountsPage implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading=true;  
     this.getDiscounts();
     this.GetStockItems();
     this.date = new Date();
@@ -85,13 +87,17 @@ export class DiscountsPage implements OnInit {
       this.discounts = result;
       this.searchedDiscount=this.discounts;
       console.log(this.discounts)
+      this.isLoading=false;  
     })
   }
 
   public GetStockItems() {
+     
     this._service.GetStockItems().subscribe(result => {
       this.Products = result as StockItemViewModel[];
       console.log(this.Products)
+      this.isLoading=false;  
+
     })
   }
 
@@ -140,7 +146,10 @@ export class DiscountsPage implements OnInit {
     }, (error) => {
       this.addDiscountErrorAlert
       console.error('Discount error:', error);
+    }).add(() => {
+      this.isLoading = false; // Stop loading
     });
+    
   //}
   }
 
@@ -154,7 +163,7 @@ export class DiscountsPage implements OnInit {
     effectiveTodate: new FormControl('', [Validators.required, this.dateValidator.bind(this)]),
   })
 
-  EditDiscount(discount_ID: string, isOpen: boolean) {
+  EditDiscount(discount_ID: string, isOpen: boolean) { 
     this.service.GetDiscount(discount_ID).subscribe(response => {
       this.editDiscount = response as Discount;
 
@@ -162,12 +171,13 @@ export class DiscountsPage implements OnInit {
       this.editForm.controls['amount'].setValue(this.editDiscount.discount_Amount);
       this.editForm.controls['effectiveFromdate'].setValue(this.editDiscount.effective_From_Date);
       this.editForm.controls['effectiveTodate'].setValue(this.editDiscount.effective_To_Date);
-    })
+    });
     this.isModalOpen = isOpen;
   }
 
   confirmeditmodal() {
-    try {
+    /*try {*/
+    this.isLoading=true;  
       let editedDiscount = new Discount();
       editedDiscount.discount_Name = this.editForm.value.name;
       editedDiscount.discount_Amount = this.editForm.value.amount;
@@ -189,11 +199,13 @@ export class DiscountsPage implements OnInit {
       },(error) => {
       this.editDiscountErrorAlert();        
       console.error('Edit discount error:', error);
-    })
-    }
+    }).add(() => {
+      this.isLoading = false; // Stop loading
+    });
+   /* }
     catch {
       this.editDiscountErrorAlert();
-    }
+    }*/
   }
 
   formatDate(date: string): string {
@@ -255,6 +267,7 @@ export class DiscountsPage implements OnInit {
   }
 
   confirmaddmodal() {
+    this.isLoading=true;  
     this.AddDiscount();
   }
 

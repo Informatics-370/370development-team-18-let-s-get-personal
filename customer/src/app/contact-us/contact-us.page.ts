@@ -47,9 +47,9 @@ export class ContactUsPage implements OnInit {
 
   async ContactUsTip() {
     const alert = await this.alertController.create({
-      header: 'We will send an email reply to your message within 4 working days',
-      subHeader: 'If you do not get a reply within 4 days please email us at itspersonal@gmail.com',
-      message:'',
+      header: 'How to use:',
+      subHeader: 'Enter your details at the provided spaces and click the "Send Comment" button.',
+      message:'We will send an email to reply to your message within 4 working days. If you do not get a reply within 4 days please email us at itspersonal@gmail.com',
       buttons: [{
         text: 'OK',
         role: 'cancel',

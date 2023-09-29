@@ -48,7 +48,7 @@
           </ion-buttons>
           <ion-title id="addmodal">Add Delivery Company</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmaddmodal()" [strong]="true" [disabled]="AddForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -74,9 +74,9 @@
           <ion-buttons slot="start">
             <ion-button (click)="canceleditmodal()">Cancel</ion-button>
           </ion-buttons>
-          <ion-title>Add Delivery Company Details</ion-title>
+          <ion-title>Update Delivery Company Details</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmeditmodal()" [strong]="true" [disabled]="editForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
