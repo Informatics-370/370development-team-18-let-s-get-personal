@@ -12,6 +12,8 @@ import { Delivery } from 'src/app/Models/delivery';
 import { AuditTrail } from 'src/app/Models/audittrail';
 import { AuditTrailService } from 'src/app/Services/audittrail.service';
 import { RouterModule, Router } from '@angular/router';
+import { DeliveryDataService } from 'src/app/Services/deliveries.service';
+import { Delivery_Company } from 'src/app/Models/deliverycompany';
 
 @Component({
   selector: 'app-check-out',
@@ -33,7 +35,7 @@ export class CheckOutPage implements OnInit {
   vat!:any
   
   constructor(public service: OrderRequestService, private auditservice: AuditTrailService, private router: Router,
-    private alertController:AlertController) { }
+    private alertController:AlertController, private delservice:DeliveryDataService ) { }
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)    
@@ -48,27 +50,46 @@ export class CheckOutPage implements OnInit {
     this.GetOrderDetails()
   }
 
+  deliveryPrice:any;
   GetOrderDetails(){    
     try
     {
       this.discount = JSON.parse(JSON.stringify(localStorage.getItem('discount')))
       let delID = JSON.parse(JSON.stringify(localStorage.getItem('deliveryID'))) // JSON.parse(localStorage.getItem('deliveryID') as string)
+      let delcompanyID = JSON.parse(localStorage.getItem('deliverycompanyID') as string)// JSON.parse(JSON.stringify(localStorage.getItem('deliverycompanyID'))) 
+
+      if(delcompanyID == "66ec06c6-2d7f-41ca-3aee-08dbc0dfcd7b")
+      {
+        localStorage.setItem('delprice', this.order.deliveryPrice.toString());        
+      }
+      else{
+        this.delservice.GetDeliveryCompany(delcompanyID).subscribe(result =>{
+          let delprice = result as Delivery_Company
+          this.order.deliveryPrice = delprice.delivery_Price
+          localStorage.setItem('delprice', this.delprice.toString());
+          console.log(this.order.deliveryPrice)
+        },(error) => {
+          //this.ErrorAlert();        
+          console.error( error);
+        });
+      }
       
-      this.service.GetDeliveryByID(delID).subscribe(result =>{
-        this.deliveryvm = result as DeliveryVM[];
-          console.log(this.deliveryvm)
-          this.deliveryvm.forEach(element => {
-            //let amount = element.delivery_Price 
-            this.delprice = element.delivery_Price
-          });
 
-        localStorage.setItem('delprice', JSON.stringify(this.delprice));
-        console.log(this.delprice)
+      // this.service.GetDeliveryByID(delID).subscribe(result =>{
+      //   this.deliveryvm = result as DeliveryVM[];
+      //     console.log(this.deliveryvm)
+      //     this.deliveryvm.forEach(element => {
+      //       //let amount = element.delivery_Price 
+      //       this.delprice = element.delivery_Price
+      //     });
 
-      },(error) => {
-        //this.ErrorAlert();        
-        console.error( error);
-      })
+      //   localStorage.setItem('delprice', JSON.stringify(this.delprice));
+      //   console.log(this.delprice)
+
+      // },(error) => {
+      //   //this.ErrorAlert();        
+      //   console.error( error);
+      // })
       this.culculate()
     }
     catch{

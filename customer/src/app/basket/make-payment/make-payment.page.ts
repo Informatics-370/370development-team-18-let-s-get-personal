@@ -49,8 +49,8 @@ export class MakePaymentPage implements OnInit {
 
   ngOnInit() {
     this.getDeliveryCompany();
-    this.order = JSON.parse(localStorage.getItem('order') as string)
-
+    this.getlocaldeliveryPrice();
+    this.order = JSON.parse(localStorage.getItem('order') as string)    
   }
 
   @ViewChild(IonModal) modal!: IonModal
@@ -87,19 +87,28 @@ AddDelAddressForm: FormGroup = new FormGroup({
     })
   }
 
-  AddDeliveryAddress() {
+  getlocaldeliveryPrice(){
+    let delcompanyID = "66ec06c6-2d7f-41ca-3aee-08dbc0dfcd7b"
+    this.delservice.GetDeliveryCompany(delcompanyID).subscribe(result =>{
+      let localprice = result as Delivery_Company
+      this.chargeRatePerKm = localprice.delivery_Price
+      console.log(this.chargeRatePerKm)
+    });
+  }
+
+  AddDeliveryAddress(){
     let addDelivery = new DeliveryAddress();
     addDelivery.city = this.AddDelAddressForm.value.city;
     addDelivery.areaCode = this.AddDelAddressForm.value.areaCode;
     addDelivery.dwelling_Type = this.AddDelAddressForm.value.dwellingtype;
     addDelivery.streetNumber = this.AddDelAddressForm.value.streetNumber;
     addDelivery.streetName = this.AddDelAddressForm.value.streetName;
-    addDelivery.province = this.AddDelAddressForm.value.province;
-
-    this.order.deliveryAddress = addDelivery;
-    this.order.deliveryCompanyID = this.AddDelAddressForm.value.deliveryCompanyID;
-
-    localStorage.setItem("order", JSON.stringify(this.order));
+    addDelivery.province = this.AddDelAddressForm.value.province;  
+    
+    this.order.deliveryAddress=addDelivery;
+    this.order.deliveryCompanyID=this.AddDelAddressForm.value.deliveryCompanyID;
+    localStorage.setItem("deliverycompanyID",JSON.stringify(this.AddDelAddressForm.value.deliveryCompanyID));
+    localStorage.setItem("order",JSON.stringify(this.order));
 
     this.router.navigate(["/tabs/check-out"])
   }
