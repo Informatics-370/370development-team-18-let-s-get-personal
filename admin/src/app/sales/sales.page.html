@@ -10,12 +10,11 @@
       <ion-title size="large">Sales</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-button (click)="prodReportNav()" >View Product Trends Graph</ion-button>
-  <ion-button (click)="openPDF()">Download Sales Report</ion-button>
+  <ion-button (click)="prodReportNav()" >View Product Trends Graph</ion-button>  
   <ion-button (click)="RefundPolicyRoute()">Refund Policy</ion-button>
   <!-- <ion-button (click)="RefundsRoute()">Refunds</ion-button>  -->
-  <ion-button (click)="bestellersnav()">Manage Best Sellers</ion-button> 
-
+  <ion-button (click)="bestellersnav()">Manage Best Sellers</ion-button> <br>
+  
   <!-- Control break -->
   <div>
     <ion-grid>
@@ -23,8 +22,11 @@
         <ion-col size="12" style="text-align: center;  border-bottom-style: solid; border-color: lightgray;">
           <h2>Sales Per Stock Type</h2>
         </ion-col>
+      </ion-row>      
+      <ion-row>
+        <ion-col><ion-button (click)="openPDF()">Download Sales Per Stock Type Report</ion-button></ion-col>
       </ion-row>
-      <ion-row style="text-align: center;">        
+      <ion-row style="text-align: center;" id="htmlData">        
         <ion-card *ngFor="let type of stocktypes">
           <ion-card-header style="font-weight: bold;">
             {{type.stock_Type_Name}}: R {{type.stock_Type_Total | number }}
@@ -42,12 +44,15 @@
       </ion-row>
     </ion-grid>
   </div>
-  <div id="htmlData">    
+  <div>    
     <ion-grid>
       <ion-row>
         <ion-col size="12" style="text-align: center;">
           <h2 style="text-align: center; border-bottom-style: solid; border-color: lightgray;">Sales List</h2>
         </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col><ion-button (click)="generatePDF()">Download Sales List Report</ion-button></ion-col>
       </ion-row>
       <ion-row>
         <ion-col offset="1" sizeLg="2" sizeMd="4" sizeXs="4"  style="font-weight: bold; text-align: center;"> Customer </ion-col>
@@ -66,5 +71,11 @@
         <!-- <ion-col sizeLg="2" sizeMd="4" sizeXs="4" style="text-align: center;"><ion-button (click)="item.stock_Item_ID">Add To Best Seller</ion-button></ion-col> -->
       </ion-row>
     </ion-grid>
+  </div>
+  <div *ngIf="isLoading" class="overlay">
+    <div class="loading-popup">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
   </div>
 </ion-content>

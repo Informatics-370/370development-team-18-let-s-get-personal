@@ -2,12 +2,12 @@ import { AfterViewInit, Component, ElementRef, ViewChild, OnInit } from '@angula
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { OrderService } from '../Services/order.service';
+import { RouterModule, Router } from '@angular/router';
+import { AuditTrailService } from '../Services/audittrail.service';
+import { AuditTrail } from '../Models/adittrail';
 import Chart from 'chart.js/auto';
-//import { Chart, ChartData } from 'chart.js';
+import { SalesService } from '../Services/sales.service';
 import { LineController,LineElement,PointElement, LinearScale,Title,CategoryScale,BarController,BarElement } from 'chart.js';
-import { OrderLineItemVM } from '../ViewModels/orderlineitemVM';
-import { SalesVM } from '../ViewModels/salesVM';
 Chart.register(LineController,LineElement,PointElement, LinearScale,Title,CategoryScale,BarController,BarElement);
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -27,22 +27,26 @@ export class ProductTrendsPage implements OnInit {
   private labeldata: any[] = [];
   private realdata: any[] = [];
   private chartInfo: any;
-  constructor(private service: OrderService) { }  
+  constructor(private service: SalesService, private trailservice: AuditTrailService, public router: Router) { }  
   
   ngOnInit(): void {
-    this.service.GetAllOrders().subscribe(result => {
+    this.service.GetSalesGraph().subscribe(result => {
       this.chartInfo = result;
       console.log(this.chartInfo)
 
       if (this.chartInfo != null) {
         for (let i = 0; i < this.chartInfo.length; i++) {
           this.labeldata.push(this.chartInfo[i].stock_Item_Name);
-          this.realdata.push(this.chartInfo[i].order_Line_Item_Quantity);
+          this.realdata.push(this.chartInfo[i].stock_Sale_Quantity);
           //this.colordata.push(this.chartInfo[i].colorcode);
         }
         this.createChart(this.labeldata, this.realdata); //, this.colordata
       }
     });    
+  }
+
+  backButton() {
+    this.router.navigate(['./tabs/sales']);
   }
 
   createChart(labeldata: any, realdata: any) //, colordata: any
@@ -53,7 +57,7 @@ export class ProductTrendsPage implements OnInit {
         labels: labeldata,
         datasets: [
           {
-            label: 'No. of sales',
+            label: 'No. of Sales per Product',
             data: realdata,
             //backgroundColor: colordata,
             barThickness: 40,
@@ -79,10 +83,34 @@ export class ProductTrendsPage implements OnInit {
       let fileWidth = 208;
       let fileHeight = (canvas.height * fileWidth) / canvas.width;      
       let position = 10;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
-          
-      PDF.save('IPKP-Product-Trends.pdf');
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);    
+
+      let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+      PDF.save(user + ' IPKP-Product-Trends.pdf');
+      this.AddTrail()
     });
+  }
+
+  AddTrail(){
+    let audittrail = new AuditTrail()
+    let roles = JSON.parse(JSON.stringify(localStorage.getItem('roles'))); //userID
+    let userID = JSON.parse(JSON.stringify(localStorage.getItem('userID'))) //JSON.parse(localStorage.getItem('userID') as string)
+    let action = "Downloaded Product Trends Report"
+    
+    if(roles == "Admin"){
+      audittrail.admin_ID = userID
+      audittrail.actionName = action
+      this.trailservice.AddAdminAuditTrailItem(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
+    else{
+      audittrail.employee_ID = userID
+      audittrail.actionName = action
+      this.trailservice.AddEmployeeAuditTrail(audittrail).subscribe(result =>{
+        console.log(result)
+      })
+    }
   }
 
 }

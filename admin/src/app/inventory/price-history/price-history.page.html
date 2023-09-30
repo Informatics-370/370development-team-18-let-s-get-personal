@@ -10,7 +10,10 @@
       <ion-title size="large">price-history</ion-title>
     </ion-toolbar>
   </ion-header>
-  <p style="cursor:pointer;" (click)="inventoryNav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
+  <ion-breadcrumbs>
+    <ion-breadcrumb (click)="inventoryNav()" style="cursor:pointer;">Inventory</ion-breadcrumb>
+    <ion-breadcrumb>Stock Price History</ion-breadcrumb>
+  </ion-breadcrumbs>
   <ion-grid>
     <ion-row style="border-bottom-style: solid; border-color: rgb(161, 160, 160);">
       <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">Product</ion-col>
@@ -19,10 +22,10 @@
       <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="font-weight: bold; text-align: center;">Date Ended</ion-col>
     </ion-row>
     <ion-row *ngFor="let item of stockitems">
-      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.Stock_Price_History.stock_Item_Name}}</ion-col>
-      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.Stock_Price_History.stock_Price_Amount}}</ion-col>
-      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.Stock_Price_History.effective_From_Date}}</ion-col>
-      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.Stock_Price_History.effective_To_Date}}</ion-col>
+      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.stock_Item_Name}}</ion-col>
+      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">R {{item.stock_Price_Amount}}.00</ion-col>
+      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.effective_From_Date | date: 'yyyy-MM-dd'}}</ion-col>
+      <ion-col sizeLg="2" sizeMd="3" sizeXs="3" style="text-align: center;">{{item.effective_To_Date | date: 'yyyy-MM-dd'}}</ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

@@ -27,7 +27,7 @@ export class BestSellersPage implements OnInit {
   bestsellers: BestSellerVM[] =[]
   Products: Stock_Item[] = [];
   @ViewChild(IonModal) modal!: IonModal
-  constructor(private service: SalesService, private bestsellerservice: BestsellersService, 
+  constructor(private service: SalesService, private bestsellerservice: BestsellersService, private router: Router,
     private alertController:AlertController, public stockitemservice: StockItemDataService, private trailservice: AuditTrailService) 
   { }
 
@@ -77,6 +77,11 @@ export class BestSellersPage implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
+  }
+
+  salesNav()
+  {
+    this.router.navigate(['./tabs/sales']);
   }
 
   

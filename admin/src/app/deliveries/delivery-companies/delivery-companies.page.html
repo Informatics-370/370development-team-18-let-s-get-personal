@@ -12,10 +12,13 @@
     </ion-toolbar>
   </ion-header>
   <ion-content id="content">
-    <p style="cursor:pointer;" (click)="deliveriesnav()"><ion-icon name="chevron-back-outline"></ion-icon>Back</p>
+    <ion-breadcrumbs>
+      <ion-breadcrumb (click)="deliveriesnav()" style="cursor:pointer;">Deliveries</ion-breadcrumb>
+      <ion-breadcrumb>Delivery Companies</ion-breadcrumb>
+    </ion-breadcrumbs>
 
     <ion-button (click)="OpenAddModal(true)">Add Delivery Company</ion-button>
-    <!-- <ion-button (click)="RouteDeliveriesControlBreak()">View Delivery Company Price Report</ion-button> -->
+    <ion-button (click)="RouteDeliveriesControlBreak()">View Delivery Company Price Report</ion-button>
     <!-- <ion-searchbar [(ngModel)]="filterTerm" (ionInput)="updateSearchResults()"></ion-searchbar>                     -->
     <ion-grid>
       <ion-row>
@@ -45,7 +48,7 @@
           </ion-buttons>
           <ion-title id="addmodal">Add Delivery Company</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmaddmodal()" [strong]="true" [disabled]="AddForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -71,9 +74,9 @@
           <ion-buttons slot="start">
             <ion-button (click)="canceleditmodal()">Cancel</ion-button>
           </ion-buttons>
-          <ion-title>Add Delivery Company Details</ion-title>
+          <ion-title>Update Delivery Company Details</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmeditmodal()" [strong]="true" [disabled]="editForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>

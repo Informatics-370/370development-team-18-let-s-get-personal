@@ -17,6 +17,12 @@
       <p style="text-align: center;">No New Order Requests</p><br>
      <img src="/assets/no-results.png" alt="empty icon" class="center"  id="icon" />
     </div>
+    <div *ngIf="isLoading" class="overlay">
+      <div class="loading-popup">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    </div>
   </ion-content>
 
   <ion-content *ngIf="orderRequests.length>0">
@@ -44,6 +50,7 @@
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.order_Line_Item_Quantity}} </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.stock_Item_Size}} </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.stock_Colour_Name}} </ion-col>      
+        <!--<ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> <img src='data:image/png;base64,{{item.image_File}}'> </ion-col>-->
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> <img src='{{item.image_File}}'> </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.design_Text}} </ion-col>
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> 
@@ -51,6 +58,12 @@
         <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"><ion-button (click)="AcceptOrder(item.order_Line_Item_ID)">In Progress</ion-button></ion-col>
       </ion-row>
     </ion-grid>
+  </div>
+  <div *ngIf="isLoading" class="overlay">
+    <div class="loading-popup">
+      <div class="spinner"></div>
+      <p>Processing...</p>
+    </div>
   </div>
 </ion-content>
   

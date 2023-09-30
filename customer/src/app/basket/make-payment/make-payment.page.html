@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Add Delivery Address</ion-title>
+    <ion-button slot="end" (click)="DeliveryTip()">Help</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -12,7 +13,7 @@
   </ion-header>
   <div>
     
-    <form [formGroup]="AddDelAddressForm"> 
+    <form [formGroup]="AddDelAddressForm">
       <ion-item>
         <ion-label position="stacked">Delivery Company</ion-label><br>
         <ion-select placeholder="Select a Delivery Company" formControlName="deliveryCompanyID">
@@ -23,45 +24,55 @@
         </ion-select>
       </ion-item>
       
-
       <ion-item>
-        <ion-label position="stacked">Street Name</ion-label><br>
-        <ion-input  labelPlacement="floating" placeholder="Example: Avenue Street" formControlName="streetName"></ion-input>
+        <ion-label>Full Address:</ion-label><!--"-->
+        <ion-input
+        [formControl]="searchControl"
+          (ionInput)="updateSearchResults()"
+          placeholder="Type address..."
+          [required]="!predictionSelectedFlag"
+        ></ion-input>
       </ion-item>
-  
+      
+      
+      <ion-list *ngIf="showPredictions">
+        <ion-item *ngFor="let prediction of predictions" (click)="selectPrediction(prediction)">
+          {{ prediction.description }}
+        </ion-item>
+      </ion-list>
+<div *ngIf="!predictionSelectedFlag || searchControl.hasError('searchRequired')">
+        <p style="color: crimson;" class="small mt-1">Address selection is required for delivery price!</p>
+      </div>
       <ion-item>
-        <ion-label position="stacked">Street Number</ion-label><br>
-        <ion-input  type="number" labelPlacement="floating" placeholder="000" formControlName="streetNumber"></ion-input>
+        <ion-label position="stacked">Delivery Company</ion-label><br>
+        <ion-select placeholder="Select a Delivery Company" formControlName="deliveryCompanyID">
+          <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
+          <ion-select-option *ngFor="let company of deliverycompanies" value ="{{company.delivery_Company_ID}}">
+            {{company.delivery_Company_Name}}
+          </ion-select-option>
+        </ion-select>
       </ion-item>
-  
+      
       <ion-item>
         <ion-label position="stacked">Dwelling Type</ion-label><br>
-        <ion-input type="text" labelPlacement="floating" placeholder="House/Apartment" formControlName="dwellingtype"></ion-input>
+        <ion-select formControlName="dwellingtype" interface="alert" placeholder="Example: House">
+          <ion-select-option *ngFor="let dwellingtype of dwellingType" [value]="dwellingtype">{{ dwellingtype }}</ion-select-option>
+        </ion-select>
       </ion-item>
-  
-      <!-- <ion-item>
-        <ion-label position="stacked">Unit Number</ion-label><br>
-        <ion-input  type="number" labelPlacement="floating" placeholder="000" formControlName="Unit"></ion-input>
-      </ion-item> -->
-    
-      <ion-item>
-        <ion-label position="stacked">City</ion-label><br>
-        <ion-input type="text" labelPlacement="floating" placeholder="Example: Pretoria" formControlName="city"></ion-input>
-      </ion-item>
-  
+
       <ion-item>
         <ion-label position="stacked">Province</ion-label><br>
-        <ion-input type="text" labelPlacement="floating" placeholder="Example: Gauteng" formControlName="province"></ion-input>
+        <ion-select formControlName="province" interface="alert" placeholder="Example: Gauteng">
+          <ion-select-option *ngFor="let province of validProvinces" [value]="province">{{ province }}</ion-select-option>
+        </ion-select>
       </ion-item>
-  
+
       <ion-item>
         <ion-label position="stacked">Area Code</ion-label><br>
-        <ion-input  type="text" labelPlacement="floating" placeholder="0002" formControlName="areaCode"></ion-input>
+        <ion-input  type="text" labelPlacement="floating" placeholder="Example: 0002" formControlName="areaCode"
+        [class.is-invalid]="f['areaCode'].invalid && f['areaCode'].touched"  min="4"
+        max="4"></ion-input>
       </ion-item>
-<<<<<<< HEAD
-      <ion-button (click)="AddDeliveryAddress()">Confirm Address</ion-button>
-     <!--checkOut()-->
-=======
       <div class="text-center" *ngIf="f['areaCode'].invalid && f['areaCode'].touched">
         <p style="color: crimson;" class="small mt-1" *ngIf="f['areaCode'].errors?.['required']">Area code is
           required!</p>
@@ -69,28 +80,38 @@
           Code should be 4 numbers only.</p>
       </div>
 
-      <ion-item>
-        <ion-label>Full Address:</ion-label>
-        <ion-input
-          [formControl]="searchControl"
-          (ionInput)="updateSearchResults()"
-          placeholder="Type address..."
-        ></ion-input>
+     <ion-item>
+        <ion-label position="stacked">Street Number</ion-label><br>
+        <ion-input  type="number" labelPlacement="floating" placeholder="00" formControlName="streetNumber" max="99999"></ion-input>
       </ion-item>
+      <!--<ion-item>
+        <ion-label position="stacked">Surbub</ion-label><br>
+        <ion-input  labelPlacement="floating" placeholder="Example: Brooklyn" formControlName="suburb" max="99999"></ion-input>
+      </ion-item>-->
+
+      <ion-item>
+        <ion-label position="stacked">Street Name</ion-label><br>
+        <ion-input  labelPlacement="floating" placeholder="Example: Flower Street" formControlName="streetName"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label position="stacked">City</ion-label><br>
+        <ion-input type="text" labelPlacement="floating" placeholder="Example: Pretoria" formControlName="city"
+        [class.is-invalid]="f['city'].invalid && f['city'].touched"></ion-input>
+      </ion-item>
+      <div class="text-center" *ngIf="f['city'].invalid && f['city'].touched">
+        <p style="color: crimson;" class="small mt-1" *ngIf="f['city'].errors?.['required']">City is
+          required!</p>
+        <p style="color: crimson;" class="small mt-1" *ngIf="f['city'].errors?.['pattern']">
+          City should not include special characters.</p>
+      </div>
+    
       
-      <ion-list *ngIf="showPredictions">
-        <ion-item *ngFor="let prediction of predictions" (click)="selectPrediction(prediction)">
-          {{ prediction.description }}
-        </ion-item>
-      </ion-list>
 
       <ion-button (click)="AddDeliveryAddress()" [disabled]="AddDelAddressForm.invalid">Confirm Address</ion-button>
      
->>>>>>> developer
   </form>
   
   </div>
-  
-<!--This takes to the third party app view page. -->
     
 </ion-content>

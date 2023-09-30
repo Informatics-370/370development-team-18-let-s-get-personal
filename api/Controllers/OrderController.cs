@@ -3,11 +3,15 @@ using IPKP___API.Controllers.Models.Repository;
 using IPKP___API.Controllers.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace IPKP___API.Controllers
 {
@@ -21,13 +25,14 @@ namespace IPKP___API.Controllers
         {
           _IPKPRepository = iPKPRepository;
         }
-
+       /* private readonly UserManager<IdentityUser> _userManager;*/
 
         [HttpPost]
         [Route("PlaceOrder")]
         public async Task<IActionResult> PlaceOrderT(OrderT d)
         {
-            try {
+            try
+            {
 
                 var deladdress = new Delivery_Address
                 {
@@ -43,7 +48,7 @@ namespace IPKP___API.Controllers
 
                 _IPKPRepository.Add(deladdress);
                 Boolean results = await _IPKPRepository.SaveChangesAsync();
-                
+
 
                 var deliveryrequest = new Delivery
                 {
@@ -61,7 +66,7 @@ namespace IPKP___API.Controllers
                 {
                     Order_Request_ID = new Guid(),
                     Customer_ID = new Guid(d.customerID),
-                    Delivery_ID =deliveryrequest.Delivery_ID,
+                    Delivery_ID = deliveryrequest.Delivery_ID,
                     Order_Request_Date = DateTime.Now,
                     Order_Request_Total_Price = d.price,
 
@@ -70,7 +75,7 @@ namespace IPKP___API.Controllers
                 _IPKPRepository.Add(newOrderRequest);
                 Boolean results2 = await _IPKPRepository.SaveChangesAsync();
 
-                
+
                 await _IPKPRepository.SaveChangesAsync();
 
                 var newdesigntext = new Design_Text();
@@ -78,7 +83,8 @@ namespace IPKP___API.Controllers
                 var orderlineitem = new Order_Line_Item();
                 var personalisationDesign = new Personalisation_Design();
 
-                for (var i = 0; i < d.basketItems.Count; i++) {
+                for (var i = 0; i < d.basketItems.Count; i++)
+                {
 
                     newdesigntext = new Design_Text
                     {
@@ -86,7 +92,7 @@ namespace IPKP___API.Controllers
                         Design_Text_Description = d.basketItems[i].personalization.personalizationText
                     };
 
-                   _IPKPRepository.Add(newdesigntext);
+                    _IPKPRepository.Add(newdesigntext);
                     await _IPKPRepository.SaveChangesAsync();
 
                     newdesignimage = new Design_Image
@@ -122,24 +128,24 @@ namespace IPKP___API.Controllers
                     _IPKPRepository.Add(orderlineitem);
                     await _IPKPRepository.SaveChangesAsync();
 
-
                 }
 
                 await _IPKPRepository.SaveChangesAsync();
 
                 //_IPKPRepository.Add(orderlineitem);
                 await _IPKPRepository.SaveChangesAsync();
-                return Ok(new Response { Status = "Success", Message = "Order Added Successfully." }); 
+                return Ok(new Response { Status = "Success", Message = "Order Added Successfully." });
 
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            
+
         }
 
 
-        //add to order line item 
+        //add to order line item
         [HttpPost]
         [Route("AddOrderLineItem")]
         public async Task<IActionResult> AddOrderLineItemAsync(Order_Line_Item oli)
@@ -176,7 +182,7 @@ namespace IPKP___API.Controllers
             try
             {
                 string orderStatus = "Requested";
-                //var requests = _IPKPRepository.GetOrderLineItembyStatus(orderStatus); //GetOrderRequests();
+               /* var requests = _IPKPRepository.GetOrderLineItembyStatus(orderStatus); //GetOrderRequests();*/
                 var requests = _IPKPRepository.GetAllOrderLineItems();
 
                 if (requests == null)
@@ -253,11 +259,12 @@ namespace IPKP___API.Controllers
 
         //send order to delivery
         [HttpPut]
-        [Route("SendOutDelivery/{order_Line_Item_ID}")]
-        public async Task<ActionResult<Order_Line_Item>> SendOutDelivery(Guid order_Line_Item_ID, Order_Line_Item dvm)
+        [Route("SendOutDelivery/{order_Line_Item_ID}/{customer_Id}")]
+        public async Task<ActionResult<Order_Line_Item>> SendOutDelivery(Guid order_Line_Item_ID, Guid customer_Id, Order_Line_Item dvm)
         {
             try
             {
+                var customer = await _IPKPRepository.GetCustomerDetailsAsync(customer_Id);
                 var requests = await _IPKPRepository.GetOrderLineItemByID(order_Line_Item_ID);
 
                 if (requests == null)
@@ -266,9 +273,21 @@ namespace IPKP___API.Controllers
                 }
                 else
                 {
+                    
                     requests.Order_Status = "Out";
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
+                        
+                       var subject = "Your Order is out for delivery.";
+                        var message = "Dear " + customer.FirstName + ",<br><br>" +
+                        "We hope this message finds you well.<br><br>" +
+                        "We are writing to inform you that your order is out for delivery.<br><br>" +
+                        "Await communication from the delivery company soon." +"<br><br>"+
+
+                        "Best regards,<br>Let's Get Personal";
+
+                        await SendEmail(subject,message, customer.Email);
+
                         return Ok(requests);
                     }
                 }
@@ -338,6 +357,7 @@ namespace IPKP___API.Controllers
         [Route("ProcessOrder/{order_Line_Item_ID}")]
         public async Task<IActionResult> ProcessOrder(Guid order_Line_Item_ID)
         {
+           /* var user = await _userManager.FindByNameAsync();*/
             //delete 
             try
             {
@@ -409,6 +429,40 @@ namespace IPKP___API.Controllers
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
+            }
+        }
+        private async Task SendEmail(string subject, string message, string toEmailAddress)
+        {
+            string fromEmailAddress = "satahpick@gmail.com";
+            var fromAddress = new MailAddress(fromEmailAddress);
+            var toAddress = new MailAddress(toEmailAddress);
+
+            SmtpClient client = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "wauc crru pvma osvq"),
+                EnableSsl = true
+            };
+
+            MailMessage msg = new MailMessage()
+            {
+                From = new MailAddress(fromEmailAddress),
+                Subject = subject,
+                Body = message,
+                IsBodyHtml = true
+            };
+
+            msg.To.Add(toEmailAddress);
+
+            try
+            {
+                client.Send(msg);
+                Console.WriteLine("Email sent successfully!");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred: {e.Message}");
+
             }
         }
 

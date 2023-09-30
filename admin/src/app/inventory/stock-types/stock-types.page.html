@@ -8,10 +8,14 @@
 <ion-content [fullscreen]="false">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Stock Types</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content id="content">
+    <ion-breadcrumbs>
+      <ion-breadcrumb (click)="inventoryNav()" style="cursor:pointer;">Inventory</ion-breadcrumb>
+      <ion-breadcrumb>Stock Types</ion-breadcrumb>
+    </ion-breadcrumbs>
+
     <ion-button id="addTypemodal">Add Stock Type</ion-button>
     
     <ion-grid>
@@ -22,8 +26,8 @@
       </ion-row>
       <ion-row *ngFor="let item of stocktypes">
         <ion-col> {{item.stock_Type_Name}}</ion-col>
-        <ion-col><ion-button (click)="getstocktype(item.stock_Type_ID)">Edit</ion-button></ion-col>
-        <ion-col><ion-button (click)="deleteStockTypes(item.stock_Type_ID)">Delete</ion-button> </ion-col>          
+        <ion-col><ion-button (click)="EditType(item.stock_Type_ID, true)">Edit</ion-button></ion-col>
+        <ion-col><ion-button (click)="deleteStockTypes(item.stock_Type_ID, item.stock_Type_Name)">Delete</ion-button> </ion-col>          
       </ion-row>
     </ion-grid>
 
@@ -40,13 +44,13 @@
           </ion-buttons>
           <ion-title>Add Stock Type</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmaddmodal()" [strong]="true" [disabled]="AddTypeForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
         <ion-item>
-          <h3>Add Stock type Details</h3>     
+          <!-- <h3>Add Stock Type Details</h3>      -->
         </ion-item>
         <form [formGroup]="AddTypeForm">          
             <ion-item>
@@ -54,6 +58,30 @@
               <ion-input type="text" formControlName="name" placeholder="i.e. stationary"></ion-input>
             </ion-item>                    
         </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="canceleditmodal()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Update Stock Type Details</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmeditmodal()" [strong]="true" [disabled]="editForm.invalid">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="editForm" >
+          <ion-item>
+            <ion-label position="stacked">Stock Type Name</ion-label><br>
+            <ion-input type="text" formControlName="name" placeholder="i.e. stationary"></ion-input>
+          </ion-item>                    
+      </form>
       </ion-content>
     </ng-template>
   </ion-modal>

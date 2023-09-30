@@ -11,20 +11,16 @@
       <ion-title size="large">audit-trail</ion-title>
     </ion-toolbar>
   </ion-header> 
-
-  <!-- <ion-toolbar>    
-    <ion-buttons>
-      <ion-tab-button (click)="getOnlyAdmins()">View Admins</ion-tab-button>
-      <ion-tab-button (click)="getOnlyEmployees()">View Employees</ion-tab-button>
-      <ion-tab-button (click)="getAll()">View All</ion-tab-button>
-    </ion-buttons>
-  </ion-toolbar> -->
-
+  <ion-breadcrumbs>
+    <ion-breadcrumb (click)="backButton()" style="cursor:pointer;">IPKP Users</ion-breadcrumb>
+    <ion-breadcrumb>User Audit Trail</ion-breadcrumb>
+  </ion-breadcrumbs>
+  
   <ion-item>    
-    <ion-label>  Filter By: 
+    <ion-label>
       <ion-button (click)="getOnlyAdmins()">View Admins</ion-button>
       <ion-button (click)="getOnlyEmployees()">View Employees</ion-button>
-      <ion-button (click)="getOnlyCustomers()">View Customers</ion-button>
+      <!-- <ion-button (click)="getOnlyCustomers()">View Customers</ion-button> -->
       <ion-button (click)="getAll()">View All</ion-button>
       <ion-button (click)="generatePDF()">Download Audit Trail</ion-button>
     </ion-label> 
@@ -36,7 +32,7 @@
       <ion-col size="3.5">
         <form [formGroup]="SearchForm">      
           <ion-item>
-            <ion-input label="Search by Name" type="text" formControlName="name" placeholder="Product Name" required></ion-input><br>
+            <ion-input label="Search by Name" type="text" formControlName="name" placeholder="Users Name" required></ion-input><br>
             <ion-button (click)="search()">Search</ion-button>
           </ion-item> 
         </form>
@@ -55,15 +51,15 @@
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
       <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;">{{item.actionName}}</ion-col>
-      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate}}</ion-col>
+      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate| date: 'yyyy-MM-dd'}}</ion-col>
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
     </ion-row>
 
     <ion-row *ngFor="let item of AdminAuditTrails">
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
-      <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;">{{item.actionName}}</ion-col>
-      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate}}</ion-col>
+      <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;" [innerHTML]="item.actionName">{{item.actionName}}</ion-col>
+      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate| date: 'yyyy-MM-dd'}}</ion-col>
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
     </ion-row>
 
@@ -71,7 +67,7 @@
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
       <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;">{{item.actionName}}</ion-col>
-      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate}}</ion-col>
+      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate| date: 'yyyy-MM-dd'}}</ion-col>
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
     </ion-row>
 
@@ -79,8 +75,8 @@
     <ion-row *ngFor="let item of searchedtrail">
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
       <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.firstName}} {{item.surname}}</ion-col>
-      <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;">{{item.actionName}}</ion-col>
-      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate}}</ion-col>
+      <ion-col sizeLg="4" sizeMd="8" sizeXs="8" style="text-align: center;" [innerHTML]="item.actionName">{{item.actionName}}</ion-col>
+      <ion-col sizeLg="3" sizeMd="6" sizeXs="6" style="text-align: center;">{{item.actionDate| date: 'yyyy-MM-dd'}}</ion-col>
       <ion-col sizeLg="1" sizeMd="0.5" sizeXs="0.25"></ion-col>
     </ion-row>
   </ion-grid>

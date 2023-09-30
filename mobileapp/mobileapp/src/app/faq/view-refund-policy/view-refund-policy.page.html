@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>IPKP Refund Policy</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid id="grid">
+    <ion-row>
+      <ion-col style="font-weight: bold;">Version number</ion-col>
+      <ion-col style="font-weight: bold;">Description</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let item of policy">
+      <ion-col >
+          {{item.refund_Policy_Version}}
+      </ion-col>
+      <ion-col>
+        {{item.refund_Policy_Description}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-button (click)="FAQ()" >Back</ion-button>
+</ion-content>

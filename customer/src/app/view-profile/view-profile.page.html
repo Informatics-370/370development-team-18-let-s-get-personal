@@ -1,14 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-      <ion-title>Profile</ion-title>      
+      <ion-title>Profile</ion-title>     
+      <ion-button slot="end" (click)="HelpAlert()">Help</ion-button> 
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-toolbar>
     <ion-button (click)="updateProfile(customer.customer_ID, true)">Manage Profile</ion-button>  
-    <ion-button (click)="ExpRating()">Experience Rating</ion-button>
-    <ion-button (click)="PreviousOrders()">View Previous Orders</ion-button>
+    <!-- <ion-button (click)="ExpRating()">Experience Rating</ion-button> -->
+    <!-- <ion-button (click)="PreviousOrders()">View Previous Orders</ion-button> -->
     <ion-button slot="end" (click)="Logout()">Log out</ion-button>
     <ion-button (click)="ChangePassword(true)">Change Password</ion-button>
   </ion-toolbar>
@@ -58,7 +59,7 @@
           </ion-buttons>
            <ion-title>Update Profile Details</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmeditmodal()" [strong]="true" [disabled]="editForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -76,17 +77,21 @@
             <ion-label position="stacked">Email Address</ion-label><br>
             <ion-input type="text" formControlName="email" placeholder="" required></ion-input>
           </ion-item>
+          <div class="text-center" *ngIf="g['email'].invalid && g['email'].touched">
+            <p style="color: crimson;" class="small mt-1" *ngIf="g['email'].errors?.['pattern']">
+              Email is Invalid</p>
+          </div>
           <ion-item>
             <ion-label position="stacked">Cellphone number</ion-label><br>
             <ion-input type="text" formControlName="cell_Number" placeholder="" required></ion-input>
           </ion-item>
-          <!-- <ion-item>
+          <ion-item>
             <ion-label position="stacked">Customer Username</ion-label><br>
             <ion-input type="text" formControlName="username" placeholder="" required></ion-input>
-          </ion-item>    -->
+          </ion-item>   
       </form>
       <ion-toolbar>
-        <ion-title slot="end"><ion-button (click)="DeleteConfirmAlert(customer.customer_ID)">Delete Profile</ion-button></ion-title>
+        <ion-title slot="end"><ion-button (click)="deleteProfile(customer.customer_ID)">Delete Profile</ion-button></ion-title>
       </ion-toolbar>
       </ion-content>
     </ng-template>
@@ -101,7 +106,7 @@
           </ion-buttons>
           <!-- <ion-title>Add Discount Policy Details</ion-title> -->
           <ion-buttons slot="end">
-            <ion-button (click)="confirmpassmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmpassmodal()" [disabled]="passwordform.invalid" [strong]="true">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -109,16 +114,28 @@
         <form [formGroup]="passwordform" >
           <ion-item>
             <ion-label position="stacked">Enter current password</ion-label><br>
-            <ion-input type="text" formControlName="oldpassword" placeholder="" required></ion-input>
+            <ion-input type="password" formControlName="oldpassword" placeholder="" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Enter new password</ion-label><br>
-            <ion-input type="text" formControlName="newpassword" placeholder="" required></ion-input>
+            <ion-input type="password" formControlName="newpassword" placeholder=""  required></ion-input>
           </ion-item>
+          <div class="text-center" *ngIf="f['newpassword'].invalid && f['newpassword'].touched">
+            <p style="color: crimson;" class="small mt-1" *ngIf="f['newpassword'].errors?.['required']">
+              New password is required!</p>
+            <p style="color: crimson;" class="small mt-1" *ngIf="f['newpassword'].errors?.['pattern']">
+              Password must contain minimum of 8 characters,at least one uppercase letter,at least one
+              lowercase letter
+              ,at least one number and at least one special character</p>
+          </div>
           <ion-item>
             <ion-label position="stacked">Confirm new password</ion-label><br>
-            <ion-input type="text" formControlName="confirmpassword" placeholder="" required></ion-input>
-          </ion-item>  
+            <ion-input type="password" formControlName="confirmpassword" placeholder=""  required></ion-input>
+          </ion-item> 
+          <div style="color: crimson;" *ngIf="passwordform.hasError('passwordMismatch')">
+            Passwords do not match.
+          </div>
+           
       </form>
       </ion-content>
     </ng-template>

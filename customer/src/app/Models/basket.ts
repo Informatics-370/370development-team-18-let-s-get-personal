@@ -21,6 +21,7 @@ export class Personalization{
 }*/
 
 export class Personalization{
+    personalisation_ID!: string
     img!: string | null;
     personalizationText!: string
 }

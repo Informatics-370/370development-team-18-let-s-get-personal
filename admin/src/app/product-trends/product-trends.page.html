@@ -10,9 +10,19 @@
       <ion-title size="large">ProductTrends</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-breadcrumbs>
+    <ion-breadcrumb (click)="backButton()" style="cursor:pointer;">Sales</ion-breadcrumb>
+    <ion-breadcrumb>Product Trend Report</ion-breadcrumb>
+  </ion-breadcrumbs>
+  
   <ion-button (click)="openPDF()">Download Trend Chart</ion-button>
-
-  <div id="TrendsData" class="chart-container">
-    <canvas  id="MyChart" >{{ chart }}</canvas>
-  </div>
+  <ion-grid id="TrendsData">
+    <ion-row>
+      <ion-col offset="2" sizeLg="10" sizeMd="10" sizeXs="10">
+        <div  class="chart-container"  style="width: 80%;">
+          <canvas id="MyChart" >{{ chart }}</canvas>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>  
 </ion-content>

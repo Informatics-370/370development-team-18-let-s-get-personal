@@ -33,8 +33,8 @@ export class OrderService {
     .pipe(map((result: any) => result))
   }
 
-  public SendOutDelivery(order_Line_Item_ID:string): Observable<any>{
-    return this.httpClient.put<Response>(`${this.apiUrl}Order/SendOutDelivery/${order_Line_Item_ID}`, this.httpOptions)
+  public SendOutDelivery(order_Line_Item_ID:string,customer_Id:string): Observable<any>{
+    return this.httpClient.put<Response>(`${this.apiUrl}Order/SendOutDelivery/${order_Line_Item_ID}/${customer_Id}`, this.httpOptions)
     .pipe(map((result: any) => result))
   }
 

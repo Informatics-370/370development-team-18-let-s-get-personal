@@ -33,8 +33,6 @@ namespace IPKP___API.Controllers
                 var newinvoice = new Invoice
                 {
                     Invoice_ID = new Guid(),
-                    Order_Line_Item_ID = invoice.Order_Line_Item_ID,
-                    Payment_ID = invoice.Payment_ID,
                     Discount_Amount = invoice.Discount_Amount,
                     Delivery_Price = invoice.Delivery_Price,
                     Invoice_Total_exclVAT = invoice.Invoice_Total_exclVAT,
@@ -77,14 +75,14 @@ namespace IPKP___API.Controllers
 
                     "Discount Amount: R" + newinvoice.Discount_Amount + ".00" + "<br>" +
                     "Delivery Amount: R" + newinvoice.Delivery_Price + ".00" + "<br>" +
-                    "Total Excluding Vat: R" + newinvoice.Invoice_Total_exclVAT + ".00" + "<br>" +
+                    "Total Of Product Items Excluding Vat: R" + newinvoice.Invoice_Total_exclVAT + ".00" + "<br>" +
                     "Vat Amount: R" + newinvoice.Invoice_Total_VAT + ".00" + "<br><br>" +
 
                     "Total: R" + newinvoice.Invoice_Total_inclVAT + ".00" + "<br>" +
 
                     "Best regards,<br>Let's Get Personal";
 
-                    _ = SendEmail(subject, message, userEmail);
+                    await SendEmail(subject, message, userEmail);
 
                 }
                 catch (Exception)
@@ -97,26 +95,19 @@ namespace IPKP___API.Controllers
                 return NotFound("Does not exist");
             }
 
-            //var user = await _userManager.FindByNameAsync(newinvoice.customer.Username);
-            
-            //if (newinvoice.customer.Username != null)
-            //{
-                
-            //}
-
             return Ok(new Response { Status = "Success", Message = "Invoice Sent To Customer" });
         }
 
         private async Task SendEmail(/*string fromEmailAddress,*/ string subject, string message, string toEmailAddress)
         {
             string fromEmailAddress = "satahpick@gmail.com";
-            //var fromAddress = new MailAddress(fromEmailAddress);
+            var fromAddress = new MailAddress(fromEmailAddress);
             var toAddress = new MailAddress(toEmailAddress);
 
             SmtpClient client = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
-                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "amojsldimzrbrtot"),
+                Credentials = new NetworkCredential("ktlmamadi@gmail.com", "wauc crru pvma osvq"),
                 EnableSsl = true
             };
 

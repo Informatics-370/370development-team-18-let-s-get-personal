@@ -10,7 +10,11 @@
       <ion-title size="large">view-employees</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-button (click)="backButton()"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+  <ion-breadcrumbs>
+    <ion-breadcrumb (click)="backButton()" style="cursor:pointer;">IPKP Users</ion-breadcrumb>
+    <ion-breadcrumb>Employees</ion-breadcrumb>
+  </ion-breadcrumbs>
+
   <ion-button id="addEmployeemodal">Add Employee</ion-button>
   <ion-content id="content">
     <ion-grid>

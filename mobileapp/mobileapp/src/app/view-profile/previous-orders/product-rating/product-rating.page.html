@@ -1,0 +1,127 @@
+<ion-header [translucent]="true">
+	<ion-toolbar>
+		<ion-title>Product Rating</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+	<ion-card-content>
+		<ion-grid>
+			<ion-row>
+				<ion-col style="font-weight: bold;">Product</ion-col>
+				<ion-col style="font-weight: bold;">Quantity</ion-col>
+				<ion-col style="font-weight: bold;">Date Completed</ion-col>
+				<ion-col style="font-weight: bold;"></ion-col>
+			</ion-row>
+			<ion-row *ngFor="let item of orders">
+				<ion-col>{{item.stock_Item_Name}}</ion-col>
+				<ion-col>{{item.order_Line_Item_Quantity}}</ion-col>
+				<ion-col>{{item.order_Completed_Date| date: 'yyyy-MM-dd'}}</ion-col>
+				<ion-col><ion-button (click)="AddRating(item.stock_Item_ID,true, item.stock_Item_Name)">Add Product Rating</ion-button></ion-col>
+			</ion-row>
+		</ion-grid>
+	</ion-card-content>
+	<ion-card-content>
+		<!-- <ion-button id="addProdRatingmodal">Add Product Rating</ion-button> -->
+		<!--<ion-searchbar [(ngModel)]="filterTerm" (ionInput)="updateSearchResults()"></ion-searchbar>  -->
+		<ion-grid>
+			<ion-row>
+				<ion-col style="font-weight: bold;">Product Name</ion-col>
+				<ion-col style="font-weight: bold;"> Product Star Rating </ion-col>
+				<ion-col style="font-weight: bold;"> Product Rating Comment</ion-col>
+				<ion-col></ion-col>
+				<ion-col></ion-col>
+			</ion-row>
+			<ion-row *ngFor="let item of productRatings">
+				<ion-col>{{item.stock_Item.stock_Item_Name}}</ion-col>
+				<ion-col>{{item.product_Star_Rating}}</ion-col>
+				<ion-col>{{item.product_Rating_Comments}}</ion-col>
+				<ion-col> <ion-button (click)="EditExpRating(item.product_Rating_ID,true)">Update Product Rating</ion-button></ion-col>
+				<ion-col><ion-button (click)="DeleteProductRating(item.product_Rating_ID)">Delete Product Rating</ion-button></ion-col>
+			</ion-row>
+		</ion-grid>
+	</ion-card-content>
+</ion-content>
+
+<ion-footer>
+	<ion-modal [isOpen]="isAddModalOpen" (willDismiss)="onWillDismiss($event)"> <!-- trigger="addProdRatingmodal" -->
+		<ng-template>
+			<ion-header>
+				<ion-toolbar>
+					<ion-buttons slot="start">
+						<ion-button (click)="canceladdmodal()">Cancel</ion-button>
+					</ion-buttons>
+					<ion-title id="addmodal">Add Product rating</ion-title>
+					<ion-buttons slot="end">
+						<ion-button (click)="confirmaddmodal()" [disabled]="AddForm.invalid" [strong]="true">Confirm</ion-button>
+					</ion-buttons>
+				</ion-toolbar>
+			</ion-header>
+			<ion-content class="ion-padding">
+				<form [formGroup]="AddForm">
+					<ion-item>
+						<ion-label position="stacked">
+							<h3>Product Name</h3>
+						</ion-label><br>
+						<ion-text >{{stockitemName}}</ion-text>
+					</ion-item>
+					<ion-row>
+						<ion-col *ngFor="let star of stars" (click)="rateExperience(star)">
+							<ion-icon [name]="star <= selectedRating ? 'star' : 'star-outline'"
+								formControlName="selectedRating"></ion-icon>
+						</ion-col>
+					</ion-row>
+					<p>Selected Rating: {{ selectedRating }}</p>
+					<ion-item>
+						<ion-label position="stacked">
+							<h3>Comment</h3>
+						</ion-label><br>
+						<ion-input type="text" formControlName="comment" placeholder="" required></ion-input>
+					</ion-item>
+				</form>
+			</ion-content>
+		</ng-template>
+	</ion-modal>
+
+	<ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismiss($event)">
+		<ng-template>
+			<ion-header>
+				<ion-toolbar>
+					<ion-buttons slot="start">
+						<ion-button (click)="canceleditmodal()">Cancel</ion-button>
+					</ion-buttons>
+					<ion-title>Update Product Rating Details</ion-title>
+					<ion-buttons slot="end">
+						<ion-button (click)="confirmEditmodal()" [strong]="true">Confirm</ion-button>
+					</ion-buttons>
+				</ion-toolbar>
+			</ion-header>
+			<ion-content class="ion-padding">
+				<form [formGroup]="editForm">
+					<!-- (ngSubmit)="onSubmit(editForm)" -->
+					<ion-item>
+						<ion-label position="stacked">
+							<h3>Product Name</h3>
+						</ion-label><br>
+						<ion-label *ngFor="let item of stockItems">{{item.stock_Item_Name}}</ion-label>
+					</ion-item>
+					<ion-item>
+						<ion-label position="stacked">Rating</ion-label><br>
+						<ion-row>
+							<ion-col *ngFor="let star of stars" (click)="rateExperience(star)">
+								<ion-icon [name]="star <= selectedRating ? 'star' : 'star-outline'"></ion-icon>
+							</ion-col>
+						</ion-row>
+						<p>Selected Rating: {{ selectedRating }}</p>
+					</ion-item>
+					<ion-item>
+						<ion-label position="stacked">Comment</ion-label><br>
+						<ion-input type="text" formControlName="comment" placeholder="" required></ion-input>
+					</ion-item>
+
+				</form>
+			</ion-content>
+		</ng-template>
+	</ion-modal>
+
+</ion-footer>

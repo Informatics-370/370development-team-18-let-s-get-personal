@@ -41,7 +41,8 @@ export class InventoryPage implements OnInit {
   stockitemcolours: StockItemColours[] = [];
   stockimages: Stock_Image[] =[];
   
-  
+  isLoading: boolean = false;
+
   constructor(public environmentInjector: EnvironmentInjector, private router: Router,
     public bestsellerservice:BestsellersService, private alertController:AlertController,  
     public stockitemservice: StockItemDataService, public pservice: PersonalisationService, 
@@ -59,6 +60,9 @@ export class InventoryPage implements OnInit {
   })
 
   ngOnInit() {
+
+    this.isLoading=true;
+
     this.GetAllStockItems();
     if(this.searchString === "")
     {
@@ -68,6 +72,7 @@ export class InventoryPage implements OnInit {
     this.GetStockItemColours();
     this.GetStockTypes();
     this.getExcelData();
+    console.log(this.isLoading)
   }  
 
   search(){    
@@ -83,7 +88,10 @@ export class InventoryPage implements OnInit {
     this.stockitemservice.GetStockItems().subscribe(result =>{
       this.Products = result as StockItemViewModel[];
       this.searchedinventory = this.Products;
-    })    
+      this.isLoading=false;
+    })
+       // Dismiss the loading indicator
+    
   }
 
 //========= Excel export ========
@@ -110,6 +118,7 @@ export class InventoryPage implements OnInit {
     this.excelservice.GetInventoryList().subscribe(result =>{
       this.excelData = result as ExcelViewModel[];
       console.log(this.excelData)
+      /*this.isLoading=false;*/
     })
   }
 
@@ -173,7 +182,7 @@ export class InventoryPage implements OnInit {
 
   AddStockItem(){
     if(this.AddStockForm.valid){
-
+     this.isLoading=true;
     let addStockItem = new Stock_Item();
     addStockItem.stock_Item_Name = this.AddStockForm.value.Stock_Item_Name;
     addStockItem.stock_Item_Price = this.AddStockForm.value.Stock_Item_Price;
@@ -196,7 +205,9 @@ export class InventoryPage implements OnInit {
     (error) => {
       this.AddStockItemErrorAlert();
       console.error('Add stock item error:', error);
-    }); 
+    }).add(() => {
+      this.isLoading = false; // Stop loading
+    });
     //this.presentLoading();
    }
   }  
@@ -221,8 +232,9 @@ export class InventoryPage implements OnInit {
       this.fileNameUploaded = 'Invalid file type. Please choose an image file.';
     }
   }
-
+  
   addStockImage(){
+    this.isLoading = true;
     this.formData.append('name', this.AddImageForm.get('name')!.value);
     this.imageservice.AddStockImage(this.formData).subscribe(result => {
       let stockimage = result as Stock_Image
@@ -242,7 +254,9 @@ export class InventoryPage implements OnInit {
       this.errormsg = error
       this.AddStockImageErrorAlert();        
       console.error('Add stock image error:', error);
-    })         
+    }).add(() => {
+      this.isLoading = false; // Stop loading
+    });        
   }
 
 
@@ -313,16 +327,15 @@ deletestockimageID!: string
 deletestockitemname!: string 
   DeleteStockItem(){
     this.stockitemservice.DeleteStockItem(this.deletestockitemID).subscribe(result =>{
-      if(result.status == "Success"){
-        this.DeleteStockItemSuccessAlert(); 
+      //if(result.status == "Success"){
         this.deleteStockImage(this.deletestockimageID, this.deletestockitemname)
-
+        this.DeleteStockItemSuccessAlert();
         this.action = "Deleted Product: " + this.deletestockitemname
         this.AddTrail()
-      }
-      else{
-        this.DeleteStockItemErrorAlert();
-      }      
+      //}
+      //else{
+        //this.DeleteStockItemErrorAlert();
+      //}      
     },(error) => {
       this.errormsg = error
       this.DeleteStockItemErrorAlert();
@@ -373,6 +386,7 @@ deletestockitemname!: string
     this.typeservice.GetStockTypes().subscribe(result =>{
       this.stocktypes = result as StockTypes[];
       console.log(this.stocktypes);
+      /*this.isLoading=false;*/
     })
   }
   
@@ -386,7 +400,8 @@ deletestockitemname!: string
   GetStockItemColours(){
     this.colourservice.GetStockItemColours().subscribe(result =>{
       this.stockitemcolours = result as StockItemColours[];
-      console.log(this.stockitemcolours)      
+      console.log(this.stockitemcolours) 
+      /*this.isLoading=false;*/
     })   
   }
 

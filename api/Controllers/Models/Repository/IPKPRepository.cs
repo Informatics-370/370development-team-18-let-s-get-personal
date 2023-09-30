@@ -346,15 +346,7 @@ namespace IPKP___API.Controllers.Models.Repository
         {
             IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
             return await query.ToArrayAsync();
-        }
-        public async Task<IEnumerable<Stock_Item>> GetAllStockItemsIncludingPriceHistoryAsync()
-        {
-            //IQueryable<Stock_Item> query = _appDbContext.Stock_Items;
-            return await _appDbContext.Stock_Items
-                .Include(x => x.StockPriceHistory)
-                .ToListAsync();
-        }
-
+        }        
         public async Task<Stock_Item> GetStockItemByName(string stock_Item_Name)
         {
             IQueryable<Stock_Item> query = _appDbContext.Stock_Items
@@ -465,6 +457,19 @@ namespace IPKP___API.Controllers.Models.Repository
                 ).ToList();
             IEnumerable<StockItemViewModel> query = stockitems.Where(x => x.Stock_Type_ID == stocktypeID);
             return query;
+        }
+
+//Stock Price History
+        public async Task<Stock_Price_History[]> GetAllStockItemsIncludingPriceHistoryAsync()
+        {
+            IQueryable<Stock_Price_History> query = _appDbContext.Stock_Price_Histories;
+            return await query.ToArrayAsync();
+        }
+        public async Task<Stock_Price_History> GetStockItemHistoryAsync(Guid stock_Price_History_ID)
+        {
+            IQueryable<Stock_Price_History> query = _appDbContext.Stock_Price_Histories
+                      .Where(u => u.Stock_Price_History_ID == stock_Price_History_ID);
+            return await query.FirstOrDefaultAsync();
         }
 
 //stock types
@@ -939,8 +944,14 @@ namespace IPKP___API.Controllers.Models.Repository
 
             return orderlineitem;
         }
+        public async Task<Order_Request> GetOrderRequestByCustomerID(Guid customerID)
+        {
+            IQueryable<Order_Request> query = _appDbContext.Order_Requests
+                    .Where(u => u.Customer_ID == customerID);
+            return await query.FirstOrDefaultAsync();
+        }
 
-//sales
+        //sales
         public object GetSalesReport(string stocktypename)
         {
             List<SalesVM> sales = (

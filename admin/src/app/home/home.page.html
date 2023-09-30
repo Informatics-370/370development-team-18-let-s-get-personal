@@ -12,25 +12,25 @@
     </ion-toolbar>
   </ion-header>
 
-  <!--<ion-grid *ngIf="messages.length == 0">
-    <ion-row>
-      <ion-col>Messages</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>No Messages</ion-col>
-    </ion-row>
-  </ion-grid>-->
-  <ion-content *ngIf="messages.length == 0" >
-    <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
+  <div *ngIf="messages.length == 0" >
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" style="text-align: center;"> <h2>New Messages</h2></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" style="text-align: center;">No New Messages</ion-col>
+      </ion-row>
+    </ion-grid> 
+    <!-- <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
       <p style="text-align: center;">No New Messages</p><br>
      <img src="/assets/no-results.png" alt="empty icon" class="center"  id="icon" style="width: 25%; height: 25%;"
      sizes="50vh" />
-    </div>
-  </ion-content>
+    </div> -->
+  </div>
 
   <ion-grid *ngIf="messages.length > 0">
     <ion-row>
-      <ion-col> New Messages</ion-col>
+      <ion-col sizeLg="12" style="text-align: center;"> <h2>New Messages</h2></ion-col>
     </ion-row>
 
     <ion-row>
@@ -38,7 +38,6 @@
       <ion-col>Question</ion-col>
       <ion-col>Phone Number</ion-col>
       <ion-col>Email Address</ion-col>
-      <ion-col></ion-col>
       <ion-col></ion-col>
     </ion-row>
 
@@ -69,32 +68,32 @@
   </ion-grid>
 
   <!-- new order requests -->
-  <ion-content *ngIf="orderRequests.length == 0">
+  <div *ngIf="orderRequests.length == 0">
     <ion-grid>
       <ion-row>
-        <ion-col>Orders In Progress</ion-col>
+        <ion-col size="12" style="text-align: center;"> <h2>Orders In Progress</h2></ion-col>
       </ion-row>
       <ion-row>
-        <ion-col>No Orders In Progress</ion-col>
+        <ion-col size="12" style="text-align: center;">No Orders In Progress</ion-col>
       </ion-row>
     </ion-grid>    
-  </ion-content>
+  </div>
 
     <ion-grid *ngIf="orderRequests.length > 0">
       <ion-row>
-        <ion-col>Orders In Progress</ion-col>
+        <ion-col sizeLg="12" style="text-align: center;"> <h2>Orders In Progress</h2></ion-col>
       </ion-row>
       <ion-row>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Customer </ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Address </ion-col>
-       <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Product </ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;"> Date Requested </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="font-weight: bold; text-align: center;"> Customer </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="font-weight: bold; text-align: center;"> Address </ion-col>
+       <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="font-weight: bold; text-align: center;"> Product </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="font-weight: bold; text-align: center;"> Date Requested </ion-col>
       </ion-row>
       <ion-row *ngFor="let item of orderRequests">
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.customer_UserName}} </ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.stock_Item_Name}} </ion-col>
-        <ion-col sizeLg="1" sizeMd="2" sizeXs="2" style="text-align: center;"> {{item.order_Request_Date}} </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.customer_UserName}} </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.streetNumber}}, {{item.streetName}}, {{item.city}}, {{item.province}}</ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.stock_Item_Name}} </ion-col>
+        <ion-col sizeLg="3" sizeMd="4" sizeXs="6" style="text-align: center;"> {{item.order_Request_Date| date: 'yyyy-MM-dd'}} </ion-col>
       </ion-row>
     </ion-grid>
 

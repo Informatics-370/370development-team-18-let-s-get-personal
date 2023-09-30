@@ -1,0 +1,85 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Ratings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">ratings</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-row>
+    
+    <ion-col style="border-right-style: solid;"> <!-- Experience -->
+      <ion-row >
+        <ion-col sizeLg="12" sizeMd="12" sizeXs="12" style="font-weight: bold; text-align: center;">
+          Experience Ratings
+        </ion-col>
+      </ion-row>
+
+      <ion-row >
+        <ion-col sizeLg="12" sizeMd="12" sizeXs="12" style="font-weight: bold; text-align: center;">
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5"></ion-col>
+        <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="font-weight: bold; text-align: center;">Customer Name</ion-col>
+        <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="font-weight: bold; text-align: center;">Rating Comments</ion-col>
+        <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="font-weight: bold; text-align: center;">Rating</ion-col>
+        <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5"></ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let item of experienceratings">
+        <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5" ></ion-col>
+        <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="text-align: center;">
+          {{item.customer_FirstName}} {{item.customer_Surname}}
+        </ion-col>
+        <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="text-align: center;">
+          {{item.experience_Rating_Comments}}
+        </ion-col>
+        <ion-col sizeLg="3.66" sizeMd="3.66" sizeXs="3.66" style="text-align: center;"> 
+          <ion-icon name="star-outline"></ion-icon> {{item.experience_Star_Rating}}
+        </ion-col>
+        <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5"></ion-col>
+      </ion-row>
+    </ion-col>
+
+    <ion-col> <!-- Product -->
+      <ion-row >
+        <ion-col sizeLg="12" sizeMd="12" sizeXs="12" style="font-weight: bold; text-align: center;">
+          Product Ratings
+        </ion-col>
+      </ion-row>
+      <ion-row >
+        <ion-col sizeLg="12" sizeMd="12" sizeXs="12" style="font-weight: bold; text-align: center;">
+        </ion-col>
+      </ion-row>
+      
+      <ion-row>
+        <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5"></ion-col>
+        <ion-col sizeLg="2.75" sizeMd="2.75" sizeXs="2.75" style="font-weight: bold; text-align: center;">Product </ion-col>
+        <ion-col sizeLg="2.75" sizeMd="2.75" sizeXs="2.75" style="font-weight: bold; text-align: center;">Customer Username</ion-col>
+        <ion-col sizeLg="2.75" sizeMd="2.75" sizeXs="2.75" style="font-weight: bold; text-align: center;">Rating Comments</ion-col>
+        <ion-col sizeLg="2.75" sizeMd="2.75" sizeXs="2.75" style="font-weight: bold; text-align: center;">Rating</ion-col>
+        <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5"></ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of productratings">
+        <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5"></ion-col>
+        <ion-col sizeLg="2.75" sizeMd="2.75" sizeXs="2.75" style="text-align: center;">{{item.stock_Item_Name}}</ion-col>
+        <ion-col sizeLg="2.75" sizeMd="2.75" sizeXs="2.75" style="text-align: center;">{{item.customer_UserName}}</ion-col>
+        <ion-col sizeLg="2.75" sizeMd="2.75" sizeXs="2.75" style="text-align: center;">{{item.Product_Rating_Comments}}</ion-col>
+        <ion-col sizeLg="2.75" sizeMd="2.75" sizeXs="2.75" style="text-align: center;"> <ion-icon name="star-outline"></ion-icon> {{item.product_Star_Rating}} </ion-col>
+        <ion-col sizeLg="0.5" sizeMd="0.5" sizeXs="0.5"></ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <div *ngIf="isLoading" class="overlay">
+    <div class="loading-popup">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+  </div>
+</ion-content>

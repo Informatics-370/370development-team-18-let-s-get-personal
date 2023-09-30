@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, Subject } from 'rxjs';
-import { StockTypes } from '../Models/stocktypes';
+import { Write_Off } from '../Models/writeoff';
 import { Stock_Item } from '../Models/stockitem';
 import { Response } from '../Models/response';
-import { InventoryViewModel } from 'src/app/ViewModels/InventoryVM';
+import { Write_Off_Line_Item } from '../Models/writeofflineitem';
+import { WriteOffVM } from '../ViewModels/writeoffVM';
 @Injectable({
     providedIn: 'root' 
   })
@@ -21,8 +22,25 @@ import { InventoryViewModel } from 'src/app/ViewModels/InventoryVM';
     constructor(private httpClient: HttpClient) { 
     }
   
-    
-  
-    
+    public Stocktake(stock_Item_ID:string, stockitem:Stock_Item){
+      return this.httpClient.put<Response>(`${this.apiUrl}Inventory/Stocktake/${stock_Item_ID}`, stockitem)
+    }
+
+    public AddToWriteoff(stockitem:WriteOffVM){
+      return this.httpClient.post(`${this.apiUrl}Inventory/AddToWriteoff`, stockitem, this.httpOptions)
+    }    
+
+    public AddToWriteoffLine(stockitem:Write_Off_Line_Item){
+      return this.httpClient.post<Response>(`${this.apiUrl}Inventory/AddToWriteoffLine`, stockitem, this.httpOptions)
+    } 
+
+    public GetWriteOffs(): Observable<any>{ 
+      return this.httpClient.get(`${this.apiUrl}Inventory/GetWriteOffs`)
+      .pipe(map(result => result))
+    }
+
+    public DecreaseStockQuantity(stock_Item_ID:string, writeoff:WriteOffVM){
+      return this.httpClient.put<Response>(`${this.apiUrl}Inventory/DecreaseStockQuantity/${stock_Item_ID}`, writeoff)
+    }
     
 }

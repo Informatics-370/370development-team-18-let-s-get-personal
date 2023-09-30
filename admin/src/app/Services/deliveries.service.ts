@@ -37,7 +37,7 @@ export class DeliveryDataService {
   }
 
   public ChangeStatusToRecieved(delivery_Id:string){
-    return this.httpClient.put(`${this.apiUrl}Deliveries/ChangeStatusToRecieved/${delivery_Id}`, this.httpOptions)
+    return this.httpClient.put<Response>(`${this.apiUrl}Deliveries/ChangeStatusToRecieved/${delivery_Id}`, this.httpOptions)
   }
 
   public ChangeStatusToFailed(delivery_Id:string){
@@ -53,6 +53,15 @@ export class DeliveryDataService {
   public GetFailedDeliveries(): Observable<any>{ 
     return this.httpClient.get(`${this.apiUrl}Deliveries/GetUnsuccessfulDeliveries`)
     .pipe(map(result => result))
+  }
+
+  public GetAllDeliveriesByCompany(companyname: string): Observable<any>{ 
+    return this.httpClient.get(`${this.apiUrl}Deliveries/GetAllDeliveriesByCompany/${companyname}`)
+    .pipe(map(result => result))
+  }
+
+  public UploadWaybill(file:FormData, delivery_ID: string){
+    return this.httpClient.post(`${this.apiUrl}Deliveries/UploadWaybill/${delivery_ID}`, file, this.httpOptions)
   }
 
   //************* Delivery Companies *************\\

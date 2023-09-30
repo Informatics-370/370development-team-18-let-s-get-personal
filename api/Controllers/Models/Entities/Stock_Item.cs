@@ -61,7 +61,9 @@ namespace IPKP___API.Controllers.Models.Entities
 
         //public virtual ICollection<Personalisation_Design> Personalisation_Design { get; set; }
 
-        public Stock_Price_History StockPriceHistory { get; set; }
+
+        [ForeignKey(nameof(Stock_Price_History_ID))]
+        public Guid Stock_Price_History_ID { get; set; }
 
     }
 }

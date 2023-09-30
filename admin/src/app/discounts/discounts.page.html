@@ -28,29 +28,40 @@
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Discount
           Amount</ion-col>
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Product Name</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Effective From
-          Date</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">Effective To
-          Date</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">
+          Effective From Date</ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="font-weight: bold; text-align: center;">
+          Effective To Date</ion-col>
         <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="font-weight: bold; text-align: center;"></ion-col>
         <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="font-weight: bold; text-align: center;"></ion-col>
       </ion-row>
       <ion-row *ngFor="let item of searchedDiscount">
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.discount_Name}}</ion-col>
         <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">R {{item.discount_Amount}}.00</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2"
-          style="text-align: center;">{{getProductName(item.stock_Item_ID)}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.effective_From_Date| date:
-          'yyyy-MM-dd'}}</ion-col>
-        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">{{item.effective_To_Date| date:
-          'yyyy-MM-dd'}}</ion-col>
-        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;"><ion-button
-            (click)="DeleteDiscount(item.discount_ID, item.discount_Name)">Delete</ion-button></ion-col>
-        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;"><ion-button
-            (click)="EditDiscount(item.discount_ID, true)">Update</ion-button></ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">
+          {{getProductName(item.stock_Item_ID)}}
+        </ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">
+          {{item.effective_From_Date| date:'yyyy-MM-dd'}}
+        </ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizeXs="2" style="text-align: center;">
+          <p *ngIf="date < item.effective_To_Date" style="color: red;">{{item.effective_To_Date| date: 'yyyy-MM-dd'}}</p>
+          {{item.effective_To_Date| date: 'yyyy-MM-dd'}}
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          <ion-button (click)="DeleteDiscount(item.discount_ID, item.discount_Name)">Delete</ion-button>
+        </ion-col>
+        <ion-col sizeLg="1" sizeMd="1" sizeXs="1" style="text-align: center;">
+          <ion-button (click)="EditDiscount(item.discount_ID, true)">Update</ion-button>
+        </ion-col>
       </ion-row>
     </ion-grid>
-
+    <div *ngIf="isLoading" class="overlay">
+      <div class="loading-popup">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    </div>
   </ion-content>
 </ion-content>
 
@@ -64,7 +75,7 @@
           </ion-buttons>
           <ion-title>Add Discount Policy Details</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmaddmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmaddmodal()" [strong]="true" [disabled]="AddForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -88,9 +99,9 @@
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Effective From Date</ion-label><br>
-            <!--<ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
-            <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime>-->
             <ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input>
+            <!-- <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime> -->
+            <!-- <ion-input type="date" formControlName="effectiveFromdate" placeholder="" required></ion-input> -->
           </ion-item>
           <div *ngIf="AddForm.get('effectiveFromdate')?.hasError('required')" class="error-message">
             <p style="color: crimson;">Date is required.</p>
@@ -100,9 +111,9 @@
           </div>
           <ion-item>
             <ion-label position="stacked">Effective To Date</ion-label><br>
-            <!--<ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input
-              <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime>-->
             <ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input>
+              <!-- <ion-datetime formControlName="effectiveFromdate" placeholder="" required></ion-datetime> -->
+            <!-- <ion-input type="date" formControlName="effectiveTodate" placeholder="" required></ion-input> -->
           </ion-item>
           <div *ngIf="AddForm.get('effectiveTodate')?.hasError('required')" class="error-message">
             <p style="color: crimson;">Date is required.</p>
@@ -114,6 +125,12 @@
             <p style="color: crimson;">Effective To Date cannot be earlier than Effective From Date.</p>
           </div>
         </form>
+        <div *ngIf="isLoading" class="overlay">
+          <div class="loading-popup">
+            <div class="spinner"></div>
+            <p>Adding...</p>
+          </div>
+        </div>
       </ion-content>
     </ng-template>
   </ion-modal>
@@ -125,9 +142,9 @@
           <ion-buttons slot="start">
             <ion-button (click)="canceleditmodal()">Cancel</ion-button>
           </ion-buttons>
-          <ion-title>Add Discount Policy Details</ion-title>
+          <ion-title>Update Discount Policy Details</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmeditmodal()" [strong]="true" [disabled]="editForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -143,13 +160,34 @@
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Effective From Date</ion-label><br>
-            <ion-input type="date" formControlName="effectiveFromdate"></ion-input>
+            <ion-input type="date" formControlName="effectiveFromdate" required></ion-input>
           </ion-item>
+          <div *ngIf="editForm.get('effectiveFromdate')?.hasError('required')" class="error-message">
+            <p style="color: crimson;">Date is required.</p>
+          </div>
+          <div *ngIf="editForm.get('effectiveFromdate')?.hasError('dateInPast')" class="error-message">
+            <p style="color: crimson;">Date cannot be in the past.</p>
+          </div>
           <ion-item>
             <ion-label position="stacked">Effective To Date</ion-label><br>
-            <ion-input type="date" formControlName="effectiveTodate"></ion-input>
+            <ion-input type="date" formControlName="effectiveTodate" required></ion-input>
           </ion-item>
+          <div *ngIf="editForm.get('effectiveTodate')?.hasError('required')" class="error-message">
+            <p style="color: crimson;">Date is required.</p>
+          </div>
+          <div *ngIf="editForm.get('effectiveTodate')?.hasError('dateInPast')" class="error-message">
+            <p style="color: crimson;">Date cannot be in the past.</p>
+          </div>
+          <div *ngIf="editForm.hasError('notValid', ['effectiveTodate'])">
+            <p style="color: crimson;">Effective To Date cannot be earlier than Effective From Date.</p>
+          </div>
         </form>
+        <div *ngIf="isLoading" class="overlay">
+          <div class="loading-popup">
+            <div class="spinner"></div>
+            <p>Updating...</p>
+          </div>
+        </div>
       </ion-content>
     </ng-template>
   </ion-modal>

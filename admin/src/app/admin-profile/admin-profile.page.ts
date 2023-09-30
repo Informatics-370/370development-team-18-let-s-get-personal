@@ -21,6 +21,7 @@ export class AdminProfilePage implements OnInit {
   employee: Employee = new Employee()
   admin: Admin = new Admin()
   @ViewChild(IonModal) modal!: IonModal
+  isAdmin!: boolean
   profile: any
   constructor(private AuthService:AuthenticationService, private router:Router, private service: UserProfileDataService,
     private alertController:AlertController, public modalCtrl: ModalController,)
@@ -38,6 +39,7 @@ export class AdminProfilePage implements OnInit {
     if(roles.includes('Admin')){
       this.service.GetAdminDetails(userID).subscribe(result=>{
         this.profile = result as Admin;
+        this.isAdmin = true;
         console.log(this.admin)
       },(error) => {
       this.ErrorAlert();        
@@ -47,6 +49,7 @@ export class AdminProfilePage implements OnInit {
     else if (roles.includes('Employee')){
       this.service.GetEmployee(userID).subscribe(result=>{
         this.profile = result as Employee;
+        this.isAdmin = false;
         console.log(this.employee)
       },(error) => {
         this.ErrorAlert();        
@@ -64,8 +67,8 @@ export class AdminProfilePage implements OnInit {
   passwordform: FormGroup = new FormGroup({
     // username: new FormControl('',[Validators.required]),
     oldpassword: new FormControl('',[Validators.required]),
-    newpassword: new FormControl('',[Validators.required]),
-    confirmpassword: new FormControl('',[Validators.required]),
+    newpassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
+    confirmpassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
   })
 
   ChangePassword(isOpen: boolean){
@@ -80,12 +83,18 @@ export class AdminProfilePage implements OnInit {
     newpassword.newPassword = this.passwordform.value.newpassword
     newpassword.confirmPassword = this.passwordform.value.confirmpassword
 
-    this.AuthService.ChangeUserPassword(newpassword).subscribe(result =>{
-      this.editSuccessAlert()
-    },(error) => {
-      this.editErrorAlert();        
-      console.error('Edit stock image error:', error);
-    })
+    if(newpassword.newPassword === newpassword.confirmPassword) 
+    {
+      this.AuthService.ChangeUserPassword(newpassword).subscribe(result =>{
+        this.editSuccessAlert()
+      },(error) => {
+        this.editErrorAlert();        
+        console.error('Edit stock image error:', error);
+      })
+    }
+    else{
+      this.PasswordMatchErrorAlert()
+    }    
   }
 
   cancelpassmodal() {
@@ -99,10 +108,12 @@ export class AdminProfilePage implements OnInit {
   editForm: FormGroup = new FormGroup({
     firstName: new FormControl('',[Validators.required]),
     surname: new FormControl('',[Validators.required]),
-    email: new FormControl('',[Validators.required]),
-    cell_Number: new FormControl(''),
-    // username: new FormControl('',[Validators.required])
+    email: new FormControl('', Validators.compose([Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])),
+    cell_Number:new FormControl('', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(12), Validators.pattern('[- +()0-9]{9,}')])),
+    username: new FormControl('',[Validators.required])
   })
+
+  get f() { return this.editForm.controls }
 
   EditAdmin(admin_ID:string, isOpen: boolean)
   {    
@@ -113,7 +124,7 @@ export class AdminProfilePage implements OnInit {
       this.editForm.controls['surname'].setValue(this.editadmin.surname);
       this.editForm.controls['email'].setValue(this.editadmin.email);
       this.editForm.controls['cell_Number'].setValue(this.editadmin.cell_Number);
-      // this.editForm.controls['username'].setValue(this.editadmin.username);
+      this.editForm.controls['username'].setValue(this.editadmin.username);
     })
     
     this.isModalOpen = isOpen;
@@ -128,10 +139,11 @@ export class AdminProfilePage implements OnInit {
       editedAdmin.surname = this.editForm.value.surname;
       editedAdmin.email = this.editForm.value.email;
       editedAdmin.cell_Number = this.editForm.value.cell_Number;
-      // editedAdmin.username = this.editForm.value.username;
+      editedAdmin.username = this.editForm.value.username;
 
       this.service.UpdateAdmin(userid, editedAdmin).subscribe(result =>{
         this.editSuccessAlert();
+        localStorage.setItem('username', this.editForm.value.username,);
       },(error) => {
       this.editErrorAlert();        
       console.error('confirmeditmodal error:', error);
@@ -205,5 +217,20 @@ export class AdminProfilePage implements OnInit {
     await alert.present();
   }
 
+  async PasswordMatchErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Your new passwords do not match!',
+      // subHeader: 'Something went wrong',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
 
 }

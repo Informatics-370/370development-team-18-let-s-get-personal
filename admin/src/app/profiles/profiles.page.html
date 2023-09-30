@@ -1,6 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>IPKP Users</ion-title>
+    <!-- <ion-img></ion-img> -->
   </ion-toolbar>
 </ion-header>
 
@@ -104,5 +105,10 @@
       </ion-col>
     </ion-grid>
   </div>
-  
+  <div *ngIf="isLoading" class="overlay">
+    <div class="loading-popup">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+  </div>
 </ion-content>

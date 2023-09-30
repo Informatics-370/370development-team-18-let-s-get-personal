@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertController, IonicModule } from '@ionic/angular';
+import { RouterModule, Router } from '@angular/router';
 import { AuditTrail } from '../Models/adittrail';
 import { AuditTrailService } from '../Services/audittrail.service';
 import { AuditTrailVM } from '../ViewModels/audittrailVM';
@@ -24,7 +25,8 @@ export class AuditTrailPage implements OnInit {
   searchString: string = "";
   searchedtrail: AuditTrailVM[] = [];
 
-  constructor(private service:AuditTrailService, private excelservice: ExcelService, private alertController:AlertController ) 
+  constructor(private service:AuditTrailService, private excelservice: ExcelService, 
+    private alertController:AlertController,public router: Router ) 
   {
     (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
   }
@@ -34,6 +36,10 @@ export class AuditTrailPage implements OnInit {
     this.getEmployeeAuditTrails()
     this.getCustomerAuditTrails()
     //this.GetAllTrails()
+  }
+
+  backButton() {
+    this.router.navigate(['./tabs/profiles']);
   }
 
   SearchForm: FormGroup = new FormGroup({

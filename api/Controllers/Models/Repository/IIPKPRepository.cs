@@ -38,11 +38,14 @@ namespace IPKP___API.Controllers.Models.Repository
         //Stock items
         Task<Stock_Item[]> GetAllStockItemsAsync();
         Task<Stock_Item> GetStockItemDetailsAsync(Guid stock_Item_ID);
-        Task<Stock_Item> GetStockItemByName(string stock_Item_Name);
-        Task<IEnumerable<Stock_Item>> GetAllStockItemsIncludingPriceHistoryAsync();
+        Task<Stock_Item> GetStockItemByName(string stock_Item_Name);        
         object GetStockNames();
         object GetStockList();
         object GetStockNamesByType(Guid stocktypeID);
+
+        // price history
+        Task<Stock_Price_History[]> GetAllStockItemsIncludingPriceHistoryAsync();
+        Task<Stock_Price_History> GetStockItemHistoryAsync(Guid stock_Price_History_ID);
 
         Task<Stock_Type> GetStockTypeDetailsAsync(Guid stock_Type_ID);
         Task<Stock_Type[]> GetAllStockTypesAsync();
@@ -57,6 +60,7 @@ namespace IPKP___API.Controllers.Models.Repository
         object GetOrderByCustomerAsync(Guid customer_ID);
         Task<Order_Request> GetOrderRequestAsync(Guid order_Request_ID);
         Task<Order_Request[]> GetAllOrderRequestsAsync();
+        Task<Order_Request> GetOrderRequestByCustomerID(Guid customerID);
 
         object GetRatingPerProduct();        
         Task<Product_Rating> GetProductRatingDetailsAsync(Guid product_Rating_ID);

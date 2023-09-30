@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule, ModalController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Stock_Item } from '../Models/stockitem';
@@ -9,27 +9,56 @@ import { LoadingController } from '@ionic/angular';
 import { BasketService } from '../Services/basket.service';
 import { StockItemDataService } from '../Services/stockitem.service';
 import { BestsellersService } from 'src/app/Services/bestsellers.service';
-
+import { StockTypeDataService } from '../Services/stocktype.service';
 import { StockItemViewModel } from 'src/app/ViewModels/stockitemsVM';
+import { StockTypes } from '../Models/stocktypes';
+import { Best_Sellers } from '../Models/bestsellers';
 @Component({
   selector: 'app-shop-all',
   templateUrl: './shop-all.page.html',
   styleUrls: ['./shop-all.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class ShopAllPage implements OnInit {
   menuType: string = 'overlay';
   Products: StockItemViewModel[] = [];
   stockItems: Stock_Item[] = [];
+  searchedStockItem: Stock_Item[]=[];
+  searchString: string = "";
+  stockType: StockTypes[]=[];
+
+  counter=document.querySelector("#counter"); 
 
   constructor(private _modalController: ModalController, public loadingController: LoadingController,
-    private _router: Router, private alertController: AlertController,
-    private basketservice: BasketService, private service: StockItemDataService) { }
+    private _router: Router, private alertController: AlertController, private typeservice: StockTypeDataService,
+    private basketservice: BasketService, private service: StockItemDataService, private bestsellerservice: BestsellersService) { }
 
+  SearchForm: FormGroup = new FormGroup({
+    name:new FormControl('',[Validators.required])
+  })
+    
+  searchStockType(){
+    this.searchString=this.SearchForm.get('name')?.value;
+    this.searchedStockItem = this.stockItems.filter(
+      f => f.stock_Item_Name.toLowerCase().includes(this.searchString.toLowerCase()));
+  }
 
   ngOnInit() {
     this.GetStockItems();
+    this.GetTypes();
+    if(this.searchString === "")
+    {
+      this.searchedStockItem = this.stockItems;
+    }
+    
+    // Retrieve the cart item count from localStorage
+    const cartItemCount = localStorage.getItem('cartItemCount');
+    if (cartItemCount) {
+      if (this.counter) {
+        this.counter.innerHTML = cartItemCount;
+      }
+    }   
   }
 
   async presentLoading() {
@@ -48,52 +77,94 @@ export class ShopAllPage implements OnInit {
   public GetStockItems() {
     this.service.GetStockItems().subscribe(result => {
       this.Products = result as StockItemViewModel[];
-      console.log(this.stockItems)
+      console.log(this.Products)
     })
   }
 
-  public clothing() {
-    this._router.navigate(["/tabs/clothing"])
-  }
-  public drinking() {
-    this._router.navigate(["/tabs/drinking"])
-  }
-  public stationary() {
-    this._router.navigate(["/tabs/stationary"])
+  async Help() {
+    const alert = await this.alertController.create({
+      header: 'How to use: ',
+      subHeader: 'To add an item to your basket click the "Add to basket" button',
+      message:'Proceed to the basket tab to view your items and add personalization.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        /*handler: () => {
+          this.reloadPage();
+        }*/
+      }],
+    });
+    await alert.present();
   }
 
-  public Basket() {
-    this._router.navigate(["/tabs/basket"])
+//========= Search by Stock Type ===========
+  stocktypes: StockTypes[] =[];
+  GetTypes(){
+    this.typeservice.GetStockTypes().subscribe(result => {
+      this.stocktypes = result as StockTypes[];
+      console.log(this.stocktypes);
+    })
   }
+
+  GetByType(type: string){
+    this.service.GetAllStockItemsByType(type).subscribe(result => {
+      this.Products = result as StockItemViewModel[];
+      console.log(this.Products)
+    })
+  }
+
   
-
+//========= Basket ===========
   public addToBasket(stock: any): void {
-
     try {
       let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
       let existingItem = cartItems.find((cartItem: any) => cartItem.stock_Item.stock_Item_ID === stock.stock_Item_ID);
-      //const counter = document.querySelector("#counter");
 
       let basket = new BasketItems();
       if (!existingItem) {
         basket.stock_Item = stock;
         basket.basket_Quantity = 1;
         cartItems.push(basket);
-
       } else {
         existingItem.basket_Quantity += 1;
-        
       }
+
       localStorage.setItem('cart', JSON.stringify(cartItems));
-      this.addToBasketSuccessAlert();
-
-      /*if (counter) {
-        counter.innerHTML = existingItem.basket_Quantity;
-      }*/
-
-    } catch {
+      // Update the counter span
+      this.updateCounterSpan(cartItems);   
+      this.addToBasketSuccessAlert();    
+    } 
+    catch {
       this.addToBasketErrorAlert();
+    }    
+  }
+
+/*addToBasket(Products:any):void{
+
+    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
+    let existingItem = cartItems.find((cartItem:any) => cartItem.stock_Item_ID === Products.stock_Item_ID);
+
+    if (!existingItem) {
+      cartItems.push({ ...Products, stock_Item_Quantity: 1 });
+    } else {
+      
+      existingItem.stock_Item_Quantity += 1;
+    }    
+    localStorage.setItem('cart',JSON.stringify(cartItems));
+    this.addToBasketSuccessAlert();
+  }*/
+
+  private updateCounterSpan(cartItems: any[]): void {
+    const totalQuantity = cartItems.reduce((sum, item) => sum + item.basket_Quantity, 0);
+    if (this.counter) {
+      this.counter.innerHTML = totalQuantity.toString();
     }
+    // Call the method to update the cart item count in localStorage
+    this.storeCartItemCountInLocalStorage(cartItems);
+  }
+  private storeCartItemCountInLocalStorage(cartItems: any[]): void {
+    const totalQuantity = cartItems.reduce((sum, item) => sum + item.basket_Quantity, 0);
+    localStorage.setItem('cartItemCount', totalQuantity.toString());
   }
 
   reloadPage() {
@@ -107,9 +178,9 @@ export class ShopAllPage implements OnInit {
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        handler: () => {
+        /*handler: () => {
           this.reloadPage();
-        }
+        }*/
       }],
     });
     await alert.present();
@@ -131,55 +202,4 @@ export class ShopAllPage implements OnInit {
   }
 }
 
-  //Data for testing
-  /* dummy_data = [{
-   id: 0, title: "Plain T-shirt", colour: "White",
-   image_url: "https://supremetextiles.co.za/761-large_default/adult-plain-round-neck-t-shirt-white.jpg", price: 90,
-   quantity: 0
- },
- {
-   id: 1, title: "Photo Mug", colour: "White",
-   image_url: "https://smash-images.photobox.com/optimised/f10581d7b173933f6b5670a7191ef11caad09a4e_file_image_Simple-mug-lifestyle-5760x4512.jpg", price: 160,
-   quantity: 0
- },
- {
-   id: 2, title: "Diary", colour: "Brown",
-   image_url: "https://cdn.igp.com/f_auto,q_auto,t_pnopt6prodlp/products/p-stationery-addict-personalized-stationery-kit-122187-m.jpg", price: 120,
-   quantity: 0
- },
- {
-   id: 3, title: "Twin Babies", colour: "Dusty White",
-   image_url: "https://xcdn.next.co.uk/Common/Items/Default/Default/ItemImages/Search/676/K62163.jpg", price: 350,
-   quantity: 0
- }
- ];*/
-
- /*addToBasket(dummy_data:any):void{
-
-    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
-    let existingItem = cartItems.find((cartItem:any) => cartItem.id === dummy_data.id);
-
-    if (!existingItem) {
-      cartItems.push({ ...dummy_data, quantity: 1 });
-    } else {
-      
-      existingItem.quantity += 1;
-    }
-    localStorage.setItem('cart',JSON.stringify(cartItems));
-    this.addToBasketSuccessAlert();
-  }*/
-
-  /*addToBasket(Products:any):void{
-
-    let cartItems = JSON.parse(localStorage.getItem('cart') as string) || [];
-    let existingItem = cartItems.find((cartItem:any) => cartItem.stock_Item_ID === Products.stock_Item_ID);
-
-    if (!existingItem) {
-      cartItems.push({ ...Products, stock_Item_Quantity: 1 });
-    } else {
-      
-      existingItem.stock_Item_Quantity += 1;
-    }
-    localStorage.setItem('cart',JSON.stringify(cartItems));
-    this.addToBasketSuccessAlert();
-  }*/
+  

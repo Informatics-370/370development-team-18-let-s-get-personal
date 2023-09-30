@@ -79,19 +79,12 @@ export class RefundPoliciesPage implements OnInit {
     });
     console.log('search',this.refundPolicies)
   }
-  
-  /*search(){
-    //empty array
-    this.filteredpolicies = [];
 
-    //filter items
-    this.filteredpolicies = this.refundPolicies.filter((searchitem)=>
-      searchitem.refund_Policy_Date.toDateString().includes(this.filterTerm)||
-      searchitem.refund_Policy_Description.toLocaleLowerCase().includes(this.filterTerm.toLocaleLowerCase())||
-      searchitem.refund_Policy_Version == Number(this.filterTerm)
-    );
-    
-  }*/
+  salesNav()
+  {
+    this.router.navigate(['./tabs/sales']);
+  }
+
 
   getAllRefundPolicies(){
     /*this.service.GetAllRefundPolicies().subscribe(result =>{
@@ -213,3 +206,17 @@ export class RefundPoliciesPage implements OnInit {
     await alert.present();
   }
 }
+
+  
+  /*search(){
+    //empty array
+    this.filteredpolicies = [];
+
+    //filter items
+    this.filteredpolicies = this.refundPolicies.filter((searchitem)=>
+      searchitem.refund_Policy_Date.toDateString().includes(this.filterTerm)||
+      searchitem.refund_Policy_Description.toLocaleLowerCase().includes(this.filterTerm.toLocaleLowerCase())||
+      searchitem.refund_Policy_Version == Number(this.filterTerm)
+    );
+    
+  }*/

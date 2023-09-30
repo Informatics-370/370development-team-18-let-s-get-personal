@@ -23,7 +23,9 @@ export class SuccessfulDeliveriesPage implements OnInit {
   date: any
   constructor(private service: DeliveryDataService, private router: Router, private trailservice: AuditTrailService) { }
 
+  isLoading: boolean = false;
   ngOnInit() {
+    this.isLoading=true;
     this.getSuccessfulDeliveries()
     this.getFailedDeliveries()
   }
@@ -32,14 +34,16 @@ export class SuccessfulDeliveriesPage implements OnInit {
   {
     this.service.GetSuccessfulDeliveries().subscribe(result =>{
       this.deliveries = result as DeliveryViewModel[]
-      console.log(this.deliveries)      
+      console.log(this.deliveries) 
+      this.isLoading=false;     
     })
   }
 
   getFailedDeliveries(){
     this.service.GetFailedDeliveries().subscribe(result =>{
       this.faileddeliveries = result as DeliveryViewModel[]
-      console.log(this.deliveries)      
+      console.log(this.deliveries)  
+      /*this.isLoading= false; */   
     })
   }
 
@@ -56,6 +60,19 @@ export class SuccessfulDeliveriesPage implements OnInit {
   uploadWayBill(dateDelivered: Date){
     this.action = "Uploaded waybill for delivery delivered on the " + dateDelivered
     this.AddTrail()
+  }
+
+  selectedFile!: File;
+
+  onFileSelected(event: any, deliveryid: string) {    
+    this.selectedFile = event.target.files[0];
+
+    const formData = new FormData();
+    formData.append('pdf', this.selectedFile);
+    formData.append('fileName', deliveryid);
+    this.service.UploadWaybill(formData, deliveryid).subscribe(data => {
+
+    });
   }
 
   action!: string

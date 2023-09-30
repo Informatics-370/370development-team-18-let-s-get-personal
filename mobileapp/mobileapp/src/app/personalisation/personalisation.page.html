@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+	<ion-toolbar>
+		<ion-title>Personalization</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-card-content>
+		<ion-grid id="grid">
+			<ion-row>
+				<ion-col style="font-weight: bold;">
+					<h2>Design Text</h2>
+				</ion-col>
+				<ion-col style="font-weight: bold;">
+					<h2>Design Image</h2>
+				</ion-col>
+			</ion-row>
+			<ion-row >
+				<ion-col>{{selectedItem.personalization.personalizationText}}</ion-col>
+				<ion-col>
+					<!--<img src='data:image/png;base64,{{selectedItem.img}}' />-->
+					<ion-img [src]="selectedItem.personalization.img" alt="Image"></ion-img>
+				</ion-col>
+				<!--<ion-col>
+					<ion-button (click)="DeletePersonalisation(selectedItem)">Delete</ion-button>
+				</ion-col>
+				<ion-col>
+					<ion-button (click)="UpdatePersonalisation(selectedItem)">Update</ion-button>
+				</ion-col>>-->
+			</ion-row>
+		</ion-grid>
+		<!--<ion-button [routerLink]="'/tabs/basket'">back</ion-button>-->
+	</ion-card-content>
+</ion-content>
+

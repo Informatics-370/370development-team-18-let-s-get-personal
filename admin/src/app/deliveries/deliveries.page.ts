@@ -35,7 +35,9 @@ export class DeliveriesPage implements OnInit {
     //  items.Tracking_Number.toString().includes(this.searchValue));
   }
 
+  isLoading: boolean = false;
   ngOnInit() {
+    this.isLoading=true;
     this.GetRequestedDeliveries();
     this.getDeliveryCompany();
   }
@@ -65,6 +67,7 @@ export class DeliveriesPage implements OnInit {
     this.service.GetOutDeliveries().subscribe(res => {
       this.deliveries = res as OrderLineItemVM[]
       console.log(this.deliveries)
+      this.isLoading=false;
     })
   }
 
@@ -102,25 +105,25 @@ export class DeliveriesPage implements OnInit {
   }
 
   FailedDelivery(DeliveryId: string, order_Line_Item_ID:string, stockItemID: string, customerID: string, qauntity: number){
-    try{
+    /*try{*/
       this.stockItemID = stockItemID
       this.customerID = customerID
       this.qauntity = qauntity
       localStorage.setItem('order_Line_Item_ID', JSON.stringify(order_Line_Item_ID));
 
       this.service.ChangeStatusToFailed(DeliveryId).subscribe(result =>{
-        if(result.status == "Success"){
-          console.log(result);          
-        }
+
+        this.FailDeliverySuccessAlert();
+
       },(error) => {
         this.ReceiveDeliveryErrorAlert();        
         console.error('ReceiveDelivery error:', error);
       })
       this.getOrder()
-    }
+   /* }
     catch{
       this.ReceiveDeliveryErrorAlert
-    }
+    }*/
   }
 
   orderlineitem: OrderLineItemVM = new OrderLineItemVM()
@@ -186,7 +189,7 @@ export class DeliveriesPage implements OnInit {
         this.DeleteOrderLineItemErrorAlert();        
         console.error('proccessOrder error:', error);
       })
-      this.ReceiveDeliverySuccessAlert()
+      /*this.ReceiveDeliverySuccessAlert()*/
       
       this.action = "Changed Delivery status to Received" 
       this.AddTrail()
@@ -292,6 +295,21 @@ export class DeliveriesPage implements OnInit {
     await alert.present();
   }
 
+  async FailDeliverySuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Delivery Failed',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage();
+        }
+    }],
+    });
+    await alert.present();
+  }
+
   async ReceiveDeliveryErrorAlert() {
     const alert = await this.alertController.create({
       header: 'We are sorry!',
@@ -307,6 +325,7 @@ export class DeliveriesPage implements OnInit {
     });
     await alert.present();
   }
+  
 
   async AddOrderErrorAlert() {
     const alert = await this.alertController.create({

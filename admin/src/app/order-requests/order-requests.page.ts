@@ -32,18 +32,22 @@ export class OrderRequestsPage implements OnInit {
     (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
   }
 
+  isLoading: boolean = false;
+
   ngOnInit() {
+    this.isLoading=true;
     this.GetOrderRequests()
-    console.log('r',this.GetOrderRequests)
+    /*console.log('r',this.GetOrderRequests)*/
   }
 
   GetOrderRequests(){
-    this.presentLoading()
+    /*this.presentLoading()*/
     this.service.GetRequestedOrders().subscribe(result =>{
       this.orderRequests = result as OrderLineItemVM[]
       var date = result.order_Request_Date
       console.log(this.orderRequests)
       console.log('results',result)
+      this.isLoading=false;/*close loading spinner*/
     })
   }
 
@@ -67,27 +71,29 @@ export class OrderRequestsPage implements OnInit {
   } 
 
   AcceptOrder(order_Line_Item_ID: string){
-    try
-    {
+    this.isLoading=true;
+    /*try
+    {*/
       this.service.AcceptOrder(order_Line_Item_ID).subscribe(res =>{
         console.log(res)
-
+        this.AcceptSuccessAlert()
       },(error) => {
       this.AcceptErrorAlert();        
       console.error('AcceptOrder error:', error);
-      })
-      this.AcceptSuccessAlert()
+      }).add(() => {
+        this.isLoading = false; // Stop loading
+      });
+      
       this.AddTrail()
-    }
+   /* }
     catch
     {
       this.AcceptErrorAlert()
-    }
+    }*/
     
   }
 
 //====== PDF download =========
-
 generatePDF() {  
   let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
   let date = new Date
@@ -150,7 +156,7 @@ generatePDF() {
 
 
 //====== Alerts =========
-async HelpAlert() {
+  async HelpAlert() {
     const alert = await this.alertController.create({
       header: 'Please Note: ',
       subHeader: 'Once an order request is changed to in progress it will show on the Orders in Progress page',
@@ -159,7 +165,7 @@ async HelpAlert() {
           role: 'cancel',
       },{
         text: 'Orders In Progress',
-        role: 'cancel',
+        /*role: 'cancel',*/
         handler: () => {
           this.ordersinprogressnav();
         }
@@ -167,6 +173,7 @@ async HelpAlert() {
     });
     await alert.present();
   }
+  
   async AcceptSuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Success!',

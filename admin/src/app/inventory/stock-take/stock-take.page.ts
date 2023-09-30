@@ -60,7 +60,7 @@ export class StockTakePage implements OnInit {
   isModalOpen = false;
   editForm: FormGroup = new FormGroup({
     Inventory_Comments: new FormControl(''),
-    Stock_Item_Quantity: new FormControl('',[Validators.required]),
+    Stock_Item_Quantity: new FormControl('',[Validators.required, Validators.min(0)]),
   })
 
   UpdateQuantity(stock_Item_ID:string, isOpen: boolean)
@@ -68,7 +68,7 @@ export class StockTakePage implements OnInit {
     this.stockitemservice.GetStockItem(stock_Item_ID).subscribe(response => {         
       this.editProduct = response as Stock_Item;
       localStorage.setItem('stock_Item_Name', JSON.stringify(this.editProduct.stock_Item_Name));
-      // this.editForm.controls['Inventory_Comments'].setValue(this.editProduct.inventory_Comments);
+      this.editForm.controls['Inventory_Comments'].setValue(this.editProduct.inventory_Comments);
       this.editForm.controls['Stock_Item_Quantity'].setValue(this.editProduct.stock_Item_Quantity);
     })
     
@@ -80,7 +80,7 @@ export class StockTakePage implements OnInit {
     {
       let editedProduct = new Stock_Item();
       editedProduct.stock_Item_Quantity = this.editForm.value.Stock_Item_Quantity;
-      // editedProduct.inventory_Comments = this.editForm.value.Inventory_Comments;
+      editedProduct.inventory_Comments = this.editForm.value.Inventory_Comments;
       let stockitemname = JSON.parse(localStorage.getItem('stock_Item_Name') as string)
 
       this.inventoryservice.Stocktake(this.editProduct.stock_Item_ID, editedProduct).subscribe(result =>{
@@ -92,8 +92,8 @@ export class StockTakePage implements OnInit {
           this.AddTrail()
         }       
       },(error) => {
-      this.editErrorAlert();        
-      console.error('confirmeditmodal error:', error);
+        this.editErrorAlert();        
+        console.error('confirmeditmodal error:', error);
       })
     }
     catch{      
@@ -114,98 +114,44 @@ export class StockTakePage implements OnInit {
   isWriteOffModalOpen = false;
   writeoffForm: FormGroup = new FormGroup({
     Write_Off_Reason: new FormControl('',[Validators.required]),
-    Write_Off_Quantity: new FormControl('',[Validators.required]),
+    Write_Off_Quantity: new FormControl('',[Validators.required, Validators.min(0)]),
   })
 
-  WriteOffModal(stock_Item_ID:string, isOpen: boolean, stock_Item_Name:string){  
-    localStorage.setItem('stock_Item_Name', JSON.stringify(stock_Item_Name));  
-    localStorage.setItem('stockitemID', JSON.stringify(stock_Item_ID));
+  currentquantity!:number
+  writeOffstockItemID!: string
+  writeoffstockItemName!: string
+
+  WriteOffModal(stock_Item_ID:string, isOpen: boolean, stock_Item_Name:string, stockitemquantity:number)
+  {  
+    this.currentquantity = stockitemquantity;
+    this.writeOffstockItemID = stock_Item_ID;
+    this.writeoffstockItemName = stock_Item_Name;
     this.isWriteOffModalOpen = isOpen;
   }
 
   //add to write off
-  Writeoff() 
-  {
-    try
+  Writeoff(){
+    if(this.currentquantity >= this.writeoffForm.value.Write_Off_Quantity)
     {
-      let writeoff = new Write_Off();
+      let writeoff = new WriteOffVM();
+      writeoff.write_Off_Quantity = this.writeoffForm.value.Write_Off_Quantity
+      writeoff.write_Off_Reason = this.writeoffForm.value.Write_Off_Reason
+      writeoff.stock_Item_ID = this.writeOffstockItemID     
+
       this.inventoryservice.AddToWriteoff(writeoff).subscribe(result => {
-        writeoff = result as Write_Off
-        console.log(writeoff)
-        let writeoffID = writeoff.write_Off_ID
-        localStorage.setItem('writeoffID', JSON.stringify(writeoffID));
+        console.log(result)
+        this.action = "Wrote off Stock "+ this.writeoffstockItemName + "Quantity: " + writeoff.write_Off_Quantity
+        this.AddTrail()
+
+        this.WriteOffLineSuccessAlert()
       },(error) => {
-      this.WriteOffErrorAlert();        
-      console.error('WriteOff error:', error);
-    })
-      this.WriteOffLine()
-    }
-    catch
-    {
-      this.WriteOffErrorAlert()
-    }
-  }
-
-  writeoffquantity!: any
-  //add to write off line item
-  WriteOffLine() 
-  {
-    try
-    {
-      let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)//JSON.parse(JSON.stringify(localStorage.getItem('stockitemID')));
-      let writeoffID = JSON.parse(localStorage.getItem('writeoffID') as string)//JSON.parse(JSON.stringify(localStorage.getItem('writeoffID')));   
-    
-      console.log(stockitemID)
-      console.log(writeoffID)
-
-      let lineitem = new Write_Off_Line_Item()    
-      lineitem.write_Off_Quantity = this.writeoffForm.value.Write_Off_Quantity
-      lineitem.write_Off_Reason = this.writeoffForm.value.Write_Off_Reason
-      lineitem.stock_Item_ID = stockitemID
-      lineitem.write_Off_ID = writeoffID
-
-      this.writeoffquantity = this.writeoffForm.value.Write_Off_Quantity
-    
-      this.inventoryservice.AddToWriteoffLine(lineitem).subscribe(result => {
-        if(result.status == "Success"){
-          this.decreaseQuantity()
-          console.log(result)
-        }
-      },(error) => {
-      this.WriteOffLineErrorAlert();        
-      console.error('WriteOffLine error:', error);
+        this.WriteOffErrorAlert();        
+        console.error('WriteOff error:', error);
       })
     }
-    catch
-    {
-      this.WriteOffLineErrorAlert()
-    }
-  }
-
-  decreaseQuantity()
-  {
-    try{
-      let VM = new WriteOffVM()
-      let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)
-      VM.write_Off_Quantity = this.writeoffquantity
-      let stockitemname = JSON.parse(localStorage.getItem('stock_Item_Name') as string)
-    
-      this.inventoryservice.DecreaseStockQuantity(stockitemID, VM).subscribe(result => {
-        if(result.status == "Success"){
-          this.WriteOffLineSuccessAlert()
-          console.log(result)
-
-          this.action = "Wrote off Stock "+ stockitemname + "Quantity: " + this.writeoffquantity
-          this.AddTrail()
-        }
-      },(error) => {
-        this.DecreasesQuantityErrorAlert();        
-        console.error('decreaseQuantity error:', error);
-      })
-    }
-    catch{
+    else{
       this.DecreasesQuantityErrorAlert()
-    }    
+    }
   }
 
   //========== Trail ===============
@@ -330,17 +276,111 @@ export class StockTakePage implements OnInit {
 
   async DecreasesQuantityErrorAlert() {
     const alert = await this.alertController.create({
-      header: 'We are sorry!',
-      subHeader: 'Write off Quantity update faild',
+      header: 'Write off Quantity cannot exceed current qauntity!',
+      subHeader: 'If you would like to delete this item, please go back to Inventory',
       message: 'Please try again',
       buttons: [{
         text: 'OK',
         role: 'cancel',
+      },{
+        text: 'Go To Inventory',
+        role: 'cancel',
         handler:() =>{
-          this.reloadPage(); 
+          this.inventoryNav(); 
         }
-    }],
+      }],
     });
     await alert.present();
   }
 }
+
+  // OldWriteoff() 
+  // {
+  //   if(this.currentquantity >= this.writeoffForm.value.Write_Off_Quantity)
+  //   {
+  //     try
+  //     {
+  //       let writeoff = new Write_Off();
+  //       this.inventoryservice.AddToWriteoff(writeoff).subscribe(result => {
+  //         writeoff = result as Write_Off
+  //         console.log(writeoff)
+  //         let writeoffID = writeoff.write_Off_ID
+  //         localStorage.setItem('writeoffID', JSON.stringify(writeoffID));
+  //       },(error) => {
+  //         this.WriteOffErrorAlert();        
+  //         console.error('WriteOff error:', error);
+  //       })
+  //       this.WriteOffLine()
+  //     }
+  //     catch
+  //     {
+  //       this.WriteOffErrorAlert()
+  //     }
+  //   }
+  //   else{
+
+  //   }
+    
+  // }
+
+  // writeoffquantity!: any
+  // //add to write off line item
+  // WriteOffLine() 
+  // {
+  //   try
+  //   {
+  //     let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)//JSON.parse(JSON.stringify(localStorage.getItem('stockitemID')));
+  //     let writeoffID = JSON.parse(localStorage.getItem('writeoffID') as string)//JSON.parse(JSON.stringify(localStorage.getItem('writeoffID')));   
+    
+  //     console.log(stockitemID)
+  //     console.log(writeoffID)
+
+  //     let lineitem = new Write_Off_Line_Item()    
+  //     lineitem.write_Off_Quantity = this.writeoffForm.value.Write_Off_Quantity
+  //     lineitem.write_Off_Reason = this.writeoffForm.value.Write_Off_Reason
+  //     lineitem.stock_Item_ID = stockitemID
+  //     lineitem.write_Off_ID = writeoffID
+
+  //     this.writeoffquantity = this.writeoffForm.value.Write_Off_Quantity
+    
+  //     this.inventoryservice.AddToWriteoffLine(lineitem).subscribe(result => {
+  //       if(result.status == "Success"){
+  //         this.decreaseQuantity()
+  //         console.log(result)
+  //       }
+  //     },(error) => {
+  //     this.WriteOffLineErrorAlert();        
+  //     console.error('WriteOffLine error:', error);
+  //     })
+  //   }
+  //   catch
+  //   {
+  //     this.WriteOffLineErrorAlert()
+  //   }
+  // }
+
+  // decreaseQuantity()
+  // {
+  //   try{
+  //     let VM = new WriteOffVM()
+  //     let stockitemID = JSON.parse(localStorage.getItem('stockitemID') as string)
+  //     VM.write_Off_Quantity = this.writeoffquantity
+  //     let stockitemname = JSON.parse(localStorage.getItem('stock_Item_Name') as string)
+    
+  //     this.inventoryservice.DecreaseStockQuantity(stockitemID, VM).subscribe(result => {
+  //       if(result.status == "Success"){
+  //         this.WriteOffLineSuccessAlert()
+  //         console.log(result)
+
+  //         this.action = "Wrote off Stock "+ stockitemname + "Quantity: " + this.writeoffquantity
+  //         this.AddTrail()
+  //       }
+  //     },(error) => {
+  //       this.DecreasesQuantityErrorAlert();        
+  //       console.error('decreaseQuantity error:', error);
+  //     })
+  //   }
+  //   catch{
+  //     this.DecreasesQuantityErrorAlert()
+  //   }    
+  // }

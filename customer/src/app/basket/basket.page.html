@@ -37,7 +37,24 @@
     </ion-item>
   </ion-list>
   <ion-button (click)="clearBasket()">Empty Basket</ion-button>
-  <ion-grid>
+ <!--<ion-grid>
+    <ion-row>
+      <ion-col>Bill Details</ion-col>
+    </ion-row>
+    <ion-col></ion-col>
+    <ion-row>
+      <ion-col>Items Total (Excluding Delivery)</ion-col>
+	  <--<ion-col>Vat: R{{vatprice}}</ion-col>->
+      <ion-col><strong>R{{calculateTotalPrice()}}</strong></ion-col>
+      <ion-button (click)="makepayment()">Checkout</ion-button>
+    </ion-row>
+  </ion-grid>-->
+
+  <!-- Discount -->
+  <ion-grid ><!--*ngFor="let item of discounts"-->
+	<!-- <ion-row>
+		<ion-col>Discount amount: R {{discount_Amount}}.00</ion-col>
+	</ion-row> -->
 		<ion-row>
 			<ion-col><h3> Bill Details </h3></ion-col>			
 		</ion-row>
@@ -98,8 +115,15 @@
 						</div>
 					</ion-item>
 				</form>
-				<p>Please upload your inspiration photo for your design</p>
-				<img src="/assets/Smile.jpg" alt="smile icon" class="center" style="width: 100%; height: 80%;" />
+				<p style="text-align: center;">Please upload your inspiration photo for your design</p>
+				<p style="text-align: center;">If you would like to make a custom design follow this <a (click)="canvalink()" style="cursor: pointer;"> link</a> and download it. </p>
+				<img src="/assets/Smile.jpg" alt="smile icon" class="center" style="width: 50%; height: 50%;"  />
+				<div *ngIf="isLoading" class="overlay">
+					<div class="loading-popup">
+					  <div class="spinner"></div>
+					  <p>Adding...</p>
+					</div>
+				  </div>
 			</ion-content>
 		</ng-template>
 	</ion-modal>

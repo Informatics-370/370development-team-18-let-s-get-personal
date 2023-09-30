@@ -1,6 +1,6 @@
 
 export class DeliveryViewModel{
-    Delivery_ID!: Number
+    delivery_ID!: string
     delivery_Price!: number
     delivery_Company_Name!: string
     delivery_Status!: string

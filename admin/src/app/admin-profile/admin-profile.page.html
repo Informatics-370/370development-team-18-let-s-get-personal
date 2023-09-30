@@ -14,7 +14,7 @@
   </ion-header>
   <ion-content id="content">
     <ion-button (click)="Logout()">Log out</ion-button>
-    <ion-button (click)="EditAdmin(profile.admin_ID, true)">Update Profile</ion-button>
+    <ion-button (click)="EditAdmin(profile.admin_ID, true)" *ngIf="isAdmin == true">Update Profile</ion-button>
     <ion-button (click)="ChangePassword(true)">Change Passsword</ion-button>
     
     <ion-card>
@@ -60,7 +60,7 @@
           </ion-buttons>
           <!-- <ion-title>Add Discount Policy Details</ion-title> -->
           <ion-buttons slot="end">
-            <ion-button (click)="confirmeditmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmeditmodal()" [strong]="true" [disabled]="editForm.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -78,14 +78,18 @@
             <ion-label position="stacked">Email Address</ion-label><br>
             <ion-input type="text" formControlName="email" placeholder="" required></ion-input>
           </ion-item>
+          <div class="text-center" *ngIf="f['email'].invalid && f['email'].touched">
+            <p style="color: crimson;" class="small mt-1" *ngIf="f['email'].errors?.['pattern']">
+              Email is Invalid</p>
+          </div>
           <ion-item>
             <ion-label position="stacked">Cellphone number</ion-label><br>
             <ion-input type="text" formControlName="cell_Number" placeholder="" required></ion-input>
           </ion-item>
-          <!-- <ion-item>
+          <ion-item>
             <ion-label position="stacked">Username</ion-label><br>
             <ion-input type="text" formControlName="username" placeholder="" required></ion-input>
-          </ion-item>   -->
+          </ion-item>  
       </form>
       </ion-content>
     </ng-template>
@@ -100,7 +104,7 @@
           </ion-buttons>
           <!-- <ion-title>Add Discount Policy Details</ion-title> -->
           <ion-buttons slot="end">
-            <ion-button (click)="confirmpassmodal()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirmpassmodal()" [strong]="true" [disabled]="passwordform.invalid">Confirm</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -108,15 +112,15 @@
         <form [formGroup]="passwordform" >
           <ion-item>
             <ion-label position="stacked">Enter current password</ion-label><br>
-            <ion-input type="text" formControlName="oldpassword" placeholder="" required></ion-input>
+            <ion-input type="password" formControlName="oldpassword" placeholder="" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Enter new password</ion-label><br>
-            <ion-input type="text" formControlName="newpassword" placeholder="" required></ion-input>
+            <ion-input type="password" formControlName="newpassword" placeholder="" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="stacked">Confirm new password</ion-label><br>
-            <ion-input type="text" formControlName="confirmpassword" placeholder="" required></ion-input>
+            <ion-input type="password" formControlName="confirmpassword" placeholder="" required></ion-input>
           </ion-item>  
       </form>
       </ion-content>

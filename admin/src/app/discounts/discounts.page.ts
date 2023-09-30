@@ -16,6 +16,7 @@ import { StockItemViewModel } from '../ViewModels/stockitemsVM';
 import { Stock_Item } from '../Models/stockitem';
 import { DatePipe } from '@angular/common';
 
+
 @Component({
   selector: 'app-discounts',
   templateUrl: './discounts.page.html',
@@ -30,12 +31,13 @@ export class DiscountsPage implements OnInit {
   stockItems: Stock_Item[] = [];
   searchedDiscount: Discount[]=[];
   searchString: string = "";
-
+  date = new Date();
+  isLoading: boolean = false;
 
   @ViewChild(IonModal) modal!: IonModal
   constructor(private service: DiscountService, private thisroute: Router, public modalCtrl: ModalController,
     private alertController: AlertController, private _service: StockItemDataService, private formBuilder: FormBuilder,
-    private trailservice: AuditTrailService) { }
+    private trailservice: AuditTrailService,private datePipe: DatePipe) { }
 
     SearchForm: FormGroup = new FormGroup({
       name:new FormControl('',[Validators.required])
@@ -74,8 +76,10 @@ export class DiscountsPage implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading=true;  
     this.getDiscounts();
     this.GetStockItems();
+    this.date = new Date();
   }
 
   getDiscounts() {
@@ -83,19 +87,33 @@ export class DiscountsPage implements OnInit {
       this.discounts = result;
       this.searchedDiscount=this.discounts;
       console.log(this.discounts)
+      this.isLoading=false;  
     })
   }
 
   public GetStockItems() {
+     
     this._service.GetStockItems().subscribe(result => {
       this.Products = result as StockItemViewModel[];
       console.log(this.Products)
+      this.isLoading=false;  
+
     })
   }
 
   getProductName(stockId: string): string {
     const product = this.Products.find(product => product.stock_Item_ID === stockId);
     return product ? product.stock_Item_Name : '';
+  }
+
+  ifDiscountExpired(effectivetodate: Date): boolean {
+    const date = new Date();
+    if(effectivetodate < date){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
 //=========== Add ===========
@@ -128,7 +146,10 @@ export class DiscountsPage implements OnInit {
     }, (error) => {
       this.addDiscountErrorAlert
       console.error('Discount error:', error);
+    }).add(() => {
+      this.isLoading = false; // Stop loading
     });
+    
   //}
   }
 
@@ -138,11 +159,11 @@ export class DiscountsPage implements OnInit {
   editForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     amount: new FormControl('', [Validators.required]),
-    effectiveFromdate: new FormControl('', [Validators.required]),
-    effectiveTodate: new FormControl('', [Validators.required])
+    effectiveFromdate: new FormControl('', [Validators.required, this.dateValidator.bind(this)]),
+    effectiveTodate: new FormControl('', [Validators.required, this.dateValidator.bind(this)]),
   })
 
-  EditDiscount(discount_ID: string, isOpen: boolean) {
+  EditDiscount(discount_ID: string, isOpen: boolean) { 
     this.service.GetDiscount(discount_ID).subscribe(response => {
       this.editDiscount = response as Discount;
 
@@ -150,12 +171,13 @@ export class DiscountsPage implements OnInit {
       this.editForm.controls['amount'].setValue(this.editDiscount.discount_Amount);
       this.editForm.controls['effectiveFromdate'].setValue(this.editDiscount.effective_From_Date);
       this.editForm.controls['effectiveTodate'].setValue(this.editDiscount.effective_To_Date);
-    })
+    });
     this.isModalOpen = isOpen;
   }
 
   confirmeditmodal() {
-    try {
+    /*try {*/
+    this.isLoading=true;  
       let editedDiscount = new Discount();
       editedDiscount.discount_Name = this.editForm.value.name;
       editedDiscount.discount_Amount = this.editForm.value.amount;
@@ -165,17 +187,31 @@ export class DiscountsPage implements OnInit {
       this.service.UpdateDiscount(this.editDiscount.discount_ID, editedDiscount).subscribe(result => {
         this.editDiscountSuccessAlert();
 
-        this.action = "Updated discount from " + this.editDiscount.discount_Name + "," + this.editDiscount.discount_Amount + "," + this.editDiscount.effective_From_Date + "," + this.editDiscount.effective_To_Date
-          + " to: " + this.editForm.value.name + "," + this.editForm.value.amount + "," + this.editForm.value.effectiveFromdate + "," + this.editForm.value.effectiveTodate
+         // Format the dates as 'yyyy-MM-dd'
+      const fromDateString = this.datePipe.transform(this.editDiscount.effective_From_Date, 'yyyy-MM-dd');
+      const toDateString = this.datePipe.transform(this.editDiscount.effective_To_Date, 'yyyy-MM-dd');
+      const fromNewDateString = this.datePipe.transform(this.editForm.value.effectiveFromdate , 'yyyy-MM-dd');
+      const toNewDateString = this.datePipe.transform(this.editForm.value.effectiveTodate, 'yyyy-MM-dd');
+
+        this.action = "Updated discount"+ "<br>" +"From: " + this.editDiscount.discount_Name + ", " +"amount="+ this.editDiscount.discount_Amount + ", " +"start date: "+ fromDateString + ", " +"end date: "+ toDateString
+          + "<br>" +" To: " + this.editForm.value.name + ", " +"amount="+ this.editForm.value.amount + ", " +"start date: "+ fromNewDateString+ ", " +"end date: "+ toNewDateString
         this.AddTrail()
       },(error) => {
       this.editDiscountErrorAlert();        
       console.error('Edit discount error:', error);
-    })
-    }
+    }).add(() => {
+      this.isLoading = false; // Stop loading
+    });
+   /* }
     catch {
       this.editDiscountErrorAlert();
-    }
+    }*/
+  }
+
+  formatDate(date: string): string {
+    // Assuming date is in the format 'yyyy-MM-ddTHH:mm:ss'
+    const dateObject = new Date(date);
+    return dateObject.toISOString().split('T')[0]; // Format as 'yyyy-MM-dd'
   }
 
   canceleditmodal() {
@@ -189,7 +225,7 @@ export class DiscountsPage implements OnInit {
       console.log(result);
       this.DeleteDiscountSuccessAlert();
 
-      this.action = "Deleted Discount" + discount_Name
+      this.action = "Deleted Discount " + discount_Name
       this.AddTrail()
 
     },(error) => {
@@ -231,6 +267,7 @@ export class DiscountsPage implements OnInit {
   }
 
   confirmaddmodal() {
+    this.isLoading=true;  
     this.AddDiscount();
   }
 
@@ -242,8 +279,8 @@ export class DiscountsPage implements OnInit {
   async HelpAlert() {
     const alert = await this.alertController.create({
       header: 'Please Note: ',
-      subHeader: 'Discounts will be automatically applied to the Product in a customers basket',
-      message: '',
+      subHeader: 'Discounts will be automatically applied to the product in a customers basket.',
+      message: 'Dates in red are discounts that have expired.',
       buttons: [{
           text: 'OK',
           role: 'cancel',

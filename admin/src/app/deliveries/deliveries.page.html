@@ -14,22 +14,30 @@
       </ion-buttons> -->
     </ion-toolbar>
   </ion-header>
-  <ion-toolbar>
-    <ion-button (click)="RoutePrevDeliveries()">View Previous Deliveries</ion-button>  
+  <!-- <ion-toolbar>
+    
+  </ion-toolbar> -->
+
+  <ion-button (click)="RoutePrevDeliveries()">View Previous Deliveries</ion-button>  
     <ion-button (click)="Routedeliverycompanies()">Manage Delivery Companies</ion-button>  
     
-    <ion-button slot="end" (click)="openPDF()">Download Report pdf</ion-button>
-  </ion-toolbar>
-  
+    
 
   <ion-content *ngIf="deliveries.length == 0">
     <div class="col-12 text-center" style="padding-top: 3cm; margin-left: 2.5cm;">
       <p style="text-align: center;">No Deliveries In Progress</p><br>
       <img src="/assets/no-results.png" alt="empty icon" class="center"  id="icon" />
     </div>
+    <div *ngIf="isLoading" class="overlay">
+      <div class="loading-popup">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    </div>
   </ion-content>
   
   <ion-content id="htmlData" *ngIf="deliveries.length > 0">   
+    <ion-button (click)="openPDF()">Download Report pdf</ion-button>
     <ion-searchbar [(ngModel)]="searchValue"  (ionInput)="updateSearchResults()" ></ion-searchbar>               
     <ion-grid>
       <ion-row>
@@ -48,7 +56,7 @@
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.streetNumber}} {{item.streetName}} <br> {{item.city}}  {{item.province}} <br> {{item.areaCode}}</ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.delivery_Company_Name}}</ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.delivery_Price}}</ion-col>
-        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.order_Request_Date}} </ion-col>
+        <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"> {{item.order_Request_Date | date: 'yyyy-MM-dd'}} </ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"><ion-button (click)="ReceiveDelivery(item.delivery_ID, item.order_Line_Item_ID, item.stock_Item_ID, item.customer_ID, item.order_Line_Item_Quantity)">Delivered</ion-button></ion-col>
         <ion-col sizeLg="1.5" sizeMd="3" sizeXs="3" style="text-align: center;"><ion-button (click)="FailedDelivery(item.delivery_ID, item.order_Line_Item_ID, item.stock_Item_ID, item.customer_ID, item.order_Line_Item_Quantity)">Failed</ion-button></ion-col>
       </ion-row>

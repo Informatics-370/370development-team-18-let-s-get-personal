@@ -10,6 +10,7 @@ import { OverlayEventDetail } from '@ionic/core/components';
 import { AuthenticationService } from 'src/app/Services/authentication.service';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ChangePasswordVM } from '../ViewModels/changepasswordVM';
+import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-view-profile',
@@ -47,13 +48,27 @@ isPassModalOpen = false;
 passwordform: FormGroup = new FormGroup({
   // username: new FormControl('',[Validators.required]),
   oldpassword: new FormControl('',[Validators.required]),
-  newpassword: new FormControl('',[Validators.required]),
-  confirmpassword: new FormControl('',[Validators.required]),
-})
+  newpassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
+  confirmpassword:new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
+}, { validators: this.passwordMatchValidator 
+  })
+
+passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
+  const newPassword = control.get('newpassword');
+  const confirmNewPassword = control.get('confirmpassword');
+
+  if (newPassword && confirmNewPassword && newPassword.value !== confirmNewPassword.value) {
+    return { 'passwordMismatch': true };
+  }
+
+  return null;
+}
 
 ChangePassword(isOpen: boolean){
   this.isPassModalOpen = isOpen;
 }
+
+get f() { return this.passwordform.controls }
 
 confirmpassmodal(){
   let username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
@@ -63,12 +78,18 @@ confirmpassmodal(){
   newpassword.newPassword = this.passwordform.value.newpassword
   newpassword.confirmPassword = this.passwordform.value.confirmpassword
 
-  this.authservice.ChangeUserPassword(newpassword).subscribe(result =>{
-    this.editSuccessAlert()
-  },(error) => {
-    this.editErrorAlert();        
-    console.error('Edit stock image error:', error);
-  })
+  if(newpassword.newPassword === newpassword.confirmPassword) 
+  {
+    this.authservice.ChangeUserPassword(newpassword).subscribe(result =>{
+      this.editSuccessAlert()
+    },(error) => {
+      this.editErrorAlert();        
+      console.error('Edit stock image error:', error);
+    })
+  }
+  else{
+    this.PasswordMatchErrorAlert()
+  }  
 }
 
 cancelpassmodal() {
@@ -77,17 +98,19 @@ cancelpassmodal() {
 
 
 
-
+get g() { return this.editForm.controls }
 //========== edit ==========
   isModalOpen = false;
   editCustomer: Customer = new Customer();
   editForm: FormGroup = new FormGroup({
     firstName: new FormControl('',[Validators.required]),
     surname: new FormControl('',[Validators.required]),
-    cell_Number: new FormControl('',[Validators.required]),
-    email: new FormControl('',[Validators.required]),
-    // username: new FormControl('',[Validators.required]),
+    cell_Number:new FormControl('', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(12), Validators.pattern('[- +()0-9]{9,}')])),
+    email:new FormControl('', Validators.compose([Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])),
+    username: new FormControl('',[Validators.required]),
   })
+
+
 
   public updateProfile(customer_ID:string, isOpen: boolean) {
     this.service.GetCustomer(customer_ID).subscribe(response => {         
@@ -97,7 +120,7 @@ cancelpassmodal() {
       this.editForm.controls['surname'].setValue(this.editCustomer.surname);
       this.editForm.controls['cell_Number'].setValue(this.editCustomer.cell_Number);
       this.editForm.controls['email'].setValue(this.editCustomer.email);
-      // this.editForm.controls['username'].setValue(this.editCustomer.username);
+      this.editForm.controls['username'].setValue(this.editCustomer.username);
     })    
     this.isModalOpen = isOpen;
   }
@@ -110,10 +133,10 @@ cancelpassmodal() {
       editedCustomer.surname = this.editForm.value.surname;
       editedCustomer.cell_Number = this.editForm.value.cell_Number;
       editedCustomer.email = this.editForm.value.email;
-      // editedCustomer.username = this.editForm.value.username;
+      editedCustomer.username = this.editForm.value.username;
 
       this.service.UpdateCustomer(this.editCustomer.customer_ID, editedCustomer).subscribe(result =>{
-        
+        console.log(result);
       }) 
       
       this.editSuccessAlert();     
@@ -135,40 +158,31 @@ cancelpassmodal() {
   customerID!: string
   async DeleteConfirmAlert(customer_ID: string) {
     this.customerID = customer_ID
+    console.log(this.customerID)
     const alert = await this.alertController.create({
       header: 'Are you sure you want to delete your profile?',
       buttons: [{
-        text: 'Cancel',
+        text: 'Continue',
         role: 'cancel',
-        // handler:() =>{
-        //   this.reloadPage(); 
-        // }
-    }, {
-      text: 'Continue',
-      role: 'cancel',
-      handler:() =>{
-        this.deleteProfile(this.customerID); 
-      }
-  }],
+        handler:() =>{
+          this.deleteProfile(); 
+        }
+      },{
+        text: 'Cancel',
+        role: 'cancel'
+      }],
     });
     await alert.present();
   }
 
-  public deleteProfile(customer_ID: string) {
-    try{
-      // this.service.DeleteCustomer(customer_ID).subscribe(result =>{
-      //   console.log(result);
-      // })
-
-      this.authservice.DeleteUser(this.username).subscribe(result =>{
-        console.log(result);
-      })
-
-      this.Logout()
-    }
-    catch{
-
-    }
+  public deleteProfile() {
+    this.service.DeleteCustomer(this.customerID).subscribe(result =>{
+      console.log(result);
+      this.DeleteSuccessAlert()
+    },(error) => {
+      this.deleteErrorAlert();        
+      console.error(error);
+    })
   }
   
   public PreviousOrders() {
@@ -196,20 +210,36 @@ cancelpassmodal() {
     this._router.navigate(["/tabs/login"])
   }
 
-  // async HelpAlert() {
-  //   const alert = await this.alertController.create({
-  //     header: 'Success!',
-  //     subHeader: 'Updated',
-  //     buttons: [{
-  //       text: 'OK',
-  //       role: 'cancel',
-  //       handler:() =>{
-  //         this.reloadPage(); 
-  //       }
-  //   }],
-  //   });
-  //   await alert.present();
-  // }
+  async DeleteSuccessAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success!',
+      subHeader: 'Your Account Has Been Deleted',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.Logout(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async PasswordMatchErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'Your new passwords do not match!',
+      // subHeader: 'Something went wrong',
+      message: 'Please try again',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
 
   async editSuccessAlert() {
     const alert = await this.alertController.create({
@@ -228,8 +258,8 @@ cancelpassmodal() {
 
   async editErrorAlert() {
     const alert = await this.alertController.create({
-      header: 'We are sorry!',
-      subHeader: 'Updated Failed',
+      header: 'Password Update Failed!',
+      subHeader: 'Ensure you entered the correct current password.',
       message: 'Please try again',
       buttons: [{
         text: 'OK',
@@ -238,6 +268,35 @@ cancelpassmodal() {
           this.reloadPage(); 
         }
     }],
+    });
+    await alert.present();
+  }
+
+  async deleteErrorAlert() {
+    const alert = await this.alertController.create({
+      header: 'We are sorry!',
+      subHeader: 'We could not delete your profile',
+      message: 'Please note that we cannot delete your profile if you have an active order.',
+      buttons: [{
+        text: 'OK',
+        role: 'cancel',
+        handler:() =>{
+          this.reloadPage(); 
+        }
+    }],
+    });
+    await alert.present();
+  }
+
+  async HelpAlert() {
+    const alert = await this.alertController.create({
+      header: 'Please Note: ',
+      subHeader: 'If you would like to view your previous orders, please download our app!',
+      message: 'This is where you can also rate our products and services',
+      buttons: [{
+          text: 'OK',
+          role: 'cancel',
+      }],
     });
     await alert.present();
   }
