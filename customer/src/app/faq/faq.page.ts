@@ -21,11 +21,13 @@ export class FaqPage implements OnInit {
   
   constructor(private _router: Router, public delservice: DeliveryDataService, private typeservice: StockTypeDataService
     ,private service: RefundService,private alertController: AlertController) { }
-
+    isLoading: boolean = false;
   ngOnInit() {
+    this.isLoading=true;  
     this.getDeliveryCompany()
     this.GetTypes()
     this.GetAllRefundPolicies()
+    
   }
   public ViewRefundPolicy() {
     this._router.navigate(["/tabs/view-refund-policy"])
@@ -57,6 +59,7 @@ export class FaqPage implements OnInit {
     this.service.GetAllRefundPolicies().subscribe(result => {
       this.policy = result as RefundVM[];
       console.log(this.refundPolicy)
+      this.isLoading=false;
     })
   }
 

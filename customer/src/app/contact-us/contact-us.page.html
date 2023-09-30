@@ -45,7 +45,12 @@
     
  </form>
  <ion-button expand="block" (click)="Submit()">Send Comment</ion-button>
-
+ <div *ngIf="isLoading" class="overlay">
+  <div class="loading-popup">
+    <div class="spinner"></div>
+    <p>Sending...</p>
+  </div>
+</div>
 </ion-content>
 
 <!-- <ion-list>

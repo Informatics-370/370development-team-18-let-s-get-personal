@@ -14,7 +14,7 @@ import { ContactUsService } from 'src/app/Services/contactus.service';
 })
 export class ContactUsPage implements OnInit {
   isModalOpen = false;
-
+  isLoading: boolean = false;
   constructor(private router:Router, private alertController:AlertController, private service: ContactUsService) { }
 
   ngOnInit() {
@@ -31,6 +31,7 @@ export class ContactUsPage implements OnInit {
   // get f() { return this.ContactForm.controls }
 
   Submit() {
+    this.isLoading=true;  
     let contact = new ContactUs()
     contact.contact_Us_Email = this.ContactForm.value.Email
     contact.contact_Us_Name = this.ContactForm.value.Name
@@ -38,11 +39,15 @@ export class ContactUsPage implements OnInit {
     contact.contact_Us_Message = this.ContactForm.value.Message
 
     this.service.AddMessageRequest(contact).subscribe(result => {
-      this.SuccessAlert()      
+      this.SuccessAlert() 
+       // this.isLoading = false; // Stop loading
+           
     },(error) => {
       this.ErrorAlert();        
       console.error('contact us error:', error);
-    })
+    }).add(() => {
+      this.isLoading = false; // Stop loading
+    });
   }
 
   async ContactUsTip() {

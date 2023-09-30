@@ -38,7 +38,8 @@ export class CheckOutPage implements OnInit {
     private alertController:AlertController, private delservice:DeliveryDataService ) { }
 
   ngOnInit() {
-    this.order = JSON.parse(localStorage.getItem('order') as string)    
+    this.order = JSON.parse(localStorage.getItem('order') as string)   
+    console.log("Del Price",this.order.deliveryPrice) 
     let items = JSON.parse(localStorage.getItem('cart') as string)
     this.basketItems= items //this.order.basketItems;
     console.log('basket',this.basketItems); 
@@ -47,11 +48,11 @@ export class CheckOutPage implements OnInit {
     let discountAmount=localStorage.getItem('discount');
     this.discount=discountAmount;
     console.log('disocunt',discountAmount)
-    this.GetOrderDetails()
+    //this.GetOrderDetails()
   }
 
   deliveryPrice:any;
-  GetOrderDetails(){    
+  /*GetOrderDetails(){    
     try
     {
       this.discount = JSON.parse(JSON.stringify(localStorage.getItem('discount')))
@@ -96,7 +97,7 @@ export class CheckOutPage implements OnInit {
       this.ErrorAlert()
     }    
     
-  }
+  }*/
 
   pureprice: number =0
   culculate(){    

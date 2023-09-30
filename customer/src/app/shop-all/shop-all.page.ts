@@ -77,6 +77,7 @@ export class ShopAllPage implements OnInit {
   }
 
   public GetStockItems() {
+    this.isLoading=true; 
     this.service.GetStockItems().subscribe(result => {
       this.Products = result as StockItemViewModel[];
       console.log(this.Products)
@@ -106,13 +107,16 @@ export class ShopAllPage implements OnInit {
     this.typeservice.GetStockTypes().subscribe(result => {
       this.stocktypes = result as StockTypes[];
       console.log(this.stocktypes);
+      
     })
   }
 
   GetByType(type: string){
+    this.isLoading=true; 
     this.service.GetAllStockItemsByType(type).subscribe(result => {
       this.Products = result as StockItemViewModel[];
       console.log(this.Products)
+      this.isLoading=false; 
     })
   }
 

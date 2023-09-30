@@ -16,7 +16,7 @@
     <form [formGroup]="AddDelAddressForm">
       <ion-item>
         <ion-label position="stacked">Delivery Company</ion-label><br>
-        <ion-select placeholder="Select a Delivery Company" formControlName="deliveryCompanyID">
+        <ion-select [(ngModel)]="delivery_Company_ID" (ionChange)="onOptionChange()" placeholder="Select a Delivery Company" formControlName="deliveryCompanyID">
           <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
           <ion-select-option *ngFor="let company of deliverycompanies" value ="{{company.delivery_Company_ID}}">
             {{company.delivery_Company_Name}}

@@ -42,14 +42,15 @@ export class MakePaymentPage implements OnInit {
   oLat: number = -25.756598;;
   Long!: number;
   Lat!: number;
+  delivery_Company_ID:any
 
-  chargeRatePerKm: any = 10;
+  chargeRatePerKm: any;
 
   distanceInKm: any;
 
   ngOnInit() {
     this.getDeliveryCompany();
-    this.getlocaldeliveryPrice();
+    //this.getlocaldeliveryPrice();
     this.order = JSON.parse(localStorage.getItem('order') as string)    
   }
 
@@ -87,13 +88,23 @@ AddDelAddressForm: FormGroup = new FormGroup({
     })
   }
 
-  getlocaldeliveryPrice(){
-    let delcompanyID = "66ec06c6-2d7f-41ca-3aee-08dbc0dfcd7b"
+  onOptionChange() {
+    this.delservice.GetDeliveryCompany(this.delivery_Company_ID).subscribe(result =>{
+      let localprice = result as Delivery_Company
+      this.chargeRatePerKm = localprice.delivery_Price;
+    },err=>{
+      console.log(err)
+    });
+  }
+
+  getlocaldeliveryPrice(deliveryCompId:any){
+    console.log(deliveryCompId)
+    /*let delcompanyID = "66ec06c6-2d7f-41ca-3aee-08dbc0dfcd7b"
     this.delservice.GetDeliveryCompany(delcompanyID).subscribe(result =>{
       let localprice = result as Delivery_Company
       this.chargeRatePerKm = localprice.delivery_Price
       console.log('charge rate/km',this.chargeRatePerKm)
-    });
+    });*/
     
   }
 
@@ -206,6 +217,7 @@ AddDelAddressForm: FormGroup = new FormGroup({
           this.deliveryPrice = charge;
           this.order.deliveryPrice = parseFloat(charge);
           localStorage.setItem("order", JSON.stringify(this.order));
+          console.log("Price",charge)
 
         } else {
           console.error("Something is wrong");

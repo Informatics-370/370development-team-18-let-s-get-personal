@@ -49,6 +49,7 @@ export class SuccessfulPaymentPage implements OnInit {
     this.addInvoice();
     //removing local storage after invoice
     /*this.placeOrder();*/
+    this.startCountdown();
   }
 
   placeOrderT(order:OrderT):void{
@@ -57,6 +58,18 @@ export class SuccessfulPaymentPage implements OnInit {
     },error=>{
       console.log(error)
     })
+  }
+
+  countdown: number = 5;
+
+  startCountdown() {
+    setInterval(() => {
+      this.countdown--;
+      if (this.countdown === 0) {
+        // Redirect to home page after 5 seconds
+        window.location.href = '';
+      }
+    }, 1000);
   }
 
   addSale(){
