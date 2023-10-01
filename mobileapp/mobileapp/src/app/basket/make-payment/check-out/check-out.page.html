@@ -12,28 +12,14 @@
     <ion-item-divider>
       Order Items
     </ion-item-divider>
-    <!-- <ion-item *ngFor="let item of basketItems">
-    {{item.stock_Item.stock_Item_Name}}  - R{{item.stock_Item.stock_Item_Price}} &nbsp;&nbsp; X&nbsp; {{item.basket_Quantity}}
-    </ion-item>  -->
     <ion-item *ngFor="let item of basketItems">
-      <!-- {{item.stock_Item.stock_Item_Name}}  - R{{item.stock_Item.stock_Item_Price}} -->
-         
-        <label>{{item.basket_Quantity}}x:  {{item.stock_Item.stock_Item_Name}}  - R{{item.stock_Item.stock_Item_Price}} </label>    
-        <!-- <label>Quantity: </label> -->      
-      </ion-item>   
-      <!-- <ion-item> -->
-        <!-- <p>Total price: R {{order.price}}</p> -->
-      <!-- </ion-item> -->
+    {{item.stock_Item.stock_Item_Name}}  - R{{item.stock_Item.stock_Item_Price}} &nbsp;&nbsp; X&nbsp; {{item.basket_Quantity}}
+    </ion-item> 
   </ion-list>
 
   <ion-list>
-
-  <!--<ion-list>-->
     <ion-item-divider>Delivery Address</ion-item-divider>
-    <!--<ion-item *ngFor="let d of deliveryvm">
-      <p>Delivery Price: R{{d.delivery_Price}}.00 <br>
-      Address: {{d.streetNumber}} {{d.streetName}}</p>
-    </ion-item>-->
+   
     <ion-item >
       {{order.deliveryAddress.streetName}}, {{order.deliveryAddress.city}}, {{order.deliveryAddress.areaCode}} <br>      
     </ion-item>
@@ -42,6 +28,43 @@
     <ion-item>
       R {{(order.deliveryPrice).toFixed(2)}}
     </ion-item>
+
+    <ion-item-divider>Vat:</ion-item-divider>
+    <ion-item>
+       <p>R {{(vat)}}</p> 
+    </ion-item>
+
+    <div *ngIf="discount> 0">
+      <ion-item-divider>Discount</ion-item-divider>
+      <ion-item>
+        <p>R {{(discount)}}</p>
+      </ion-item>
+    </div>
+
+    <ion-item-divider>Total Price:</ion-item-divider>
+    <ion-item>
+      <p>R {{((order.price)+(order.deliveryPrice)).toFixed(2)}}</p>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="full" (click)="AddOrderRequest(order.price+order.deliveryPrice)">Checkout</ion-button>
+</ion-content>
+
+    <!--<ion-item *ngFor="let item of basketItems">
+       {{item.stock_Item.stock_Item_Name}}  - R{{item.stock_Item.stock_Item_Price}} --
+         
+        <label>{{item.basket_Quantity}}x:  {{item.stock_Item.stock_Item_Name}}  - R{{item.stock_Item.stock_Item_Price}} </label>    
+        <-- <label>Quantity: </label> --      
+      </ion-item>   
+      <-- <ion-item> --
+        <-- <p>Total price: R {{order.price}}</p> -->
+      <!-- </ion-item> -->
+
+
+ <!--<ion-item *ngFor="let d of deliveryvm">
+      <p>Delivery Price: R{{d.delivery_Price}}.00 <br>
+      Address: {{d.streetNumber}} {{d.streetName}}</p>
+    </ion-item>-->
     <!-- <div *ngFor="let d of deliveryvm">
       <ion-item><label> Address: {{d.streetNumber}} {{d.streetName}}, {{d.city}}, {{d.province}}, {{d.areaCode}}</label></ion-item>
       <ion-item>
@@ -50,38 +73,18 @@
       </ion-item>      
     </div> -->
 
-    <ion-item-divider>Vat:</ion-item-divider>
-    <ion-item>
-      <p>R {{(order.price*0.15).toFixed(2)}}</p>
-       
-      <!-- <p>R {{(vat).toFixed(2)}}</p> -->
+      <!--<p>R {{(order.price*0.15).toFixed(2)}}</p>-->
       <!-- <p>R {{vat}}</p> -->
-    </ion-item>
-
-   <!-- <ion-item-divider>Delivery Price:</ion-item-divider>
-     <ion-item>
-      <p>R {{(order.deliveryPrice)}}</p>
-    </ion-item> -->
-
-    <ion-item *ngIf="discount> 0">
-      <ion-item-divider>Discount</ion-item-divider>
-      <p>R {{(discount).toFixed(2)}}</p>
-    </ion-item>
-
-    <ion-item-divider>Total Price:</ion-item-divider>
-    <ion-item>
       <!-- <p>R {{(totalprice).toFixed(2)}}</p> -->
-      <p>R {{((order.price)+(order.deliveryPrice)).toFixed(2)}}</p>
-    </ion-item>
+
+
     <!-- <ion-item>
       <p>R {{order.price}}</p>
     </ion-item>     -->
-  </ion-list>
+
 
   <!-- Checkout Button -->
   <!-- <ion-button expand="full" (click)="AddOrderRequest(totalprice)">Checkout</ion-button> -->
-  <ion-button expand="full" (click)="AddOrderRequest(order.price+order.deliveryPrice)">Checkout</ion-button>
-</ion-content>
 
 <!-- <div *ngFor="let d of deliveryvm">
       <ion-item><label> Address: {{d.streetNumber}} {{d.streetName}}, {{d.city}}, {{d.province}}, {{d.areaCode}}</label></ion-item>

@@ -12,6 +12,8 @@ import { Delivery } from 'src/app/Models/delivery';
 import { AuditTrail } from 'src/app/Models/audittrail';
 import { AuditTrailService } from 'src/app/Services/audittrail.service';
 import { RouterModule, Router } from '@angular/router';
+import { DeliveryDataService } from 'src/app/Services/deliveries.service';
+import { Delivery_Company } from 'src/app/Models/deliverycompany';
 
 @Component({
   selector: 'app-check-out',
@@ -21,7 +23,7 @@ import { RouterModule, Router } from '@angular/router';
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class CheckOutPage implements OnInit {
-  discount!: number
+  discount!: any
   order = new OrderT();
   basketItems: BasketItems[] = [];
   address:DeliveryAddress= new DeliveryAddress();
@@ -33,7 +35,7 @@ export class CheckOutPage implements OnInit {
   vat!:any
   
   constructor(public service: OrderRequestService, private auditservice: AuditTrailService, private router: Router,
-    private alertController:AlertController) { }
+    private alertController:AlertController, private delservice:DeliveryDataService ) { }
 
   ngOnInit() {
     this.order = JSON.parse(localStorage.getItem('order') as string)    
@@ -42,31 +44,52 @@ export class CheckOutPage implements OnInit {
     console.log('basket',this.basketItems); 
     let vatAmount = localStorage.getItem('vatamount');
     this.vat=vatAmount;
-    
+    let discountAmount=localStorage.getItem('discount');
+    this.discount=discountAmount;
+    console.log('disocunt',discountAmount)
     this.GetOrderDetails()
   }
 
+  deliveryPrice:any;
   GetOrderDetails(){    
     try
     {
       this.discount = JSON.parse(JSON.stringify(localStorage.getItem('discount')))
       let delID = JSON.parse(JSON.stringify(localStorage.getItem('deliveryID'))) // JSON.parse(localStorage.getItem('deliveryID') as string)
+      let delcompanyID = JSON.parse(localStorage.getItem('deliverycompanyID') as string)// JSON.parse(JSON.stringify(localStorage.getItem('deliverycompanyID'))) 
+
+      if(delcompanyID == "66ec06c6-2d7f-41ca-3aee-08dbc0dfcd7b")
+      {
+        localStorage.setItem('delprice', this.order.deliveryPrice.toString());        
+      }
+      else{
+        this.delservice.GetDeliveryCompany(delcompanyID).subscribe(result =>{
+          let delprice = result as Delivery_Company
+          this.order.deliveryPrice = delprice.delivery_Price
+          localStorage.setItem('delprice', this.delprice.toString());
+          console.log(this.order.deliveryPrice)
+        },(error) => {
+          //this.ErrorAlert();        
+          console.error( error);
+        });
+      }
       
-      this.service.GetDeliveryByID(delID).subscribe(result =>{
-        this.deliveryvm = result as DeliveryVM[];
-          console.log(this.deliveryvm)
-          this.deliveryvm.forEach(element => {
-            //let amount = element.delivery_Price 
-            this.delprice = element.delivery_Price
-          });
 
-        localStorage.setItem('delprice', JSON.stringify(this.delprice));
-        console.log(this.delprice)
+      // this.service.GetDeliveryByID(delID).subscribe(result =>{
+      //   this.deliveryvm = result as DeliveryVM[];
+      //     console.log(this.deliveryvm)
+      //     this.deliveryvm.forEach(element => {
+      //       //let amount = element.delivery_Price 
+      //       this.delprice = element.delivery_Price
+      //     });
 
-      },(error) => {
-        this.ErrorAlert();        
-        console.error( error);
-      })
+      //   localStorage.setItem('delprice', JSON.stringify(this.delprice));
+      //   console.log(this.delprice)
+
+      // },(error) => {
+      //   //this.ErrorAlert();        
+      //   console.error( error);
+      // })
       this.culculate()
     }
     catch{
@@ -88,10 +111,6 @@ export class CheckOutPage implements OnInit {
       this.delprice = parseInt(storedDelPrice, 10);
     }
 
-    // this.vatprice = JSON.parse(localStorage.getItem('vatamount') as string);
-    // this.pureprice = JSON.parse(localStorage.getItem('pureprice') as string)
-    // this.delprice = JSON.parse(localStorage.getItem('delprice') as string)
-
     console.log(orderprice)
     console.log(this.vatprice)
     console.log(this.delprice)
@@ -99,14 +118,15 @@ export class CheckOutPage implements OnInit {
     this.totalprice = this.pureprice + this.delprice + this.vatprice
     console.log(this.totalprice)
     localStorage.setItem('totalprice', JSON.stringify(this.totalprice));
+    
   }
 
-  AddOrderRequest(totalPrice:number){
-
-    this.proceedToPayFast(totalPrice); //.toFixed(2)
+  AddOrderRequest(totalPrice:any){
+    localStorage.setItem('TotalPaid', totalPrice.toString());
+    this.proceedToPayFast(totalPrice.toFixed(2)); //
     // try
     // {
-      let addorderRequest = new Order_Request();
+     /* let addorderRequest = new Order_Request();
       let delID = JSON.parse(JSON.stringify(localStorage.getItem('deliveryID'))) //JSON.parse(localStorage.getItem('deliveryID') as string)
       let customerID = JSON.parse(JSON.stringify(localStorage.getItem('customerID'))) //JSON.parse(localStorage.getItem('customerID') as string)
 
@@ -126,7 +146,7 @@ export class CheckOutPage implements OnInit {
 
       //Action Trail
       this.action = "Confirmed Order Details"
-      this.AddAuditTrail()
+      this.AddAuditTrail()*/
 
 
       //this.proceedToPayFast()
@@ -153,14 +173,14 @@ export class CheckOutPage implements OnInit {
     })
   }
 
-  proceedToPayFast(price:number) {
+  proceedToPayFast(price:any) {
     //localStorage.setItem("order", JSON.stringify(this.order));
     const merchantId = '10030633';
     const merchantKey = 'azvaw7rrloy1e';
     const returnUrl = 'http://localhost:8102/tabs/successful-payment';
     const totalPrice = price; 
 
-    //localStorage.setItem("totalPrice",totalPrice);
+    localStorage.setItem("totalPrice",totalPrice);
 
     const itemNamesList = "Order"+new Date();
   

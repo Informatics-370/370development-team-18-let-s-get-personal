@@ -265,8 +265,13 @@ namespace IPKP___API.Controllers.Models.Repository
                       .Where(u => u.Delivery_Company_ID == delivery_Company_ID);
             return await query.FirstOrDefaultAsync();
         }
-        
-//orders
+        public async Task<Delivery[]> GetDeliverCompanyRefIntAsync(Guid delivery_Company_ID)
+        {
+            IQueryable<Delivery> query = _appDbContext.Deliveries.Where(u => u.Delivery_Company_ID == delivery_Company_ID);
+            return await query.ToArrayAsync();
+        }
+
+        //orders
         public async Task<Order[]> GetAllOrdersAsync()
         {
           IQueryable<Order> query = _appDbContext.Orders;

@@ -34,18 +34,18 @@
     </ion-row>
 
     <ion-row>
-      <ion-col>Name</ion-col>
-      <ion-col>Question</ion-col>
-      <ion-col>Phone Number</ion-col>
-      <ion-col>Email Address</ion-col>
-      <ion-col></ion-col>
+      <ion-col style="font-weight: bold; text-align: center;">Name</ion-col>
+      <ion-col style="font-weight: bold; text-align: center;">Question</ion-col>
+      <ion-col style="font-weight: bold; text-align: center;">Phone Number</ion-col>
+      <ion-col style="font-weight: bold; text-align: center;">Email Address</ion-col>
+      <ion-col style="font-weight: bold; text-align: center;"></ion-col>
     </ion-row>
 
     <ion-row *ngFor="let item of messages">
-      <ion-col>{{item.contact_Us_Name}}</ion-col>
-      <ion-col>{{item.contact_Us_Message}}</ion-col>
-      <ion-col>{{item.contact_Us_Phone}}</ion-col>
-      <ion-col>{{item.contact_Us_Email}}</ion-col>
+      <ion-col style="text-align: center;">{{item.contact_Us_Name}}</ion-col>
+      <ion-col style="text-align: center;">{{item.contact_Us_Message}}</ion-col>
+      <ion-col style="text-align: center;">{{item.contact_Us_Phone}}</ion-col>
+      <ion-col style="text-align: center;">{{item.contact_Us_Email}}</ion-col>
 
       <!-- <ion-col> 
         <ion-item>
@@ -63,7 +63,7 @@
         </ion-item>
       </ion-col> -->
 
-      <ion-col><ion-button (click)="markAsReplied(item.contact_Us_ID)">Mark As Replied</ion-button></ion-col>
+      <ion-col style="text-align: center;"><ion-button (click)="markAsReplied(item.contact_Us_ID, item.contact_Us_Name)">Mark As Replied</ion-button></ion-col>
     </ion-row>
   </ion-grid>
 

@@ -45,7 +45,7 @@ export class SuccessfulPaymentPage implements OnInit {
     localStorage.removeItem("totalPrice")    
     
     this.placeOrderT(this.order);
-    this.addSale();
+    //this.addSale();
     this.addInvoice();
     //removing local storage after invoice
   }
@@ -53,20 +53,24 @@ export class SuccessfulPaymentPage implements OnInit {
   placeOrderT(order:OrderT):void{
     this.orderService.placeOrder(order).subscribe(res=>{
       console.log(res);
+      
     },error=>{
       console.log(error)
     })
+    this.addSale();
   }
 
   addSale(){
     let addedSale = new Payment();
     let username = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    this.cartitems = JSON.parse(localStorage.getItem('cart') as string)
 
     this.cartitems.forEach(item => {
       addedSale.payment_Amount = item.stock_Item.stock_Item_Price
       addedSale.customer_UserName = username
       addedSale.sale_Quantity = item.basket_Quantity
       addedSale.stock_Item_ID = item.stock_Item.stock_Item_ID
+      console.log(addedSale)
    
       this.saleService.AddSale(addedSale).subscribe(result =>{
         let uploadedPayment = result as Payment;

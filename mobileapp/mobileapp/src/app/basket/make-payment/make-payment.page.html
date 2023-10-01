@@ -14,6 +14,15 @@
   <div>
     
     <form [formGroup]="AddDelAddressForm">
+      <ion-item>
+        <ion-label position="stacked">Delivery Company</ion-label><br>
+        <ion-select placeholder="Select a Delivery Company" formControlName="deliveryCompanyID">
+          <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
+          <ion-select-option *ngFor="let company of deliverycompanies" value ="{{company.delivery_Company_ID}}">
+            {{company.delivery_Company_Name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
       
       <ion-item>
         <ion-label>Full Address:</ion-label><!--"-->
@@ -35,15 +44,7 @@
         </ion-item>
       </ion-list>
 
-      <ion-item>
-        <ion-label position="stacked">Delivery Company</ion-label><br>
-        <ion-select placeholder="Select a Delivery Company" formControlName="deliveryCompanyID">
-          <div slot="label">Delivery Company <ion-text color="danger">(Required)</ion-text></div>
-          <ion-select-option *ngFor="let company of deliverycompanies" value ="{{company.delivery_Company_ID}}">
-            {{company.delivery_Company_Name}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
+      
       
       <ion-item>
         <ion-label position="stacked">Dwelling Type</ion-label><br>
@@ -61,7 +62,7 @@
 
       <ion-item>
         <ion-label position="stacked">Area Code</ion-label><br>
-        <ion-input  type="text" labelPlacement="floating" placeholder="0002" formControlName="areaCode"
+        <ion-input  type="text" labelPlacement="floating" placeholder="Example: 0002" formControlName="areaCode"
         [class.is-invalid]="f['areaCode'].invalid && f['areaCode'].touched"  min="4"
         max="4"></ion-input>
       </ion-item>

@@ -78,12 +78,12 @@ export class DeliveryPricesPage implements OnInit {
       //Converting canvas to Image
       const FILEURI = canvas.toDataURL('image/png');
       //Add image Canvas to PDF
-      let fileWidth = 208;
+      let fileWidth = 500;
       let fileHeight = (canvas.height * fileWidth) / canvas.width;      
       let position = 10;
       PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
           
-      PDF.save('IPKP-Products.pdf');
+      PDF.save('IPKP-DeliveryPriceReport.pdf');
     });
   }
 
