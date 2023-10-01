@@ -7,6 +7,10 @@ ion-tab-bar{
     --ion-background-color: #FEE1E8;
     --toolbar-text-color: black; 
 }
+ion-tabs{
+    //--ion-background-color: #FEE1E8;
+    --toolbar-text-color: black;
+}
 .logo-tab-button {
     width: 32px;
     //height: 32px;
@@ -14,3 +18,39 @@ ion-tab-bar{
     background-size: cover;
     background-repeat: no-repeat;
   }
+
+  /* Media query for smaller screens (adjust breakpoints as needed) */
+  @media screen and (max-width: 844px) {
+    ion-tab-button {
+      /* Reduce the size of the tab buttons */
+      font-size: 0.2px; /* Adjust the font size */
+      padding: 5px 10px; /* Adjust padding for top and bottom, left and right */
+      width: 30%; /* Adjust the width of each tab button */
+    padding: 8px; /* Adjust padding for top and bottom */
+    font-size: 12px;
+    }
+    ion-tab-bar {
+        flex-wrap: wrap; 
+        justify-content: center;
+        padding: 10px; 
+      }
+      ion-tab-button ion-icon {
+        /* Adjust the font size of the icon */
+        font-size: 16px; /* Adjust the icon's font size as needed */
+      }
+  }
+  
+  /* Media query for even smaller screens (adjust breakpoints as needed) */
+  @media screen and (max-width: 480px) {
+    ion-tab-button {
+      /* Further reduce the size and spacing for even smaller screens */
+      font-size: 12px; /* Adjust the font size */
+      padding: 4px 8px; /* Adjust padding for top and bottom, left and right */ 
+      width: 25%; /* Adjust the width */
+      padding: 5px 0; 
+      width: 20%; /* You can adjust the width as needed */
+      padding: 5px 0; /* Adjust padding for top and bottom, remove left and right padding */
+    
+    }
+  }
+

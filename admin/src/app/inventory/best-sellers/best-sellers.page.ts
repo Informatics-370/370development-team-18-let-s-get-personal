@@ -30,8 +30,9 @@ export class BestSellersPage implements OnInit {
   constructor(private service: SalesService, private bestsellerservice: BestsellersService, private router: Router,
     private alertController:AlertController, public stockitemservice: StockItemDataService, private trailservice: AuditTrailService) 
   { }
-
+  isLoading: boolean = false;
   ngOnInit() {
+    this.isLoading=true;
     this.GetBestSellers()
     this.GetAllStockItems()
   }
@@ -39,12 +40,14 @@ export class BestSellersPage implements OnInit {
   GetBestSellers(){
     this.bestsellerservice.GetBestSellers().subscribe(result => {
       this.bestsellers = result as BestSellerVM[]
+      this.isLoading=false;
     })
   }
 
   GetAllStockItems(){
     this.service.GetSalesGraph().subscribe(result =>{
       this.Products = result as Stock_Item[];
+      this.isLoading=false;
     })    
   }
 

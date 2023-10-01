@@ -19,4 +19,30 @@ ion-tabs{
     background-size: cover;
     background-repeat: no-repeat;
   }
+
+  /*ion-tab-button {
+    font-size: 16px;
+    padding: 10px 20px;
+    min-width: auto;
+    white-space: normal;
+  }*/
+
   
+  /* Media query for smaller screens (adjust breakpoints as needed) */
+  @media screen and (max-width: 844px) {
+    ion-tab-button {
+      /* Reduce the size of the tab buttons */
+      font-size: 5px; /* Adjust the font size */
+      padding: 5px 10px; /* Adjust padding for top and bottom, left and right */
+    }
+  }
+  
+  /* Media query for even smaller screens (adjust breakpoints as needed) */
+  @media screen and (max-width: 480px) {
+    ion-tab-button {
+      /* Further reduce the size and spacing for even smaller screens */
+      font-size: 12px; /* Adjust the font size */
+      padding: 4px 8px; /* Adjust padding for top and bottom, left and right */
+    }
+  }
+

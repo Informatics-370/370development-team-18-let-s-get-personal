@@ -92,6 +92,7 @@ AddDelAddressForm: FormGroup = new FormGroup({
     this.delservice.GetDeliveryCompany(this.delivery_Company_ID).subscribe(result =>{
       let localprice = result as Delivery_Company
       this.chargeRatePerKm = localprice.delivery_Price;
+      console.log('Delivery company price',this.chargeRatePerKm)
     },err=>{
       console.log(err)
     });

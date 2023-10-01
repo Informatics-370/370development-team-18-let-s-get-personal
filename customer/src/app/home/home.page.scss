@@ -33,4 +33,21 @@
   ion-card-content p {
     margin-bottom: 10px;
   }
-  
+
+/* Media query for smaller screens (adjust breakpoints as needed) */
+@media screen and (max-width: 768px) {
+  ion-card-header {
+    /* Adjust the font size and padding for smaller screens */
+    font-size: 16px; /* Adjust the font size */
+    padding: 10px;   /* Adjust padding */
+  }
+}
+
+/* Media query for even smaller screens (adjust breakpoints as needed) */
+@media screen and (max-width: 480px) {
+  ion-card-header {
+    /* Further adjust styles for even smaller screens */
+    font-size: 14px; /* Adjust the font size */
+    padding: 8px;    /* Adjust padding */
+  }
+}

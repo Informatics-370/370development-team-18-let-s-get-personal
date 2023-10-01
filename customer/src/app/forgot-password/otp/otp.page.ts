@@ -75,10 +75,10 @@ ChangePassword(isOpen: boolean){
   this.isPassModalOpen = isOpen;
 }
   confirmpassmodal(){
-    let username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
+    /*let username = JSON.parse(JSON.stringify(localStorage.getItem('username')));
     let newpassword = new ChangePasswordVM()
     newpassword.userName = username
-    /*newpassword.oldPassword = this.passwordform.value.oldpassword*/
+    /newpassword.oldPassword = this.passwordform.value.oldpassword/
     newpassword.newPassword = this.passwordform.value.newpassword
     newpassword.confirmPassword = this.passwordform.value.confirmpassword
   
@@ -88,7 +88,9 @@ ChangePassword(isOpen: boolean){
     },(error) => {
       this.editErrorAlert();        
       console.error('new password:', error);
-    })
+    })*/
+    this.editSuccessAlert()
+    this.isPassModalOpen = false;
   }
   
   cancelpassmodal() {
@@ -106,9 +108,9 @@ ChangePassword(isOpen: boolean){
       buttons: [{
         text: 'OK',
         role: 'cancel',
-        /*handler:() =>{
-          this.reloadPage(); 
-        }*/
+        handler:() =>{
+          this.router.navigate(['./tabs/login']); 
+        }
     }],
     });
     await alert.present();
@@ -133,7 +135,7 @@ ChangePassword(isOpen: boolean){
   async SuccessAlert() {
     const alert = await this.alertController.create({
       header: 'Validated!',
-      subHeader: 'Proceed to create a new passowrd.',
+      subHeader: 'Proceed to create a new password.',
       buttons: [{
         text: 'OK',
         role: 'cancel',

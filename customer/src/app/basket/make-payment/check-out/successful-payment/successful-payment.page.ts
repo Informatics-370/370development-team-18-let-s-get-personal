@@ -48,7 +48,7 @@ export class SuccessfulPaymentPage implements OnInit {
     //this.addSale();
     this.addInvoice();
     //removing local storage after invoice
-    /*this.placeOrder();*/
+    this.placeOrder();
     this.startCountdown();
   }
 
@@ -137,8 +137,8 @@ export class SuccessfulPaymentPage implements OnInit {
 
   private placeOrder():void{
     //Action Trail
-    this.action = "Paid For Order"
-    this.AddAuditTrail()
+   /* this.action = "Paid For Order"
+    this.AddAuditTrail()*/
 
       localStorage.removeItem('cart');
       localStorage.removeItem('cartItemCount');
@@ -155,16 +155,8 @@ export class SuccessfulPaymentPage implements OnInit {
       localStorage.removeItem("discount");
       localStorage.removeItem("TotalPaid");
       localStorage.removeItem("order");
-      // localStorage.removeItem("cart");
-      // localStorage.removeItem("orderRequestID");
-      // localStorage.removeItem("personalisedID");
-      // localStorage.removeItem("totalprice");
-      // localStorage.removeItem("deliveryID");
-      // //*** */
-      // localStorage.removeItem("quantity");
-      // localStorage.removeItem("addressID");
-      // localStorage.removeItem("cartItemCount");
-      // localStorage.removeItem("stockId");
+      localStorage.removeItem("deliverycompanyID");
+      
   }
 
   ionViewDidEnter() {
