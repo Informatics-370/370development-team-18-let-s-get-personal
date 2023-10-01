@@ -24,27 +24,29 @@
 
   <ion-grid id="grid">
     <ion-row>
-      <ion-col sizeLg="3" sizeMd="4" sizeXs="6" *ngFor="let item of Products">
-        <ion-card style="height: 100%; width: 100%;">
-          <ion-card-title>{{item.stock_Item_Name}}</ion-card-title>
+      <ion-col size="6" *ngFor="let item of Products">
+        <ion-card >
+          <p style="font-weight: bold;">{{item.stock_Item_Name}}</p>
           <ion-card-content>
             <ion-img src='data:image/png;base64,{{item.stockImageFile}}'></ion-img>
             <p>{{item.stockColourName}}</p>
             <p>{{item.stock_Item_Size}}</p>
             <p>R: {{item.stock_Item_Price}}</p>
+
+            <ion-item *ngIf="item.stock_Item_Quantity == 0">
+              <ion-label color="danger">Out of Stock</ion-label>
+            </ion-item>
+  
+            <ion-item *ngIf="item.stock_Item_Quantity < 5">
+              <ion-label color="danger">Low On Stock {{item.stock_Item_Quantity}} left</ion-label>
+            </ion-item>
+  
+            <ion-item *ngIf="item.stock_Item_Quantity > 0">
+              <ion-button class="center" (click)="addToBasket(item)">Add To <br> Basket</ion-button>
+            </ion-item>  
           </ion-card-content> 
 
-          <ion-item *ngIf="item.stock_Item_Quantity == 0">
-            <ion-label color="danger">Out of Stock</ion-label>
-          </ion-item>
-
-          <ion-item *ngIf="item.stock_Item_Quantity < 5">
-            <ion-label color="danger">Low On Stock {{item.stock_Item_Quantity}} left</ion-label>
-          </ion-item>
-
-          <ion-item *ngIf="item.stock_Item_Quantity > 0">
-            <ion-button class="center" (click)="addToBasket(item)">Add To Basket</ion-button>
-          </ion-item>          
+                  
         </ion-card>
       </ion-col>
     </ion-row>
