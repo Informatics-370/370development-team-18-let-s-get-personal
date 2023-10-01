@@ -25,7 +25,7 @@
 					<ion-row *ngFor="let item of orders">
 						<ion-col sizeLg="4" sizeMd="4" sizeXs="4" style="text-align: center;">{{item.stock_Item_Name}}</ion-col>
 						<ion-col sizeLg="4" sizeMd="4" sizeXs="4" style="text-align: center;">{{item.order_Line_Item_Quantity}}</ion-col>
-						<ion-col sizeLg="4" sizeMd="4" sizeXs="4" style="text-align: center;">{{item.order_Completed_Date}}</ion-col>
+						<ion-col sizeLg="4" sizeMd="4" sizeXs="4" style="text-align: center;">{{item.order_Completed_Date | date: 'yyyy-MM-dd'}}</ion-col>
 					</ion-row>
 				</ion-col>
 				<ion-col sizeLg="8" sizeMd="8" sizeXs="8">

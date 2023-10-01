@@ -45,7 +45,7 @@ export class SuccessfulPaymentPage implements OnInit {
     localStorage.removeItem("totalPrice")    
     
     this.placeOrderT(this.order);
-    this.addSale();
+    //this.addSale();
     this.addInvoice();
     //removing local storage after invoice
     /*this.placeOrder();*/
@@ -58,6 +58,7 @@ export class SuccessfulPaymentPage implements OnInit {
     },error=>{
       console.log(error)
     })
+    this.addSale();
   }
 
   countdown: number = 5;
@@ -75,12 +76,14 @@ export class SuccessfulPaymentPage implements OnInit {
   addSale(){
     let addedSale = new Payment();
     let username = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    this.cartitems = JSON.parse(localStorage.getItem('cart') as string)
 
     this.cartitems.forEach(item => {
       addedSale.payment_Amount = item.stock_Item.stock_Item_Price
       addedSale.customer_UserName = username
       addedSale.sale_Quantity = item.basket_Quantity
       addedSale.stock_Item_ID = item.stock_Item.stock_Item_ID
+      console.log(addedSale)
    
       this.saleService.AddSale(addedSale).subscribe(result =>{
         let uploadedPayment = result as Payment;
@@ -117,9 +120,7 @@ export class SuccessfulPaymentPage implements OnInit {
       invoice.delivery_Price = delprice
       invoice.invoice_Total_exclVAT = excvatprice
       invoice.invoice_Total_VAT = vatamount
-      invoice.invoice_Total_inclVAT = inclvatprice
-            
-      
+      invoice.invoice_Total_inclVAT = inclvatprice           
 
       console.log('invoice',invoice)
 

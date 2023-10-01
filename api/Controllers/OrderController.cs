@@ -182,8 +182,8 @@ namespace IPKP___API.Controllers
             try
             {
                 string orderStatus = "Requested";
-               /* var requests = _IPKPRepository.GetOrderLineItembyStatus(orderStatus); //GetOrderRequests();*/
-                var requests = _IPKPRepository.GetAllOrderLineItems();
+                var requests = _IPKPRepository.GetOrderLineItembyStatus(orderStatus); //GetOrderRequests();
+                //var requests = _IPKPRepository.GetAllOrderLineItems();
 
                 if (requests == null)
                 {

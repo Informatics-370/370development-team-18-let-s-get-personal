@@ -53,8 +53,9 @@ export class HomePage implements OnInit {
   }
 
 //============== Replied status update =======
-  markAsReplied(contactusID: string){
+  markAsReplied(contactusID: string, contactusName: string){
     this.service.DeleteContactUs(contactusID).subscribe(data =>{
+      this.action = "Replied to message from " + 
       this.DeleteSuccessAlert()
     },(error) => {
       this.DeleteErrorAlert();        
@@ -63,39 +64,7 @@ export class HomePage implements OnInit {
   }
 
 //============== Timer =======
-  timerForm: FormGroup = new FormGroup({
-    time: new FormControl('',[Validators.required])
-  })
-
-  observableTimer() {
-    this.timeLeft = JSON.parse(localStorage.getItem('timeleft') as string)
-    const source = timer(1000, this.timeLeft);
-    const abc = source.subscribe(val => {
-      console.log(val, '-');
-      this.subscribeTimer = this.timeLeft - val;
-
-      if(this.timeLeft == 0){
-        this.ReminderAlert()
-      }
-    });
-  }
-
-  Name!: string
-  handleChange(e: any, name:string) {
-    console.log('ionChange fired with value: ' + e.detail.value);
-    this.timeLeft = e.detail.value
-    localStorage.setItem('timeleft', JSON.stringify(this.timeLeft))
-    this.Name = name
-    this.observableTimer()
-  }
-
-  handleCancel() {
-    console.log('ionCancel fired');
-  }
-
-  handleDismiss() {
-    console.log('ionDismiss fired');
-  }
+  // 
 
 
 //============== Audit Trail =======
@@ -166,24 +135,57 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
-  async ReminderAlert() {
-    const alert = await this.alertController.create({
-      header: 'Reminder!',
-      subHeader: 'Remember to reply to ' + this.Name,
-      buttons: [{
-          text: 'OK',
-          role: 'cancel',
-          handler:() =>{
-            this.reloadPage();
-          }
-      }],
-    });
-    await alert.present();
-  }
+  // async ReminderAlert() {
+  //   const alert = await this.alertController.create({
+  //     header: 'Reminder!',
+  //     subHeader: 'Remember to reply to ' + this.Name,
+  //     buttons: [{
+  //         text: 'OK',
+  //         role: 'cancel',
+  //         handler:() =>{
+  //           this.reloadPage();
+  //         }
+  //     }],
+  //   });
+  //   await alert.present();
+  // }
 
   reloadPage(){
     window.location.reload()
   }
+  // timerForm: FormGroup = new FormGroup({
+    //   time: new FormControl('',[Validators.required])
+    // })
+  
+    // observableTimer() {
+    //   this.timeLeft = JSON.parse(localStorage.getItem('timeleft') as string)
+    //   const source = timer(1000, this.timeLeft);
+    //   const abc = source.subscribe(val => {
+    //     console.log(val, '-');
+    //     this.subscribeTimer = this.timeLeft - val;
+  
+    //     if(this.timeLeft == 0){
+    //       this.ReminderAlert()
+    //     }
+    //   });
+    // }
+  
+    // Name!: string
+    // handleChange(e: any, name:string) {
+    //   console.log('ionChange fired with value: ' + e.detail.value);
+    //   this.timeLeft = e.detail.value
+    //   localStorage.setItem('timeleft', JSON.stringify(this.timeLeft))
+    //   this.Name = name
+    //   this.observableTimer()
+    // }
+  
+    // handleCancel() {
+    //   console.log('ionCancel fired');
+    // }
+  
+    // handleDismiss() {
+    //   console.log('ionDismiss fired');
+    // }
 
   // startTimer() {
   //   this.timeLeft = this.timerForm.value.time

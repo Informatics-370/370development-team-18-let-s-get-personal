@@ -67,7 +67,6 @@ export class SalesPage implements OnInit {
     const product = this.Products.find(product => product.stock_Item_ID === stockId);
     
     return product ? product.stock_Item_Name : '';
-    
   }
 
   controlbreak: SalesVM[] =[]
@@ -113,13 +112,47 @@ export class SalesPage implements OnInit {
       //Converting canvas to Image
       const FILEURI = canvas.toDataURL('image/png');
       //Add image Canvas to PDF
-      let fileWidth = 208;
+      let fileWidth = 500;
       let fileHeight = (canvas.height * fileWidth) / canvas.width;      
       let position = 10;
       PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);        
           
-      PDF.save('IPKP-Products.pdf');
+      PDF.save('IPKP-SalesPerStockType.pdf');
     });
+  }
+
+  generateControlPDF() {  
+    let user = JSON.parse(JSON.stringify(localStorage.getItem('username')))
+    let date = new Date
+    
+    let docDefinition = {  
+      fillColor: "White",
+      fillOpacity: "",
+      margin: [ 5, 10, 5, 5 ],
+      header: user+" - It's Personal Order Requests",  
+      footer:'Downloaded by: '+ user + ' at: '+ date,        
+      content:[
+        {          
+          layout: 'lightHorizontalLines', // optional          
+          table: {
+            headerRows: 1,
+            widths: [ '20%', '20%', '20%', '20%', '20%'  ],
+            // margin: [left, top, right, bottom]
+            margin: [ 1, 10, 1, 5 ],
+            
+            body: [
+              [ 'Customer', 'Product', 'Payment Amount', 'Quantity', 'Sale Date'],
+              ...this.stocktypes.map(p => 
+                ([
+                  p.stock_Type_Name, 'R' + p.stock_Type_Total , 
+                ])
+              )
+            ]
+          }          
+        }
+      ]      
+    };  
+    pdfMake.createPdf(docDefinition).download();      
   }
 
   //download saleslist
@@ -131,7 +164,7 @@ export class SalesPage implements OnInit {
       fillColor: "White",
       fillOpacity: "",
       margin: [ 5, 10, 5, 5 ],
-      header: user+" - It's Personal Order Requests",  
+      header: user+" - It's Personal Sales",  
       footer:'Downloaded by: '+ user + ' at: '+ date,        
       content:[
         {          

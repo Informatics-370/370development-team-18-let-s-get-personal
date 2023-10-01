@@ -44,7 +44,8 @@
 					<ion-row>
 						<ion-col *ngFor="let star of stars" (click)="rateExperience(star)">
 							<ion-icon [name]="star >= selectedRating ? 'star' : 'star-outline'"
-								formControlName="selectedRating"></ion-icon>
+								></ion-icon>
+								<!-- formControlName="selectedRating" -->
 						</ion-col>
 					</ion-row>
 					<p>Selected Rating: {{ selectedRating }}</p>
@@ -92,7 +93,9 @@
 						<ion-label position="stacked">Experience Rating</ion-label><br>
 						<ion-row>
 							<ion-col *ngFor="let star of stars" (click)="rateExperience(star)">
-								<ion-icon [name]="star >= selectedRating ? 'star' : 'star-outline'"></ion-icon>
+								<ion-icon [name]="star >= selectedRating ? 'star' : 'star-outline'"
+									></ion-icon>
+									<!-- formControlName="selectedRating" -->
 							</ion-col>
 						</ion-row>
 						<p>Selected Rating: {{ selectedRating }}</p>

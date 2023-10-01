@@ -92,6 +92,7 @@ export class DeliveriesPage implements OnInit {
       this.service.ChangeStatusToRecieved(DeliveryId).subscribe(result =>{
         if(result.status == "Success"){
           console.log(result);          
+          this.ReceiveDeliverySuccessAlert()
         }
       },(error) => {
         this.ReceiveDeliveryErrorAlert();        

@@ -54,6 +54,7 @@ namespace IPKP___API.Controllers.Models.Repository
         
         Task<Delivery_Company> GetDeliveryCompanyDetailsAsync(Guid delivery_Company_ID);
         Task<Delivery_Company[]> GetAllDeliveryCompaniesAsync();
+        Task<Delivery[]> GetDeliverCompanyRefIntAsync(Guid delivery_Company_ID);
         Task<Personalisation_Design> GetPersonalisationAsync(Guid personalisation_ID);
         Task<Order[]> GetAllOrdersAsync();
         Task<Order> GetOrderDetailsAsync(Guid order_ID);

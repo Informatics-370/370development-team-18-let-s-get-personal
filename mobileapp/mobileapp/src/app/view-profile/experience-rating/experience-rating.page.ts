@@ -92,17 +92,22 @@ export class ExperienceRatingPage implements OnInit {
   })
 
   editExpRating: Experience_Rating = new Experience_Rating();
-
+  expratingID!: string
+  editStockName!: string
+  currentRating!: number
   EditExpRating(experience_Rating_ID: string, isOpen: boolean) {
+    this.expratingID = experience_Rating_ID
     this.ratingService.GetExperienceRating(experience_Rating_ID).subscribe(response => {
       this.editExpRating = response as Experience_Rating;
       console.log(this.editExpRating)
-      //this.editForm.controls['selectedRating'].setValue(this.editExpRating.experience_Star_Rating);
+
+      this.currentRating = this.editExpRating.experience_Star_Rating;
       this.editForm.controls['comment'].setValue(this.editExpRating.experience_Rating_Comments);
     })
 
     this.isModalOpen = isOpen;
   }
+
   canceleditmodal() {
     this.isModalOpen = false;
   }
@@ -115,10 +120,10 @@ export class ExperienceRatingPage implements OnInit {
 
       let editedExpRating = new Experience_Rating();
       editedExpRating.experience_Star_Rating = this.selectedRating;
-      editedExpRating.experience_Rating_Comments = this.editForm.get('comment')?.value;
+      editedExpRating.experience_Rating_Comments = this.editForm.value.comment;
       console.log(editedExpRating)
     
-      this.ratingService.UpdateExperienceRating(this.editExpRating.experience_Rating_ID, editedExpRating).subscribe(result => {
+      this.ratingService.UpdateExperienceRating(this.expratingID, editedExpRating).subscribe(result => {
         this.editExpRatingSuccessAlert();
       },(error) => {
         this.editExpRatingErrorAlert();

@@ -28,29 +28,35 @@ namespace IPKP___API.Controllers
                 stockitem.Stock_Item_Quantity = stockitem.Stock_Item_Quantity - sale.Sale_Quantity;
                 stockitem.Stock_Sale_Quantity = stockitem.Stock_Sale_Quantity + sale.Sale_Quantity;
 
-                var newsale = new Payment
-                {
-                    Payment_ID = new Guid(),
-                    Sale_Date = DateTime.Now,
-                    Payment_Amount = sale.Payment_Amount,
-                    Sale_Quantity = sale.Sale_Quantity,
-                    Customer_UserName = sale.Customer_UserName,
-                    Stock_Item_ID = sale.Stock_Item_ID, 
-                };
-
-                _IPKPRepository.Add(newsale);
-                //await _IPKPRepository.SaveChangesAsync();
 
                 if (await _IPKPRepository.SaveChangesAsync())
                 {
-                    return Ok(newsale);
+
+                    var newsale = new Payment
+                    {
+                        Payment_ID = new Guid(),
+                        Sale_Date = DateTime.Now,
+                        Payment_Amount = sale.Payment_Amount,
+                        Sale_Quantity = sale.Sale_Quantity,
+                        Customer_UserName = sale.Customer_UserName,
+                        Stock_Item_ID = sale.Stock_Item_ID,
+                    };
+
+                    _IPKPRepository.Add(newsale);
+                    await _IPKPRepository.SaveChangesAsync();
+
+                    return Ok(new Response { Status = "Success", Message = "Delivery Address Added To Database." });
+                }
+                else
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
                 }
             }
             catch (Exception)
             {
                 return BadRequest(new Response { Status = "Error", Message = "Internal Service Error, Please Contact Support." });
             }
-            return Ok(new Response { Status = "Success", Message = "Delivery Address Added To Database." });
+            
         }
 
         [HttpGet]

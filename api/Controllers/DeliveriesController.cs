@@ -321,24 +321,24 @@ namespace IPKP___API.Controllers
             try
             {
                 var existingDeliveryCompany = await _IPKPRepository.GetDeliveryCompanyDetailsAsync(delivery_Company_ID);
-                var result = await _IPKPRepository.GetInProgressDeliveriesByCompany(delivery_Company_ID);
+                var result = await _IPKPRepository.GetDeliverCompanyRefIntAsync(delivery_Company_ID);
 
                 if (existingDeliveryCompany == null)
                 {
                     return NotFound(new Response { Status = "Error", Message = "Could Not Find Delivery Company" + delivery_Company_ID });
                 }
-                else if (result == null)
+                else if (result.Length > 0)
+                {
+                    return BadRequest(new Response { Status = "Error", Message = "Cannot delete company while being used in a delivery in progress." });
+                }
+                else
                 {
                     _IPKPRepository.Delete(existingDeliveryCompany);
 
                     if (await _IPKPRepository.SaveChangesAsync())
                     {
                         return Ok(new Response { Status = "Success", Message = "Delivery Company Removed Successfully" });
-                    }
-                }
-                else
-                {
-                    return BadRequest(new Response { Status = "Error", Message = "Cannot delete company while being used in a delivery in progress." });
+                    }                    
                 }
                 
             }
